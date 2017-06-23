@@ -1,0 +1,20 @@
+{
+	"folders":[
+	{
+		"title":"All Talks9",
+        "key": "ALL"
+	},
+	{
+		"title":"Recommended Talks",
+        "key": "CONTENT"
+	},
+	{
+		"title":"Talks by Gil Fronsdal",
+        "key": "Gil Fronsdal"
+    },
+	{
+		"title":"Talks by Teah Strozer",
+        "key": "Teah Strozer"
+	}
+    ]
+}

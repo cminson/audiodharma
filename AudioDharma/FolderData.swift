@@ -16,10 +16,15 @@ class FolderData: NSObject {
     
     //MARK: Properties
     var title: String
+    var key: String
+    var content: [String]!
     
     
-    init(title: String) {
+    init(title: String, key: String) {
         self.title = title
+        self.key = key
+        
+        print("Created folder.  Title: \(title)  Key: \(key)")
         
     }
     

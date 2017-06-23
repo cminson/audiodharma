@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lYo-of-Voz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="w2c-j0-3M0">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -219,6 +220,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bCW-UB-eqM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-522.39999999999998" y="143.47826086956522"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="zen-ux-zEa">
+            <objects>
+                <viewController id="w2c-j0-3M0" customClass="SplashViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OMj-bl-R12"/>
+                        <viewControllerLayoutGuide type="bottom" id="rmY-Ns-7O4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FoZ-O0-n25">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2017 Christopher Minson. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="gdq-bL-6k3">
+                                <rect key="frame" x="20" y="626.5" width="335" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AudioDharma" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="wtz-MB-7TP">
+                                <rect key="frame" x="20" y="202" width="335" height="43"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="gdq-bL-6k3" secondAttribute="bottom" constant="20" id="CyZ-XL-54Z"/>
+                            <constraint firstItem="wtz-MB-7TP" firstAttribute="centerY" secondItem="FoZ-O0-n25" secondAttribute="bottom" multiplier="1/3" constant="1" id="IwU-9v-BD0"/>
+                            <constraint firstAttribute="centerX" secondItem="wtz-MB-7TP" secondAttribute="centerX" id="Oeq-u5-Gpe"/>
+                            <constraint firstAttribute="centerX" secondItem="gdq-bL-6k3" secondAttribute="centerX" id="WaK-E0-8p7"/>
+                            <constraint firstItem="gdq-bL-6k3" firstAttribute="leading" secondItem="FoZ-O0-n25" secondAttribute="leading" constant="20" symbolic="YES" id="mdd-uT-7yY"/>
+                            <constraint firstItem="wtz-MB-7TP" firstAttribute="leading" secondItem="FoZ-O0-n25" secondAttribute="leading" constant="20" symbolic="YES" id="yjM-Yq-iGF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="lYo-of-Voz" kind="show" identifier="ShowSeriesList" id="cPv-mW-t4B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ifw-5R-kKw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1436" y="143"/>
         </scene>
     </scenes>
     <resources>

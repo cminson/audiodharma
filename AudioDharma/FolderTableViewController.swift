@@ -11,12 +11,14 @@ import UIKit
 class FoldersTableViewController: UITableViewController {
     
     //MARK: Properties
-    var Folders = [FolderData]()
+    //var Folders = [FolderData]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders02.json")
+        print("FolderTableViewController viewDidLoad")
+        
+        //loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders02.json")
         //loadTalks(jsonLocation: "http://www.ezimba.com/ad/talks01.json")
     }
 
@@ -33,8 +35,9 @@ class FoldersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.Folders.count
+    
+        print(TheDataModel.Folders.count)
+        return TheDataModel.Folders.count
     }
 
 
@@ -46,9 +49,9 @@ class FoldersTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of FolderTableViewCell.")
         }
         
-        let folder = self.Folders[indexPath.row]
-        print(indexPath.row)
-        print(folder.title)
+        let folder = TheDataModel.Folders[indexPath.row]
+        //print(indexPath.row)
+        //print(folder.title)
         
         print("in deqeue")
         cell.title.text = folder.title
@@ -96,13 +99,41 @@ class FoldersTableViewController: UITableViewController {
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    */
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        print("prepare to seque")
+        guard let talkTableViewController = segue.destination as? TalkTableViewController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
+        guard let selectedTalkCell = sender as? FolderTableViewCell else {
+            fatalError("Unexpected sender:")
+        }
+        
+        guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
+            fatalError("The selected cell is not being displayed by the table")
+        }
+        
+        let folder = TheDataModel.Folders[indexPath.row]
+        
+        print("Folder key: \(folder.key)")
+        let talks = TheDataModel.getTalks(key: folder.key)
+
+        talkTableViewController.talks = talks
+        
+        
+        print("done seque")
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+
+    
+    /*
     private func loadFolders(jsonLocation: String) {
+        
         
         print("loadFolders")
         let requestURL : URL? = URL(string: jsonLocation)
@@ -152,7 +183,9 @@ class FoldersTableViewController: UITableViewController {
         }
         task.resume()
     }
+    */
     
+    /*
     private func loadTalks(jsonLocation: String) {
         
         print("loadTalks")
@@ -203,6 +236,7 @@ class FoldersTableViewController: UITableViewController {
         }
         task.resume()
     }
+ */
 
 
 

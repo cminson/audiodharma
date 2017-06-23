@@ -18,7 +18,7 @@ class TalkTableViewController: UITableViewController {
         super.viewDidLoad()
 
         //loadSampleTalks()
-        loadTalks(jsonLocation: "http://www.ezimba.com/ad/config01.json")
+        //loadTalks(jsonLocation: "http://www.ezimba.com/ad/config01.json")
     }
 
     override func didReceiveMemoryWarning() {
@@ -170,6 +170,8 @@ class TalkTableViewController: UITableViewController {
     }
  */
     
+    /*
+    
     private func loadTalks(jsonLocation: String) {
         
         print("loadTalks")
@@ -231,6 +233,7 @@ class TalkTableViewController: UITableViewController {
         task.resume()
         print("finished load")
     }
+ */
 
     
             

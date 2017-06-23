@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class FolderTableViewCell: UITableViewCell {
     
     //MARK: Properties
