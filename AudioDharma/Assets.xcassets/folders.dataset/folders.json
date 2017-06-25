@@ -2,19 +2,19 @@
 	"folders":[
 	{
 		"title":"All Talks9",
-        "key": "ALL"
+		"content": "ALL"
 	},
 	{
-		"title":"Recommended Talks",
-        "key": "CONTENT"
+		"title":"Dying in the Dharma",
+        "content": "dharmadying.json"
 	},
 	{
 		"title":"Talks by Gil Fronsdal",
-        "key": "Gil Fronsdal"
+        "content": "Gil Fronsdal"
     },
 	{
 		"title":"Talks by Teah Strozer",
-        "key": "Teah Strozer"
+        "content": "Teah Strozer"
 	}
     ]
 }

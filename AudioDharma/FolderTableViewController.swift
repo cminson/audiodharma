@@ -18,8 +18,6 @@ class FoldersTableViewController: UITableViewController {
         
         print("FolderTableViewController viewDidLoad")
         
-        //loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders02.json")
-        //loadTalks(jsonLocation: "http://www.ezimba.com/ad/talks01.json")
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,15 +28,64 @@ class FoldersTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return TheDataModel.FolderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        print(TheDataModel.Folders.count)
-        return TheDataModel.Folders.count
+        print(TheDataModel.FolderSections[section].count)
+        return TheDataModel.FolderSections[section].count - 1
     }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitle : String
+        
+        sectionTitle =  TheDataModel.FolderSections[section][0].title
+        print(sectionTitle)
+        
+        return sectionTitle
+        
+    }
+    
+ 
+    override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        print ("enter: willDisplayHeaderView")
+
+        view.tintColor = UIColor.blue
+        
+    }
+
+    
+    /*
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        print ("tableview section view setup")
+        let width = tableView.bounds.size.width
+        let height =  30
+        
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: height))
+        returnedView.backgroundColor = UIColor.green
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: height))
+        label.text = TheDataModel.FolderSections[section][0].title
+        returnedView.addSubview(label)
+        
+        return returnedView
+    }
+ */
+    
+    /*
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> (UIView!)
+    {
+        return self.tableView.backgroundColor = UIColor.green
+     
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
+        headerView.backgroundColor = UIColor.red
+       
+        return headerView
+ 
+    }
+ */
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,7 +96,8 @@ class FoldersTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of FolderTableViewCell.")
         }
         
-        let folder = TheDataModel.Folders[indexPath.row]
+        print("section = \(indexPath.section) row = \(indexPath.row)")
+        let folder = TheDataModel.FolderSections[indexPath.section][indexPath.row + 1]
         //print(indexPath.row)
         //print(folder.title)
         
@@ -117,10 +165,14 @@ class FoldersTableViewController: UITableViewController {
             fatalError("The selected cell is not being displayed by the table")
         }
         
-        let folder = TheDataModel.Folders[indexPath.row]
+        let folder = TheDataModel.FolderSections[indexPath.section][indexPath.row + 1]
         
-        print("Folder key: \(folder.key)")
-        let talks = TheDataModel.getTalks(key: folder.key)
+        print("Folder content: \(folder.content)")
+        let talks = TheDataModel.getTalks(content: folder.content)
+        
+        for talk in talks {
+            print(talk.title)
+        }
 
         talkTableViewController.talks = talks
         
