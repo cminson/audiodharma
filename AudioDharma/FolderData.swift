@@ -17,13 +17,15 @@ class FolderData: NSObject {
     //MARK: Properties
     var title: String
     var content: String
+    var section: String
     
     
-    init(title: String, content: String) {
+    init(title: String, content: String, section: String) {
         self.title = title
         self.content = content
+        self.section = section
         
-        print("Created folder.  Title: \(title)  Content: \(content)")
+        print("Created folder.  Title: \(title)  Content: \(content)   Section: \(section)")
         
     }
     

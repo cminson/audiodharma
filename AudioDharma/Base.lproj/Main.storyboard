@@ -143,7 +143,7 @@
             </objects>
             <point key="canvasLocation" x="2975" y="583"/>
         </scene>
-        <!--Series-->
+        <!--Audio Dharma-->
         <scene sceneID="Tyx-hu-Q4G">
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="FoldersTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -179,7 +179,7 @@
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Series" id="ZPM-Q5-ruw"/>
+                    <navigationItem key="navigationItem" title="Audio Dharma" id="ZPM-Q5-ruw"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

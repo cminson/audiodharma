@@ -28,19 +28,19 @@ class FoldersTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return TheDataModel.FolderSections.count
+        return TheDataModel.folderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        print(TheDataModel.FolderSections[section].count)
-        return TheDataModel.FolderSections[section].count - 1
+        print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
+        return TheDataModel.folderSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionTitle : String
         
-        sectionTitle =  TheDataModel.FolderSections[section][0].title
+        sectionTitle =  TheDataModel.folderSections[section][0].section
         print(sectionTitle)
         
         return sectionTitle
@@ -56,38 +56,6 @@ class FoldersTableViewController: UITableViewController {
     }
 
     
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        print ("tableview section view setup")
-        let width = tableView.bounds.size.width
-        let height =  30
-        
-        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: height))
-        returnedView.backgroundColor = UIColor.green
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: height))
-        label.text = TheDataModel.FolderSections[section][0].title
-        returnedView.addSubview(label)
-        
-        return returnedView
-    }
- */
-    
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> (UIView!)
-    {
-        return self.tableView.backgroundColor = UIColor.green
-     
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
-        headerView.backgroundColor = UIColor.red
-       
-        return headerView
- 
-    }
- */
-
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FolderTableViewCell"
         
@@ -97,16 +65,45 @@ class FoldersTableViewController: UITableViewController {
         }
         
         print("section = \(indexPath.section) row = \(indexPath.row)")
-        let folder = TheDataModel.FolderSections[indexPath.section][indexPath.row + 1]
-        //print(indexPath.row)
-        //print(folder.title)
-        
-        print("in deqeue")
+        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
+    
         cell.title.text = folder.title
         
         return cell
         
     }
+    
+    /*
+     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+     
+     print ("tableview section view setup")
+     let width = tableView.bounds.size.width
+     let height =  30
+     
+     let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: height))
+     returnedView.backgroundColor = UIColor.green
+     
+     let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: height))
+     label.text = TheDataModel.FolderSections[section][0].title
+     returnedView.addSubview(label)
+     
+     return returnedView
+     }
+     */
+    
+    /*
+     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> (UIView!)
+     {
+     return self.tableView.backgroundColor = UIColor.green
+     
+     let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
+     headerView.backgroundColor = UIColor.red
+     
+     return headerView
+     
+     }
+     */
+
   
 
     /*
@@ -165,9 +162,11 @@ class FoldersTableViewController: UITableViewController {
             fatalError("The selected cell is not being displayed by the table")
         }
         
-        let folder = TheDataModel.FolderSections[indexPath.section][indexPath.row + 1]
+        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
         
         print("Folder content: \(folder.content)")
+        
+        /*
         let talks = TheDataModel.getTalks(content: folder.content)
         
         for talk in talks {
@@ -175,11 +174,11 @@ class FoldersTableViewController: UITableViewController {
         }
 
         talkTableViewController.talks = talks
+        */
+        
+        talkTableViewController.content = folder.content
         
         
-        print("done seque")
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
 
     

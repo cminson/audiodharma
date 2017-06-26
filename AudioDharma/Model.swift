@@ -11,7 +11,7 @@ import os.log
 
 
 // MOVE INTO CLASS TBD
-var KeyToTalks : [String: [TalkData]] = [String: [TalkData]]()
+//var KeyToTalks : [String: [TalkData]] = [String: [TalkData]]()
 
 let KEY_ALLTALKS = "ALL"
 
@@ -19,10 +19,9 @@ class Model {
     
     //MARK: Properties
     
-    var FolderSections: [[FolderData]] = []
-    var Talks: [TalkData] = []
-    var NameToTalk : [String: TalkData] = [:]
-
+    var folderSections: [[FolderData]] = []
+    var nameToTalk : [String: TalkData] = [:]
+    var keyToTalks : [String: [[TalkData]]] = [:]
     
     
     init() {
@@ -31,17 +30,16 @@ class Model {
     
     func loadData() {
         
-        loadTalks(jsonLocation: "http://www.ezimba.com/ad/alltalks01.json")
-
-        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders02.json")
+        loadAllTalks(jsonLocation: "http://www.ezimba.com/ad/alltalks01.json")
+        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders03.json")
     }
     
     
-    func getTalks(content: String) -> [TalkData] {
+    func getTalks(content: String) -> [[TalkData]] {
         
-        var talks: [TalkData]
+        var talks: [[TalkData]]
         
-        talks = KeyToTalks[content] ?? [TalkData]()
+        talks = self.keyToTalks[content] ?? [[TalkData]]()
        
         print(content)
         print(talks.count)
@@ -50,6 +48,7 @@ class Model {
         
     }
     
+
     private func loadFolderContent(content: String) {
         
         print("loadFolderContent")
@@ -73,21 +72,26 @@ class Model {
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
-                print("Everyone is fine, file downloaded successfully.")
+                print("Download Success")
             }
             
             // make sure we got data
             guard let responseData = data else {
-                print("Error: did not receive data")
+                print("Download Error: did not receive data")
                 return
             }
             
-            //parsing the response
+            //
+            // first get a list of all talks
+            // if no sections in the talk, treat as single list
+            // otherwise apply multiple sections
+            //
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
-                //print(json)
+                print(json)
                 
+                var sectionsPositionDict : [String: Int] = [:]
                 for talk in json["talks"] as? [AnyObject] ?? [] {
                     
                     let title = talk["title"] as? String ?? ""
@@ -95,21 +99,27 @@ class Model {
                     let talkURL = talk["talk"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
+                    let section = talk["section"] as? String ?? ""
                     
-                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker)
+                    print(section)
+
+                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section)
                     
-                    self.NameToTalk[content] =  talkData
+                    // create the key -> talkData[] entry if it doesn't already exits
+                    if self.keyToTalks[content] == nil {
+                        print("loadFolderContents creating key: \(content)")
+                        self.keyToTalks[content]  = []
+                    }
                     
-                    
-                    if let _ = KeyToTalks[content]  {
-                        KeyToTalks[content]? += [talkData]
-                        //print("added to  array for speaker: \(speaker)  \(KeyToTalks[speaker]!.count)")
-                        
-                        
+                    // now add the talk data to this key
+                    if sectionsPositionDict[section] == nil {
+                        // new section seen.  create new array of talks for this section
+                        self.keyToTalks[content]!.append([talkData])
+                        sectionsPositionDict[section] = self.keyToTalks[content]!.count - 1
                     } else {
-                        KeyToTalks[content] = [TalkData] ()
-                        KeyToTalks[content]? += [talkData]
-                        //print("created array for speaker: \(speaker)")
+                        // section already exists.  add talk to the existing array of talks
+                        let sectionPosition = sectionsPositionDict[section]!
+                        self.keyToTalks[content]![sectionPosition].append(talkData)
                         
                     }
                     
@@ -152,6 +162,7 @@ class Model {
                 return
             }
             
+            var sectionsPositionDict : [String: Int] = [:]
             //parsing the response
             do {
                 
@@ -162,28 +173,26 @@ class Model {
                     
                     let title = folder["title"] as? String ?? ""
                     let content = folder["content"] as? String ?? ""
+                    let section = folder["section"] as? String ?? ""
                     
                     if content.range(of:"json") != nil {
                         self.loadFolderContent(content: content)
                     }
                     
-                    //print(title)
-                    //print(content)
-                    let folderData =  FolderData(title: title, content: content)
+                    let folderData =  FolderData(title: title, content: content, section: section)
                     
-                    if content == "HEADER"  {
-                        // add new array of folders
-                        self.FolderSections.append([folderData])
+                    if sectionsPositionDict[section] == nil {
+                        // new section seen.  create new array of folders for this section
+                        self.folderSections.append([folderData])
+                        sectionsPositionDict[section] = self.folderSections.count - 1
+                    } else {
+                        // section already exists.  add folder to the existing array of folders
+                        let sectionPosition = sectionsPositionDict[section]!
+                        self.folderSections[sectionPosition].append(folderData)
                     }
-                    else {
-                        // add to the current array of folders
-                        self.FolderSections[self.FolderSections.count - 1] += [folderData]
-                    }
-
-                    print(self.FolderSections.count)
+                
+                    print(self.folderSections.count)
                 }
-                
-                
                 
             } catch {
                 print(error)
@@ -198,7 +207,7 @@ class Model {
     
     
     
-    private func loadTalks(jsonLocation: String) {
+    private func loadAllTalks(jsonLocation: String) {
         
         print("loadTalks")
         
@@ -241,42 +250,30 @@ class Model {
                     let talkURL = talk["talk"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
+                    let section = ""
                     
                     let urlPhrases = talkURL.components(separatedBy: "/")
                     let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
-                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker)
+                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section)
                     
-                    self.NameToTalk[urlFileName] =  talkData
+                    self.nameToTalk[urlFileName] =  talkData
                     //print(urlFileName, talkData)
 
-                    
-                    if let _ = KeyToTalks[KEY_ALLTALKS]  {
-                        KeyToTalks[KEY_ALLTALKS]? += [talkData]
-                        //print("added to  array for all talks:  \(KeyToTalks[KEY_ALLTALKS]!.count)")
-                        
-                        
-                    } else {
-                        KeyToTalks[KEY_ALLTALKS] = [TalkData] ()
-                        KeyToTalks[KEY_ALLTALKS]? += [talkData]
-                        //print("created array for all talks")
+                    // add this talk to  list of all talks
+                    if self.keyToTalks[KEY_ALLTALKS] == nil {
+                        self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
                         
                     }
+                    self.keyToTalks[KEY_ALLTALKS]? += [[talkData]]
                     
-                   if let _ = KeyToTalks[speaker]  {
-                        KeyToTalks[speaker]? += [talkData]
-                        //print("added to  array for speaker: \(speaker)  \(KeyToTalks[speaker]!.count)")
-
-                        
-                    } else {
-                        KeyToTalks[speaker] = [TalkData] ()
-                        KeyToTalks[speaker]? += [talkData]
-                        //print("created array for speaker: \(speaker)")
-                        
+                    // add speakers to the list of their respective talks
+                    if self.keyToTalks[speaker] == nil {
+                        self.keyToTalks[speaker] = [[TalkData]] ()
                     }
+                    self.keyToTalks[speaker]? += [[talkData]]
                     
-                    self.Talks += [talkData]
-                    //print(self.Talks.count)
-
+        
+                    
                 }
                 
                 

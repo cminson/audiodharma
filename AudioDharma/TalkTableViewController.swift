@@ -11,14 +11,19 @@ import UIKit
 class TalkTableViewController: UITableViewController {
     
     //MARK: Properties
-    var talks = [TalkData]()
+    var sectionTalks: [[TalkData]] = []
+    var content: String = ""
+    
+   
+    
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        self.sectionTalks = TheDataModel.getTalks(content: content)
+        
 
-        //loadSampleTalks()
-        //loadTalks(jsonLocation: "http://www.ezimba.com/ad/config01.json")
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,7 +35,8 @@ class TalkTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return sectionTalks.count
+
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -38,8 +44,19 @@ class TalkTableViewController: UITableViewController {
         
         //print("Number of rows")
         //print(self.talks.count)
-        return talks.count
+        return sectionTalks[section].count
     }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitle : String
+        
+        sectionTitle =  sectionTalks[section][0].section
+        print(sectionTitle)
+        
+        return sectionTitle
+        
+    }
+
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -52,7 +69,7 @@ class TalkTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of TalkTableViewCell.")
         }
         
-        let talk = talks[indexPath.row]
+        let talk = sectionTalks[indexPath.section][indexPath.row]
         print(indexPath.row)
         print(talk.title)
         
@@ -120,7 +137,7 @@ class TalkTableViewController: UITableViewController {
         }
 
         
-        let selectedTalk = talks[indexPath.row]
+        let selectedTalk = sectionTalks[indexPath.section][indexPath.row]
         talkDetailViewController.talk = selectedTalk
         
         print("done seque")
