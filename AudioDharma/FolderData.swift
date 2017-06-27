@@ -1,5 +1,5 @@
 //
-//  SeriesData.swift
+//  FolderData.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/22/17.

@@ -23,10 +23,22 @@ class Model {
     var nameToTalk : [String: TalkData] = [:]
     var keyToTalks : [String: [[TalkData]]] = [:]
     
+    var userFolders: [UserFolderData] = []
     
     init() {
+        loadSampleUserFolders()
         
     }
+    
+    func loadSampleUserFolders() {
+        
+        let t1 = UserFolderData(title: "List 1")
+        let t2 = UserFolderData(title: "List 2")
+        let t3 = UserFolderData(title: "List 3")
+        userFolders += [t1, t2, t3]
+        
+    }
+
     
     func loadData() {
         
@@ -46,6 +58,11 @@ class Model {
         
         return talks
         
+    }
+    
+    func getUserFolders() -> [UserFolderData] {
+        return self.userFolders
+    
     }
     
 

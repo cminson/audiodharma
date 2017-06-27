@@ -11,7 +11,8 @@ import UIKit
 class FoldersTableViewController: UITableViewController {
     
     //MARK: Properties
-    //var Folders = [FolderData]()
+    var selectedSection: Int = 0
+    var selectedRow: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +73,24 @@ class FoldersTableViewController: UITableViewController {
         return cell
         
     }
+    
+    override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("didselectrow")
+        
+        self.selectedSection = indexPath.section
+        self.selectedRow = indexPath.row
+        
+        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
+        if (folder.content == "CUSTOM") {
+            self.performSegue(withIdentifier: "ShowCustomLists", sender: self)
+        } else {
+            self.performSegue(withIdentifier: "ShowTalks", sender: self)
+            
+        }
+
+    }
+    
+    
     
     /*
      override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -149,35 +168,31 @@ class FoldersTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        
         print("prepare to seque")
-        guard let talkTableViewController = segue.destination as? TalkTableViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
-        }
-        guard let selectedTalkCell = sender as? FolderTableViewCell else {
-            fatalError("Unexpected sender:")
-        }
+
         
-        guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
-            fatalError("The selected cell is not being displayed by the table")
-        }
-        
-        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
-        
+        let folder = TheDataModel.folderSections[self.selectedSection][self.selectedRow]
         print("Folder content: \(folder.content)")
+   
         
-        /*
-        let talks = TheDataModel.getTalks(content: folder.content)
-        
-        for talk in talks {
-            print(talk.title)
+        switch segue.identifier ?? "" {
+        case "ShowTalks":
+            guard let talkTableViewController = segue.destination as? TalkTableViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            talkTableViewController.content = folder.content
+        case "ShowCustomLists":
+
+            guard let _ = segue.destination as? UserListTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
+
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
 
-        talkTableViewController.talks = talks
-        */
-        
-        talkTableViewController.content = folder.content
-        
         
     }
 

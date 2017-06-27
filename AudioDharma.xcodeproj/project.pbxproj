@@ -17,10 +17,14 @@
 		8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */; };
 		8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D6411EFC07E20025006B /* FolderTableViewCell.swift */; };
 		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
+		83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */; };
+		83CA12491F028CEA00798D20 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */; };
 		83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D601EF17B390071CAD3 /* AppDelegate.swift */; };
 		83DC0D631EF17B390071CAD3 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D621EF17B390071CAD3 /* TalkViewController.swift */; };
 		83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D641EF17B390071CAD3 /* Main.storyboard */; };
 		83DC0D6B1EF17B390071CAD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */; };
+		83FCA9471F02BFF100B9664D /* UserFolderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9461F02BFF100B9664D /* UserFolderData.swift */; };
+		83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9481F02E77300B9664D /* UserListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,12 +38,16 @@
 		8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		8387D6411EFC07E20025006B /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
 		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
+		83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		83DC0D5D1EF17B390071CAD3 /* AudioDharma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioDharma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DC0D601EF17B390071CAD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83DC0D621EF17B390071CAD3 /* TalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkViewController.swift; sourceTree = "<group>"; };
 		83DC0D651EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83DC0D6A1EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83DC0D6C1EF17B390071CAD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83FCA9461F02BFF100B9664D /* UserFolderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFolderData.swift; sourceTree = "<group>"; };
+		83FCA9481F02E77300B9664D /* UserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +89,10 @@
 				835B9F801EF2CA9B009AF991 /* TalkTableViewController.swift */,
 				835B9F7E1EF2C63C009AF991 /* TalkTableViewCell.swift */,
 				83DC0D621EF17B390071CAD3 /* TalkViewController.swift */,
+				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
+				83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */,
+				83FCA9461F02BFF100B9664D /* UserFolderData.swift */,
+				83FCA9481F02E77300B9664D /* UserListViewController.swift */,
 				834BEC641EFC90D400CBC0C2 /* Model.swift */,
 				835B9F7A1EF1B0BC009AF991 /* TalkData.swift */,
 				8387D63D1EFC05180025006B /* FolderData.swift */,
@@ -169,12 +181,16 @@
 				83DC0D631EF17B390071CAD3 /* TalkViewController.swift in Sources */,
 				835B9F7F1EF2C63C009AF991 /* TalkTableViewCell.swift in Sources */,
 				834BEC631EFC7C6C00CBC0C2 /* SplashViewController.swift in Sources */,
+				83CA12491F028CEA00798D20 /* UserListTableViewCell.swift in Sources */,
+				83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */,
 				8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */,
+				83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,
 				835B9F7B1EF1B0BC009AF991 /* TalkData.swift in Sources */,
 				8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkTableViewController.swift in Sources */,
+				83FCA9471F02BFF100B9664D /* UserFolderData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
