@@ -12,7 +12,7 @@ import os.log
 
 
 
-class UserFolderData: NSObject {
+class UserListData: NSObject {
     
     //MARK: Properties
     var title: String

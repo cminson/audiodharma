@@ -12,12 +12,15 @@ import os.log
 class UserListViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Properties
-
     @IBOutlet weak var userListTitle: UITextField!
-    @IBOutlet weak var setXButton: UIButton!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+
+    
+    var userList: UserListData? = nil
+    var editMode: Bool = false
     
     //MARK: Navigation
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
@@ -27,22 +30,18 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
             os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
             return
         }
-        /*
-        let name = nameTextField.text ?? ""
-        let photo = photoImageView.image
-        let rating = ratingControl.rating
         
-        meal = Meal(name: name, photo: photo, rating: rating)
-         */
-    }
-   
-    @IBAction func cancel(_ sender: Any) {
-          dismiss(animated: true, completion: nil)
+        let title = userListTitle.text ?? ""
+        self.userList = UserListData(title: title)
+
     }
     
-    // MARK: Actions
-    @IBAction func setXTest(_ sender: UIButton) {
+     // MARK: Actions
+    @IBAction func cancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
+
+   
     
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -61,8 +60,11 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print("view loaded: \(userList?.title)")
         userListTitle.delegate = self
+        userListTitle.text = userList?.title
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -70,14 +72,6 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }

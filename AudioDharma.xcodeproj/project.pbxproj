@@ -23,7 +23,7 @@
 		83DC0D631EF17B390071CAD3 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D621EF17B390071CAD3 /* TalkViewController.swift */; };
 		83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D641EF17B390071CAD3 /* Main.storyboard */; };
 		83DC0D6B1EF17B390071CAD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */; };
-		83FCA9471F02BFF100B9664D /* UserFolderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9461F02BFF100B9664D /* UserFolderData.swift */; };
+		83FCA9471F02BFF100B9664D /* UserListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9461F02BFF100B9664D /* UserListData.swift */; };
 		83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9481F02E77300B9664D /* UserListViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +46,7 @@
 		83DC0D651EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83DC0D6A1EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83DC0D6C1EF17B390071CAD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		83FCA9461F02BFF100B9664D /* UserFolderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFolderData.swift; sourceTree = "<group>"; };
+		83FCA9461F02BFF100B9664D /* UserListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListData.swift; sourceTree = "<group>"; };
 		83FCA9481F02E77300B9664D /* UserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,7 +91,7 @@
 				83DC0D621EF17B390071CAD3 /* TalkViewController.swift */,
 				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
 				83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */,
-				83FCA9461F02BFF100B9664D /* UserFolderData.swift */,
+				83FCA9461F02BFF100B9664D /* UserListData.swift */,
 				83FCA9481F02E77300B9664D /* UserListViewController.swift */,
 				834BEC641EFC90D400CBC0C2 /* Model.swift */,
 				835B9F7A1EF1B0BC009AF991 /* TalkData.swift */,
@@ -190,7 +190,7 @@
 				835B9F7B1EF1B0BC009AF991 /* TalkData.swift in Sources */,
 				8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkTableViewController.swift in Sources */,
-				83FCA9471F02BFF100B9664D /* UserFolderData.swift in Sources */,
+				83FCA9471F02BFF100B9664D /* UserListData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

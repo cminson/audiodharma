@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -163,72 +162,19 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Custom Lists" id="y9U-uN-nQd">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="khZ-eG-tYd">
-                                <connections>
-                                    <segue destination="0Ma-Pt-LZq" kind="presentation" identifier="AddUserList" id="eUc-Zt-mgI"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="edit" id="XGW-t1-5hP"/>
-                        </rightBarButtonItems>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="418" y="1227"/>
-        </scene>
-        <!--New Custom List-->
-        <scene sceneID="Asx-u3-3nH">
-            <objects>
-                <viewController id="XA6-cL-h1C" customClass="UserListViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="op1-da-A12"/>
-                        <viewControllerLayoutGuide type="bottom" id="AU8-Zx-nnw"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="eoh-U2-phL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="erV-1e-xvd">
-                                <rect key="frame" x="26" y="98" width="301" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WpH-gi-HYt">
-                                <rect key="frame" x="42" y="163" width="176" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Set Title"/>
-                                <connections>
-                                    <action selector="setXTest:" destination="XA6-cL-h1C" eventType="touchUpInside" id="Vgy-o5-oRQ"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="New Custom List" id="ipS-1m-1Tr">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="P4H-oy-vt6">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="khZ-eG-tYd">
                             <connections>
-                                <action selector="cancel:" destination="XA6-cL-h1C" id="5BB-Zn-leP"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="seX-aM-l68">
-                            <connections>
-                                <segue destination="NmZ-Rk-rh1" kind="unwind" unwindAction="unwindToUserListWithSender:" id="Pcg-8d-ahy"/>
+                                <segue destination="2kr-c5-Uec" kind="presentation" identifier="AddUserList" id="pee-KO-zh6"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="saveButton" destination="seX-aM-l68" id="Y2E-uH-rxF"/>
-                        <outlet property="setXButton" destination="WpH-gi-HYt" id="mBd-0x-Reo"/>
-                        <outlet property="userListTitle" destination="erV-1e-xvd" id="oQn-SW-LPA"/>
+                        <segue destination="2kr-c5-Uec" kind="presentation" identifier="EditUserList" id="m4c-Wx-Ij6"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QB1-gW-VIx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="NmZ-Rk-rh1" userLabel="Exit" sceneMemberID="exit"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3095.1999999999998" y="1197.7511244377813"/>
+            <point key="canvasLocation" x="418" y="1227"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arZ-lo-pNw">
@@ -247,6 +193,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KlY-in-TIE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3422" y="172"/>
+        </scene>
+        <!--User List-->
+        <scene sceneID="eof-dd-Xtj">
+            <objects>
+                <viewController id="Ac4-Jo-Vf8" customClass="UserListViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="u28-qQ-vQ5"/>
+                        <viewControllerLayoutGuide type="bottom" id="SQR-s2-8st"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hCD-JQ-W1H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KkF-QJ-yck">
+                                <rect key="frame" x="53" y="96" width="230" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dAy-Sf-Ql1">
+                                <rect key="frame" x="53" y="176" width="230" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="User List" id="cQR-Oh-vYx">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Kys-47-rGm">
+                            <connections>
+                                <action selector="cancel:" destination="Ac4-Jo-Vf8" id="vTa-qf-iUz"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="GwO-K4-Fqr">
+                            <connections>
+                                <segue destination="r5N-9A-7qQ" kind="unwind" unwindAction="unwindToUserListWithSender:" id="vp5-yj-fbW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="GwO-K4-Fqr" id="mWk-GF-Loc"/>
+                        <outlet property="userListTitle" destination="dAy-Sf-Ql1" id="kip-Ib-P2R"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2HI-gB-gv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="r5N-9A-7qQ" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="4023.1999999999998" y="1132.9835082458771"/>
         </scene>
         <!--Audio Dharma-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -391,30 +388,31 @@
             <point key="canvasLocation" x="-327" y="1227"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="VBB-Ry-Nm6">
+        <scene sceneID="fzF-Gb-ZWR">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0Ma-Pt-LZq" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2kr-c5-Uec" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SMc-OF-sho">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LjE-qP-dR9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="XA6-cL-h1C" kind="relationship" relationship="rootViewController" id="0bc-An-OqK"/>
+                        <segue destination="Ac4-Jo-Vf8" kind="relationship" relationship="rootViewController" id="Vlt-dj-GHa"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4ba-WR-iys" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8dK-vG-G8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2156" y="1197.7511244377813"/>
+            <point key="canvasLocation" x="3084" y="1132.9835082458771"/>
         </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="450" height="337"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2tX-S4-dnH"/>
-        <segue reference="JOv-3z-qd7"/>
         <segue reference="Txg-fS-JU8"/>
+        <segue reference="JOv-3z-qd7"/>
+        <segue reference="pee-KO-zh6"/>
+        <segue reference="2tX-S4-dnH"/>
     </inferredMetricsTieBreakers>
 </document>

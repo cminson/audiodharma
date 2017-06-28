@@ -23,7 +23,7 @@ class Model {
     var nameToTalk : [String: TalkData] = [:]
     var keyToTalks : [String: [[TalkData]]] = [:]
     
-    var userFolders: [UserFolderData] = []
+    var userLists: [UserListData] = []
     
     init() {
         loadSampleUserFolders()
@@ -32,10 +32,10 @@ class Model {
     
     func loadSampleUserFolders() {
         
-        let t1 = UserFolderData(title: "List 1")
-        let t2 = UserFolderData(title: "List 2")
-        let t3 = UserFolderData(title: "List 3")
-        userFolders += [t1, t2, t3]
+        let t1 = UserListData(title: "List 1")
+        let t2 = UserListData(title: "List 2")
+        let t3 = UserListData(title: "List 3")
+        self.userLists += [t1, t2, t3]
         
     }
 
@@ -60,8 +60,8 @@ class Model {
         
     }
     
-    func getUserFolders() -> [UserFolderData] {
-        return self.userFolders
+    func getUserLists() -> [UserListData] {
+        return self.userLists
     
     }
     
