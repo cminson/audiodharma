@@ -59,10 +59,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks" id="VXF-Dh-aL5"/>
+                    <connections>
+                        <segue destination="pLW-7r-EUH" kind="presentation" identifier="SelectUserList" id="1CB-jm-vmg"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2258.4000000000001" y="125.4872563718141"/>
+            <point key="canvasLocation" x="558" y="-11"/>
         </scene>
         <!--Talk View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -123,7 +126,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4130" y="173"/>
+            <point key="canvasLocation" x="4135.1999999999998" y="930.58470764617698"/>
         </scene>
         <!--Custom Lists-->
         <scene sceneID="wMU-4h-6ek">
@@ -152,7 +155,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="title" destination="QGd-fh-og8" id="gpC-Sh-yOC"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowDetailFromCustomList" id="Txg-fS-JU8"/>
+                                    <segue destination="0GJ-yc-Oar" kind="show" id="BRs-MN-lvo"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -174,7 +177,86 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="418" y="1227"/>
+            <point key="canvasLocation" x="-1146" y="1635"/>
+        </scene>
+        <!--Your Talks-->
+        <scene sceneID="bNN-8u-svm">
+            <objects>
+                <tableViewController id="0GJ-yc-Oar" customClass="UserTalkTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hU3-4W-PQV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserTalksTableViewCell" rowHeight="90" id="Zmo-hd-Ai2" customClass="UserTalksTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zmo-hd-Ai2" id="uQY-NP-Jzb">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="4Xg-qy-iaw"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0GJ-yc-Oar" id="yfk-Wu-r2d"/>
+                            <outlet property="delegate" destination="0GJ-yc-Oar" id="acl-yU-Y4x"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Your Talks" id="2R3-Gd-KTi">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="PcK-Lv-x6m">
+                            <connections>
+                                <segue destination="LyH-qf-3RH" kind="presentation" id="eax-89-JrY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="558" y="1801"/>
+        </scene>
+        <!--Select List-->
+        <scene sceneID="pJg-hb-2YL">
+            <objects>
+                <tableViewController id="alb-yI-TwY" customClass="SelectUserListTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kzx-Eu-md5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectUserListTableViewCell" id="Pck-EU-3yR" customClass="SelectUserListTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pck-EU-3yR" id="dWB-Nr-1Ze">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="alb-yI-TwY" id="njS-sz-xkp"/>
+                            <outlet property="delegate" destination="alb-yI-TwY" id="Bcm-68-GHI"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Select List" id="67R-b0-5kB">
+                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="cancel" id="z7c-eM-7cD">
+                            <connections>
+                                <action selector="cancel:" destination="alb-yI-TwY" id="Szc-8m-ssr"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Gf9-bo-TjS">
+                            <connections>
+                                <segue destination="A1S-H0-cE8" kind="unwind" unwindAction="unwindToTalkListWithSender:" id="H9o-44-ZQm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Glh-Zg-oZ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="A1S-H0-cE8" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="692" y="931"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arZ-lo-pNw">
@@ -192,7 +274,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KlY-in-TIE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3422" y="172"/>
+            <point key="canvasLocation" x="3440.8000000000002" y="708.39580209895053"/>
         </scene>
         <!--User List-->
         <scene sceneID="eof-dd-Xtj">
@@ -243,7 +325,43 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2HI-gB-gv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="r5N-9A-7qQ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4023.1999999999998" y="1132.9835082458771"/>
+            <point key="canvasLocation" x="-455" y="2616"/>
+        </scene>
+        <!--Add Talks-->
+        <scene sceneID="ku4-on-oyX">
+            <objects>
+                <tableViewController id="Bjk-XP-Lk1" customClass="UserAddTalkTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4vj-md-zbH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qbo-2C-3EK" customClass="UserAddTalkTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qbo-2C-3EK" id="PYF-ya-Z1i">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Bjk-XP-Lk1" id="jyK-8Q-aIe"/>
+                            <outlet property="delegate" destination="Bjk-XP-Lk1" id="TnX-2L-HaR"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add Talks" id="VQM-6F-3Xb">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="VAy-9y-lo6">
+                            <connections>
+                                <segue destination="oQg-Cm-QhC" kind="unwind" unwindAction="unwindToUserListWithSender:" id="ZtL-LX-WTo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pb8-u9-Obs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="oQg-Cm-QhC" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2129" y="2525"/>
         </scene>
         <!--Audio Dharma-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -288,7 +406,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="416.80000000000001" y="143.47826086956522"/>
+            <point key="canvasLocation" x="-1145" y="268"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tGF-P9-oAT">
@@ -306,7 +424,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IS1-hF-Byx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1564" y="125"/>
+            <point key="canvasLocation" x="-134" y="-215"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="REn-QU-XjD">
@@ -324,7 +442,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bCW-UB-eqM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-522.39999999999998" y="143.47826086956522"/>
+            <point key="canvasLocation" x="-1887" y="207"/>
         </scene>
         <!--Splash View Controller-->
         <scene sceneID="zen-ux-zEa">
@@ -367,7 +485,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ifw-5R-kKw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1436" y="143"/>
+            <point key="canvasLocation" x="-2514" y="-552"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Qt1-3m-P7R">
@@ -385,7 +503,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C3Y-Ck-Dhb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-327" y="1227"/>
+            <point key="canvasLocation" x="-1826" y="1360"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fzF-Gb-ZWR">
@@ -403,16 +521,71 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dK-vG-G8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3084" y="1132.9835082458771"/>
+            <point key="canvasLocation" x="-1146" y="2547"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="IX0-6K-YUM">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vgt-uM-0I0" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xLq-rO-0He">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="0GJ-yc-Oar" kind="relationship" relationship="rootViewController" id="511-4k-GvY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lKw-30-fdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-199" y="1659"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hGy-AY-9m3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LyH-qf-3RH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wef-Nc-nGy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Bjk-XP-Lk1" kind="relationship" relationship="rootViewController" id="2GI-Ji-3da"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ffA-hb-dzX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1390" y="2525"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="v9v-wg-bKp">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pLW-7r-EUH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Pz-fW-NZW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="alb-yI-TwY" kind="relationship" relationship="rootViewController" id="iBc-6c-2ra"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bdw-o5-Gjy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10" y="829"/>
         </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="450" height="337"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Txg-fS-JU8"/>
+        <segue reference="4Xg-qy-iaw"/>
+        <segue reference="511-4k-GvY"/>
+        <segue reference="m4c-Wx-Ij6"/>
         <segue reference="JOv-3z-qd7"/>
-        <segue reference="pee-KO-zh6"/>
         <segue reference="2tX-S4-dnH"/>
     </inferredMetricsTieBreakers>
 </document>

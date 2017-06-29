@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Social
+
 
 class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
@@ -15,7 +17,27 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     var sectionTalksFiltered:  [[TalkData]] = []
     var content: String = ""
     
+    var selectedSection: Int = 0
+    var selectedRow: Int = 0
+
+    
     let searchController = UISearchController(searchResultsController: nil)
+    
+    //MARK: Actions
+    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
+        
+        print("unwindToTalkList")
+        
+        if let sourceViewController = sender.source as? SelectUserListTableViewCell {
+            print("entered unwindToTalkList")
+
+            
+        }
+        
+    }
+    
+    //MARK: Navigation
+
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,65 +181,120 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         super.prepare(for: segue, sender: sender)
         
         print("prepare to seque")
-        guard let talkDetailViewController = segue.destination as? TalkViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
-        }
-        guard let selectedTalkCell = sender as? TalkTableViewCell else {
-            fatalError("Unexpected sender:")
-        }
+        
+        switch(segue.identifier ?? "") {
+        case "ShowDetail":
+            guard let talkDetailViewController = segue.destination as? TalkViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            guard let selectedTalkCell = sender as? TalkTableViewCell else {
+                fatalError("Unexpected sender:")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedTalk = sectionTalks[indexPath.section][indexPath.row]
+            talkDetailViewController.talk = selectedTalk
 
-        guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
-            fatalError("The selected cell is not being displayed by the table")
+            
+        case "SelectUserList":
+            print("SelectUserList")
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            
         }
-
-        let selectedTalk = sectionTalks[indexPath.section][indexPath.row]
-        talkDetailViewController.talk = selectedTalk
         
     }
-  
     
-    
-    //MARK: Private Methods
-    
-    //MARK: FORLATER
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let selectUserListForTalk = UITableViewRowAction(style: .normal, title: "Add to User List") { (action, indexPath) in
+            
+            self.selectedSection = indexPath.section
+            self.selectedRow = indexPath.row
+            self.performSegue(withIdentifier: "SelectUserList", sender: self)
+            self.tableView.isEditing = false
+        }
+        
+        
 
+        let shareFB = UITableViewRowAction(style: .normal, title: "Facebook") { (action, indexPath) in
+            self.selectedRow = indexPath.row   
+            self.shareFB()
+            /*
+            self.selectedRow = indexPath.row
+            self.performSegue(withIdentifier: "ShareTalk", sender: self)
+            // share item at indexPath
+            self.tableView.isEditing = false
+ */
+        }
     
+        let shareTwitter = UITableViewRowAction(style: .normal, title: "Twitter") { (action, indexPath) in
+            
+            //self.shareTwitter()
+            self.shareAll()
+        }
     
+        return [shareFB, shareTwitter, selectUserListForTalk]
+}
+
+
+
+    //MARK: Private Methods
+    private func shareFB() {
+    
+        let talk = sectionTalksFiltered[selectedSection][selectedRow]
+        //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
+        var postText = ("<a title=\(talk.title)\n href=\(talk.talkURL)/>\nShared from the iPhone Audiodharma app")
+
+        
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook){
+            let facebookSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            facebookSheet.setInitialText(postText)
+            self.present(facebookSheet, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func shareTwitter() {
+        
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter){
+            let twitterSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            twitterSheet.setInitialText("Share on Twitter")
+            self.present(twitterSheet, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Twitter account to share.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    private func shareAll() {
+        // text to share
+        let text = "This is some text that I want to share."
+        
+        // set up activity view controller
+        let textToShare = [ text ]
+        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        
+        // exclude some activity types from the list (optional)
+        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+
+        
+        
+    }
+
+
     
 
 }
