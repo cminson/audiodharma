@@ -13,7 +13,9 @@ class FolderTableViewCell: UITableViewCell {
     
     //MARK: Properties
     @IBOutlet weak var title: UILabel!
-
+    @IBOutlet weak var listImage: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

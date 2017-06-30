@@ -19,9 +19,12 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     var selectedSection: Int = 0
     var selectedRow: Int = 0
+    
+    var currentTitle: String = ""
 
     
-    let searchController = UISearchController(searchResultsController: nil)
+    //let searchController = UISearchController(searchResultsController: nil)
+    var searchController = UISearchController()
     
     //MARK: Actions
     @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
@@ -37,10 +40,11 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     }
     
     //MARK: Navigation
-
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.searchController = UISearchController(searchResultsController: nil)
+        
         self.sectionTalks = TheDataModel.getTalks(content: content)
         self.sectionTalksFiltered = self.sectionTalks
         
@@ -49,6 +53,8 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         tableView.tableHeaderView = searchController.searchBar
+        
+        self.title =  self.currentTitle
     }
 
     override func didReceiveMemoryWarning() {

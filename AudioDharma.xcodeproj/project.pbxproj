@@ -18,8 +18,8 @@
 		8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */; };
 		8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D6411EFC07E20025006B /* FolderTableViewCell.swift */; };
 		839357BA1F05473D007FD261 /* SelectUserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */; };
-		839357BC1F054821007FD261 /* SelectUserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839357BB1F054821007FD261 /* SelectUserListTableViewCell.swift */; };
 		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
+		83C8A3881F068E8D00D76752 /* SelectUserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */; };
 		83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */; };
 		83CA12491F028CEA00798D20 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */; };
 		83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D601EF17B390071CAD3 /* AppDelegate.swift */; };
@@ -46,8 +46,8 @@
 		8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		8387D6411EFC07E20025006B /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
 		839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectUserListTableViewController.swift; sourceTree = "<group>"; };
-		839357BB1F054821007FD261 /* SelectUserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectUserListTableViewCell.swift; sourceTree = "<group>"; };
 		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectUserListTableViewCell.swift; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
 		83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		83DC0D5D1EF17B390071CAD3 /* AudioDharma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioDharma.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,10 +113,10 @@
 				835B9F801EF2CA9B009AF991 /* TalkTableViewController.swift */,
 				835B9F7E1EF2C63C009AF991 /* TalkTableViewCell.swift */,
 				83DC0D621EF17B390071CAD3 /* TalkViewController.swift */,
-				839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */,
-				839357BB1F054821007FD261 /* SelectUserListTableViewCell.swift */,
 				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
 				83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */,
+				839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */,
+				83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */,
 				83FCA9481F02E77300B9664D /* UserListViewController.swift */,
 				83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */,
 				83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */,
@@ -217,7 +217,7 @@
 				83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */,
 				83EF51AE1F0440DA000678B0 /* UserTalksTableViewCell.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
-				839357BC1F054821007FD261 /* SelectUserListTableViewCell.swift in Sources */,
+				83C8A3881F068E8D00D76752 /* SelectUserListTableViewCell.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserAddTalkTableViewController.swift in Sources */,
 				83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,

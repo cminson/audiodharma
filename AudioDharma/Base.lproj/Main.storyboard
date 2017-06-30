@@ -226,13 +226,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectUserListTableViewCell" id="Pck-EU-3yR" customClass="SelectUserListTableViewCell" customModule="AudioDharma" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectUserListTableViewCell" rowHeight="90" id="Pck-EU-3yR" customClass="SelectUserListTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pck-EU-3yR" id="dWB-Nr-1Ze">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="wgO-mE-ATf">
+                                            <rect key="frame" x="20" y="8" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="switchChanged:" destination="Pck-EU-3yR" eventType="valueChanged" id="UBP-Nc-oZ9"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ki-TI-oz1">
+                                            <rect key="frame" x="116" y="8" width="251" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="listSwitch" destination="wgO-mE-ATf" id="yna-nu-kSJ"/>
+                                    <outlet property="title" destination="4Ki-TI-oz1" id="ez1-Yc-HdQ"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -256,7 +276,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Glh-Zg-oZ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="A1S-H0-cE8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="692" y="931"/>
+            <point key="canvasLocation" x="692" y="930.58470764617698"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arZ-lo-pNw">
@@ -363,24 +383,28 @@
             </objects>
             <point key="canvasLocation" x="2129" y="2525"/>
         </scene>
-        <!--Audio Dharma-->
+        <!--Talk Lists-->
         <scene sceneID="Tyx-hu-Q4G">
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="FoldersTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hZ2-S1-rEv">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="30" sectionFooterHeight="30" id="hZ2-S1-rEv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderTableViewCell" rowHeight="45" id="bAb-mF-tZt" customClass="FolderTableViewCell" customModule="AudioDharma" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="45"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderTableViewCell" rowHeight="50" id="bAb-mF-tZt" customClass="FolderTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="30" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bAb-mF-tZt" id="8T0-Oe-sCR">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTJ-NC-yoF">
-                                            <rect key="frame" x="44" y="8" width="286" height="47"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WD5-q6-tg1">
+                                            <rect key="frame" x="3" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTJ-NC-yoF">
+                                            <rect key="frame" x="56" y="0.0" width="264" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -389,6 +413,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="listImage" destination="WD5-q6-tg1" id="Cop-18-DeG"/>
                                     <outlet property="title" destination="OTJ-NC-yoF" id="vmA-Bx-Jr1"/>
                                 </connections>
                             </tableViewCell>
@@ -398,7 +423,7 @@
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Audio Dharma" id="ZPM-Q5-ruw"/>
+                    <navigationItem key="navigationItem" title="Talk Lists" id="ZPM-Q5-ruw"/>
                     <connections>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="ShowTalks" id="hEa-61-IsL"/>
                         <segue destination="1IO-y8-7fd" kind="show" identifier="ShowCustomLists" id="xoW-9y-ITT"/>
@@ -406,7 +431,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1145" y="268"/>
+            <point key="canvasLocation" x="-1146.4000000000001" y="267.61619190404798"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tGF-P9-oAT">
@@ -582,10 +607,10 @@
         <image name="defaultPhoto" width="450" height="337"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4Xg-qy-iaw"/>
         <segue reference="511-4k-GvY"/>
         <segue reference="m4c-Wx-Ij6"/>
-        <segue reference="JOv-3z-qd7"/>
-        <segue reference="2tX-S4-dnH"/>
+        <segue reference="xoW-9y-ITT"/>
+        <segue reference="hEa-61-IsL"/>
+        <segue reference="ycL-KA-RjM"/>
     </inferredMetricsTieBreakers>
 </document>

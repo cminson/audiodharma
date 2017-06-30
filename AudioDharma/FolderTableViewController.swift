@@ -10,31 +10,33 @@ import UIKit
 
 class FoldersTableViewController: UITableViewController {
     
+    
     //MARK: Properties
     var selectedSection: Int = 0
     var selectedRow: Int = 0
 
+    
+    //MARK: Init
     override func viewDidLoad() {
+        self.tableView.delegate = self
+
         super.viewDidLoad()
-        
-        print("FolderTableViewController viewDidLoad")
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return TheDataModel.folderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
+        //print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
         return TheDataModel.folderSections[section].count
     }
     
@@ -48,16 +50,23 @@ class FoldersTableViewController: UITableViewController {
         
     }
     
- 
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         print ("enter: willDisplayHeaderView")
 
-        view.tintColor = UIColor.blue
+        let header = view as! UITableViewHeaderFooterView
         
+        view.tintColor = UIColor.black
+        header.textLabel?.textColor = UIColor.white
+        header.textLabel?.textAlignment = NSTextAlignment.center
     }
-
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    /*
+    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            return 90.0
+    }
+     */
+    
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FolderTableViewCell"
         
         
@@ -68,7 +77,13 @@ class FoldersTableViewController: UITableViewController {
         print("section = \(indexPath.section) row = \(indexPath.row)")
         let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
     
+        
+        let listImage = UIImage(named: "") ?? UIImage(named: "defaultPhoto")!
+
         cell.title.text = folder.title
+        
+        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
+        cell.listImage.image = listImage
         
         return cell
         
@@ -91,80 +106,7 @@ class FoldersTableViewController: UITableViewController {
     }
     
     
-    
-    /*
-     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-     
-     print ("tableview section view setup")
-     let width = tableView.bounds.size.width
-     let height =  30
-     
-     let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: height))
-     returnedView.backgroundColor = UIColor.green
-     
-     let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: height))
-     label.text = TheDataModel.FolderSections[section][0].title
-     returnedView.addSubview(label)
-     
-     return returnedView
-     }
-     */
-    
-    /*
-     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> (UIView!)
-     {
-     return self.tableView.backgroundColor = UIColor.green
-     
-     let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
-     headerView.backgroundColor = UIColor.red
-     
-     return headerView
-     
-     }
-     */
-
-  
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    */
-    
+    // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
@@ -176,11 +118,15 @@ class FoldersTableViewController: UITableViewController {
    
         
         switch segue.identifier ?? "" {
+            
         case "ShowTalks":
             guard let talkTableViewController = segue.destination as? TalkTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
+            let currentTitle = TheDataModel.folderSections[selectedSection][selectedRow]
             talkTableViewController.content = folder.content
+            talkTableViewController.currentTitle = currentTitle.title
+            
         case "ShowCustomLists":
 
             guard let _ = segue.destination as? UserListTableViewController else {

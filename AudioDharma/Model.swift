@@ -43,7 +43,7 @@ class Model {
     func loadData() {
         
         loadAllTalks(jsonLocation: "http://www.ezimba.com/ad/alltalks01.json")
-        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders03.json")
+        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders01.json")
     }
     
     
@@ -128,9 +128,12 @@ class Model {
                         self.keyToTalks[content]  = []
                     }
                     
+                    print(section, title)
+                    
                     // now add the talk data to this key
                     if sectionsPositionDict[section] == nil {
                         // new section seen.  create new array of talks for this section
+                        print("new section seen. creating array for: \(content)")
                         self.keyToTalks[content]!.append([talkData])
                         sectionsPositionDict[section] = self.keyToTalks[content]!.count - 1
                     } else {
