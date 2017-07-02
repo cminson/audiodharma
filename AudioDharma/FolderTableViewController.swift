@@ -8,19 +8,43 @@
 
 import UIKit
 
-class FoldersTableViewController: UITableViewController {
+class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+//    class FoldersTableViewController: UITableViewController {
     
     
     //MARK: Properties
     var selectedSection: Int = 0
     var selectedRow: Int = 0
+    var folderSections: [[FolderData]] = []
+    var filteredFolderSections:  [[FolderData]] = []
+    let searchController = UISearchController(searchResultsController: nil)
 
+    //var searchController: UISearchController
     
+    /*
     //MARK: Init
+    required init?(coder aDecoder: NSCoder) {
+        self.searchController = UISearchController(searchResultsController: nil)
+        super.init(coder: aDecoder)
+
+
+    }
+ */
+
     override func viewDidLoad() {
         self.tableView.delegate = self
-
         super.viewDidLoad()
+
+        self.folderSections = TheDataModel.folderSections
+        self.filteredFolderSections = self.folderSections
+        
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.delegate = self
+        searchController.delegate = self
+
         
     }
 
@@ -28,30 +52,93 @@ class FoldersTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+    
+    // MARK: UISearchBarDelegate
+    func presentSearchController(_ searchController: UISearchController) {
+        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+    }
+    
+
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        print("updateSearchResults")
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            
+            var sectionsPositionDict : [String: Int] = [:]
+            self.filteredFolderSections = []
+            for sections in self.folderSections {
+                for folderData in sections {
+                    if folderData.title.lowercased().contains(searchText.lowercased()) {
+                        
+                        if sectionsPositionDict[folderData.section] == nil {
+                            // new section seen.  create new array of folders for this section
+                            self.filteredFolderSections.append([folderData])
+                            sectionsPositionDict[folderData.section] = self.filteredFolderSections.count - 1
+                        } else {
+                            // section already exists.  add folder to the existing array of talks
+                            let sectionPosition = sectionsPositionDict[folderData.section]
+                            self.filteredFolderSections[sectionPosition!].append(folderData)
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            self.filteredFolderSections = self.folderSections
+        }
+        tableView.reloadData()
+    }
+
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        print("filtering...")
+        
+    }
+
+
+
+    
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return TheDataModel.folderSections.count
+        return self.filteredFolderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        //print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
-        return TheDataModel.folderSections[section].count
+        //print("Number of rows in section: \(self.folderSections[section].count)")
+        return self.filteredFolderSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionTitle : String
         
-        sectionTitle =  TheDataModel.folderSections[section][0].section
-        print(sectionTitle)
+        sectionTitle =  self.filteredFolderSections[section][0].section
+        //print(sectionTitle)
         
         return sectionTitle
         
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        print ("enter: willDisplayHeaderView")
+        //print ("enter: willDisplayHeaderView")
 
         let header = view as! UITableViewHeaderFooterView
         
@@ -60,11 +147,6 @@ class FoldersTableViewController: UITableViewController {
         header.textLabel?.textAlignment = NSTextAlignment.center
     }
     
-    /*
-    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 90.0
-    }
-     */
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FolderTableViewCell"
@@ -74,16 +156,31 @@ class FoldersTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of FolderTableViewCell.")
         }
         
-        print("section = \(indexPath.section) row = \(indexPath.row)")
-        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
+        //print("section = \(indexPath.section) row = \(indexPath.row)")
+        let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
     
         
-        let listImage = UIImage(named: "") ?? UIImage(named: "defaultPhoto")!
+        if folder.image.characters.count > 0 {
+            cell.listImage.image = UIImage(named: folder.image) ?? UIImage(named: "defaultPhoto")!
+        } else {
+            cell.listImage.image = UIImage(named: folder.title) ?? UIImage(named: "defaultPhoto")!
+            
+        }
 
         cell.title.text = folder.title
-        
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        cell.listImage.image = listImage
+        
+        let sectionTalks = TheDataModel.getTalks(content: folder.content)
+
+        var count = 0
+        for sections in sectionTalks {
+            count += sections.count
+        }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:count))
+        cell.statTalkCount.text = formattedNumber
+        cell.statTotalTime.text = "123:28:88"
         
         return cell
         
@@ -95,7 +192,7 @@ class FoldersTableViewController: UITableViewController {
         self.selectedSection = indexPath.section
         self.selectedRow = indexPath.row
         
-        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
+        let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
         if (folder.content == "CUSTOM") {
             self.performSegue(withIdentifier: "ShowCustomLists", sender: self)
         } else {
@@ -113,17 +210,17 @@ class FoldersTableViewController: UITableViewController {
         print("prepare to seque")
 
         
-        let folder = TheDataModel.folderSections[self.selectedSection][self.selectedRow]
+        let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
         print("Folder content: \(folder.content)")
    
-        
+        searchController.isActive = false
         switch segue.identifier ?? "" {
             
         case "ShowTalks":
             guard let talkTableViewController = segue.destination as? TalkTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
-            let currentTitle = TheDataModel.folderSections[selectedSection][selectedRow]
+            let currentTitle = self.filteredFolderSections[selectedSection][selectedRow]
             talkTableViewController.content = folder.content
             talkTableViewController.currentTitle = currentTitle.title
             
@@ -222,7 +319,7 @@ class FoldersTableViewController: UITableViewController {
                 return
             }
             
-            //parsing the response
+            //parsing the responsewillDisplayHeaderView
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]

@@ -27,9 +27,10 @@ class TalkData: NSObject {
     var speaker: String
     var speakerPhoto: UIImage
     var section: String
+    var time: Int
 
     
-    init(title: String,  talkURL: String, date: String, duration: String, speaker: String, section: String) {
+    init(title: String,  talkURL: String, date: String, duration: String, speaker: String, section: String, time: Int) {
         self.title = title
         self.talkURL = talkURL
         self.date = date
@@ -37,6 +38,7 @@ class TalkData: NSObject {
         self.speaker = speaker
         self.speakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
         self.section = section
+        self.time = time
 
     }
 

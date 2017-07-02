@@ -18,13 +18,14 @@ class FolderData: NSObject {
     var title: String
     var content: String
     var section: String
+    var image: String
     
     
-    init(title: String, content: String, section: String) {
+    init(title: String, content: String, section: String, image: String) {
         self.title = title
         self.content = content
         self.section = section
-        
+        self.image = image
         print("Created folder.  Title: \(title)  Content: \(content)   Section: \(section)")
         
     }

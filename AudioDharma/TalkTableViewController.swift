@@ -14,166 +14,171 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     //MARK: Properties
     var sectionTalks: [[TalkData]] = []
-    var sectionTalksFiltered:  [[TalkData]] = []
+    var filteredSectionTalks:  [[TalkData]] = []
     var content: String = ""
-    
     var selectedSection: Int = 0
     var selectedRow: Int = 0
-    
     var currentTitle: String = ""
-
+    let searchController = UISearchController(searchResultsController: nil)
     
-    //let searchController = UISearchController(searchResultsController: nil)
-    var searchController = UISearchController()
     
     //MARK: Actions
     @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
-        
-        print("unwindToTalkList")
-        
-        if let sourceViewController = sender.source as? SelectUserListTableViewCell {
+        /*
+        if var sourceViewController = sender.source as? SelectUserListTableViewCell {
             print("entered unwindToTalkList")
-
-            
         }
-        
+         */
     }
     
-    //MARK: Navigation
-  
+    // MARK: Init
     override func viewDidLoad() {
+        
+        //self.tableView.style = UITableViewStyle.UITableViewStylePlain
+        print("TabletalkController: viewDidLoad")
+        
         super.viewDidLoad()
-        self.searchController = UISearchController(searchResultsController: nil)
         
         self.sectionTalks = TheDataModel.getTalks(content: content)
-        self.sectionTalksFiltered = self.sectionTalks
+        self.filteredSectionTalks = self.sectionTalks
         
-        
+        //searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.delegate = self
+        searchController.delegate = self
         
         self.title =  self.currentTitle
+    }
+    
+    deinit {
+        self.searchController.view.removeFromSuperview()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - UISearchBarDelegate
+    override func viewWillDisappear(_ animated: Bool) {
+        searchController.isActive = false
+        
+    }
+
     
+    
+    // MARK: - UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+        //searchBar.resignFirstResponder()
     }
     
-    // MARK: - UISearchControllerDelegate
     
+    // MARK: - UISearchControllerDelegate
     func presentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func didPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+        
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
+    
+    /*
+    func  searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        print("searchBarShouldEndEditor")
+        return false
+    }
+     */
     
     
     // MARK: - UISearchResultsUpdating
-    /*
-    func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            sectionTalksFiltered = sectionTalks.filter { talk in
-                return talk.lowercased().contains(searchText.lowercased())
-            }
-            
-        } else {
-            sectionTalksFiltered = sectionTalks
-        }
-        tableView.reloadData()
-    }
- */
-
     func updateSearchResults(for searchController: UISearchController) {
         
-        print("updateSearchResults")
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             var sectionsPositionDict : [String: Int] = [:]
-            sectionTalksFiltered = []
-            for sections in sectionTalks {
+            self.filteredSectionTalks = []
+            for sections in self.sectionTalks {
                 for talkData in sections {
                     if talkData.title.lowercased().contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[talkData.section] == nil {
                             // new section seen.  create new array of talks for this section
-                            sectionTalksFiltered.append([talkData])
-                            sectionsPositionDict[talkData.section] = sectionTalksFiltered.count - 1
+                            self.filteredSectionTalks.append([talkData])
+                            sectionsPositionDict[talkData.section] = self.filteredSectionTalks.count - 1
                         } else {
                             // section already exists.  add talk to the existing array of talks
                             let sectionPosition = sectionsPositionDict[talkData.section]
-                            sectionTalksFiltered[sectionPosition!].append(talkData)
+                            self.filteredSectionTalks[sectionPosition!].append(talkData)
                         }
                     }
                 }
             }
             
         } else {
-            sectionTalksFiltered = sectionTalks
+            self.filteredSectionTalks = self.sectionTalks
         }
         tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
-        print("filtering...")
         
     }
 
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionTalksFiltered.count
+        return self.filteredSectionTalks.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sectionTalksFiltered[section].count
+        return self.filteredSectionTalks[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionTitle : String
         
-        sectionTitle =  sectionTalksFiltered[section][0].section
-        print(sectionTitle)
+        sectionTitle =  self.filteredSectionTalks[section][0].section
         
         return sectionTitle
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
+        //print("cellForRowAt")
         let cellIdentifier = "TalkTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TalkTableViewCell  else {
             fatalError("The dequeued cell is not an instance of TalkTableViewCell.")
         }
         
-        let talk = sectionTalksFiltered[indexPath.section][indexPath.row]
+        let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
+        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+
         
         return cell
+    }
+    
+    override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        //print ("enter: willDisplayHeaderView")
+        
+        let header = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor.black
+        header.textLabel?.textColor = UIColor.white
+        header.textLabel?.textAlignment = NSTextAlignment.center
     }
     
 
@@ -181,7 +186,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
@@ -201,7 +206,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
                 fatalError("The selected cell is not being displayed by the table")
             }
             
-            let selectedTalk = sectionTalks[indexPath.section][indexPath.row]
+            let selectedTalk = self.filteredSectionTalks[indexPath.section][indexPath.row]
             talkDetailViewController.talk = selectedTalk
 
             
@@ -209,7 +214,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             print("SelectUserList")
             
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
             
         }
         
@@ -252,7 +257,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     //MARK: Private Methods
     private func shareFB() {
     
-        let talk = sectionTalksFiltered[selectedSection][selectedRow]
+        let talk = self.filteredSectionTalks[selectedSection][selectedRow]
         //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
         var postText = ("<a title=\(talk.title)\n href=\(talk.talkURL)/>\nShared from the iPhone Audiodharma app")
 
@@ -295,12 +300,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         // present the view controller
         self.present(activityViewController, animated: true, completion: nil)
-
-        
         
     }
-
-
-    
-
 }

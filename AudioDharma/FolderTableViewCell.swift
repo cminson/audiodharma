@@ -14,7 +14,8 @@ class FolderTableViewCell: UITableViewCell {
     //MARK: Properties
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var listImage: UIImageView!
-    
+    @IBOutlet weak var statTalkCount: UILabel!
+    @IBOutlet weak var statTotalTime: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
