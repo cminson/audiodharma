@@ -23,7 +23,12 @@ import AVKit
 import AVFoundation
 import MediaPlayer
 
-class TalkViewController: UIViewController {
+//  https://code.tutsplus.com/tutorials/build-an-mp3-player-with-av-foundation--cms-24482
+class TalkViewController: UIViewController, AVAudioPlayerDelegate {
+    
+    var player:AVAudioPlayer?
+    var currentTrackIndex = 0
+    var tracks:[String] = [String]()
     
     static let TopColor = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)
     
@@ -32,8 +37,8 @@ class TalkViewController: UIViewController {
        
     
     
-    var player:AVPlayer?
-    var playerItem:AVPlayerItem?
+    //var player:AVPlayer?
+    //var playerItem:AVPlayerItem?
     var playButton:UIButton?
     
     
@@ -54,60 +59,7 @@ class TalkViewController: UIViewController {
         
     }
     
-    @IBAction func testJSONLoad(_ sender: Any) {
-        
-        let jsonLocation = "http://www.ezimba.com/ad/test01.json"
-        let requestURL : URL? = URL(string: jsonLocation)
-        let urlRequest = URLRequest(url : requestURL!)
-        let session = URLSession.shared
-        
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            if (statusCode == 200) {
-                print("Everyone is fine, file downloaded successfully.")
-            }
-        
-            // make sure we got data
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-        
-            do {
-                guard let todo = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                        print("error trying to convert data to JSON")
-                    return
-                    }
-                
-                
-                // now we have the todo, let's just print it to prove we can access it
-                print("The todo is: " + todo.description)
-            
-                // the todo object is a dictionary
-                // so we just access the title using the "title" key
-                // so check for a title and print it if we have one
-                guard let todoTitle = todo["title"] as? String else {
-                    print("Could not get todo title from JSON")
-                    return
-                }
-                print("The title is: " + todoTitle)
-            } catch  {
-                print("error trying to convert data to JSON")
-                return
-            }
-        }
-        
-        task.resume()
-
-    }
-    
-   
-    // MARK: Init
+      // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
         print("view did load")
@@ -120,7 +72,6 @@ class TalkViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // Mark: private
@@ -143,6 +94,8 @@ class TalkViewController: UIViewController {
     
    
     
+    
+    /*
     
     private func initAudioControl2() {
         
@@ -207,7 +160,10 @@ class TalkViewController: UIViewController {
         
         
     }
+ */
     
+    
+    /*
     private func initAudioControl3() {
         
         print("initAudioControl3")
@@ -258,11 +214,8 @@ class TalkViewController: UIViewController {
             playButton!.setTitle("Play", for: UIControlState.normal)
         }
     }
+ */
     
-    func x()
-    {
-        
-    }
 
 
 }
