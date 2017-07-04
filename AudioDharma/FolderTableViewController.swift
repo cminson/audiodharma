@@ -170,17 +170,15 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         cell.title.text = folder.title
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         
-        let sectionTalks = TheDataModel.getTalks(content: folder.content)
+        let folderStats = TheDataModel.getFolderStats(content: folder.content)
 
-        var count = 0
-        for sections in sectionTalks {
-            count += sections.count
-        }
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value:count))
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:folderStats.totalTalks))
         cell.statTalkCount.text = formattedNumber
-        cell.statTotalTime.text = "123:28:88"
+        
+        
+        cell.statTotalTime.text = String(folderStats.totalSeconds)
         
         return cell
         

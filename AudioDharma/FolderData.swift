@@ -26,7 +26,7 @@ class FolderData: NSObject {
         self.content = content
         self.section = section
         self.image = image
-        print("Created folder.  Title: \(title)  Content: \(content)   Section: \(section)")
+        //print("Created folder.  Title: \(title)  Content: \(content)   Section: \(section)")
         
     }
     

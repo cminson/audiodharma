@@ -10,24 +10,24 @@ import UIKit
 import os.log
 
 
-// MOVE INTO CLASS TBD
-//var KeyToTalks : [String: [TalkData]] = [String: [TalkData]]()
+struct FolderStats {
+    var totalTalks: Int
+    var totalSeconds: Int
+}
 
 let KEY_ALLTALKS = "ALL"
 
 class Model {
     
     //MARK: Properties
-    
-    var folderSections: [[FolderData]] = []
-    var nameToTalk : [String: TalkData] = [:]
-    var keyToTalks : [String: [[TalkData]]] = [:]
-    
+    var folderSections: [[FolderData]] = []   // 2d array of sections x folders
+    var keyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
+    var keyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
     var userLists: [UserListData] = []
+
     
     init() {
         loadSampleUserFolders()
-        
     }
     
     func loadSampleUserFolders() {
@@ -43,7 +43,7 @@ class Model {
     func loadData() {
         
         loadAllTalks(jsonLocation: "http://www.ezimba.com/ad/alltalks01.json")
-        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders02.json")
+        loadFolders(jsonLocation: "http://www.ezimba.com/ad/folders03.json")
     }
     
     
@@ -57,6 +57,11 @@ class Model {
         print(talks.count)
         
         return talks
+    }
+    
+    func getFolderStats(content: String) -> FolderStats {
+        let stats = self.keyToFolderStats[content]
+        return stats!
     }
     
     func getUserLists() -> [UserListData] {
@@ -138,11 +143,11 @@ class Model {
                         let date = talk["date"] as? String ?? ""
                         let section = talk["section"] as? String ?? ""
                         
-                        let totalSeconds = self.computeTalkTime(duration: duration)
+                        let totalSeconds = self.converDurationToSeconds(duration: duration)
 
                         let talkData =  TalkData(title: titleTitle,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                         
-                        // create the key -> talkData[] entry if it doesn't already exits
+                        // create the key -> talkData[] entry if it doesn't already exist
                         if self.keyToTalks[content] == nil {
                             print("folder talks creating key for: \(content)")
                             self.keyToTalks[content]  = []
@@ -151,7 +156,7 @@ class Model {
                         // now add the talk data to this key
                         if talkSectionPositionDict[section] == nil {
                             // new section seen.  create new array of talks for this section
-                            print("new section seen. creating array for: \(content)")
+                            //print("new section seen. creating array for: \(content)")
                             self.keyToTalks[content]!.append([talkData])
                             talkSectionPositionDict[section] = self.keyToTalks[content]!.count - 1
                         } else {
@@ -166,6 +171,30 @@ class Model {
                 print(error)
             }
             
+            //
+            // now compute stats for the folders
+            // this means calculating the total numberof talks in each folder and total seconds for all talks in folder
+            //
+            print("computing stats")
+            let folders = self.folderSections.joined()
+            for folder in folders {
+                
+                print("Folder Content: ", folder.content)
+                let sectionFolder = self.keyToTalks[folder.content]
+                print(sectionFolder?.count)
+                let talksInFolder = (self.keyToTalks[folder.content] ?? [[TalkData]]()).joined()
+                //print(talksInFolder)
+                let talkCount = talksInFolder.count
+                
+                var totalSeconds = 0
+                for talk in talksInFolder {
+                    totalSeconds += talk.time
+                 }
+                let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds)
+                print(stats)
+                self.keyToFolderStats[folder.content] = stats
+            }
+            
         }
         task.resume()
     }
@@ -173,7 +202,7 @@ class Model {
     
     private func loadAllTalks(jsonLocation: String) {
         
-        print("loadTalks")
+        print("loadAllTalks: START")
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -192,21 +221,24 @@ class Model {
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
-                print("Everyone is fine, file downloaded successfully.")
+                print("Download: success")
             }
             
             // make sure we got data
             guard let responseData = data else {
-                print("Error: did not receive data")
+                print("Download: error")
                 return
             }
             
             //parsing the response
+            var talkCount = 0
+            var totalSeconds = 0
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
                 //print(json)
                 
+
                 for talk in json["talks"] as? [AnyObject] ?? [] {
                     
                     let title = talk["title"] as? String ?? ""
@@ -216,15 +248,15 @@ class Model {
                     let date = talk["date"] as? String ?? ""
                     let section = ""
                     
-                    let totalSeconds = self.computeTalkTime(duration: duration)
-                    
                     let urlPhrases = talkURL.components(separatedBy: "/")
                     let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
-                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                     
-                    self.nameToTalk[urlFileName] =  talkData
-                    //print(urlFileName, talkData)
+                    let seconds = self.converDurationToSeconds(duration: duration)
+                    totalSeconds += seconds
 
+                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
+                    
+ 
                     // add this talk to  list of all talks
                     if self.keyToTalks[KEY_ALLTALKS] == nil {
                         self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
@@ -232,22 +264,28 @@ class Model {
                     }
                     self.keyToTalks[KEY_ALLTALKS]? += [[talkData]]
                     
-                    // add speakers to the list of their respective talks
+                    // add talk to the list of talks for this speaker
                     if self.keyToTalks[speaker] == nil {
                         self.keyToTalks[speaker] = [[TalkData]] ()
                     }
                     self.keyToTalks[speaker]? += [[talkData]]
+                    
+                    talkCount += 1
                 }
             } catch {
                 print(error)
             }
+            
+            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds)
+            self.keyToFolderStats[KEY_ALLTALKS] = stats
+
         }
         task.resume()
-        print("finished load")
+        print("loadAllTalks: Finished")
     }
 
     
-    private func computeTalkTime(duration: String) -> Int {
+    private func converDurationToSeconds(duration: String) -> Int {
         
         var totalSeconds: Int = 0
         var hours : Int = 0
