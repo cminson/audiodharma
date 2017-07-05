@@ -166,6 +166,8 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+        cell.duration.text = talk.duration
+        cell.date.text = talk.date
 
         
         return cell

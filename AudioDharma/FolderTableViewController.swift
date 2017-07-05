@@ -178,8 +178,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         cell.statTalkCount.text = formattedNumber
         
         
-        cell.statTotalTime.text = String(folderStats.totalSeconds)
-        
+        cell.statTotalTime.text = folderStats.durationDisplay
         return cell
         
     }

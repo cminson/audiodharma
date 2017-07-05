@@ -1,0 +1,1209 @@
+{
+"teachers":[
+	{
+	"name" : "Ajaan Thanissaro",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_s108902769133839_1858.jpg",
+	"url" : "http://www.audiodharma.org/teacher/16"
+	},
+	{
+	"name" : "Ajahn Amaro",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ajahn-Amaro.jpg",
+	"url" : "http://www.audiodharma.org/teacher/5"
+	},
+	{
+	"name" : "Ajahn Chandako",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_ajahn_chandako.jpg",
+	"url" : "http://www.audiodharma.org/teacher/33"
+	},
+	{
+	"name" : "Ajahn Jumnien",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Ajahn_Jumnien_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/84"
+	},
+	{
+	"name" : "Ajahn Liem Thitadhammo",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Ajahn_liem.jpg",
+	"url" : "http://www.audiodharma.org/teacher/153"
+	},
+	{
+	"name" : "Ajahn Metta",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ajahn_Metta.jpg",
+	"url" : "http://www.audiodharma.org/teacher/109"
+	},
+	{
+	"name" : "Ajahn Pasanno",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_ajahn-pasanno.jpg",
+	"url" : "http://www.audiodharma.org/teacher/224"
+	},
+	{
+	"name" : "Ajahn Prasert",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/119"
+	},
+	{
+	"name" : "Ajahn Sundara",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ajahn_Sundara.jpg",
+	"url" : "http://www.audiodharma.org/teacher/146"
+	},
+	{
+	"name" : "Ajahn Thanasanti",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Ajahn_Thanasanti.jpg",
+	"url" : "http://www.audiodharma.org/teacher/151"
+	},
+	{
+	"name" : "Ajahn Thaniya",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/152"
+	},
+	{
+	"name" : "Ayya Anandabodhi",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ananabodhi.jpg",
+	"url" : "http://www.audiodharma.org/teacher/7"
+	},
+	{
+	"name" : "Ayya Santacitta",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_AyyaSantacitta.jpg",
+	"url" : "http://www.audiodharma.org/teacher/128"
+	},
+	{
+	"name" : "Ayya Santussika",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_santussika.jpg",
+	"url" : "http://www.audiodharma.org/teacher/192"
+	},
+	{
+	"name" : "Ayya Tathaaloka",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/149"
+	},
+	{
+	"name" : "Bhante Henepola Gunaratana",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_bhante_gunaratana.jpg",
+	"url" : "http://www.audiodharma.org/teacher/68"
+	},
+	{
+	"name" : "Bhante Piyananda",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/242"
+	},
+	{
+	"name" : "Bhante Sujiva",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_BhanteSujiva.jpg",
+	"url" : "http://www.audiodharma.org/teacher/145"
+	},
+	{
+	"name" : "Bhikkhu Analayo",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Bhikkhu_Analayo.jpg",
+	"url" : "http://www.audiodharma.org/teacher/208"
+	},
+	{
+	"name" : "Bhikkhu Bodhi",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Bhikkhu_Bodhi.jpg",
+	"url" : "http://www.audiodharma.org/teacher/19"
+	},
+	{
+	"name" : "Sayadaw U Jagara ",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_teacher_263_125_0.jpg",
+	"url" : "http://www.audiodharma.org/teacher/314"
+	},
+	{
+	"name" : "Venerable Pannavati",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Venerable_Pannavati.jpg",
+	"url" : "http://www.audiodharma.org/teacher/223"
+	},
+	{
+	"name" : "Adrianne Ross",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/264"
+	},
+	{
+	"name" : "Alan Senauke",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_alan_senauke_2.jpg",
+	"url" : "http://www.audiodharma.org/teacher/134"
+	},
+	{
+	"name" : "Alex Haley",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_alex-haley.jpg",
+	"url" : "http://www.audiodharma.org/teacher/297"
+	},
+	{
+	"name" : "Alexis Santos",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Alexis_Praha__small.jpg",
+	"url" : "http://www.audiodharma.org/teacher/262"
+	},
+	{
+	"name" : "Amy Saltzman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/284"
+	},
+	{
+	"name" : "Andrea Castillo",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Andrea_Castillo.jpg",
+	"url" : "http://www.audiodharma.org/teacher/210"
+	},
+	{
+	"name" : "Andrea Fella",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_AndreaFella-sm.jpg",
+	"url" : "http://www.audiodharma.org/teacher/2"
+	},
+	{
+	"name" : "Andrew Getz",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/62"
+	},
+	{
+	"name" : "Andrew Olendzki",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/114"
+	},
+	{
+	"name" : "Andrew Wallace",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/276"
+	},
+	{
+	"name" : "Angie Boissevain",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_AngieBoissevain240.jpg",
+	"url" : "http://www.audiodharma.org/teacher/20"
+	},
+	{
+	"name" : "Ani Lhadron",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/98"
+	},
+	{
+	"name" : "Anna Douglas",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/311"
+	},
+	{
+	"name" : "Annie Nugent",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Annie_Nugent.jpg",
+	"url" : "http://www.audiodharma.org/teacher/201"
+	},
+	{
+	"name" : "Anushka Fernandopulle",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_headshotbpf-e1271021376887-225x300_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/51"
+	},
+	{
+	"name" : "Ari Goldfield",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ari_Picture.jpg",
+	"url" : "http://www.audiodharma.org/teacher/200"
+	},
+	{
+	"name" : "Arlene Lueck",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_arlene_lueck.jpg",
+	"url" : "http://www.audiodharma.org/teacher/100"
+	},
+	{
+	"name" : "Art Jolly",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_art_jolly_category__.jpg",
+	"url" : "http://www.audiodharma.org/teacher/181"
+	},
+	{
+	"name" : "Barbara Gates",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/61"
+	},
+	{
+	"name" : "Berget Jelane",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_BERGETJELANE.jpg",
+	"url" : "http://www.audiodharma.org/teacher/78"
+	},
+	{
+	"name" : "Beth Goldring",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Beth_Goldring.jpg",
+	"url" : "http://www.audiodharma.org/teacher/63"
+	},
+	{
+	"name" : "Betsy Rose",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_betsyrose.jpg",
+	"url" : "http://www.audiodharma.org/teacher/125"
+	},
+	{
+	"name" : "Bhante Buddharakkhita",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Bhante_Buddharakkhita.jpg",
+	"url" : "http://www.audiodharma.org/teacher/259"
+	},
+	{
+	"name" : "Bhikkhu Ananda",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/319"
+	},
+	{
+	"name" : "Bill Hart",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/72"
+	},
+	{
+	"name" : "Bill Kostura",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/299"
+	},
+	{
+	"name" : "Bill Weber",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/159"
+	},
+	{
+	"name" : "Blanche Hartman",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_blanche.jpg",
+	"url" : "http://www.audiodharma.org/teacher/73"
+	},
+	{
+	"name" : "Bob Stahl",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Bob-Stahl-044.jpg",
+	"url" : "http://www.audiodharma.org/teacher/141"
+	},
+	{
+	"name" : "Brian Lesage",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_teacher_484_125_0.jpg",
+	"url" : "http://www.audiodharma.org/teacher/307"
+	},
+	{
+	"name" : "Bruce Freedman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/56"
+	},
+	{
+	"name" : "Bruce Hyman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/270"
+	},
+	{
+	"name" : "Bruni Davila",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/244"
+	},
+	{
+	"name" : "Carla Brennan",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Carla_Brennan.jpg",
+	"url" : "http://www.audiodharma.org/teacher/25"
+	},
+	{
+	"name" : "Carolyn Dille",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Carolyn_Dille.jpg",
+	"url" : "http://www.audiodharma.org/teacher/48"
+	},
+	{
+	"name" : "Carrie Tamburo",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/234"
+	},
+	{
+	"name" : "Charlie Johnson",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/79"
+	},
+	{
+	"name" : "Cheryl Hylton",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/74"
+	},
+	{
+	"name" : "Cheryll Gasner",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/59"
+	},
+	{
+	"name" : "Chris Clifford",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/35"
+	},
+	{
+	"name" : "Cyndia Biver",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/214"
+	},
+	{
+	"name" : "Daigan Lueck",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/101"
+	},
+	{
+	"name" : "Dan Landry",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/283"
+	},
+	{
+	"name" : "Daniel Bowling",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_DanielBowling.jpg",
+	"url" : "http://www.audiodharma.org/teacher/22"
+	},
+	{
+	"name" : "Darlene Cohen",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/37"
+	},
+	{
+	"name" : "David Cohn",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_DavidCohn.jpg",
+	"url" : "http://www.audiodharma.org/teacher/38"
+	},
+	{
+	"name" : "Dawn Neal",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_DawnNeal_20130618_IMG11768_cr.jpg",
+	"url" : "http://www.audiodharma.org/teacher/241"
+	},
+	{
+	"name" : "Dhammaruwan",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/255"
+	},
+	{
+	"name" : "Diana Clark",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Diana_Clark_PhD.jpg",
+	"url" : "http://www.audiodharma.org/teacher/240"
+	},
+	{
+	"name" : "Diana Winston",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_dianawinston.jpg",
+	"url" : "http://www.audiodharma.org/teacher/164"
+	},
+	{
+	"name" : "Don Johnson",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/80"
+	},
+	{
+	"name" : "Donald H. Flaxman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/55"
+	},
+	{
+	"name" : "Donald Rothberg",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Donald_Rothberg_Photo2_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/126"
+	},
+	{
+	"name" : "Douglas Harding",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/71"
+	},
+	{
+	"name" : "Edward Brown",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Ed_Brown.jpg",
+	"url" : "http://www.audiodharma.org/teacher/27"
+	},
+	{
+	"name" : "Eileen Messina",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/198"
+	},
+	{
+	"name" : "Eric Kolvig",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_EricKolvig.jpg",
+	"url" : "http://www.audiodharma.org/teacher/91"
+	},
+	{
+	"name" : "Eric Wendt",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/171"
+	},
+	{
+	"name" : "Eugene Cash",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_13589_K_Eugene.jpg",
+	"url" : "http://www.audiodharma.org/teacher/29"
+	},
+	{
+	"name" : "Evan Kavanagh",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/88"
+	},
+	{
+	"name" : "Francisco Mora",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/305"
+	},
+	{
+	"name" : "Frank Ostaseski",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/117"
+	},
+	{
+	"name" : "Fred Luskin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_fred_luskin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/102"
+	},
+	{
+	"name" : "Fred Porta",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/168"
+	},
+	{
+	"name" : "Fu Nancy Schroeder",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/133"
+	},
+	{
+	"name" : "Gay Watson",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_gay-photo1.jpg",
+	"url" : "http://www.audiodharma.org/teacher/258"
+	},
+	{
+	"name" : "Gil Fronsdal",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_gil_fronsdal.jpg",
+	"url" : "http://www.audiodharma.org/teacher/1"
+	},
+	{
+	"name" : "Ginger Clarkson",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/293"
+	},
+	{
+	"name" : "Gloria Taraniya Ambrosia",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_taraniya_ambrosia.jpg",
+	"url" : "http://www.audiodharma.org/teacher/6"
+	},
+	{
+	"name" : "Grace Burford",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/300"
+	},
+	{
+	"name" : "Greg Scharf",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Greg_Scharf.jpg",
+	"url" : "http://www.audiodharma.org/teacher/131"
+	},
+	{
+	"name" : "Gregory Kramer",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_kramer.jpg",
+	"url" : "http://www.audiodharma.org/teacher/92"
+	},
+	{
+	"name" : "Guy Armstrong",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_guy_armstrong.jpg",
+	"url" : "http://www.audiodharma.org/teacher/169"
+	},
+	{
+	"name" : "Heather Martin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Heather_Martin_03-08_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/105"
+	},
+	{
+	"name" : "Heather Sundberg",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_heathersunberg.jpg",
+	"url" : "http://www.audiodharma.org/teacher/147"
+	},
+	{
+	"name" : "Hilary Borison",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/292"
+	},
+	{
+	"name" : "Howard Cohn",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_13589_B_Howard.jpg",
+	"url" : "http://www.audiodharma.org/teacher/39"
+	},
+	{
+	"name" : "Hugh MacMillan",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/103"
+	},
+	{
+	"name" : "Imam Tahir Anwar",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/310"
+	},
+	{
+	"name" : "Ines Freedman",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_ines_freedman.jpg",
+	"url" : "http://www.audiodharma.org/teacher/57"
+	},
+	{
+	"name" : "Jacques Verduin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JacquesVerduin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/157"
+	},
+	{
+	"name" : "Jaku Kinst",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/89"
+	},
+	{
+	"name" : "James Baraz",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_James_Baraz.jpg",
+	"url" : "http://www.audiodharma.org/teacher/10"
+	},
+	{
+	"name" : "Jan Nattier",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/301"
+	},
+	{
+	"name" : "Jason Murphy",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/203"
+	},
+	{
+	"name" : "Jeff Hardin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JeffHardin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/222"
+	},
+	{
+	"name" : "Jeff Hylton",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/75"
+	},
+	{
+	"name" : "Jennifer Block",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JenniferBlock.jpg",
+	"url" : "http://www.audiodharma.org/teacher/17"
+	},
+	{
+	"name" : "Jennifer Lemas",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/93"
+	},
+	{
+	"name" : "Jill Hyman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/269"
+	},
+	{
+	"name" : "Jill Shepard",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/304"
+	},
+	{
+	"name" : "Jim Bronson",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JimB.jpg",
+	"url" : "http://www.audiodharma.org/teacher/26"
+	},
+	{
+	"name" : "Jim Podolske",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/118"
+	},
+	{
+	"name" : "Joan DePaoli",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/170"
+	},
+	{
+	"name" : "Joanna Macy",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/104"
+	},
+	{
+	"name" : "John Lewis",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/97"
+	},
+	{
+	"name" : "John Martin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JohnMartin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/274"
+	},
+	{
+	"name" : "John Peacock",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_john-peacock_100x100_100x100.jpg",
+	"url" : "http://www.audiodharma.org/teacher/207"
+	},
+	{
+	"name" : "John Travis",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_john_travis-1.jpg",
+	"url" : "http://www.audiodharma.org/teacher/156"
+	},
+	{
+	"name" : "Jon Kabat-Zinn",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_JonKabat-Zinn.jpg",
+	"url" : "http://www.audiodharma.org/teacher/85"
+	},
+	{
+	"name" : "JosĂŠ Luis Reissig",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/277"
+	},
+	{
+	"name" : "Joseph Bobrow",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/18"
+	},
+	{
+	"name" : "Joseph Goldstein",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Joseph_Goldstein.jpg",
+	"url" : "http://www.audiodharma.org/teacher/64"
+	},
+	{
+	"name" : "Judy Cannon",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/28"
+	},
+	{
+	"name" : "Kamala Masters",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_kamala_masters.jpg",
+	"url" : "http://www.audiodharma.org/teacher/106"
+	},
+	{
+	"name" : "Kate Munding",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_kate_jenke.jpg",
+	"url" : "http://www.audiodharma.org/teacher/77"
+	},
+	{
+	"name" : "Kathy Cheney",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/34"
+	},
+	{
+	"name" : "Kelly McGonigal",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/235"
+	},
+	{
+	"name" : "Kevin Griffin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Kevin_Griffin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/67"
+	},
+	{
+	"name" : "Kim Allen",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_kim_july16-4_crop.jpg",
+	"url" : "http://www.audiodharma.org/teacher/4"
+	},
+	{
+	"name" : "Kim McLaughlin",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/107"
+	},
+	{
+	"name" : "Kim Moore",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/308"
+	},
+	{
+	"name" : "Kokai Roberts",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/123"
+	},
+	{
+	"name" : "Konin Cardenas",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/275"
+	},
+	{
+	"name" : "Larry Yang",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_larry_yang.jpg",
+	"url" : "http://www.audiodharma.org/teacher/166"
+	},
+	{
+	"name" : "Laura Crabb",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/42"
+	},
+	{
+	"name" : "Lauren Silver",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/138"
+	},
+	{
+	"name" : "Lee De Barros",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/45"
+	},
+	{
+	"name" : "Lee Lipp",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/99"
+	},
+	{
+	"name" : "Leigh Brasington",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_leighbrasington200711.jpg",
+	"url" : "http://www.audiodharma.org/teacher/24"
+	},
+	{
+	"name" : "Lesley Grant",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/66"
+	},
+	{
+	"name" : "Lewis Richmond",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Lewis_Richmond.jpg",
+	"url" : "http://www.audiodharma.org/teacher/122"
+	},
+	{
+	"name" : "Linda Ruth Cutts",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/44"
+	},
+	{
+	"name" : "Liz Powell",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/197"
+	},
+	{
+	"name" : "Lori Wong",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_loriwong.jpg",
+	"url" : "http://www.audiodharma.org/teacher/165"
+	},
+	{
+	"name" : "Marc Lesser",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Marc_Lesser.jpg",
+	"url" : "http://www.audiodharma.org/teacher/94"
+	},
+	{
+	"name" : "Margaret Gainer",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/58"
+	},
+	{
+	"name" : "Margarita Loinaz",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/237"
+	},
+	{
+	"name" : "Maria Straatmann",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Maria_Straatman.jpg",
+	"url" : "http://www.audiodharma.org/teacher/142"
+	},
+	{
+	"name" : "Mark Abramson",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/3"
+	},
+	{
+	"name" : "Mark Coleman",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Mark_Coleman.jpg",
+	"url" : "http://www.audiodharma.org/teacher/40"
+	},
+	{
+	"name" : "Mark Neenan",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/172"
+	},
+	{
+	"name" : "Martin Aylward",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Martin_Aylward.jpg",
+	"url" : "http://www.audiodharma.org/teacher/205"
+	},
+	{
+	"name" : "Martine Batchelor",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_martine-thumbnail.jpg",
+	"url" : "http://www.audiodharma.org/teacher/11"
+	},
+	{
+	"name" : "Mary Grace Orr",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_13589_C_Mary.jpg",
+	"url" : "http://www.audiodharma.org/teacher/116"
+	},
+	{
+	"name" : "Mary Mocine",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_mocine-232x300.jpg",
+	"url" : "http://www.audiodharma.org/teacher/256"
+	},
+	{
+	"name" : "Matt McNeil",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/173"
+	},
+	{
+	"name" : "Matthew Brensilver",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_MatthewBrensilver.jpg",
+	"url" : "http://www.audiodharma.org/teacher/231"
+	},
+	{
+	"name" : "Max Erdstein",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_MaxE2017.jpg",
+	"url" : "http://www.audiodharma.org/teacher/219"
+	},
+	{
+	"name" : "Meg Gawler",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Meg_Gawler_150815.jpg",
+	"url" : "http://www.audiodharma.org/teacher/272"
+	},
+	{
+	"name" : "Mel Weitsman",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Mel_Weitsman.jpg",
+	"url" : "http://www.audiodharma.org/teacher/162"
+	},
+	{
+	"name" : "Michael Newhall",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_michael_newhall.jpg",
+	"url" : "http://www.audiodharma.org/teacher/185"
+	},
+	{
+	"name" : "Michael Wenger",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/163"
+	},
+	{
+	"name" : "Michelle Shields",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/225"
+	},
+	{
+	"name" : "Mirka Knaster",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/90"
+	},
+	{
+	"name" : "Misha Merrill",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_1256041055_DSCN0168M_11.JPG___SQUARESPACE_CACHEVERSION1222876868640.jpg",
+	"url" : "http://www.audiodharma.org/teacher/108"
+	},
+	{
+	"name" : "Mushim (Patricia) Ikeda",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/313"
+	},
+	{
+	"name" : "Nikki Mirghafori",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Nikki_headshot.jpg",
+	"url" : "http://www.audiodharma.org/teacher/229"
+	},
+	{
+	"name" : "No Teacher",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/213"
+	},
+	{
+	"name" : "Noah Levine",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_noah_levine_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/96"
+	},
+	{
+	"name" : "Nona Olivia",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/115"
+	},
+	{
+	"name" : "Norman Fischer",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Norman_Fischer.jpg",
+	"url" : "http://www.audiodharma.org/teacher/53"
+	},
+	{
+	"name" : "Oren J. Sofer",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Oren.jpg",
+	"url" : "http://www.audiodharma.org/teacher/243"
+	},
+	{
+	"name" : "Pa Auk Sayadaw",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/130"
+	},
+	{
+	"name" : "Pablo GonzĂĄlez",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/282"
+	},
+	{
+	"name" : "Pamela Weiss",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Pamela_Weiss_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/161"
+	},
+	{
+	"name" : "Paul Haller",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_paul_haller_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/69"
+	},
+	{
+	"name" : "Peter Overton",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/177"
+	},
+	{
+	"name" : "Phillip Moffitt",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_PhillipMoffit_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/110"
+	},
+	{
+	"name" : "Rebecca Bradshaw",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/266"
+	},
+	{
+	"name" : "Rebecca Dixon",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_RebeccaDixon.jpg",
+	"url" : "http://www.audiodharma.org/teacher/49"
+	},
+	{
+	"name" : "Ren Bunce",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/217"
+	},
+	{
+	"name" : "Reverend Heng Sure",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Hengsurepic.jpg",
+	"url" : "http://www.audiodharma.org/teacher/148"
+	},
+	{
+	"name" : "Richard Shankman",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_RIchard_Shankman.jpg",
+	"url" : "http://www.audiodharma.org/teacher/135"
+	},
+	{
+	"name" : "Richard Sievers",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/186"
+	},
+	{
+	"name" : "Rick Hanson",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_rick_hanson.jpg",
+	"url" : "http://www.audiodharma.org/teacher/70"
+	},
+	{
+	"name" : "Rita Gross",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_RitaGross.jpg",
+	"url" : "http://www.audiodharma.org/teacher/253"
+	},
+	{
+	"name" : "Robert Beatty",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Robert_Beatty_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/13"
+	},
+	{
+	"name" : "Robert Cusick",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Robert_Cusick.jpg",
+	"url" : "http://www.audiodharma.org/teacher/43"
+	},
+	{
+	"name" : "Robert Thomas",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/265"
+	},
+	{
+	"name" : "Ronna Kabatznick",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_ronna_kabatznick.jpg",
+	"url" : "http://www.audiodharma.org/teacher/87"
+	},
+	{
+	"name" : "Rose Taylor Goldfield",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/230"
+	},
+	{
+	"name" : "Ruth King",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_ruthking.jpg",
+	"url" : "http://www.audiodharma.org/teacher/271"
+	},
+	{
+	"name" : "Sally Clough",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Sally_Clough.jpg",
+	"url" : "http://www.audiodharma.org/teacher/36"
+	},
+	{
+	"name" : "Santikaro",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Santikaro_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/129"
+	},
+	{
+	"name" : "Sayadaw U Tejaniya",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_SayadawTejaniya.jpg",
+	"url" : "http://www.audiodharma.org/teacher/150"
+	},
+	{
+	"name" : "Sean Kerr",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/221"
+	},
+	{
+	"name" : "Seth Castleman",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/30"
+	},
+	{
+	"name" : "Shahara Godfrey",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/279"
+	},
+	{
+	"name" : "Shaila Catherine",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Shaila_Catherine.jpg",
+	"url" : "http://www.audiodharma.org/teacher/31"
+	},
+	{
+	"name" : "Shanti Soule",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/140"
+	},
+	{
+	"name" : "Shantum Seth",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Shantum_Seth.jpg",
+	"url" : "http://www.audiodharma.org/teacher/206"
+	},
+	{
+	"name" : "Sharda Rogell",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/124"
+	},
+	{
+	"name" : "Sharon Salzberg",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Sharon_Salzberg.jpg",
+	"url" : "http://www.audiodharma.org/teacher/127"
+	},
+	{
+	"name" : "Shelley Gault",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_shelley2_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/260"
+	},
+	{
+	"name" : "Shin Kwan Park",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/196"
+	},
+	{
+	"name" : "Shinzen Young",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Shinzen.jpg",
+	"url" : "http://www.audiodharma.org/teacher/245"
+	},
+	{
+	"name" : "Sister Susila",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/183"
+	},
+	{
+	"name" : "Smita Joshi",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/83"
+	},
+	{
+	"name" : "Spring Washam",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_spring-washam_crop.jpg",
+	"url" : "http://www.audiodharma.org/teacher/158"
+	},
+	{
+	"name" : "Stephen Batchelor",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_stephen-3.jpg",
+	"url" : "http://www.audiodharma.org/teacher/12"
+	},
+	{
+	"name" : "Steve Armstrong",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Steve806_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/8"
+	},
+	{
+	"name" : "Steve Stuckey",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/182"
+	},
+	{
+	"name" : "Steve Stucky",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Steve_Stucky.jpg",
+	"url" : "http://www.audiodharma.org/teacher/144"
+	},
+	{
+	"name" : "Steve Weintraub",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/160"
+	},
+	{
+	"name" : "Steven Gasner",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/60"
+	},
+	{
+	"name" : "Stuart Clancy",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/176"
+	},
+	{
+	"name" : "Surja Tjahaja",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/155"
+	},
+	{
+	"name" : "Susan Ezequelle",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/50"
+	},
+	{
+	"name" : "Susan O'Connell",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Susan_OConnell.jpg",
+	"url" : "http://www.audiodharma.org/teacher/113"
+	},
+	{
+	"name" : "Susie Harrington",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/306"
+	},
+	{
+	"name" : "Tanya Wiser",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/286"
+	},
+	{
+	"name" : "Tara Brach",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_tara-website100X125.jpg",
+	"url" : "http://www.audiodharma.org/teacher/23"
+	},
+	{
+	"name" : "Teah Strozer",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_teah.jpg",
+	"url" : "http://www.audiodharma.org/teacher/143"
+	},
+	{
+	"name" : "Tempel Smith",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_Tempel_S.jpg",
+	"url" : "http://www.audiodharma.org/teacher/139"
+	},
+	{
+	"name" : "Therese Fitzgerald",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/54"
+	},
+	{
+	"name" : "Tim Burkett",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/296"
+	},
+	{
+	"name" : "Toni Bernhard",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/187"
+	},
+	{
+	"name" : "Tony Bernhard",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_TonyBernhard.jpg",
+	"url" : "http://www.audiodharma.org/teacher/15"
+	},
+	{
+	"name" : "Tony Patchell",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/175"
+	},
+	{
+	"name" : "Various",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/184"
+	},
+	{
+	"name" : "Victor Medina",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Victor.jpg",
+	"url" : "http://www.audiodharma.org/teacher/199"
+	},
+	{
+	"name" : "Victoria Austin",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_victoria_austin.jpg",
+	"url" : "http://www.audiodharma.org/teacher/9"
+	},
+	{
+	"name" : "Vinny Ferraro",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_VinnyFerraro_.jpg",
+	"url" : "http://www.audiodharma.org/teacher/52"
+	},
+	{
+	"name" : "Wendy Johnson",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/81"
+	},
+	{
+	"name" : "Wes Nisker",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_thumb_wesnisker.jpg",
+	"url" : "http://www.audiodharma.org/teacher/111"
+	},
+	{
+	"name" : "Will Kabat-Zinn",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_Will-Kabat-Zinn.jpg",
+	"url" : "http://www.audiodharma.org/teacher/86"
+	},
+	{
+	"name" : "Xi He",
+	"photo" : "",
+	"url" : "http://www.audiodharma.org/teacher/302"
+	},
+	{
+	"name" : "Yvonne Rand",
+	"photo" : "http://media.audiodharma.org/uploads/photos/thumb_yvonne_rand.jpg",
+	"url" : "http://www.audiodharma.org/teacher/120"
+	}
+ ]
+}
