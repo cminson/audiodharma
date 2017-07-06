@@ -15,8 +15,23 @@ class UserTalkTableViewController: UITableViewController, UISearchBarDelegate, U
     var sectionTalks: [[TalkData]] = []
     var sectionTalksFiltered:  [[TalkData]] = []
     var content: String = "ALL"
+    var currentTitle: String = ""
     
     let searchController = UISearchController(searchResultsController: nil)
+    
+    
+    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {
+        
+        print("unwindToUserTalkTableList")
+        
+        if let sourceViewController = sender.source as? UserAddTalkViewController {
+            
+                self.tableView.reloadData()
+                
+            
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +43,8 @@ class UserTalkTableViewController: UITableViewController, UISearchBarDelegate, U
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         tableView.tableHeaderView = searchController.searchBar
+        
+        self.title = self.currentTitle
     }
     
     override func didReceiveMemoryWarning() {
@@ -157,20 +174,26 @@ class UserTalkTableViewController: UITableViewController, UISearchBarDelegate, U
         
         super.prepare(for: segue, sender: sender)
         
-        print("prepare to seque")
-        guard let talkDetailViewController = segue.destination as? TalkViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
+
+        print(segue.destination)
+        switch segue.identifier ?? "" {
+            
+        case "SHOWEDITUSERTALKS":
+            guard let navController = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            
+            let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
+            
+            addTalkTableViewController?.content = "ALL"
+            
+            
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
-        guard let selectedTalkCell = sender as? TalkTableViewCell else {
-            fatalError("Unexpected sender:")
-        }
-        
-        guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
-            fatalError("The selected cell is not being displayed by the table")
-        }
-        
-        let selectedTalk = sectionTalks[indexPath.section][indexPath.row]
-        talkDetailViewController.talk = selectedTalk
+
         
     }
     

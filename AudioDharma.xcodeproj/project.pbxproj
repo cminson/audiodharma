@@ -124,8 +124,6 @@
 				83432FBF1F0AB373002926AC /* MP3Player.swift */,
 				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
 				83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */,
-				839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */,
-				83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */,
 				83FCA9481F02E77300B9664D /* UserListViewController.swift */,
 				83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */,
 				83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */,
@@ -139,6 +137,8 @@
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83432FBB1F0AAD88002926AC /* TalkPlayer.swift */,
 				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
+				839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */,
+				83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */,
 			);
 			path = AudioDharma;
 			sourceTree = "<group>";

@@ -191,9 +191,9 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
         if (folder.content == "CUSTOM") {
-            self.performSegue(withIdentifier: "ShowCustomLists", sender: self)
+            self.performSegue(withIdentifier: "SHOWUSERLISTS", sender: self)
         } else {
-            self.performSegue(withIdentifier: "ShowTalks", sender: self)
+            self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
             
         }
 
@@ -213,15 +213,15 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         searchController.isActive = false
         switch segue.identifier ?? "" {
             
-        case "ShowTalks":
+        case "SHOWTALKS":
             guard let talkTableViewController = segue.destination as? TalkTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
-            let currentTitle = self.filteredFolderSections[selectedSection][selectedRow]
+            //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
             talkTableViewController.content = folder.content
-            talkTableViewController.currentTitle = currentTitle.title
+            talkTableViewController.currentTitle = folder.title
             
-        case "ShowCustomLists":
+        case "SHOWUSERLISTS":
 
             guard let _ = segue.destination as? UserListTableViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -237,113 +237,5 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
 
     
-    /*
-    private func loadFolders(jsonLocation: String) {
-        
-        
-        print("loadFolders")
-        let requestURL : URL? = URL(string: jsonLocation)
-        let urlRequest = URLRequest(url : requestURL!)
-        let session = URLSession.shared
-        
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            if (statusCode == 200) {
-                print("Everyone is fine, file downloaded successfully.")
-            }
-            
-            // make sure we got data
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            
-            //parsing the response
-            do {
-                
-                let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
-                print(json)
-                
-                for folder in json["folders"] as? [AnyObject] ?? [] {
-                    
-                    let title = folder["title"] as? String ?? ""
-                    
-                    print(title)
-                    let folderData =  FolderData(title: title)
-                    
-                    self.Folders += [folderData]
-                    print(self.Folders.count)
-                }
-                
-                
-                
-            } catch {
-                print(error)
-            }
-            self.tableView.reloadData()
-        }
-        task.resume()
-    }
-    */
-    
-    /*
-    private func loadTalks(jsonLocation: String) {
-        
-        print("loadTalks")
-        let requestURL : URL? = URL(string: jsonLocation)
-        let urlRequest = URLRequest(url : requestURL!)
-        let session = URLSession.shared
-        
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            if (statusCode == 200) {
-                print("Everyone is fine, file downloaded successfully.")
-            }
-            
-            // make sure we got data
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            
-            //parsing the responsewillDisplayHeaderView
-            do {
-                
-                let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
-                print(json)
-                
-                for folder in json["talks"] as? [AnyObject] ?? [] {
-                    
-                    let title = folder["title"] as? String ?? ""
-                    
-                    print(title)
-                    let folderData =  FolderData(title: title)
-                    
-                    self.Folders += [folderData]
-                    print(self.Folders.count)
-                }
-                
-                
-                
-            } catch {
-                print(error)
-            }
-            self.tableView.reloadData()
-        }
-        task.resume()
-    }
- */
-
-
-
+  
 }

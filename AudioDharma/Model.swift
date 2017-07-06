@@ -33,11 +33,12 @@ class Model {
     
     func loadSampleUserFolders() {
         
+
         let t1 = UserListData(title: "List 1")
         let t2 = UserListData(title: "List 2")
         let t3 = UserListData(title: "List 3")
         self.userLists += [t1, t2, t3]
-        
+
     }
 
     
@@ -102,11 +103,7 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                 
-                if (title == "Vesak") {
-                    print(speaker, title, duration, seconds)
-                }
-                
-                
+                   
                 // add this talk to  list of all talks
                 if self.keyToTalks[KEY_ALLTALKS] == nil {
                     self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()

@@ -163,6 +163,9 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         }
         
         let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
+        
+        print(talk)
+        print("talk title: ",talk.title)
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit

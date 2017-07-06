@@ -8,91 +8,185 @@
 
 import UIKit
 
-class UserAddTalkTableViewController: UITableViewController {
+class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
-    // MARK: Actions
+    //MARK: Properties
+    var sectionTalks: [[TalkData]] = []
+    var filteredSectionTalks:  [[TalkData]] = []
+    var content: String = ""
+    var selectedSection: Int = 0
+    var selectedRow: Int = 0
+    var currentTitle: String = ""
+    let searchController = UISearchController(searchResultsController: nil)
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    
+    //MARK: Actions
+    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
+        /*
+         if var sourceViewController = sender.source as? SelectUserListTableViewCell {
+         print("entered unwindToTalkList")
+         }
+         */
     }
-
+    
+    // MARK: Init
+    override func viewDidLoad() {
+        
+        //self.tableView.style = UITableViewStyle.UITableViewStylePlain
+        print("TabletalkController: viewDidLoad")
+        
+        super.viewDidLoad()
+        
+        self.sectionTalks = TheDataModel.getTalks(content: content)
+        self.filteredSectionTalks = self.sectionTalks
+        
+        //searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.delegate = self
+        searchController.delegate = self
+        
+        self.title =  self.currentTitle
+    }
+    
+    deinit {
+        self.searchController.view.removeFromSuperview()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        searchController.isActive = false
+        
+    }
+    
+    
+    
+    // MARK: - UISearchBarDelegate
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //searchBar.resignFirstResponder()
+    }
+    
+    
+    // MARK: - UISearchControllerDelegate
+    func presentSearchController(_ searchController: UISearchController) {
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+    }
+    
+    
+    // MARK: - UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            
+            var sectionsPositionDict : [String: Int] = [:]
+            self.filteredSectionTalks = []
+            for sections in self.sectionTalks {
+                for talkData in sections {
+                    if talkData.title.lowercased().contains(searchText.lowercased()) {
+                        
+                        if sectionsPositionDict[talkData.section] == nil {
+                            // new section seen.  create new array of talks for this section
+                            self.filteredSectionTalks.append([talkData])
+                            sectionsPositionDict[talkData.section] = self.filteredSectionTalks.count - 1
+                        } else {
+                            // section already exists.  add talk to the existing array of talks
+                            let sectionPosition = sectionsPositionDict[talkData.section]
+                            self.filteredSectionTalks[sectionPosition!].append(talkData)
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            self.filteredSectionTalks = self.sectionTalks
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        
+    }
+    
+    
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return self.filteredSectionTalks.count
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return self.filteredSectionTalks[section].count
     }
-
-    /*
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitle : String
+        
+        sectionTitle =  self.filteredSectionTalks[section][0].section
+        
+        return sectionTitle
+    }
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        
+        //print("cellForRowAt")
+        let cellIdentifier = "UserAddTalkTableViewCell"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserAddTalkTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of UserAddTalkTableViewCell.")
+        }
+        
+        let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
+        
+        print(talk)
+        print("talk title: ",talk.title)
+        cell.title.text = talk.title
+               
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        //print ("enter: willDisplayHeaderView")
+        
+        let header = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor.black
+        header.textLabel?.textColor = UIColor.white
+        header.textLabel?.textAlignment = NSTextAlignment.center
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
+    
+    
+    
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        super.prepare(for: segue, sender: sender)
+        
+        print("prepare to seque")
+        
+        
     }
-    */
+    
 
 }

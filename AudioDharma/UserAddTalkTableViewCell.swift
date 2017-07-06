@@ -9,7 +9,14 @@
 import UIKit
 
 class UserAddTalkTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var title: UILabel!
 
+
+    
+    // MARK: Properties
+    var isUserTalk: Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

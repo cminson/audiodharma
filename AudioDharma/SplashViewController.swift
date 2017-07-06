@@ -17,7 +17,7 @@ class SplashViewController: UIViewController {
         TheDataModel.loadData()
         
 
-        perform(Selector("showNavController"), with: nil, afterDelay: 6)
+        perform(Selector("showNavController"), with: nil, afterDelay: 1)
     }
 
     override func didReceiveMemoryWarning() {

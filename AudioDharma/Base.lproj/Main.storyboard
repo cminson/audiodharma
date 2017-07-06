@@ -169,7 +169,7 @@
             </objects>
             <point key="canvasLocation" x="4135.1999999999998" y="930.58470764617698"/>
         </scene>
-        <!--Custom Lists-->
+        <!--User Talk Lists-->
         <scene sceneID="wMU-4h-6ek">
             <objects>
                 <tableViewController id="1IO-y8-7fd" customClass="UserListTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -196,7 +196,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="title" destination="QGd-fh-og8" id="gpC-Sh-yOC"/>
-                                    <segue destination="0GJ-yc-Oar" kind="show" id="BRs-MN-lvo"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -205,20 +204,21 @@
                             <outlet property="delegate" destination="1IO-y8-7fd" id="Gqy-jX-zwe"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Custom Lists" id="y9U-uN-nQd">
+                    <navigationItem key="navigationItem" title="User Talk Lists" id="y9U-uN-nQd">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="khZ-eG-tYd">
                             <connections>
-                                <segue destination="2kr-c5-Uec" kind="presentation" identifier="AddUserList" id="pee-KO-zh6"/>
+                                <segue destination="Kw1-KX-Agt" kind="presentation" identifier="SHOWADDUSERLIST" id="ZR1-MZ-juM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="2kr-c5-Uec" kind="presentation" identifier="EditUserList" id="m4c-Wx-Ij6"/>
+                        <segue destination="Kw1-KX-Agt" kind="show" identifier="SHOWEDITUSERLIST" id="Je7-85-m7J"/>
+                        <segue destination="0GJ-yc-Oar" kind="show" identifier="SHOWUSERTALKS" id="dCY-Lg-B8b"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1146" y="1635"/>
+            <point key="canvasLocation" x="-1090" y="1360"/>
         </scene>
         <!--Your Talks-->
         <scene sceneID="bNN-8u-svm">
@@ -249,14 +249,14 @@
                     <navigationItem key="navigationItem" title="Your Talks" id="2R3-Gd-KTi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PcK-Lv-x6m">
                             <connections>
-                                <segue destination="LyH-qf-3RH" kind="presentation" id="eax-89-JrY"/>
+                                <segue destination="XOb-Pw-Qua" kind="presentation" identifier="SHOWEDITUSERTALKS" id="RgU-lG-aEy"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="558" y="1801"/>
+            <point key="canvasLocation" x="598" y="1657"/>
         </scene>
         <!--Select List-->
         <scene sceneID="pJg-hb-2YL">
@@ -383,46 +383,59 @@
                         <outlet property="userListTitle" destination="dAy-Sf-Ql1" id="kip-Ib-P2R"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2HI-gB-gv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="r5N-9A-7qQ" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2HI-gB-gv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-455" y="2616"/>
+            <point key="canvasLocation" x="-335" y="2537"/>
         </scene>
-        <!--Add Talks-->
-        <scene sceneID="ku4-on-oyX">
+        <!--Edit Talks -->
+        <scene sceneID="NKy-2s-6YI">
             <objects>
-                <tableViewController id="Bjk-XP-Lk1" customClass="UserAddTalkTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4vj-md-zbH">
+                <tableViewController id="EIX-tq-R4j" customClass="UserAddTalkViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f3t-Od-nxX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qbo-2C-3EK" customClass="UserAddTalkTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserAddTalkTableViewCell" id="ng3-6f-0aw" customClass="UserAddTalkTableViewCell" customModule="AudioDharma" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qbo-2C-3EK" id="PYF-ya-Z1i">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ng3-6f-0aw" id="Xi7-dQ-4S4">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPz-YV-Qdt">
+                                            <rect key="frame" x="86" y="8" width="235" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="title" destination="bPz-YV-Qdt" id="rQX-5E-ZSf"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="Bjk-XP-Lk1" id="jyK-8Q-aIe"/>
-                            <outlet property="delegate" destination="Bjk-XP-Lk1" id="TnX-2L-HaR"/>
+                            <outlet property="dataSource" destination="EIX-tq-R4j" id="veQ-Em-dAh"/>
+                            <outlet property="delegate" destination="EIX-tq-R4j" id="RHN-VD-ye2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add Talks" id="VQM-6F-3Xb">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="VAy-9y-lo6">
+                    <navigationItem key="navigationItem" title="Edit Talks " id="daP-mt-RlJ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ARu-j9-znB">
                             <connections>
-                                <segue destination="oQg-Cm-QhC" kind="unwind" unwindAction="unwindToUserListWithSender:" id="ZtL-LX-WTo"/>
+                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindToUserTalkListWithSender:" id="KnL-6m-uUd"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="PIB-aI-0jf"/>
                     </navigationItem>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pb8-u9-Obs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="oQg-Cm-QhC" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2129" y="2525"/>
+            <point key="canvasLocation" x="1900" y="2512.8935532233886"/>
         </scene>
         <!--Talk Lists-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -482,8 +495,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talk Lists" id="ZPM-Q5-ruw"/>
                     <connections>
-                        <segue destination="gZV-DG-fA4" kind="show" identifier="ShowTalks" id="hEa-61-IsL"/>
-                        <segue destination="1IO-y8-7fd" kind="show" identifier="ShowCustomLists" id="xoW-9y-ITT"/>
+                        <segue destination="gZV-DG-fA4" kind="show" identifier="SHOWTALKS" id="hEa-61-IsL"/>
+                        <segue destination="1IO-y8-7fd" kind="show" identifier="SHOWUSERLISTS" id="xoW-9y-ITT"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -588,24 +601,6 @@
             <point key="canvasLocation" x="-1826" y="1360"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="fzF-Gb-ZWR">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2kr-c5-Uec" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LjE-qP-dR9">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Ac4-Jo-Vf8" kind="relationship" relationship="rootViewController" id="Vlt-dj-GHa"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8dK-vG-G8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1146" y="2547"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="IX0-6K-YUM">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vgt-uM-0I0" sceneMemberID="viewController">
@@ -621,25 +616,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lKw-30-fdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-199" y="1659"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hGy-AY-9m3">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LyH-qf-3RH" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wef-Nc-nGy">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Bjk-XP-Lk1" kind="relationship" relationship="rootViewController" id="2GI-Ji-3da"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ffA-hb-dzX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1390" y="2525"/>
+            <point key="canvasLocation" x="-52" y="1657"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="v9v-wg-bKp">
@@ -659,6 +636,42 @@
             </objects>
             <point key="canvasLocation" x="-10" y="829"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="BwM-dr-asB">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kw1-KX-Agt" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="npp-jj-ctJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Ac4-Jo-Vf8" kind="relationship" relationship="rootViewController" id="lVd-hH-h1u"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bgk-vs-lGS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-958" y="2538"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="y7A-aR-3Mw">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XOb-Pw-Qua" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="upA-qx-ZKi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EIX-tq-R4j" kind="relationship" relationship="rootViewController" id="pbQ-bT-0Bc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MQm-pX-D1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="960.79999999999995" y="2512.8935532233886"/>
+        </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="450" height="337"/>
@@ -666,9 +679,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="511-4k-GvY"/>
-        <segue reference="m4c-Wx-Ij6"/>
+        <segue reference="4Xg-qy-iaw"/>
         <segue reference="xoW-9y-ITT"/>
         <segue reference="hEa-61-IsL"/>
-        <segue reference="ycL-KA-RjM"/>
+        <segue reference="Je7-85-m7J"/>
     </inferredMetricsTieBreakers>
 </document>

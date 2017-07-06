@@ -45,38 +45,54 @@ class UserListTableViewController: UITableViewController {
     }
     
     
+    //
+    // Pathways:
+    // If Plus button  clicked, then add a User List (SHOWADDUSERLIST)
+    // If Edit slider button clicked, then edit selected User List (SHOWUSEREDITLIST)
+    // If a User List is selected, then show all talks in this list (SHOWUSERTALKS)
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
 
         super.prepare(for: segue, sender: sender)
         
+        
         switch(segue.identifier ?? "") {
             
-        case "AddUserList":
+        case "SHOWADDUSERLIST":
             os_log("New User List", log: OSLog.default, type: .debug)
             
 
-        case "EditUserList":
-            print("EditUserList")
-            
+        case "SHOWEDITUSERLIST":            
  
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
+            let selectedUserList = TheDataModel.userLists[self.selectedRow]
+
             let userListViewController = navController.viewControllers.last as? UserListViewController
 
-            let selectedUserList = TheDataModel.userLists[selectedRow]
             
             userListViewController?.userList = selectedUserList
             userListViewController?.editMode = true
             print("selectedUserList: \(selectedUserList.title)  \(userListViewController?.userList)")
 
 
+        case "SHOWUSERTALKS":
+            print("SHOWUSERTALKS")
+            guard let userTalkTableViewController = segue.destination as? UserTalkTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
             
+            let selectedUserList = TheDataModel.userLists[self.selectedRow]
+
+            userTalkTableViewController.currentTitle = selectedUserList.title
+            userTalkTableViewController.content = "ALL"
+
         default:
-            //fatalError("Unexpected Segue Identifier; \(segue.identifier)")
-            print("Error")
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+
         }
  
     }
@@ -106,6 +122,7 @@ class UserListTableViewController: UITableViewController {
         }
         
         print("row = \(indexPath.row)")
+
         let userList = TheDataModel.userLists[indexPath.row]
         
         cell.title.text = userList.title
@@ -139,7 +156,7 @@ class UserListTableViewController: UITableViewController {
         let edit = UITableViewRowAction(style: .normal, title: "Edit Title") { (action, indexPath) in
             
             self.selectedRow = indexPath.row
-            self.performSegue(withIdentifier: "EditUserList", sender: self)
+            self.performSegue(withIdentifier: "SHOWEDITUSERLIST", sender: self)
             // share item at indexPath
             self.tableView.isEditing = false
         }
@@ -152,60 +169,13 @@ class UserListTableViewController: UITableViewController {
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("didselectrow")
+        self.selectedRow = indexPath.row
         
-        //self.selectedSection = indexPath.section
-        //self.selectedRow = indexPath.row
-        
-        /*
-        let folder = TheDataModel.folderSections[indexPath.section][indexPath.row]
-        if (folder.content == "CUSTOM") {
-            self.performSegue(withIdentifier: "ShowCustomLists", sender: self)
-        } else {
-            self.performSegue(withIdentifier: "ShowTalks", sender: self)
-            
-        }
- */
+        self.performSegue(withIdentifier: "SHOWUSERTALKS", sender: self)
         
     }
 
 
-    /*
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    }
-
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]?  {
-        // 1
-        var shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Share" , handler: { (action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
-            // 2
-            let shareMenu = UIAlertController(title: nil, message: "Share using", preferredStyle: .ActionSheet)
-            
-            let twitterAction = UIAlertAction(title: "Twitter", style: UIAlertActionStyle.Default, handler: nil)
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            
-            shareMenu.addAction(twitterAction)
-            shareMenu.addAction(cancelAction)
-            
-            
-            self.presentViewController(shareMenu, animated: true, completion: nil)
-        })
-        // 3
-        var rateAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Rate" , handler: { (action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
-            // 4
-            let rateMenu = UIAlertController(title: nil, message: "Rate this App", preferredStyle: .ActionSheet)
-            
-            let appRateAction = UIAlertAction(title: "Rate", style: UIAlertActionStyle.Default, handler: nil)
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            
-            rateMenu.addAction(appRateAction)
-            rateMenu.addAction(cancelAction)
-            
-            
-            self.presentViewController(rateMenu, animated: true, completion: nil)
-        })
-        // 5
-        return [shareAction,rateAction]
-    }}
- */
 
 }
 
