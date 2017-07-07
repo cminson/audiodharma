@@ -24,7 +24,7 @@ class TalkPlayer: NSObject, AVAudioPlayerDelegate {
     
     func startTalk(talk: TalkData){
         
-        let audioLocation = talk.talkURL
+        let audioLocation = talk.URL
         let audioURL : URL? = URL(string: audioLocation)
         let player = AVPlayer(url: audioURL!)
             

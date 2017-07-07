@@ -13,21 +13,21 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     //MARK: Properties
     var sectionTalks: [[TalkData]] = []
     var filteredSectionTalks:  [[TalkData]] = []
-    var content: String = ""
     var selectedSection: Int = 0
     var selectedRow: Int = 0
-    var currentTitle: String = ""
     let searchController = UISearchController(searchResultsController: nil)
     
+    var content: String = ""
+    var currentTitle: String = ""
+    var selectedTalks: [TalkData] = [TalkData] ()
     
-    //MARK: Actions
-    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
-        /*
-         if var sourceViewController = sender.source as? SelectUserListTableViewCell {
-         print("entered unwindToTalkList")
-         }
-         */
+    
+    // cancel button pressed
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
+    
+    
     
     // MARK: Init
     override func viewDidLoad() {
@@ -37,7 +37,20 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         
         super.viewDidLoad()
         
-        self.sectionTalks = TheDataModel.getTalks(content: content)
+        // mark all talks which are TBD
+        
+        self.sectionTalks = TheDataModel.getTalks(content: KEY_ALLTALKS)
+        /*
+        for talk in self.sectionTalks.joined() {
+            for selectedTalkName in selectedTalks {
+                if talk.talkURL.range(of: selectedTalkName) != nil{
+                    talk.isUserSelected = true
+                    break
+                }
+            }
+            
+        }
+ */
         self.filteredSectionTalks = self.sectionTalks
         
         //searchController = UISearchController(searchResultsController: nil)
@@ -143,6 +156,23 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         return sectionTitle
     }
     
+    override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("didselectrow")
+        self.selectedRow = indexPath.row
+        let cell = tableView.cellForRow(at: indexPath) as? UserAddTalkTableViewCell
+        
+        if (cell?.isUserSelected)! {
+            cell?.isUserSelected = false
+            cell?.userSelected.image = UIImage(named: "checkboxoff")
+            
+        } else {
+            cell?.isUserSelected = true
+            cell?.userSelected.image = UIImage(named: "checkboxon")
+            
+        }
+
+    }
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -155,10 +185,14 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         
         let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
         
-        print(talk)
-        print("talk title: ",talk.title)
+        //print(talk)
+        //print("talk title: ",talk.title)
         cell.title.text = talk.title
-               
+        cell.speakerPhoto.image = talk.speakerPhoto
+        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+        cell.userSelected.image = UIImage(named: "checkboxoff")
+
+        
         
         return cell
     }
@@ -183,7 +217,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         
         super.prepare(for: segue, sender: sender)
         
-        print("prepare to seque")
+        print("useraddtalktable prepare to seque")
         
         
     }

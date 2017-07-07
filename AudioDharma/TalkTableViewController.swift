@@ -264,7 +264,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
         let talk = self.filteredSectionTalks[selectedSection][selectedRow]
         //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
-        var postText = ("<a title=\(talk.title)\n href=\(talk.talkURL)/>\nShared from the iPhone Audiodharma app")
+        var postText = ("<a title=\(talk.title)\n href=\(talk.URL)/>\nShared from the iPhone Audiodharma app")
 
         
         if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook){

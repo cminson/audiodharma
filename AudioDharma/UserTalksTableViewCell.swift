@@ -9,7 +9,10 @@
 import UIKit
 
 class UserTalksTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var speakerPhoto: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

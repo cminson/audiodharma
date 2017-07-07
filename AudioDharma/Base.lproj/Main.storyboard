@@ -185,7 +185,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-fh-og8">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="A List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-fh-og8">
                                             <rect key="frame" x="8" y="8" width="359" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -224,19 +224,34 @@
         <scene sceneID="bNN-8u-svm">
             <objects>
                 <tableViewController id="0GJ-yc-Oar" customClass="UserTalkTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hU3-4W-PQV">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="hU3-4W-PQV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserTalksTableViewCell" rowHeight="90" id="Zmo-hd-Ai2" customClass="UserTalksTableViewCell" customModule="AudioDharma" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserTalksTableViewCell" rowHeight="50" id="Zmo-hd-Ai2" customClass="UserTalksTableViewCell" customModule="AudioDharma" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zmo-hd-Ai2" id="uQY-NP-Jzb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lw5-8N-Y7N">
+                                            <rect key="frame" x="8" y="3" width="61" height="47"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="841-dJ-2bC">
+                                            <rect key="frame" x="86" y="14" width="220" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="speakerPhoto" destination="lw5-8N-Y7N" id="WOU-Jg-NGW"/>
+                                    <outlet property="title" destination="841-dJ-2bC" id="HcG-DQ-yLT"/>
                                     <segue destination="BYZ-38-t0r" kind="show" id="4Xg-qy-iaw"/>
                                 </connections>
                             </tableViewCell>
@@ -256,7 +271,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="598" y="1657"/>
+            <point key="canvasLocation" x="597.60000000000002" y="1656.521739130435"/>
         </scene>
         <!--Select List-->
         <scene sceneID="pJg-hb-2YL">
@@ -404,17 +419,27 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPz-YV-Qdt">
-                                            <rect key="frame" x="86" y="8" width="235" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="A Talk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPz-YV-Qdt">
+                                            <rect key="frame" x="70" y="8" width="242" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JRW-ov-QPJ">
+                                            <rect key="frame" x="8" y="0.0" width="53" height="57"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OAD-JX-TP5">
+                                            <rect key="frame" x="320" y="0.0" width="47" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="speakerPhoto" destination="JRW-ov-QPJ" id="pvI-DO-IwX"/>
                                     <outlet property="title" destination="bPz-YV-Qdt" id="rQX-5E-ZSf"/>
+                                    <outlet property="userSelected" destination="OAD-JX-TP5" id="8ow-Ce-kkK"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -424,18 +449,22 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Talks " id="daP-mt-RlJ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ARu-j9-znB">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ibP-4d-rLT">
                             <connections>
-                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindToUserTalkListWithSender:" id="KnL-6m-uUd"/>
+                                <action selector="dismiss:" destination="EIX-tq-R4j" id="LiI-vh-gBD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="PIB-aI-0jf"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="PIB-aI-0jf">
+                            <connections>
+                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindToUserTalkListWithSender:" id="qd7-qp-6dx"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1900" y="2512.8935532233886"/>
+            <point key="canvasLocation" x="1230" y="2477"/>
         </scene>
         <!--Talk Lists-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -670,7 +699,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MQm-pX-D1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="960.79999999999995" y="2512.8935532233886"/>
+            <point key="canvasLocation" x="598" y="2477"/>
         </scene>
     </scenes>
     <resources>
@@ -678,10 +707,10 @@
         <image name="playaudio" width="61" height="61"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="511-4k-GvY"/>
-        <segue reference="4Xg-qy-iaw"/>
-        <segue reference="xoW-9y-ITT"/>
         <segue reference="hEa-61-IsL"/>
+        <segue reference="xoW-9y-ITT"/>
         <segue reference="Je7-85-m7J"/>
+        <segue reference="dCY-Lg-B8b"/>
+        <segue reference="4Xg-qy-iaw"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -24,7 +24,8 @@ class Model {
     var folderSections: [[FolderData]] = []   // 2d array of sections x folders
     var keyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
     var keyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
-    var userLists: [UserListData] = []
+    var nameToTalks: [String: TalkData]   = [:]   // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
+    var userLists: [UserListData] = []      // all the custom user lists defined by this user
 
     
     init() {
@@ -35,6 +36,11 @@ class Model {
         
 
         let t1 = UserListData(title: "List 1")
+        
+        let f1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
+        let f2 = "Mark_Abramson-IMC-quality_mindfulness.mp3"
+        
+        t1.talkFileNames = [f1,f2]
         let t2 = UserListData(title: "List 2")
         let t3 = UserListData(title: "List 3")
         self.userLists += [t1, t2, t3]
@@ -72,6 +78,11 @@ class Model {
         return self.userLists
     }
     
+    func getTalkForName(name: String) -> TalkData? {
+        let talk = self.nameToTalks[name]  
+        return talk
+    }
+    
     private func loadTalksFromFile(jsonLocation: String) {
         
         let asset = NSDataAsset(name: jsonLocation, bundle: Bundle.main)
@@ -88,21 +99,25 @@ class Model {
                 
                 let title = talk["title"] as? String ?? ""
                 let speaker = talk["speaker"] as? String ?? ""
-                let talkURL = talk["talk"] as? String ?? ""
+                let URL = talk["talk"] as? String ?? ""
                 let duration = talk["duration"] as? String ?? ""
                 
                 let date = talk["date"] as? String ?? ""
                 let section = ""
                 
-                let urlPhrases = talkURL.components(separatedBy: "/")
-                let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
                 
                 
                 let seconds = self.converDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
-                let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
+                let urlPhrases = URL.components(separatedBy: "/")
+                let fileName = urlPhrases[urlPhrases.endIndex - 1]
                 
+                let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
+                
+                self.nameToTalks[fileName] = talkData
+                print("Keying NameToTalks: ",fileName," to: ",talkData)
+               
                    
                 // add this talk to  list of all talks
                 if self.keyToTalks[KEY_ALLTALKS] == nil {
@@ -173,14 +188,14 @@ class Model {
                     
                     let titleTitle = talk["title"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
-                    let talkURL = talk["talk"] as? String ?? ""
+                    let URL = talk["talk"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
                     let section = talk["section"] as? String ?? ""
                     
                     let totalSeconds = self.converDurationToSeconds(duration: duration)
                     
-                    let talkData =  TalkData(title: titleTitle,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
+                    let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                     
                     // create the key -> talkData[] entry if it doesn't already exist
                     if self.keyToTalks[content] == nil {
@@ -213,7 +228,6 @@ class Model {
         let folders = self.folderSections.joined()
         for folder in folders {
             
-            let sectionFolder = self.keyToTalks[folder.content]
             let talksInFolder = (self.keyToTalks[folder.content] ?? [[TalkData]]()).joined()
             let talkCount = talksInFolder.count
             
@@ -300,14 +314,14 @@ class Model {
                         
                         let titleTitle = talk["title"] as? String ?? ""
                         let speaker = talk["speaker"] as? String ?? ""
-                        let talkURL = talk["talk"] as? String ?? ""
+                        let URL = talk["talk"] as? String ?? ""
                         let duration = talk["duration"] as? String ?? ""
                         let date = talk["date"] as? String ?? ""
                         let section = talk["section"] as? String ?? ""
                         
                         let totalSeconds = self.converDurationToSeconds(duration: duration)
 
-                        let talkData =  TalkData(title: titleTitle,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
+                        let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                         
                         // create the key -> talkData[] entry if it doesn't already exist
                         if self.keyToTalks[content] == nil {
@@ -395,18 +409,18 @@ class Model {
                     
                     let title = talk["title"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
-                    let talkURL = talk["talk"] as? String ?? ""
+                    let URL = talk["talk"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
                     let section = ""
                     
-                    let urlPhrases = talkURL.components(separatedBy: "/")
+                    let urlPhrases = URL.components(separatedBy: "/")
                     let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
                     
                     let seconds = self.converDurationToSeconds(duration: duration)
                     totalSeconds += seconds
 
-                    let talkData =  TalkData(title: title,  talkURL: talkURL,  date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
+                    let talkData =  TalkData(title: title,  URL: URL,  fileName: urlFileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                     
  
                     // add this talk to  list of all talks

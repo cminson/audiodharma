@@ -16,12 +16,11 @@ class UserListData: NSObject {
     
     //MARK: Properties
     var title: String = ""
-    var talks:  [[TalkData]] = [[TalkData]] ()
-
+    var talkFileNames:  [String] = [String] ()
+    var talks: [TalkData] = [TalkData] ()
     
     init(title: String) {
         self.title = title
-
         
         print("Created User folder.  Title: \(title) ")
         

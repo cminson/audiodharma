@@ -10,22 +10,24 @@ import UIKit
 
 class UserAddTalkTableViewCell: UITableViewCell {
     
+    // MARK: Outlets
     @IBOutlet weak var title: UILabel!
-
+    @IBOutlet weak var speakerPhoto: UIImageView!
+    @IBOutlet weak var userSelected: UIImageView!
 
     
     // MARK: Properties
-    var isUserTalk: Bool = false
+    var isUserSelected: Bool! = false
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
+     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
-    }
-
+     }
+    
+    
 }

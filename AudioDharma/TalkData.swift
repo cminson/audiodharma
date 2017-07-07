@@ -21,24 +21,30 @@ class TalkData: NSObject {
     
     //MARK: Properties
     var title: String
-    var talkURL: String
+    var URL: String
+    var fileName: String
     var date: String
     var duration: String
     var speaker: String
     var speakerPhoto: UIImage
     var section: String
     var time: Int
+    
+    var isUserSelected: Bool
 
     
-    init(title: String,  talkURL: String, date: String, duration: String, speaker: String, section: String, time: Int) {
+    init(title: String,  URL: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
         self.title = title
-        self.talkURL = talkURL
+        self.URL = URL
+        self.fileName = fileName
         self.date = date
         self.duration = duration
         self.speaker = speaker
         self.speakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
         self.section = section
         self.time = time
+        
+        self.isUserSelected = false
 
     }
 
