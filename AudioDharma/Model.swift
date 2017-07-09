@@ -24,7 +24,7 @@ class Model {
     var folderSections: [[FolderData]] = []   // 2d array of sections x folders
     var keyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
     var keyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
-    var nameToTalks: [String: TalkData]   = [:]   // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
+    var nameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
     var userLists: [UserListData] = []      // all the custom user lists defined by this user
 
     
@@ -38,7 +38,7 @@ class Model {
         let t1 = UserListData(title: "List 1")
         
         let f1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
-        let f2 = "Mark_Abramson-IMC-quality_mindfulness.mp3"
+        let f2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
         
         t1.talkFileNames = [f1,f2]
         let t2 = UserListData(title: "List 2")
@@ -99,27 +99,26 @@ class Model {
                 
                 let title = talk["title"] as? String ?? ""
                 let speaker = talk["speaker"] as? String ?? ""
-                let URL = talk["talk"] as? String ?? ""
+                let URL = (talk["talk"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let duration = talk["duration"] as? String ?? ""
-                
                 let date = talk["date"] as? String ?? ""
                 let section = ""
-                
                 
                 
                 let seconds = self.converDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
                 let urlPhrases = URL.components(separatedBy: "/")
-                let fileName = urlPhrases[urlPhrases.endIndex - 1]
+                var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
+
                 
                 let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
                 
                 self.nameToTalks[fileName] = talkData
-                print("Keying NameToTalks: ",fileName," to: ",talkData)
-               
-                   
-                // add this talk to  list of all talks
+                              
+                 // add this talk to  list of all talks
                 if self.keyToTalks[KEY_ALLTALKS] == nil {
                     self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
                     
@@ -133,6 +132,9 @@ class Model {
                 self.keyToTalks[speaker]? += [[talkData]]
                 
                 talkCount += 1
+                
+                
+                
             }
         } catch {
             print(error)

@@ -20,6 +20,15 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
     var editMode: Bool = false
     
     //MARK: Navigation
+    //MARK: Actions
+    @IBAction func unwindToUserListView(sender: UIStoryboardSegue) {
+        
+        print("UserAddTalkViewController")
+        
+        if let sourceViewController = sender.source as? UserAddTalkViewController {
+            //let userTalkList = sourceViewController.filteredSectionTalks
+        }
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

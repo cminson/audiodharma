@@ -1,5 +1,5 @@
 //
-//  Talk.swift
+//  TalkData.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/14/17.
@@ -7,15 +7,7 @@
 //
 
 import UIKit
-import os.log
 
-
-// comment
-/*
- MPVolumeView
- http://swiftdeveloperblog.com/code-examples/add-playback-slider-to-avplayer-example-in-swift/
- 
- */
 
 class TalkData: NSObject {
     
@@ -30,8 +22,6 @@ class TalkData: NSObject {
     var section: String
     var time: Int
     
-    var isUserSelected: Bool
-
     
     init(title: String,  URL: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
         self.title = title
@@ -44,7 +34,6 @@ class TalkData: NSObject {
         self.section = section
         self.time = time
         
-        self.isUserSelected = false
 
     }
 

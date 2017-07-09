@@ -90,8 +90,7 @@ class UserListTableViewController: UITableViewController {
             var selectedTalks = [TalkData] ()
             for talkFileName in selectedUserList.talkFileNames {
                 if let talk = TheDataModel.getTalkForName(name: talkFileName) {
-                    print("List View FileName: ", talkFileName)
-                    talk.isUserSelected = true
+                    //talk.isUserSelected = true
                     selectedTalks.append(talk)
                 }
             }

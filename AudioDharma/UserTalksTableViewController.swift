@@ -9,38 +9,71 @@
 
 import UIKit
 
+//
+// Displays the talks that a user has stored in their User List
+//
 class UserTalkTableViewController: UITableViewController {
     
     // MARK: Properties
     var selectedTalks: [TalkData]  = [TalkData] ()  // contains the array of talks selected user list that called us
     var userListTitle: String = ""
+    var selectedRow: Int = 0
     
-    
-    // MARK: Actions
-    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {
-        
-        print("unwindToUserTalkTableList")
-        
-        if let sourceViewController = sender.source as? UserAddTalkViewController {
-            
-                self.tableView.reloadData()
-            
-        }
-        
-    }
     
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.title = self.userListTitle
+        self.tableView.isEditing = true
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
+    
+    // MARK: Actions
+    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {
+        
+        if let controller = sender.source as? UserAddTalkViewController {
+            
+            print("UserTalksTableViewController: Unwind")
+            self.selectedTalks = controller.selectedTalks
+            self.tableView.reloadData()
+        }
+    }
     
     
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch segue.identifier ?? "" {
+            
+        case "SHOWEDITUSERTALKS":
+            guard let navController = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
+            addTalkTableViewController?.selectedTalks =  selectedTalks
+            print("SHOWEDITUSERTALKS: set selected talks")
+            
+        case "SHOWMP3PLAYER":
+            guard let MP3Player = segue.destination as? TalkViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            let selectedTalk = self.selectedTalks[selectedRow]
+            
+            MP3Player.talk = selectedTalk
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
+        }
+     }
+
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -66,41 +99,35 @@ class UserTalkTableViewController: UITableViewController {
         return cell
     }
     
-    
-    
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        super.prepare(for: segue, sender: sender)
-        
-        print(segue.destination)
-        switch segue.identifier ?? "" {
-            
-        case "SHOWEDITUSERTALKS":
-            guard let navController = segue.destination as? UINavigationController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-            
-            
-            let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
-            
-            addTalkTableViewController?.selectedTalks =  selectedTalks
-
-            
-            
-            
-        default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
-        }
-
-        
+        self.selectedRow = indexPath.row
+        self.performSegue(withIdentifier: "SHOWMP3PLAYER", sender: self)
     }
     
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .none
+    }
     
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
     
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        /*
+        let movedObject = self.fruits[sourceIndexPath.row]
+        fruits.remove(at: sourceIndexPath.row)
+        fruits.insert(movedObject, at: destinationIndexPath.row)
+        NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(fruits)")
+        // To check for correctness enable: self.tableView.reloadData()
+ */
+    }
     
-    
+    /*
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        let rowData = fruits[indexPath.row]
+        return rowData.hasPrefix("A")
+    }
+ */
     
 }

@@ -11,9 +11,8 @@ import UIKit
 class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
-    var sectionTalks: [[TalkData]] = []
-    var filteredSectionTalks:  [[TalkData]] = []
-    var selectedSection: Int = 0
+    var displayTalks: [TalkData] = []
+    var filteredTalks:  [TalkData] = []
     var selectedRow: Int = 0
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -21,37 +20,55 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     var currentTitle: String = ""
     var selectedTalks: [TalkData] = [TalkData] ()
     
+    var selectedTalksByNameDict : [String: Bool] = [ : ]
     
-    // cancel button pressed
-    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+    //MARK: Actions
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
         dismiss(animated: true, completion: nil)
     }
-    
     
     
     // MARK: Init
     override func viewDidLoad() {
         
+        print("UserAddtalkTableView: viewDidLoad")
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
-        print("TabletalkController: viewDidLoad")
         
         super.viewDidLoad()
         
-        // mark all talks which are TBD
+        // 
+        // we display talks which are the union of the selectedTalks
+        // and ALL talks.  selectedTalks are shown at the top. 
+        //
         
-        self.sectionTalks = TheDataModel.getTalks(content: KEY_ALLTALKS)
-        /*
-        for talk in self.sectionTalks.joined() {
-            for selectedTalkName in selectedTalks {
-                if talk.talkURL.range(of: selectedTalkName) != nil{
-                    talk.isUserSelected = true
-                    break
-                }
-            }
+        for talk in self.selectedTalks {
+            selectedTalksByNameDict[talk.fileName] = true
+            print("Selected Talk: ", talk.title)
             
         }
+        
+        /*
+        var t1 = [1, 2, 3]
+        var t2 = t1
+        t2[1] = 5
+        print(t1, t2)
  */
-        self.filteredSectionTalks = self.sectionTalks
+        
+        let allTalks = TheDataModel.getTalks(content: KEY_ALLTALKS).joined()
+        for talk in allTalks {
+            selectedTalksByNameDict[talk.fileName] = false
+        }
+        for talk in self.selectedTalks {
+            selectedTalksByNameDict[talk.fileName] = true
+        }
+
+        
+        let setofAllTalks : Set<TalkData> = Set(allTalks)
+        let setOfSelectedTalks : Set<TalkData> = Set(self.selectedTalks)
+        let xorSet = setofAllTalks.symmetricDifference(setOfSelectedTalks)
+        
+        self.displayTalks = self.selectedTalks + Array(xorSet)
+        self.filteredTalks = self.displayTalks
         
         //searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -62,6 +79,8 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         searchController.delegate = self
         
         self.title =  self.currentTitle
+    
+        //self.tableView.allowsMultipleSelection = true
     }
     
     deinit {
@@ -76,7 +95,6 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         searchController.isActive = false
         
     }
-    
     
     
     // MARK: - UISearchBarDelegate
@@ -105,31 +123,19 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
     // MARK: - UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
-        
+ 
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
-            var sectionsPositionDict : [String: Int] = [:]
-            self.filteredSectionTalks = []
-            for sections in self.sectionTalks {
-                for talkData in sections {
-                    if talkData.title.lowercased().contains(searchText.lowercased()) {
-                        
-                        if sectionsPositionDict[talkData.section] == nil {
-                            // new section seen.  create new array of talks for this section
-                            self.filteredSectionTalks.append([talkData])
-                            sectionsPositionDict[talkData.section] = self.filteredSectionTalks.count - 1
-                        } else {
-                            // section already exists.  add talk to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[talkData.section]
-                            self.filteredSectionTalks[sectionPosition!].append(talkData)
-                        }
-                    }
+            self.filteredTalks = []
+            for talk in self.displayTalks {
+                if talk.title.lowercased().contains(searchText.lowercased()) {
+                    self.filteredTalks.append(talk)
                 }
             }
-            
         } else {
-            self.filteredSectionTalks = self.sectionTalks
+            self.filteredTalks = self.displayTalks
         }
+
         tableView.reloadData()
     }
     
@@ -141,86 +147,101 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.filteredSectionTalks.count
+        return self.filteredTalks.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.filteredSectionTalks[section].count
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var sectionTitle : String
-        
-        sectionTitle =  self.filteredSectionTalks[section][0].section
-        
-        return sectionTitle
+        return self.filteredTalks.count
     }
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didselectrow")
         self.selectedRow = indexPath.row
-        let cell = tableView.cellForRow(at: indexPath) as? UserAddTalkTableViewCell
-        
-        if (cell?.isUserSelected)! {
-            cell?.isUserSelected = false
-            cell?.userSelected.image = UIImage(named: "checkboxoff")
+
+        if let cell = tableView.cellForRow(at: indexPath) as? UserAddTalkTableViewCell {
+            let talk = self.filteredTalks[indexPath.row]
             
-        } else {
-            cell?.isUserSelected = true
-            cell?.userSelected.image = UIImage(named: "checkboxon")
+            var userSelected = selectedTalksByNameDict[talk.fileName]
+            userSelected = (userSelected == true) ? false : true
+            selectedTalksByNameDict[talk.fileName] = userSelected
             
+            setSelectedState(talk: talk, cell: cell)
+            //cell.backgroundColor = UIColor.green
+            updateSelectedTalks(changedTalk: talk)
         }
-
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //print("cellForRowAt")
         let cellIdentifier = "UserAddTalkTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserAddTalkTableViewCell  else {
             fatalError("The dequeued cell is not an instance of UserAddTalkTableViewCell.")
         }
+        let talk = self.filteredTalks[indexPath.row]
         
-        let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
+        /*
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.green
+        cell.selectedBackgroundView = backgroundView
+ */
         
-        //print(talk)
-        //print("talk title: ",talk.title)
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        cell.userSelected.image = UIImage(named: "checkboxoff")
+        setSelectedState(talk: talk, cell: cell)
 
-        
-        
         return cell
     }
     
-    override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //print ("enter: willDisplayHeaderView")
-        
-        let header = view as! UITableViewHeaderFooterView
-        
-        view.tintColor = UIColor.black
-        header.textLabel?.textColor = UIColor.white
-        header.textLabel?.textAlignment = NSTextAlignment.center
-    }
     
     
-    
-    
-    // MARK: - Navigation
-    
-    
+    // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
         
-        print("useraddtalktable prepare to seque")
         
+        print("useraddtalktable prepare to seque")
         
     }
     
 
+    // MARK: Private
+    private func updateSelectedTalks(changedTalk: TalkData) {
+        
+        // if the changed talk is in our selected list, then the new state is presumably off
+        // in that case, removed the talk from selections
+        // otherwise the new state is presumably on.
+        // in that case, add the talk to selections
+        var idx = 0
+        for aSelectedTalk in self.selectedTalks {
+            if changedTalk.fileName == aSelectedTalk.fileName {
+                selectedTalks.remove(at: idx)
+                return
+            }
+            idx += 1
+        }
+        self.selectedTalks.append(changedTalk)
+    }
+    
+    private func setSelectedState(talk: TalkData, cell: UserAddTalkTableViewCell) {
+    
+        let userSelected = self.selectedTalksByNameDict[talk.fileName]
+        if userSelected == true {
+            cell.userSelected.image = UIImage(named: "checkboxon")
+            //cell.backgroundColor = UIColor.green
+            
+        } else {
+            cell.userSelected.image = UIImage(named: "checkboxoff")
+            //cell.backgroundColor = UIColor.white
+
+            
+        }
+
+        
+    }
+    
+  
+
+    
 }

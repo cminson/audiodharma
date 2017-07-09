@@ -252,7 +252,6 @@
                                 <connections>
                                     <outlet property="speakerPhoto" destination="lw5-8N-Y7N" id="WOU-Jg-NGW"/>
                                     <outlet property="title" destination="841-dJ-2bC" id="HcG-DQ-yLT"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="4Xg-qy-iaw"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -268,10 +267,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="SHOWMP3PLAYER" id="7xd-qE-dqn"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="597.60000000000002" y="1656.521739130435"/>
+            <point key="canvasLocation" x="647" y="1657"/>
         </scene>
         <!--Select List-->
         <scene sceneID="pJg-hb-2YL">
@@ -403,7 +405,7 @@
             </objects>
             <point key="canvasLocation" x="-335" y="2537"/>
         </scene>
-        <!--Edit Talks -->
+        <!--Add & Remove Talks -->
         <scene sceneID="NKy-2s-6YI">
             <objects>
                 <tableViewController id="EIX-tq-R4j" customClass="UserAddTalkViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -448,7 +450,7 @@
                             <outlet property="delegate" destination="EIX-tq-R4j" id="RHN-VD-ye2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Edit Talks " id="daP-mt-RlJ">
+                    <navigationItem key="navigationItem" title="Add &amp; Remove Talks " id="daP-mt-RlJ">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ibP-4d-rLT">
                             <connections>
                                 <action selector="dismiss:" destination="EIX-tq-R4j" id="LiI-vh-gBD"/>
@@ -707,10 +709,10 @@
         <image name="playaudio" width="61" height="61"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hEa-61-IsL"/>
-        <segue reference="xoW-9y-ITT"/>
         <segue reference="Je7-85-m7J"/>
+        <segue reference="xoW-9y-ITT"/>
+        <segue reference="hEa-61-IsL"/>
         <segue reference="dCY-Lg-B8b"/>
-        <segue reference="4Xg-qy-iaw"/>
+        <segue reference="7xd-qE-dqn"/>
     </inferredMetricsTieBreakers>
 </document>
