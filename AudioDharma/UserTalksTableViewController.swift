@@ -15,6 +15,7 @@ import UIKit
 class UserTalkTableViewController: UITableViewController {
     
     // MARK: Properties
+    var userListIndex: Int = 0
     var selectedTalks: [TalkData]  = [TalkData] ()  // contains the array of talks selected user list that called us
     var userListTitle: String = ""
     var selectedRow: Int = 0
@@ -23,6 +24,13 @@ class UserTalkTableViewController: UITableViewController {
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let selectedUserList = TheDataModel.userLists[userListIndex]
+        for talkFileName in selectedUserList.talkFileNames {
+            if let talk = TheDataModel.getTalkForName(name: talkFileName) {
+                selectedTalks.append(talk)
+            }
+        }
         
         self.title = self.userListTitle
         self.tableView.isEditing = true
@@ -40,6 +48,14 @@ class UserTalkTableViewController: UITableViewController {
             
             print("UserTalksTableViewController: Unwind")
             self.selectedTalks = controller.selectedTalks
+            
+            var talkFileNames = [String]()
+            for talk in self.selectedTalks {
+                talkFileNames.append(talk.fileName)
+                
+            }
+            
+            TheDataModel.userLists[userListIndex].talkFileNames = talkFileNames
             self.tableView.reloadData()
         }
     }
@@ -114,13 +130,22 @@ class UserTalkTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        /*
-        let movedObject = self.fruits[sourceIndexPath.row]
-        fruits.remove(at: sourceIndexPath.row)
-        fruits.insert(movedObject, at: destinationIndexPath.row)
-        NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(fruits)")
-        // To check for correctness enable: self.tableView.reloadData()
- */
+        
+        let movedTalk = self.selectedTalks[sourceIndexPath.row]
+        self.selectedTalks.remove(at: sourceIndexPath.row)
+        self.selectedTalks.insert(movedTalk, at: destinationIndexPath.row)
+        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedTalk.title)")
+        
+        var talkFileNames = [String]()
+        for talk in self.selectedTalks {
+            talkFileNames.append(talk.fileName)
+            
+        }
+        
+        TheDataModel.userLists[userListIndex].talkFileNames = talkFileNames
+       
+        
+ 
     }
     
     /*

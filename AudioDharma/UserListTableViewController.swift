@@ -85,6 +85,9 @@ class UserListTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
+            userTalkTableViewController.userListIndex = self.selectedRow
+            
+            /*
             let selectedUserList = TheDataModel.userLists[self.selectedRow]
             
             var selectedTalks = [TalkData] ()
@@ -96,6 +99,7 @@ class UserListTableViewController: UITableViewController {
             }
 
             userTalkTableViewController.selectedTalks = selectedTalks
+ */
 
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
