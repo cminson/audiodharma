@@ -143,16 +143,8 @@ class UserTalkTableViewController: UITableViewController {
         }
         
         TheDataModel.userLists[userListIndex].talkFileNames = talkFileNames
-       
-        
- 
-    }
+      }
     
-    /*
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        let rowData = fruits[indexPath.row]
-        return rowData.hasPrefix("A")
-    }
- */
+   
     
 }

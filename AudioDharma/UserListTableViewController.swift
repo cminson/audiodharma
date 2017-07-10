@@ -15,15 +15,16 @@ class UserListTableViewController: UITableViewController {
     //MARK: Properties
     var selectedRow: Int = 0
     
+    
     //MARK: Actions
     @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
         
         print("unwindToUserList")
-
         if let sourceViewController = sender.source as? UserListViewController, let userList = sourceViewController.userList {
             
             if sourceViewController.editMode == true {
                 TheDataModel.userLists[selectedRow].title = userList.title
+                self.saveUserListData()
                 self.tableView.reloadData()
                 
             } else {
@@ -32,19 +33,29 @@ class UserListTableViewController: UITableViewController {
                 
                 TheDataModel.userLists.append(userList)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
-                
+                self.saveUserListData()
             }
-            
         }
         
     }
 
+    // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        if let savedUserList = self.loadUserList() {
+            TheDataModel.userLists = savedUserList
+        }
+        self.loadUserList()
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     
+    
+    // MARK: Navigation
     //
     // Pathways:
     // If Plus button  clicked, then add a User List (SHOWADDUSERLIST)
@@ -108,10 +119,7 @@ class UserListTableViewController: UITableViewController {
  
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -152,6 +160,8 @@ class UserListTableViewController: UITableViewController {
                 self.tableView.isEditing = false
 
                 print("Handle Ok logic here")
+                TheDataModel.userLists.remove(at: indexPath.row)
+                self.saveUserListData()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
@@ -186,6 +196,29 @@ class UserListTableViewController: UITableViewController {
         
     }
 
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        let movedFolder = TheDataModel.userLists[sourceIndexPath.row]
+        TheDataModel.userLists.remove(at: sourceIndexPath.row)
+        TheDataModel.userLists.insert(movedFolder, at: destinationIndexPath.row)
+        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedFolder.title)")
+        
+      
+    }
+    
+    // MARK: Private
+    private func saveUserListData() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
+        if isSuccessfulSave {
+            os_log("UserListData successfully saved.", log: OSLog.default, type: .debug)
+        } else {
+            os_log("Failed to save UserListData...", log: OSLog.default, type: .error)
+        }
+    }
+    
+    private func loadUserList() -> [UserListData]?  {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
+    }
 
 
 }

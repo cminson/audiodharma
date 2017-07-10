@@ -29,7 +29,6 @@ class Model {
 
     
     init() {
-        loadSampleUserFolders()
     }
     
     func loadSampleUserFolders() {
