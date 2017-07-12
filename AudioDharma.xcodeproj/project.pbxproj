@@ -20,21 +20,19 @@
 		8387D63E1EFC05180025006B /* FolderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63D1EFC05180025006B /* FolderData.swift */; };
 		8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */; };
 		8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D6411EFC07E20025006B /* FolderTableViewCell.swift */; };
-		839357BA1F05473D007FD261 /* SelectUserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */; };
 		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
-		83C8A3881F068E8D00D76752 /* SelectUserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */; };
 		83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */; };
 		83CA12491F028CEA00798D20 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */; };
 		83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D601EF17B390071CAD3 /* AppDelegate.swift */; };
 		83DC0D631EF17B390071CAD3 /* TalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D621EF17B390071CAD3 /* TalkViewController.swift */; };
 		83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D641EF17B390071CAD3 /* Main.storyboard */; };
 		83DC0D6B1EF17B390071CAD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */; };
+		83EF04DB1F15128A0045E38E /* AddEditUserListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF04DA1F15128A0045E38E /* AddEditUserListController.swift */; };
 		83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */; };
 		83EF51AE1F0440DA000678B0 /* UserTalksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */; };
 		83EF51B01F044415000678B0 /* UserAddTalkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51AF1F044415000678B0 /* UserAddTalkTableViewController.swift */; };
 		83EF51B21F044432000678B0 /* UserAddTalkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51B11F044432000678B0 /* UserAddTalkTableViewCell.swift */; };
 		83FCA9471F02BFF100B9664D /* UserListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9461F02BFF100B9664D /* UserListData.swift */; };
-		83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCA9481F02E77300B9664D /* UserListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,9 +49,7 @@
 		8387D63D1EFC05180025006B /* FolderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderData.swift; sourceTree = "<group>"; };
 		8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		8387D6411EFC07E20025006B /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
-		839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectUserListTableViewController.swift; sourceTree = "<group>"; };
 		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectUserListTableViewCell.swift; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
 		83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		83DC0D5D1EF17B390071CAD3 /* AudioDharma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioDharma.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,12 +58,12 @@
 		83DC0D651EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83DC0D6A1EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83DC0D6C1EF17B390071CAD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83EF04DA1F15128A0045E38E /* AddEditUserListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditUserListController.swift; sourceTree = "<group>"; };
 		83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTalksTableViewController.swift; sourceTree = "<group>"; };
 		83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTalksTableViewCell.swift; sourceTree = "<group>"; };
 		83EF51AF1F044415000678B0 /* UserAddTalkTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAddTalkTableViewController.swift; sourceTree = "<group>"; };
 		83EF51B11F044432000678B0 /* UserAddTalkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAddTalkTableViewCell.swift; sourceTree = "<group>"; };
 		83FCA9461F02BFF100B9664D /* UserListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListData.swift; sourceTree = "<group>"; };
-		83FCA9481F02E77300B9664D /* UserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +120,7 @@
 				83432FBF1F0AB373002926AC /* MP3Player.swift */,
 				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
 				83CA12481F028CEA00798D20 /* UserListTableViewCell.swift */,
-				83FCA9481F02E77300B9664D /* UserListViewController.swift */,
+				83EF04DA1F15128A0045E38E /* AddEditUserListController.swift */,
 				83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */,
 				83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */,
 				83EF51AF1F044415000678B0 /* UserAddTalkTableViewController.swift */,
@@ -137,8 +133,6 @@
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83432FBB1F0AAD88002926AC /* TalkPlayer.swift */,
 				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
-				839357B91F05473D007FD261 /* SelectUserListTableViewController.swift */,
-				83C8A3871F068E8D00D76752 /* SelectUserListTableViewCell.swift */,
 			);
 			path = AudioDharma;
 			sourceTree = "<group>";
@@ -225,10 +219,8 @@
 				83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */,
 				8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */,
 				83432FC01F0AB373002926AC /* MP3Player.swift in Sources */,
-				83FCA9491F02E77300B9664D /* UserListViewController.swift in Sources */,
 				83EF51AE1F0440DA000678B0 /* UserTalksTableViewCell.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
-				83C8A3881F068E8D00D76752 /* SelectUserListTableViewCell.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserAddTalkTableViewController.swift in Sources */,
 				83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,
@@ -238,7 +230,7 @@
 				8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkTableViewController.swift in Sources */,
 				83FCA9471F02BFF100B9664D /* UserListData.swift in Sources */,
-				839357BA1F05473D007FD261 /* SelectUserListTableViewController.swift in Sources */,
+				83EF04DB1F15128A0045E38E /* AddEditUserListController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

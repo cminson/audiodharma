@@ -354,10 +354,10 @@
             </objects>
             <point key="canvasLocation" x="3440.8000000000002" y="708.39580209895053"/>
         </scene>
-        <!--User List-->
+        <!--Add User List-->
         <scene sceneID="eof-dd-Xtj">
             <objects>
-                <viewController id="Ac4-Jo-Vf8" customClass="UserListViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ac4-Jo-Vf8" customClass="AddEditUserListController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="u28-qQ-vQ5"/>
                         <viewControllerLayoutGuide type="bottom" id="SQR-s2-8st"/>
@@ -383,7 +383,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="User List" id="cQR-Oh-vYx">
+                    <navigationItem key="navigationItem" title="Add User List" id="cQR-Oh-vYx">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Kys-47-rGm">
                             <connections>
                                 <action selector="cancel:" destination="Ac4-Jo-Vf8" id="vTa-qf-iUz"/>

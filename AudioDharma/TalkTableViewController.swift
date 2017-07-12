@@ -18,7 +18,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     var content: String = ""
     var selectedSection: Int = 0
     var selectedRow: Int = 0
-    var currentTitle: String = ""
     let searchController = UISearchController(searchResultsController: nil)
     
     
@@ -50,7 +49,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         searchController.searchBar.delegate = self
         searchController.delegate = self
         
-        self.title =  self.currentTitle
     }
     
     deinit {

@@ -1,35 +1,43 @@
 //
-//  UserListViewController.swift
+//  AddUserListViewController.swift
 //  AudioDharma
 //
-//  Created by Christopher on 6/27/17.
+//  Created by Christopher on 7/11/17.
 //  Copyright © 2017 Christopher Minson. All rights reserved.
 //
 
 import UIKit
+
+import UIKit
 import os.log
 
-class UserListViewController: UIViewController, UITextFieldDelegate {
+class AddEditUserListController: UIViewController, UITextFieldDelegate {
     
     // MARK: Properties
-    @IBOutlet weak var userListTitle: UITextField!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
-
-    
     var userList: UserListData? = nil
     var editMode: Bool = false
     
-    //MARK: Navigation
-    //MARK: Actions
-    @IBAction func unwindToUserListView(sender: UIStoryboardSegue) {
+    
+    // MARK: Outlets
+    @IBOutlet weak var userListTitle: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    
+    // MARK: Init
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        print("UserAddTalkViewController")
-        
-        if let sourceViewController = sender.source as? UserAddTalkViewController {
-            //let userTalkList = sourceViewController.filteredSectionTalks
-        }
+        print("view loaded: \(userList?.title)")
+        userListTitle.delegate = self
+        userListTitle.text = userList?.title
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
 
+    
+    //MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
@@ -42,15 +50,25 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
         
         let title = userListTitle.text ?? ""
         self.userList = UserListData(title: title)
-
+        
     }
     
-     // MARK: Actions
+    @IBAction func unwindToUserListView(sender: UIStoryboardSegue) {
+        
+        print("UserAddTalkViewController")
+        
+        if let sourceViewController = sender.source as? UserAddTalkViewController {
+            //let userTalkList = sourceViewController.filteredSectionTalks
+        }
+    }
+    
+    
+    // MARK: Actions
     @IBAction func cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-
-   
+    
+    
     
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -62,24 +80,11 @@ class UserListViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         userListTitle.text = textField.text
     }
-
-   
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        print("view loaded: \(userList?.title)")
-        userListTitle.delegate = self
-        userListTitle.text = userList?.title
-    }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
-
     
-
+    
+    
+    
+    
+    
 }

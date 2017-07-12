@@ -17,10 +17,9 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     let searchController = UISearchController(searchResultsController: nil)
     
     var content: String = ""
-    var currentTitle: String = ""
     var selectedTalks: [TalkData] = [TalkData] ()
     
-    var selectedTalksByNameDict : [String: Bool] = [ : ]
+    var selectedTalksByNameDict : [String: Bool] = [ : ]    // dict indexed by talk filename. value bool is user listed or not
     
     //MARK: Actions
     @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
@@ -47,12 +46,6 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
             
         }
         
-        /*
-        var t1 = [1, 2, 3]
-        var t2 = t1
-        t2[1] = 5
-        print(t1, t2)
- */
         
         let allTalks = TheDataModel.getTalks(content: KEY_ALLTALKS).joined()
         for talk in allTalks {
@@ -78,8 +71,6 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         searchController.searchBar.delegate = self
         searchController.delegate = self
         
-        self.title =  self.currentTitle
-    
         //self.tableView.allowsMultipleSelection = true
     }
     

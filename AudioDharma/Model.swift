@@ -33,19 +33,27 @@ class Model {
     
     func loadSampleUserFolders() {
         
-
-        let t1 = UserListData(title: "List 1")
+        let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
+        let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
         
-        let f1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
-        let f2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
+        let u1 = UserListData(title: "List 1")
+        u1.talkFileNames = [t1,t2]
+        userLists.append(u1)
+        self.saveUserListData()
+        print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
         
+        self.userLists = self.loadUserList()!
+        print("loadSampleUserFolders 2", userLists[0].title)
+        print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
+    
+        /*
         t1.talkFileNames = [f1,f2]
         let t2 = UserListData(title: "List 2")
         let t3 = UserListData(title: "List 3")
         self.userLists += [t1, t2, t3]
+ */
 
     }
-
     
     func loadData() {
         
@@ -53,7 +61,28 @@ class Model {
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         loadTalksFromFile(jsonLocation: "talks01")
         loadFoldersFromFile(jsonLocation: "folders01")
-   }
+        loadSampleUserFolders()
+    }
+
+    
+    public func saveUserListData() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
+        print("saveUserListData to: ", UserListData.ArchiveURL.path)
+        if isSuccessfulSave {
+            print("UserListData:  Success")
+            //os_log("UserListData:  Success", log: OSLog.default, type: .debug)
+        } else {
+            print("UserListData:  Failure")
+            //os_log("UserListData:  Failure", log: OSLog.default, type: .error)
+        }
+    }
+    
+    public func loadUserList() -> [UserListData]?  {
+        print("loadUserList from: ", UserListData.ArchiveURL.path)
+        return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
+    }
+    
+
     
     
     func getTalks(content: String) -> [[TalkData]] {
@@ -450,6 +479,9 @@ class Model {
         task.resume()
         print("loadAllTalks: Finished")
     }
+    
+    
+
 
     
     private func converDurationToSeconds(duration: String) -> Int {

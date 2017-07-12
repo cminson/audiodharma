@@ -15,9 +15,9 @@ import UIKit
 class UserTalkTableViewController: UITableViewController {
     
     // MARK: Properties
-    var userListIndex: Int = 0
-    var selectedTalks: [TalkData]  = [TalkData] ()  // contains the array of talks selected user list that called us
-    var userListTitle: String = ""
+    var selectedUserListIndex: Int = 0         // into into the datamodel userlist array, the value is the selected user list to display
+    //var selectedUserList : UserListData!     // the selected user list for which we will display talks (obtain via selecteduserListIndex)
+    var selectedTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
     var selectedRow: Int = 0
     
     
@@ -25,14 +25,16 @@ class UserTalkTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let selectedUserList = TheDataModel.userLists[userListIndex]
-        for talkFileName in selectedUserList.talkFileNames {
+        //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
+
+        // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
+        for talkFileName in TheDataModel.userLists[selectedUserListIndex].talkFileNames {
             if let talk = TheDataModel.getTalkForName(name: talkFileName) {
                 selectedTalks.append(talk)
             }
         }
         
-        self.title = self.userListTitle
+        //self.title = selectedUserList.title
         self.tableView.isEditing = true
     }
     
@@ -40,25 +42,6 @@ class UserTalkTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    
-    // MARK: Actions
-    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {
-        
-        if let controller = sender.source as? UserAddTalkViewController {
-            
-            print("UserTalksTableViewController: Unwind")
-            self.selectedTalks = controller.selectedTalks
-            
-            var talkFileNames = [String]()
-            for talk in self.selectedTalks {
-                talkFileNames.append(talk.fileName)
-                
-            }
-            
-            TheDataModel.userLists[userListIndex].talkFileNames = talkFileNames
-            self.tableView.reloadData()
-        }
-    }
     
     
     // MARK: - Navigation
@@ -68,16 +51,19 @@ class UserTalkTableViewController: UITableViewController {
         
         switch segue.identifier ?? "" {
             
-        case "SHOWEDITUSERTALKS":
+        case "SHOWEDITUSERTALKS":  // edit the talks within this User List
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
             let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
             addTalkTableViewController?.selectedTalks =  selectedTalks
+            for talk in selectedTalks {
+                print("UsertalksTableViewController prepare talk ", talk)
+            }
             print("SHOWEDITUSERTALKS: set selected talks")
             
-        case "SHOWMP3PLAYER":
+        case "SHOWMP3PLAYER":   // play the selected talk in the MP3
             guard let MP3Player = segue.destination as? TalkViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -89,7 +75,38 @@ class UserTalkTableViewController: UITableViewController {
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
      }
-
+    
+    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {   // called from Add Talks
+        
+        //
+        // gather the talks selected in Add Talks and store them off
+        //
+        if let controller = sender.source as? UserAddTalkViewController {
+            
+            self.selectedTalks = controller.selectedTalks
+            
+            // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
+            var talkFileNames = [String]()
+            for talk in self.selectedTalks {
+                talkFileNames.append(talk.fileName)
+                //print("adding: ", talk.fileName)
+                
+            }
+            
+            // save the resulting array into the userlist and then persist into storage
+            TheDataModel.userLists[selectedUserListIndex].talkFileNames = talkFileNames
+            
+            // DEBUG
+            let test1 = TheDataModel.userLists[selectedUserListIndex].talkFileNames
+            for talk in test1 {
+                print("SAVED: ", talk)
+                
+            }
+            TheDataModel.saveUserListData()
+            self.tableView.reloadData()
+        }
+    }
+    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -136,13 +153,16 @@ class UserTalkTableViewController: UITableViewController {
         self.selectedTalks.insert(movedTalk, at: destinationIndexPath.row)
         print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedTalk.title)")
         
+        
+        // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
         var talkFileNames = [String]()
         for talk in self.selectedTalks {
             talkFileNames.append(talk.fileName)
-            
         }
         
-        TheDataModel.userLists[userListIndex].talkFileNames = talkFileNames
+        // save the resulting array into the userlist and then persist into storage
+        TheDataModel.userLists[selectedUserListIndex].talkFileNames = talkFileNames
+        TheDataModel.saveUserListData()
       }
     
    

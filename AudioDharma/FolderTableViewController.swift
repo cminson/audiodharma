@@ -18,18 +18,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     var folderSections: [[FolderData]] = []
     var filteredFolderSections:  [[FolderData]] = []
     let searchController = UISearchController(searchResultsController: nil)
-
-    //var searchController: UISearchController
     
-    /*
-    //MARK: Init
-    required init?(coder aDecoder: NSCoder) {
-        self.searchController = UISearchController(searchResultsController: nil)
-        super.init(coder: aDecoder)
-
-
-    }
- */
 
     override func viewDidLoad() {
         self.tableView.delegate = self
@@ -204,8 +193,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        print("prepare to seque")
-
         
         let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
         print("Folder content: \(folder.content)")
@@ -219,16 +206,12 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
             }
             //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
             talkTableViewController.content = folder.content
-            talkTableViewController.currentTitle = folder.title
+            talkTableViewController.title = folder.title
             
         case "SHOWUSERLISTS":
-
             guard let _ = segue.destination as? UserListTableViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-
-
-            
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }

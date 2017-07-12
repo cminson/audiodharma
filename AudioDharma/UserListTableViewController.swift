@@ -13,40 +13,21 @@ import os.log
 class UserListTableViewController: UITableViewController {
     
     //MARK: Properties
+    
     var selectedRow: Int = 0
     
     
-    //MARK: Actions
-    @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
-        
-        print("unwindToUserList")
-        if let sourceViewController = sender.source as? UserListViewController, let userList = sourceViewController.userList {
-            
-            if sourceViewController.editMode == true {
-                TheDataModel.userLists[selectedRow].title = userList.title
-                self.saveUserListData()
-                self.tableView.reloadData()
-                
-            } else {
-                // Add a new user list.
-                let newIndexPath = IndexPath(row: TheDataModel.userLists.count, section: 0)
-                
-                TheDataModel.userLists.append(userList)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-                self.saveUserListData()
-            }
-        }
-        
-    }
-
     // MARK: Init
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("UserListTableViewController: viewDidLoad")
         
-        if let savedUserList = self.loadUserList() {
+        if let savedUserList = TheDataModel.loadUserList() {
             TheDataModel.userLists = savedUserList
+            print("UserListTableViewController: getting userLists: \(savedUserList) ")
+
         }
-        self.loadUserList()
     }
     
     override func didReceiveMemoryWarning() {
@@ -54,14 +35,13 @@ class UserListTableViewController: UITableViewController {
     }
 
     
-    
     // MARK: Navigation
+    
     //
-    // Pathways:
+    // Seque pathways:
     // If Plus button  clicked, then add a User List (SHOWADDUSERLIST)
     // If Edit slider button clicked, then edit selected User List (SHOWUSEREDITLIST)
     // If a User List is selected, then show all talks in this list (SHOWUSERTALKS)
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
 
@@ -70,11 +50,15 @@ class UserListTableViewController: UITableViewController {
         
         switch(segue.identifier ?? "") {
             
-        case "SHOWADDUSERLIST":
-            os_log("New User List", log: OSLog.default, type: .debug)
+        case "SHOWADDUSERLIST":     // Add a New User List
+            guard let navController = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
+                addEditUserListController.editMode = false
+            }
             
-
-        case "SHOWEDITUSERLIST":            
+        case "SHOWEDITUSERLIST":    // Edit an existing User List
  
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -82,72 +66,72 @@ class UserListTableViewController: UITableViewController {
             
             let selectedUserList = TheDataModel.userLists[self.selectedRow]
 
-            let userListViewController = navController.viewControllers.last as? UserListViewController
+            if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
+                addEditUserListController.userList = selectedUserList
+                addEditUserListController.title = "Edit User List"
+                addEditUserListController.editMode = true
+            }
 
-            
-            userListViewController?.userList = selectedUserList
-            userListViewController?.editMode = true
-            print("selectedUserList: \(selectedUserList.title)  \(userListViewController?.userList)")
-
-
-        case "SHOWUSERTALKS":
-            print("SHOWUSERTALKS")
+        case "SHOWUSERTALKS":   // Display all talks within the current User List
             guard let userTalkTableViewController = segue.destination as? UserTalkTableViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            userTalkTableViewController.userListIndex = self.selectedRow
-            
-            /*
-            let selectedUserList = TheDataModel.userLists[self.selectedRow]
-            
-            var selectedTalks = [TalkData] ()
-            for talkFileName in selectedUserList.talkFileNames {
-                if let talk = TheDataModel.getTalkForName(name: talkFileName) {
-                    //talk.isUserSelected = true
-                    selectedTalks.append(talk)
-                }
-            }
+            // set the userList that we want to show talks for
+            //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
+            userTalkTableViewController.selectedUserListIndex = self.selectedRow
 
-            userTalkTableViewController.selectedTalks = selectedTalks
- */
-
+            
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
 
         }
  
     }
+    
+    @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
+        
+        if let addEditUserListController = sender.source as? AddEditUserListController, let userList = addEditUserListController.userList {
+            
+            // if edit mode = true, then this is an edit of an existing user list
+            // otherwise we are adding a new user list
+            if addEditUserListController.editMode == true {
+                TheDataModel.userLists[selectedRow].title = userList.title
+                TheDataModel.saveUserListData()
+                self.tableView.reloadData()
+                
+            } else {
+                let newIndexPath = IndexPath(row: TheDataModel.userLists.count, section: 0)
+                
+                TheDataModel.userLists.append(userList)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                TheDataModel.saveUserListData()
+            }
+        }
+    }
+
 
     
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return TheDataModel.userLists.count
-       
-
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "UserListTableViewCell"
         
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserListTableViewCell  else {
             fatalError("The dequeued cell is not an instance of UserListTableViewCell.")
         }
         
-        print("row = \(indexPath.row)")
-
         let userList = TheDataModel.userLists[indexPath.row]
-        
         cell.title.text = userList.title
-        
         return cell
-        
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -159,19 +143,15 @@ class UserListTableViewController: UITableViewController {
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 self.tableView.isEditing = false
 
-                print("Handle Ok logic here")
                 TheDataModel.userLists.remove(at: indexPath.row)
-                self.saveUserListData()
+                TheDataModel.saveUserListData()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 self.tableView.isEditing = false
-
-                print("Handle Cancel Logic here")
             }))
             
             self.present(refreshAlert, animated: true, completion: nil)
-
         }
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit Title") { (action, indexPath) in
@@ -181,19 +161,16 @@ class UserListTableViewController: UITableViewController {
             // share item at indexPath
             self.tableView.isEditing = false
         }
-        
-        
+    
         edit.backgroundColor = UIColor.blue
         
         return [delete, edit]
     }
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didselectrow")
+        
         self.selectedRow = indexPath.row
-        
         self.performSegue(withIdentifier: "SHOWUSERTALKS", sender: self)
-        
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -206,20 +183,7 @@ class UserListTableViewController: UITableViewController {
       
     }
     
-    // MARK: Private
-    private func saveUserListData() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
-        if isSuccessfulSave {
-            os_log("UserListData successfully saved.", log: OSLog.default, type: .debug)
-        } else {
-            os_log("Failed to save UserListData...", log: OSLog.default, type: .error)
-        }
-    }
     
-    private func loadUserList() -> [UserListData]?  {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
-    }
-
-
+   
 }
 
