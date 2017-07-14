@@ -22,20 +22,29 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     override func viewDidLoad() {
         
         self.tableView.delegate = self
+        
+        TheDataModel.loadData()
         super.viewDidLoad()
 
-        self.folderSections = TheDataModel.folderSections
-        self.filteredFolderSections = self.folderSections
+        self.filteredFolderSections = TheDataModel.folderSections
         
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = searchController.searchBar
-        searchController.searchBar.delegate = self
-        searchController.delegate = self
     }
     
+    deinit {
+        
+        // this view tends to hang around in the parent.  this clears it
+        self.searchController.view.removeFromSuperview()
+    }
+
+    
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
     }
     
@@ -45,10 +54,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         super.prepare(for: segue, sender: sender)
         
-        let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-        print("Folder content: \(folder.content)")
-        
-        searchController.isActive = false
         switch segue.identifier ?? "" {
             
         case "SHOWTALKS":
@@ -56,23 +61,21 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
+            let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
             talkTableViewController.content = folder.content
             talkTableViewController.title = folder.title
             
         case "SHOWUSERLISTS":
-            print("SHOWUSERLISTS")
-            /*
-            guard let navController = segue.destination as? UINavigationController else {
+            guard let _ = segue.destination as? UserListTableViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            guard let _ = navController.viewControllers.last as? UserListTableViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
- */
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
+        
+        // dismiss any searching - must do this prior to executing the segue
+        searchController.isActive = false
     }
 
     
@@ -81,6 +84,8 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
+    
+    // MARK: UISearchControllerDelegate
     func willPresentSearchController(_ searchController: UISearchController) {
         //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
@@ -98,6 +103,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
     
 
+    // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
         print("updateSearchResults")
@@ -105,7 +111,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
             
             var sectionsPositionDict : [String: Int] = [:]
             self.filteredFolderSections = []
-            for sections in self.folderSections {
+            for sections in TheDataModel.folderSections {
                 for folderData in sections {
                     if folderData.title.lowercased().contains(searchText.lowercased()) {
                         
@@ -120,10 +126,9 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
                         }
                     }
                 }
-            }
-            
+            }            
         } else {
-            self.filteredFolderSections = self.folderSections
+            self.filteredFolderSections = TheDataModel.folderSections
         }
         tableView.reloadData()
     }
@@ -134,26 +139,21 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
 
 
-    // MARK: - Table view data source
+    // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
+        
         return self.filteredFolderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        //print("Number of rows in section: \(self.folderSections[section].count)")
+        //print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
         return self.filteredFolderSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        var sectionTitle : String
-        
-        sectionTitle =  self.filteredFolderSections[section][0].section
-        //print(sectionTitle)
-        
-        return sectionTitle
-        
+        return self.filteredFolderSections[section][0].section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -212,7 +212,5 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
             self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
         }
     }
-    
-    
     
 }

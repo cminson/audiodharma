@@ -56,23 +56,15 @@ class Model {
     }
     
     
-    // MARK: Public model functions
+    // MARK: Public Model Functions
     func getTalks(content: String) -> [[TalkData]] {
         
-        var talks: [[TalkData]]
-        
-        talks = self.keyToTalks[content] ?? [[TalkData]]()
-       
-        print(content)
-        print(talks.count)
-        
-        return talks
+        return self.keyToTalks[content] ?? [[TalkData]]()
     }
     
     func getFolderStats(content: String) -> FolderStats {
         
-        let stats = self.keyToFolderStats[content]
-        return stats!
+        return self.keyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
     }
     
     func getUserLists() -> [UserListData] {
@@ -82,8 +74,7 @@ class Model {
     
     func getTalkForName(name: String) -> TalkData? {
         
-        let talk = self.nameToTalks[name]  
-        return talk
+        return self.nameToTalks[name]
     }
     
     
@@ -122,23 +113,28 @@ class Model {
                 
                 self.nameToTalks[fileName] = talkData
                               
-                 // add this talk to  list of all talks
+                // add this talk to  list of all talks
+                // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section
                 if self.keyToTalks[KEY_ALLTALKS] == nil {
                     self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
+                    self.keyToTalks[KEY_ALLTALKS]?.append([talkData])
                     
                 }
-                self.keyToTalks[KEY_ALLTALKS]? += [[talkData]]
+                else {
+                    self.keyToTalks[KEY_ALLTALKS]?[0].append(talkData)
+                }
                 
                 // add talk to the list of talks for this speaker
+                // Note: there is only one talk section for speaker. talks for this spearker are stored in that section
                 if self.keyToTalks[speaker] == nil {
                     self.keyToTalks[speaker] = [[TalkData]] ()
+                    self.keyToTalks[speaker]?.append([talkData])
                 }
-                self.keyToTalks[speaker]? += [[talkData]]
+                else {
+                    self.keyToTalks[speaker]?[0].append(talkData)
+                }
                 
                 talkCount += 1
-                
-                
-                
             }
         } catch {
             print(error)
@@ -363,7 +359,6 @@ class Model {
         }
         task.resume()
     }
-
     
     private func loadTalksFromWeb(jsonLocation: String) {
         
@@ -444,7 +439,6 @@ class Model {
         task.resume()
     }
     
- 
     private func converDurationToSeconds(duration: String) -> Int {
         
         var totalSeconds: Int = 0

@@ -26,7 +26,6 @@
 		83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D601EF17B390071CAD3 /* AppDelegate.swift */; };
 		83DC0D631EF17B390071CAD3 /* PlayTalkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D621EF17B390071CAD3 /* PlayTalkController.swift */; };
 		83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D641EF17B390071CAD3 /* Main.storyboard */; };
-		83DC0D6B1EF17B390071CAD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */; };
 		83EF04DB1F15128A0045E38E /* AddEditUserListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF04DA1F15128A0045E38E /* AddEditUserListController.swift */; };
 		83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */; };
 		83EF51AE1F0440DA000678B0 /* UserTalksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF51AD1F0440DA000678B0 /* UserTalksTableViewCell.swift */; };
@@ -56,7 +55,6 @@
 		83DC0D601EF17B390071CAD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83DC0D621EF17B390071CAD3 /* PlayTalkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayTalkController.swift; sourceTree = "<group>"; };
 		83DC0D651EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		83DC0D6A1EF17B390071CAD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83DC0D6C1EF17B390071CAD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83EF04DA1F15128A0045E38E /* AddEditUserListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditUserListController.swift; sourceTree = "<group>"; };
 		83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTalksTableViewController.swift; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */,
-				834BEC621EFC7C6C00CBC0C2 /* SplashViewController.swift */,
 				83DC0D641EF17B390071CAD3 /* Main.storyboard */,
 				83DC0D601EF17B390071CAD3 /* AppDelegate.swift */,
 				8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */,
@@ -130,9 +127,9 @@
 				835B9F7A1EF1B0BC009AF991 /* TalkData.swift */,
 				8387D63D1EFC05180025006B /* FolderData.swift */,
 				83C22CB41F184E87002503AE /* DonationsViewController.swift */,
-				83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */,
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
+				834BEC621EFC7C6C00CBC0C2 /* SplashViewController.swift */,
 			);
 			path = AudioDharma;
 			sourceTree = "<group>";
@@ -197,7 +194,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83DC0D6B1EF17B390071CAD3 /* LaunchScreen.storyboard in Resources */,
 				8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */,
 				83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */,
 				83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */,
@@ -243,14 +239,6 @@
 				83DC0D651EF17B390071CAD3 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		83DC0D691EF17B390071CAD3 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83DC0D6A1EF17B390071CAD3 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

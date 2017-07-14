@@ -12,9 +12,8 @@ class DonationsViewController: UIViewController {
     @IBOutlet weak var cancel: UIBarButtonItem!
     
     @IBAction func cancel(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-
         
+        dismiss(animated: true, completion: nil)
     }
     
 
