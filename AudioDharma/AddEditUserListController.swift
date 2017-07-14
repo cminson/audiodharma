@@ -27,7 +27,7 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("view loaded: \(userList?.title)")
+        print("view loaded: \(String(describing: userList?.title))")
         userListTitle.delegate = self
         userListTitle.text = userList?.title
     }
@@ -57,7 +57,7 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
         
         print("UserAddTalkViewController")
         
-        if let sourceViewController = sender.source as? UserAddTalkViewController {
+        if let _ = sender.source as? UserAddTalkViewController {
             //let userTalkList = sourceViewController.filteredSectionTalks
         }
     }

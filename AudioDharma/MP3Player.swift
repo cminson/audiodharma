@@ -38,7 +38,7 @@ class MP3Player : NSObject {
     }
     
     func play() {
-        
+        self.player.play()
     }
     
     func stop(){
@@ -49,6 +49,10 @@ class MP3Player : NSObject {
     
     func pause(){
         self.player.pause()
+    }
+    
+    func currentTime()-> CMTime {
+        return self.player.currentTime()
     }
     
     func nextTalk(talkFinishedPlaying:Bool){

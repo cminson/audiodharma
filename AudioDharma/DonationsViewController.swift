@@ -1,23 +1,27 @@
 //
-//  SplashViewController.swift
+//  DonationsViewController.swift
 //  AudioDharma
 //
-//  Created by Christopher on 6/22/17.
+//  Created by Christopher on 7/13/17.
 //  Copyright © 2017 Christopher Minson. All rights reserved.
 //
 
 import UIKit
 
-let TheDataModel = Model()
+class DonationsViewController: UIViewController {
+    @IBOutlet weak var cancel: UIBarButtonItem!
+    
+    @IBAction func cancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
 
-class SplashViewController: UIViewController {
+        
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        TheDataModel.loadData()
-        
 
-        perform(#selector(SplashViewController.showNavController), with: nil, afterDelay: 1)
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,9 +29,6 @@ class SplashViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-     func showNavController() {
-        performSegue(withIdentifier: "SHOWFOLDERLISTS", sender: self)
-    }
 
     /*
     // MARK: - Navigation

@@ -18,6 +18,7 @@ struct FolderStats {
 
 let KEY_ALLTALKS = "ALL"
 
+
 class Model {
     
     //MARK: Properties
@@ -28,63 +29,34 @@ class Model {
     var userLists: [UserListData] = []      // all the custom user lists defined by this user
 
     
-    init() {
-    }
-    
-    func loadSampleUserFolders() {
-        
-        let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
-        let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
-        
-        let u1 = UserListData(title: "List 1")
-        u1.talkFileNames = [t1,t2]
-        userLists.append(u1)
-        self.saveUserListData()
-        print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
-        
-        self.userLists = self.loadUserList()!
-        print("loadSampleUserFolders 2", userLists[0].title)
-        print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
-    
-        /*
-        t1.talkFileNames = [f1,f2]
-        let t2 = UserListData(title: "List 2")
-        let t3 = UserListData(title: "List 3")
-        self.userLists += [t1, t2, t3]
- */
-
-    }
-    
+    // MARK: Init
     func loadData() {
         
         //loadFoldersFromWeb(jsonLocation: "http://www.ezimba.com/ad/folders01.json")
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         loadTalksFromFile(jsonLocation: "talks01")
         loadFoldersFromFile(jsonLocation: "folders01")
-        loadSampleUserFolders()
     }
-
     
     public func saveUserListData() {
+        
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
         print("saveUserListData to: ", UserListData.ArchiveURL.path)
         if isSuccessfulSave {
-            print("UserListData:  Success")
             //os_log("UserListData:  Success", log: OSLog.default, type: .debug)
         } else {
-            print("UserListData:  Failure")
             //os_log("UserListData:  Failure", log: OSLog.default, type: .error)
         }
     }
     
-    public func loadUserList() -> [UserListData]?  {
+    public func loadUserListData() -> [UserListData]?  {
+        
         print("loadUserList from: ", UserListData.ArchiveURL.path)
         return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
     }
     
-
     
-    
+    // MARK: Public model functions
     func getTalks(content: String) -> [[TalkData]] {
         
         var talks: [[TalkData]]
@@ -98,27 +70,31 @@ class Model {
     }
     
     func getFolderStats(content: String) -> FolderStats {
+        
         let stats = self.keyToFolderStats[content]
         return stats!
     }
     
     func getUserLists() -> [UserListData] {
+        
         return self.userLists
     }
     
     func getTalkForName(name: String) -> TalkData? {
+        
         let talk = self.nameToTalks[name]  
         return talk
     }
     
+    
+    // MARK: Private
     private func loadTalksFromFile(jsonLocation: String) {
         
-        let asset = NSDataAsset(name: jsonLocation, bundle: Bundle.main)
-        
-        var folderSectionPositionDict : [String: Int] = [:]
         var talkCount = 0
         var totalSeconds = 0
         
+        let asset = NSDataAsset(name: jsonLocation, bundle: Bundle.main)
+
         do {
             
             let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
@@ -170,10 +146,7 @@ class Model {
         
         let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
         self.keyToFolderStats[KEY_ALLTALKS] = stats
-        
     }
-    
-
     
     private func loadFoldersFromFile(jsonLocation: String) {
         
@@ -271,15 +244,10 @@ class Model {
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             self.keyToFolderStats[folder.content] = stats
         }
-        
     }
     
-  
-
-
     private func loadFoldersFromWeb(jsonLocation: String) {
         
-        print("loadFolders")
         let requestURL : URL? = URL(string: jsonLocation)
         let urlRequest = URLRequest(url : requestURL!)
         let config = URLSessionConfiguration.default
@@ -310,7 +278,6 @@ class Model {
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
-                //print(json)
                 
                 // for each folder entry ...
                 // store off the folder into the folderSections array
@@ -382,7 +349,6 @@ class Model {
             let folders = self.folderSections.joined()
             for folder in folders {
                 
-                let sectionFolder = self.keyToTalks[folder.content]
                 let talksInFolder = (self.keyToTalks[folder.content] ?? [[TalkData]]()).joined()
                 let talkCount = talksInFolder.count
                 
@@ -400,7 +366,6 @@ class Model {
 
     
     private func loadTalksFromWeb(jsonLocation: String) {
-        
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -477,13 +442,9 @@ class Model {
 
         }
         task.resume()
-        print("loadAllTalks: Finished")
     }
     
-    
-
-
-    
+ 
     private func converDurationToSeconds(duration: String) -> Int {
         
         var totalSeconds: Int = 0
@@ -531,10 +492,22 @@ class Model {
         let secondsStr = String(format: "%02d", seconds)
     
         return hoursStr + ":" + minutesStr + ":" + secondsStr
-    
     }
     
-    
-    
+    private func loadSampleUserFolders() {
+        
+        let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
+        let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
+        
+        let u1 = UserListData(title: "List 1")
+        u1.talkFileNames = [t1,t2]
+        userLists.append(u1)
+        self.saveUserListData()
+        print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
+        
+        self.userLists = self.loadUserListData()!
+        print("loadSampleUserFolders 2", userLists[0].title)
+        print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
+    }
     
 }

@@ -35,15 +35,14 @@ class UserTalkTableViewController: UITableViewController {
         }
         
         //self.title = selectedUserList.title
-        self.tableView.isEditing = true
+        //self.tableView.isEditing = true
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    
-    
+        
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -51,25 +50,26 @@ class UserTalkTableViewController: UITableViewController {
         
         switch segue.identifier ?? "" {
             
-        case "SHOWEDITUSERTALKS":  // edit the talks within this User List
+        case "DISPLAY_EDITUSERTALKS":  // edit the talks within this User List
+            
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
             let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
             addTalkTableViewController?.selectedTalks =  selectedTalks
-            for talk in selectedTalks {
-                print("UsertalksTableViewController prepare talk ", talk)
-            }
-            print("SHOWEDITUSERTALKS: set selected talks")
             
-        case "SHOWMP3PLAYER":   // play the selected talk in the MP3
-            guard let MP3Player = segue.destination as? TalkViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-            let selectedTalk = self.selectedTalks[selectedRow]
+        case "DISPLAY_TALKPLAYER2":   // play the selected talk in the MP3
             
-            MP3Player.talk = selectedTalk
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+
+            
+            let selectedTalk = self.selectedTalks[self.selectedRow]
+            print("DISPLAY_TALKPLAYER2 Talk duration: ", selectedTalk.duration)
+            playTalkController.talk = selectedTalk
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -110,10 +110,12 @@ class UserTalkTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
+        
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return self.selectedTalks.count
     }
     
@@ -135,14 +137,16 @@ class UserTalkTableViewController: UITableViewController {
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.selectedRow = indexPath.row
-        self.performSegue(withIdentifier: "SHOWMP3PLAYER", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER2", sender: self)
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        
         return .none
     }
     
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        
         return false
     }
     
@@ -164,7 +168,5 @@ class UserTalkTableViewController: UITableViewController {
         TheDataModel.userLists[selectedUserListIndex].talkFileNames = talkFileNames
         TheDataModel.saveUserListData()
       }
-    
-   
-    
+
 }

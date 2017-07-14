@@ -9,8 +9,6 @@
 import UIKit
 
 class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-//    class FoldersTableViewController: UITableViewController {
-    
     
     //MARK: Properties
     var selectedSection: Int = 0
@@ -20,7 +18,9 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     let searchController = UISearchController(searchResultsController: nil)
     
 
+    // MARK: Init
     override func viewDidLoad() {
+        
         self.tableView.delegate = self
         super.viewDidLoad()
 
@@ -33,14 +33,48 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         tableView.tableHeaderView = searchController.searchBar
         searchController.searchBar.delegate = self
         searchController.delegate = self
-
-        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    
+    // MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
+        print("Folder content: \(folder.content)")
+        
+        searchController.isActive = false
+        switch segue.identifier ?? "" {
+            
+        case "SHOWTALKS":
+            guard let talkTableViewController = segue.destination as? TalkTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
+            talkTableViewController.content = folder.content
+            talkTableViewController.title = folder.title
+            
+        case "SHOWUSERLISTS":
+            print("SHOWUSERLISTS")
+            /*
+            guard let navController = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            guard let _ = navController.viewControllers.last as? UserListTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+ */
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
+        }
+    }
+
     
     // MARK: UISearchBarDelegate
     func presentSearchController(_ searchController: UISearchController) {
@@ -94,16 +128,11 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         tableView.reloadData()
     }
 
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
         print("filtering...")
-        
     }
 
-
-
-    
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -117,6 +146,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
         var sectionTitle : String
         
         sectionTitle =  self.filteredFolderSections[section][0].section
@@ -127,7 +157,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //print ("enter: willDisplayHeaderView")
 
         let header = view as! UITableViewHeaderFooterView
         
@@ -138,8 +167,8 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "FolderTableViewCell"
         
+        let cellIdentifier = "FolderTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FolderTableViewCell  else {
             fatalError("The dequeued cell is not an instance of FolderTableViewCell.")
@@ -169,11 +198,9 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         cell.statTotalTime.text = folderStats.durationDisplay
         return cell
-        
     }
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didselectrow")
         
         self.selectedSection = indexPath.section
         self.selectedRow = indexPath.row
@@ -183,42 +210,9 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
             self.performSegue(withIdentifier: "SHOWUSERLISTS", sender: self)
         } else {
             self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
-            
         }
-
     }
     
     
-    // MARK: Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        super.prepare(for: segue, sender: sender)
-        
-        let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-        print("Folder content: \(folder.content)")
-   
-        searchController.isActive = false
-        switch segue.identifier ?? "" {
-            
-        case "SHOWTALKS":
-            guard let talkTableViewController = segue.destination as? TalkTableViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-            }
-            //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-            talkTableViewController.content = folder.content
-            talkTableViewController.title = folder.title
-            
-        case "SHOWUSERLISTS":
-            guard let _ = segue.destination as? UserListTableViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-        default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
-        }
-
-        
-    }
-
     
-  
 }

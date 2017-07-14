@@ -21,15 +21,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     let searchController = UISearchController(searchResultsController: nil)
     
     
-    //MARK: Actions
-    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
-        /*
-        if var sourceViewController = sender.source as? SelectUserListTableViewCell {
-            print("entered unwindToTalkList")
-        }
-         */
-    }
-    
     // MARK: Init
     override func viewDidLoad() {
         
@@ -48,7 +39,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         tableView.tableHeaderView = searchController.searchBar
         searchController.searchBar.delegate = self
         searchController.delegate = self
-        
     }
     
     deinit {
@@ -63,8 +53,40 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         searchController.isActive = false
         
     }
-
     
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        print("prepare to seque")
+        
+        switch(segue.identifier ?? "") {
+        case "DISPLAY_TALKPLAYER1":
+            
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let selectedTalk = self.filteredSectionTalks[self.selectedSection][self.selectedRow]
+            playTalkController.talk = selectedTalk
+            
+        default:
+            
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
+        }
+    }
+
+    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
+        /*
+         if var sourceViewController = sender.source as? SelectUserListTableViewCell {
+         print("entered unwindToTalkList")
+         }
+         */
+    }
+
     
     // MARK: - UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -88,13 +110,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     func didDismissSearchController(_ searchController: UISearchController) {
     }
-    
-    /*
-    func  searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        print("searchBarShouldEndEditor")
-        return false
-    }
-     */
     
     
     // MARK: - UISearchResultsUpdating
@@ -127,29 +142,30 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         tableView.reloadData()
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
     }
 
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
+        
         return self.filteredSectionTalks.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return self.filteredSectionTalks[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
         var sectionTitle : String
         
         sectionTitle =  self.filteredSectionTalks[section][0].section
         
         return sectionTitle
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -169,13 +185,11 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.duration
         cell.date.text = talk.date
-
         
         return cell
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //print ("enter: willDisplayHeaderView")
         
         let header = view as! UITableViewHeaderFooterView
         
@@ -184,45 +198,13 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         header.textLabel?.textAlignment = NSTextAlignment.center
     }
     
-
-
-   
-    // MARK: - Navigation
-
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        super.prepare(for: segue, sender: sender)
-        
-        print("prepare to seque")
-        
-        switch(segue.identifier ?? "") {
-        case "ShowDetail":
-            guard let talkDetailViewController = segue.destination as? TalkViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-            guard let selectedTalkCell = sender as? TalkTableViewCell else {
-                fatalError("Unexpected sender:")
-            }
-            
-            guard let indexPath = tableView.indexPath(for: selectedTalkCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
-            
-            let selectedTalk = self.filteredSectionTalks[indexPath.section][indexPath.row]
-            talkDetailViewController.talk = selectedTalk
-
-            
-        case "SelectUserList":
-            print("SelectUserList")
-            
-        default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
-            
-        }
-        
+        self.selectedRow = indexPath.row
+        self.selectedSection = indexPath.section
+        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER1", sender: self)
     }
-    
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let selectUserListForTalk = UITableViewRowAction(style: .normal, title: "Add to User List") { (action, indexPath) in
@@ -253,8 +235,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         }
     
         return [shareFB, shareTwitter, selectUserListForTalk]
-}
-
+    }
 
 
     //MARK: Private Methods
@@ -262,7 +243,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
         let talk = self.filteredSectionTalks[selectedSection][selectedRow]
         //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
-        var postText = ("<a title=\(talk.title)\n href=\(talk.URL)/>\nShared from the iPhone Audiodharma app")
+        let postText = ("<a title=\(talk.title)\n href=\(talk.URL)/>\nShared from the iPhone Audiodharma app")
 
         
         if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook){

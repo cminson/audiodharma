@@ -23,7 +23,7 @@ class UserListTableViewController: UITableViewController {
         super.viewDidLoad()
         print("UserListTableViewController: viewDidLoad")
         
-        if let savedUserList = TheDataModel.loadUserList() {
+        if let savedUserList = TheDataModel.loadUserListData() {
             TheDataModel.userLists = savedUserList
             print("UserListTableViewController: getting userLists: \(savedUserList) ")
 
