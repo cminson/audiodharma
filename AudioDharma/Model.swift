@@ -34,8 +34,8 @@ class Model {
         
         //loadFoldersFromWeb(jsonLocation: "http://www.ezimba.com/ad/folders01.json")
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
-        loadTalksFromFile(jsonLocation: "talks01")
-        loadFoldersFromFile(jsonLocation: "folders01")
+        loadTalksFromFile(jsonLocation: "talks02")
+        loadFoldersFromFile(jsonLocation: "folders02")
     }
     
     public func saveUserListData() {
@@ -94,7 +94,7 @@ class Model {
                 
                 let title = talk["title"] as? String ?? ""
                 let speaker = talk["speaker"] as? String ?? ""
-                let URL = (talk["talk"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let duration = talk["duration"] as? String ?? ""
                 let date = talk["date"] as? String ?? ""
                 let section = ""
@@ -135,6 +135,7 @@ class Model {
                 }
                 
                 talkCount += 1
+                print(talkData, talkCount)
             }
         } catch {
             print(error)
@@ -187,7 +188,7 @@ class Model {
                     
                     let titleTitle = talk["title"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
-                    let URL = talk["talk"] as? String ?? ""
+                    let URL = talk["url"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
                     let section = talk["section"] as? String ?? ""
@@ -307,7 +308,7 @@ class Model {
                         
                         let titleTitle = talk["title"] as? String ?? ""
                         let speaker = talk["speaker"] as? String ?? ""
-                        let URL = talk["talk"] as? String ?? ""
+                        let URL = talk["url"] as? String ?? ""
                         let duration = talk["duration"] as? String ?? ""
                         let date = talk["date"] as? String ?? ""
                         let section = talk["section"] as? String ?? ""
@@ -399,7 +400,7 @@ class Model {
                     
                     let title = talk["title"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
-                    let URL = talk["talk"] as? String ?? ""
+                    let URL = talk["url"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
                     let section = ""

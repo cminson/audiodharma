@@ -177,15 +177,17 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         //print("section = \(indexPath.section) row = \(indexPath.row)")
         let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
     
-        
+
         if folder.image.characters.count > 0 {
             cell.listImage.image = UIImage(named: folder.image) ?? UIImage(named: "defaultPhoto")!
         } else {
             cell.listImage.image = UIImage(named: folder.title) ?? UIImage(named: "defaultPhoto")!
             
         }
+        
 
         cell.title.text = folder.title
+ 
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         
         let folderStats = TheDataModel.getFolderStats(content: folder.content)
@@ -197,6 +199,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         
         cell.statTotalTime.text = folderStats.durationDisplay
+ 
         return cell
     }
     

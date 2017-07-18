@@ -33,8 +33,13 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var speakerPhoto: UIImageView!
     @IBOutlet weak var talkTime: UILabel!
     @IBOutlet weak var talkDuration: UILabel!
-    @IBOutlet weak var talkPlayBackButton: UIButton!
     @IBOutlet weak var metaInfo: UILabel!
+    @IBOutlet weak var talkPlayBack: UIButton!
+
+    @IBOutlet weak var talkFastBackward: UIButton!
+    @IBOutlet weak var talkFastForward: UIButton!
+    
+    
     
     @IBAction func TestAction1(_ sender: UIBarButtonItem) {
     }
@@ -69,13 +74,21 @@ class PlayTalkController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+  
+    @IBAction func talkFastBackward(_ sender: UIButton) {
+    }
+
+    
+    @IBAction func talkFastForward(_ sender: UIButton) {
+    }
+    
     
     // MARK: Actions
     @IBAction func toggleTalkPlay(_ sender: Any) {
     
         if talkIsPlaying == true {
             talkIsPlaying = false
-            talkPlayBackButton.setImage(UIImage(named: "audioButtonStart"), for: UIControlState.normal)
+            talkPlayBack.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
             
             self.mp3Player.pause()
             self.updateViews()
@@ -83,7 +96,7 @@ class PlayTalkController: UIViewController {
         
         } else {
             talkIsPlaying = true
-            talkPlayBackButton.setImage(UIImage(named: "audioButtonPause"), for: UIControlState.normal)
+            talkPlayBack.setImage(UIImage(named: "audioButtonPause"), for: UIControlState.normal)
             
             let talkTime = mp3Player.currentTime()
             if talkTime.value == 0 {
