@@ -1,4 +1,4 @@
-//
+///
 //  AddUserListViewController.swift
 //  AudioDharma
 //
@@ -11,7 +11,7 @@ import UIKit
 import UIKit
 import os.log
 
-class AddEditUserListController: UIViewController, UITextFieldDelegate {
+class AddEditUserListController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK: Properties
     var userList: UserListData? = nil
@@ -21,6 +21,9 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
     // MARK: Outlets
     @IBOutlet weak var userListTitle: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var userImageView: UIImageView!
+    
+    let imagePicker = UIImagePickerController()
     
     
     // MARK: Init
@@ -30,12 +33,14 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
         print("view loaded: \(String(describing: userList?.title))")
         userListTitle.delegate = self
         userListTitle.text = userList?.title
+        
+        imagePicker.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     
     //MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -49,7 +54,8 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
         }
         
         let title = userListTitle.text ?? ""
-        self.userList = UserListData(title: title)
+        let image = userImageView.image ?? UIImage(named: "defaultPhoto")
+        self.userList = UserListData(title: title, image: image!)
         
     }
     
@@ -68,8 +74,30 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func loadImage(_ sender: UIButton) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        
+        present(imagePicker, animated: true, completion: nil)
+    }
     
     
+    // MARK: - UIImagePickerControllerDelegate Methods
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any])
+    {
+    
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        userImageView.contentMode = .scaleAspectFit
+        userImageView.image = chosenImage
+        dismiss(animated:true, completion: nil)
+    }
+
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
@@ -80,11 +108,9 @@ class AddEditUserListController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         userListTitle.text = textField.text
     }
-    
-    
-    
-    
-    
-    
-    
+
 }
+
+
+
+

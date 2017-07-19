@@ -15,6 +15,7 @@ class UserListData: NSObject, NSCoding {
     struct PropertyKey {
         static let title = "title"
         static let talkFileNames = "talkFileNames"
+        static let image = "image"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("UserListData")
@@ -23,16 +24,21 @@ class UserListData: NSObject, NSCoding {
     // MARK: Properties
     var title: String = ""
     var talkFileNames:  [String] = [String] ()
-    
+    var image: UIImage
+
     
     // MARK: Init
-    init(title: String) {
+
+    init(title: String, image: UIImage) {
         self.title = title
+        self.image = image
         print("Init 1 Created User folder.  Title: \(title) ")
     }
 
-    init(title: String, talkFileNames: [String]) {
+
+    init(title: String,  image: UIImage, talkFileNames: [String]) {
         self.title = title
+        self.image = image
         self.talkFileNames = talkFileNames
         print("Init 2 Created User folder.  Title: \(title) ")
     }
@@ -43,6 +49,7 @@ class UserListData: NSObject, NSCoding {
         
         print("UserFolderData: Encode")
         aCoder.encode(title, forKey: PropertyKey.title)
+        aCoder.encode(image, forKey: PropertyKey.image)
         aCoder.encode(talkFileNames, forKey: PropertyKey.talkFileNames)
     }
     
@@ -53,12 +60,17 @@ class UserListData: NSObject, NSCoding {
             os_log("Unable to decode the title for a USListData object.", log: OSLog.default, type: .debug)
             return nil
         }
+        
+        guard let image = aDecoder.decodeObject(forKey: PropertyKey.image) as? UIImage else {
+            os_log("Unable to decode the image for a UIImage object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+       
         guard let talkFileNames = aDecoder.decodeObject(forKey: PropertyKey.talkFileNames) as? [String] else {
             os_log("Unable to decode the talkFileNames for a [String] object.", log: OSLog.default, type: .debug)
             return nil
         }
-       
-        self.init(title: title, talkFileNames: talkFileNames)
+        self.init(title: title, image: image, talkFileNames: talkFileNames)
         
     }
     

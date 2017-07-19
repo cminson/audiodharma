@@ -139,7 +139,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
 
 
-    // MARK: - Table Data Source
+    // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return self.filteredFolderSections.count
@@ -178,17 +178,13 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
     
 
+        cell.title.text = folder.title
+        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         if folder.image.characters.count > 0 {
             cell.listImage.image = UIImage(named: folder.image) ?? UIImage(named: "defaultPhoto")!
         } else {
             cell.listImage.image = UIImage(named: folder.title) ?? UIImage(named: "defaultPhoto")!
-            
         }
-        
-
-        cell.title.text = folder.title
- 
-        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         
         let folderStats = TheDataModel.getFolderStats(content: folder.content)
 

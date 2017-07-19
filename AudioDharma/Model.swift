@@ -36,6 +36,7 @@ class Model {
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         loadTalksFromFile(jsonLocation: "talks02")
         loadFoldersFromFile(jsonLocation: "folders02")
+        loadCustomUserLists()
     }
     
     public func saveUserListData() {
@@ -241,6 +242,47 @@ class Model {
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             self.keyToFolderStats[folder.content] = stats
         }
+    }
+    
+    // 
+    // read in any user-defined lists at load time so as to compute stats
+    // user-defined folders will be reloaded if user clicks CUSTOM folder entry
+    //
+    private func loadCustomUserLists() {
+        
+        if let userLists = TheDataModel.loadUserListData() {
+            TheDataModel.userLists = userLists
+            
+            var totalSecondsAllLists = 0
+            var talkCountAllLists = 0
+            
+            for userList in userLists {
+                
+                var totalSeconds = 0
+                var talkCount = 0
+                for talkName in userList.talkFileNames {
+                    if let talk = nameToTalks[talkName] {
+                        totalSeconds += talk.time
+                        talkCount += 1
+                    }
+                }
+                
+                talkCountAllLists += talkCount
+                totalSecondsAllLists += totalSeconds
+                let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+                
+                let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+                self.keyToFolderStats[userList.title] = stats
+            }
+            
+            let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
+            
+            let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+            self.keyToFolderStats["CUSTOM"] = stats
+
+        }
+    
+        
     }
     
     private func loadFoldersFromWeb(jsonLocation: String) {
@@ -491,6 +533,7 @@ class Model {
     
     private func loadSampleUserFolders() {
         
+        /*
         let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
         let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
         
@@ -503,6 +546,7 @@ class Model {
         self.userLists = self.loadUserListData()!
         print("loadSampleUserFolders 2", userLists[0].title)
         print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
+ */
     }
     
 }

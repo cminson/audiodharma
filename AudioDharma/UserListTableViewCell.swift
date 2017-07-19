@@ -11,7 +11,10 @@ import UIKit
 class UserListTableViewCell: UITableViewCell {
     
     // MARK: Properties
+    @IBOutlet weak var listImage: UIImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var statTalkCount: UILabel!
+    @IBOutlet weak var statTotalTime: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
