@@ -31,9 +31,22 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
         super.viewDidLoad()
         
         print("view loaded: \(String(describing: userList?.title))")
-        userListTitle.delegate = self
-        userListTitle.text = userList?.title
+
+        if let title = userList?.title {
+            if title.characters.count > 0 {
+                userListTitle.text = title
+            }
+        }
+
+        if let image = userList?.image {
+            userImageView.image = image
+        } else {
+            userImageView.image = UIImage(named: "flower01")
+            
+        }
         
+        userListTitle.delegate = self
+
         imagePicker.delegate = self
     }
     
@@ -54,7 +67,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
         }
         
         let title = userListTitle.text ?? ""
-        let image = userImageView.image ?? UIImage(named: "defaultPhoto")
+        let image = userImageView.image ?? UIImage(named: "flower01")
         self.userList = UserListData(title: title, image: image!)
         
     }

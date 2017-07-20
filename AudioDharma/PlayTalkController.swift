@@ -34,8 +34,8 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var talkTime: UILabel!
     @IBOutlet weak var talkDuration: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
+    
     @IBOutlet weak var talkPlayBack: UIButton!
-
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
     

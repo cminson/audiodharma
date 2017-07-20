@@ -11,7 +11,8 @@ import UIKit
 class UserTalksTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var speakerPhoto: UIImageView!
-    
+    @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var duration: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

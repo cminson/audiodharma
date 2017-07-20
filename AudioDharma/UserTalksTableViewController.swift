@@ -103,6 +103,7 @@ class UserTalkTableViewController: UITableViewController {
                 
             }
             TheDataModel.saveUserListData()
+            TheDataModel.computeCustomUserListStats()
             self.tableView.reloadData()
         }
     }
@@ -131,6 +132,9 @@ class UserTalkTableViewController: UITableViewController {
         let talk = self.selectedTalks[indexPath.row]
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
+        cell.duration.text = talk.duration
+        cell.date.text = talk.date
+
         return cell
     }
     

@@ -108,6 +108,12 @@ class UserListTableViewController: UITableViewController {
 
 
     // MARK: Table Data Source
+    override func viewWillAppear(_ animated: Bool) {
+        
+        TheDataModel.computeCustomUserListStats()
+        self.tableView.reloadData()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -156,6 +162,7 @@ class UserListTableViewController: UITableViewController {
 
                 TheDataModel.userLists.remove(at: indexPath.row)
                 TheDataModel.saveUserListData()
+                self.tableView.reloadData()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in

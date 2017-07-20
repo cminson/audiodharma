@@ -36,9 +36,15 @@ class Model {
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         loadTalksFromFile(jsonLocation: "talks02")
         loadFoldersFromFile(jsonLocation: "folders02")
-        loadCustomUserLists()
+        
+        // get user data from storage and compute the stats
+        self.userLists = TheDataModel.loadUserListData()!
+        computeCustomUserListStats()
+
     }
     
+    
+    // MARK: Public
     public func saveUserListData() {
         
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
@@ -56,19 +62,17 @@ class Model {
         return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
     }
     
-    
-    // MARK: Public Model Functions
-    func getTalks(content: String) -> [[TalkData]] {
+    public func getTalks(content: String) -> [[TalkData]] {
         
         return self.keyToTalks[content] ?? [[TalkData]]()
     }
     
-    func getFolderStats(content: String) -> FolderStats {
+    public func getFolderStats(content: String) -> FolderStats {
         
         return self.keyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
     }
     
-    func getUserLists() -> [UserListData] {
+    public func getUserLists() -> [UserListData] {
         
         return self.userLists
     }
@@ -76,6 +80,39 @@ class Model {
     func getTalkForName(name: String) -> TalkData? {
         
         return self.nameToTalks[name]
+    }
+    
+    //
+    // generate the stats for the user-defined lists.
+    //
+    public func computeCustomUserListStats() {
+        
+        var totalSecondsAllLists = 0
+        var talkCountAllLists = 0
+            
+        for userList in self.userLists {
+                
+            var totalSeconds = 0
+            var talkCount = 0
+            for talkName in userList.talkFileNames {
+                if let talk = nameToTalks[talkName] {
+                    totalSeconds += talk.time
+                    talkCount += 1
+                }
+            }
+                
+            talkCountAllLists += talkCount
+            totalSecondsAllLists += totalSeconds
+            let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+                
+            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            self.keyToFolderStats[userList.title] = stats
+        }
+        
+        let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
+            
+        let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+        self.keyToFolderStats["CUSTOM"] = stats
     }
     
     
@@ -244,46 +281,6 @@ class Model {
         }
     }
     
-    // 
-    // read in any user-defined lists at load time so as to compute stats
-    // user-defined folders will be reloaded if user clicks CUSTOM folder entry
-    //
-    private func loadCustomUserLists() {
-        
-        if let userLists = TheDataModel.loadUserListData() {
-            TheDataModel.userLists = userLists
-            
-            var totalSecondsAllLists = 0
-            var talkCountAllLists = 0
-            
-            for userList in userLists {
-                
-                var totalSeconds = 0
-                var talkCount = 0
-                for talkName in userList.talkFileNames {
-                    if let talk = nameToTalks[talkName] {
-                        totalSeconds += talk.time
-                        talkCount += 1
-                    }
-                }
-                
-                talkCountAllLists += talkCount
-                totalSecondsAllLists += totalSeconds
-                let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-                
-                let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-                self.keyToFolderStats[userList.title] = stats
-            }
-            
-            let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
-            
-            let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
-            self.keyToFolderStats["CUSTOM"] = stats
-
-        }
-    
-        
-    }
     
     private func loadFoldersFromWeb(jsonLocation: String) {
         
@@ -534,19 +531,24 @@ class Model {
     private func loadSampleUserFolders() {
         
         /*
-        let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
-        let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
-        
-        let u1 = UserListData(title: "List 1")
-        u1.talkFileNames = [t1,t2]
-        userLists.append(u1)
-        self.saveUserListData()
-        print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
-        
-        self.userLists = self.loadUserListData()!
-        print("loadSampleUserFolders 2", userLists[0].title)
-        print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
- */
+         let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
+         let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
+         
+         let u1 = UserListData(title: "List 1")
+         u1.talkFileNames = [t1,t2]
+         userLists.append(u1)
+         self.saveUserListData()
+         print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
+         
+         self.userLists = self.loadUserListData()!
+         print("loadSampleUserFolders 2", userLists[0].title)
+         print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
+         */
     }
+    
+ 
+
+    
+
     
 }
