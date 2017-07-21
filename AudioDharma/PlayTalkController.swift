@@ -30,10 +30,11 @@ class PlayTalkController: UIViewController {
     
     // MARK: Outlets
     @IBOutlet weak var talkTitle: UILabel!
-    @IBOutlet weak var speakerPhoto: UIImageView!
+    //@IBOutlet weak var speakerPhoto: UIImageView!
     @IBOutlet weak var talkTime: UILabel!
     @IBOutlet weak var talkDuration: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
+    @IBOutlet weak var speakerPhoto: UIImageView!
     
     @IBOutlet weak var talkPlayBack: UIButton!
     @IBOutlet weak var talkFastBackward: UIButton!
@@ -100,6 +101,7 @@ class PlayTalkController: UIViewController {
             
             let talkTime = mp3Player.currentTime()
             if talkTime.value == 0 {
+                print("Starting Talk: ", talk)
                 mp3Player.startTalk(talk: talk)
                 startTimer()
             }
@@ -138,7 +140,6 @@ class PlayTalkController: UIViewController {
     }
     
     private func updateViews(){
-
         talkTime.text = mp3Player.getCurrentTimeAsString()
         /*
         let progress = mp3Player.getProgress()

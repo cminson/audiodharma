@@ -26,10 +26,11 @@ class MP3Player : NSObject {
         
         
         let url : URL = URL(string: talk.URL)!
+        print(talk.URL)
+        //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
         self.playerItem  = AVPlayerItem(url: url)
         self.player =  AVPlayer(playerItem : self.playerItem)
         self.player.play()
-        
         
         let notificationName = Notification.Name("SetTrackNameText")
         //NotificationCenter.defaultCenter.postNotificationName("SetTrackNameText", object: nil)
