@@ -15,7 +15,6 @@ struct FolderStats {
     var totalSeconds: Int
     var durationDisplay: String
 }
-
 let KEY_ALLTALKS = "ALL"
 
 
@@ -38,28 +37,28 @@ class Model {
         loadFoldersFromFile(jsonLocation: "folders02")
         
         // get user data from storage and compute the stats
-        self.userLists = TheDataModel.loadUserListData()!
+        self.userLists = TheDataModel.loadUserListData()
         computeCustomUserListStats()
-
     }
     
     
     // MARK: Public
     public func saveUserListData() {
         
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
         print("saveUserListData to: ", UserListData.ArchiveURL.path)
-        if isSuccessfulSave {
-            //os_log("UserListData:  Success", log: OSLog.default, type: .debug)
-        } else {
-            //os_log("UserListData:  Failure", log: OSLog.default, type: .error)
-        }
+        NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
     }
     
-    public func loadUserListData() -> [UserListData]?  {
+    public func loadUserListData() -> [UserListData]  {
         
         print("loadUserList from: ", UserListData.ArchiveURL.path)
-        return NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData]
+        
+        if let userListData = NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData] {
+            return userListData
+            
+        } else {
+            return [UserListData] ()
+        }
     }
     
     public func getTalks(content: String) -> [[TalkData]] {
@@ -100,11 +99,12 @@ class Model {
                     talkCount += 1
                 }
             }
-                
+            
+            
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-                
+            
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             self.keyToFolderStats[userList.title] = stats
         }
@@ -275,7 +275,8 @@ class Model {
             }
             
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-
+            //let durationDisplay = "99,999:00:00"
+            
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             self.keyToFolderStats[folder.content] = stats
         }
@@ -521,34 +522,10 @@ class Model {
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let hoursStr = numberFormatter.string(from: NSNumber(value:hours)) ?? "0"
 
-        //let hoursStr = String(format: "%02d", hours)
         let minutesStr = String(format: "%02d", minutes)
         let secondsStr = String(format: "%02d", seconds)
     
         return hoursStr + ":" + minutesStr + ":" + secondsStr
     }
-    
-    private func loadSampleUserFolders() {
-        
-        /*
-         let t1 = "20060714-Gil_Fronsdal-IMC-the_four_noble_truths_part_4.mp3"
-         let t2 = "20170703-Nikki_Mirghafori-IMC-independence_and_interdependence.mp3"
-         
-         let u1 = UserListData(title: "List 1")
-         u1.talkFileNames = [t1,t2]
-         userLists.append(u1)
-         self.saveUserListData()
-         print("loadSampleUserFolders 1", userLists[0].title, userLists[0].talkFileNames[0])
-         
-         self.userLists = self.loadUserListData()!
-         print("loadSampleUserFolders 2", userLists[0].title)
-         print("loadSampleUserFolders 3", userLists[0].title, userLists[0].talkFileNames[0])
-         */
-    }
-    
- 
-
-    
-
     
 }

@@ -9,6 +9,9 @@
 
 import UIKit
 import AVFoundation
+import CoreMedia
+
+let FAST_SEEK : Int64 = 25
 
 class MP3Player : NSObject {
     
@@ -22,7 +25,7 @@ class MP3Player : NSObject {
         super.init()
     }
     
-    func startTalk(talk: TalkData){
+    public func startTalk(talk: TalkData){
         
         
         let url : URL = URL(string: talk.URL)!
@@ -38,41 +41,68 @@ class MP3Player : NSObject {
         
     }
     
-    func play() {
+    public func play() {
+        
         self.player.play()
     }
     
-    func stop(){
+    public func stop() {
+        
         self.player.pause()
         player.seek(to: kCMTimeZero)
-  
     }
     
-    func pause(){
+    public func pause() {
+        
         self.player.pause()
     }
     
-    func currentTime()-> CMTime {
+    public func seekFastForward() {
+        
+        if let ct = self.playerItem?.currentTime(), let dt = player.currentItem?.asset.duration {
+            let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
+            let durationTimeInSeconds = Int64(CMTimeGetSeconds(dt))
+            print(durationTimeInSeconds)
+            
+            if currentTimeInSeconds + FAST_SEEK < durationTimeInSeconds {
+                self.player.seek(to: CMTimeMake(currentTimeInSeconds + FAST_SEEK, 1))
+
+            } else {
+                self.player.seek(to: CMTimeMake(durationTimeInSeconds, 1))
+            }
+        }
+    }
+    
+    public func seekFastBackward() {
+        
+        if let ct = self.playerItem?.currentTime() {
+            let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
+            
+            if currentTimeInSeconds - FAST_SEEK > Int64(0) {
+                self.player.seek(to: CMTimeMake(currentTimeInSeconds - FAST_SEEK, 1))
+                
+            } else {
+                self.player.seek(to: CMTimeMake(0, 1))
+            }
+        }
+    }
+    
+    public func currentTime()-> CMTime {
+        
         return self.player.currentTime()
     }
     
-    func nextTalk(talkFinishedPlaying:Bool){
+    public func nextTalk(talkFinishedPlaying:Bool) {
         
     }
     
-    
-    
-    func previousTalk(){
-    }
-    
-    func getCurrentTrackName() -> String {
+    public func getCurrentTrackName() -> String {
         //let trackName = tracks[currentTrackIndex].lastPathComponent.stringByDeletingPathExtension
         let trackName = "test"
         return trackName
     }
     
-   
-     func getCurrentTimeAsString() -> String {
+    public func getCurrentTimeAsString() -> String {
      
         var seconds = 0
         var minutes = 0
@@ -88,7 +118,7 @@ class MP3Player : NSObject {
      }
     
     
-     func getProgress()->Float {
+     public func getProgress()->Float {
         
         var theCurrentTime = 0.0
         var theCurrentDuration = 0.0
@@ -105,13 +135,13 @@ class MP3Player : NSObject {
         return Float(theCurrentTime / theCurrentDuration)
      }
    
-    
-    
-    func setVolume(volume:Float){
+    public func setVolume(volume:Float){
+        
         player.volume = volume
     }
     
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
+    public func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
+        
         if flag == true {
             nextTalk(talkFinishedPlaying: true)
         }

@@ -21,10 +21,10 @@ class UserListTableViewController: UITableViewController {
         
         super.viewDidLoad()
         
-        if let savedUserList = TheDataModel.loadUserListData() {
-            TheDataModel.userLists = savedUserList
-            print("UserListTableViewController: getting userLists: \(savedUserList) ")
-        }
+        let savedUserList = TheDataModel.loadUserListData()
+        TheDataModel.userLists = savedUserList
+        print("UserListTableViewController: getting userLists: \(savedUserList) ")
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -135,7 +135,7 @@ class UserListTableViewController: UITableViewController {
         let userList = TheDataModel.userLists[indexPath.row]
         cell.title.text = userList.title
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        cell.listImage.image = userList.image ?? UIImage(named: "defaultPhoto")!
+        cell.listImage.image = userList.image
         
         let folderStats = TheDataModel.getFolderStats(content: userList.title)
         

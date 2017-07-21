@@ -69,6 +69,9 @@ class PlayTalkController: UIViewController {
         talkDuration.text = talk.duration
         talkTitle.text = talk.title
         metaInfo.text = talk.speaker + "   " + talk.date
+        
+        talkFastForward.isEnabled = false
+        talkFastBackward.isEnabled = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -76,15 +79,17 @@ class PlayTalkController: UIViewController {
     }
     
   
-    @IBAction func talkFastBackward(_ sender: UIButton) {
+    // MARK: Actions
+   @IBAction func talkFastBackward(_ sender: UIButton) {
+        
+        self.mp3Player.seekFastBackward()
     }
 
-    
     @IBAction func talkFastForward(_ sender: UIButton) {
+        
+        self.mp3Player.seekFastForward()
     }
     
-    
-    // MARK: Actions
     @IBAction func toggleTalkPlay(_ sender: Any) {
     
         if talkIsPlaying == true {
@@ -94,10 +99,13 @@ class PlayTalkController: UIViewController {
             self.mp3Player.pause()
             self.updateViews()
             self.timer.invalidate()
-        
+            
+            talkFastForward.isEnabled = false
+            talkFastBackward.isEnabled = false
+            talkPlayBack.isSelected = false
         } else {
             talkIsPlaying = true
-            talkPlayBack.setImage(UIImage(named: "audioButtonPause"), for: UIControlState.normal)
+            talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
             
             let talkTime = mp3Player.currentTime()
             if talkTime.value == 0 {
@@ -109,7 +117,10 @@ class PlayTalkController: UIViewController {
                 mp3Player.play()
                 startTimer()
             }
-    
+            
+            talkFastForward.isEnabled = true
+            talkFastBackward.isEnabled = true
+            talkPlayBack.isSelected = false
         }
     }
     
