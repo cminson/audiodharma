@@ -13,12 +13,12 @@ import Social
 class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
-    var sectionTalks: [[TalkData]] = []
-    var filteredSectionTalks:  [[TalkData]] = []
-    var content: String = ""
-    var selectedSection: Int = 0
-    var selectedRow: Int = 0
-    let searchController = UISearchController(searchResultsController: nil)
+    var SectionTalks: [[TalkData]] = []
+    var FilteredSectionTalks:  [[TalkData]] = []
+    var Content: String = ""
+    var SelectedSection: Int = 0
+    var SelectedRow: Int = 0
+    let SearchController = UISearchController(searchResultsController: nil)
     
     
     // MARK: Init
@@ -27,21 +27,21 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         super.viewDidLoad()
         
-        self.sectionTalks = TheDataModel.getTalks(content: content)
-        self.filteredSectionTalks = self.sectionTalks
+        SectionTalks = TheDataModel.getTalks(content: Content)
+        FilteredSectionTalks = SectionTalks
         
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        searchController.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        tableView.tableHeaderView = searchController.searchBar
+        SearchController.searchResultsUpdater = self
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
     }
     
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
-        self.searchController.view.removeFromSuperview()
+        SearchController.view.removeFromSuperview()
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,7 +51,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        searchController.isActive = false
+        SearchController.isActive = false
     }
     
     
@@ -70,8 +70,8 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             }
             
             //print(self.selectedSection, self.selectedRow)
-            let selectedTalk = self.filteredSectionTalks[self.selectedSection][self.selectedRow]
-            playTalkController.talk = selectedTalk
+            playTalkController.CurrentTalkRow = SelectedRow
+            playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -79,7 +79,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         // dismiss any searching - must do this prior to executing the segue
         // NOTE:  must do this on the return, as it will reset filteredSectionTalks and give us the wrong indexing if done earlier
-        searchController.isActive = false
+        SearchController.isActive = false
     }
 
     @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
@@ -117,25 +117,25 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             var sectionsPositionDict : [String: Int] = [:]
-            self.filteredSectionTalks = []
-            for sections in self.sectionTalks {
+            FilteredSectionTalks = []
+            for sections in SectionTalks {
                 for talkData in sections {
                     if talkData.title.lowercased().contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[talkData.section] == nil {
                             // new section seen.  create new array of talks for this section
-                            self.filteredSectionTalks.append([talkData])
-                            sectionsPositionDict[talkData.section] = self.filteredSectionTalks.count - 1
+                            FilteredSectionTalks.append([talkData])
+                            sectionsPositionDict[talkData.section] = FilteredSectionTalks.count - 1
                         } else {
                             // section already exists.  add talk to the existing array of talks
                             let sectionPosition = sectionsPositionDict[talkData.section]
-                            self.filteredSectionTalks[sectionPosition!].append(talkData)
+                            FilteredSectionTalks[sectionPosition!].append(talkData)
                         }
                     }
                 }
             }
         } else {
-            self.filteredSectionTalks = self.sectionTalks
+            FilteredSectionTalks = SectionTalks
         }
         tableView.reloadData()
     }
@@ -149,18 +149,18 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         //print("Number of sections: \(self.filteredSectionTalks.count)")
-        return self.filteredSectionTalks.count
+        return FilteredSectionTalks.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //print("Section: \(section)  Number of rows: \(self.filteredSectionTalks[section].count)")
-        return self.filteredSectionTalks[section].count
+        return FilteredSectionTalks[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return self.filteredSectionTalks[section][0].section
+        return FilteredSectionTalks[section][0].section
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -171,7 +171,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             fatalError("The dequeued cell is not an instance of TalkTableViewCell.")
         }
         
-        let talk = self.filteredSectionTalks[indexPath.section][indexPath.row]
+        let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
@@ -193,26 +193,16 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.selectedSection = indexPath.section
-        self.selectedRow = indexPath.row
-        print("Seleced Section: \(self.selectedSection)   Selected Row: \(self.selectedRow)")
+        SelectedSection = indexPath.section
+        SelectedRow = indexPath.row
+        print("Seleced Section: \(SelectedSection)   Selected Row: \(SelectedRow)")
         self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER1", sender: self)
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let selectUserListForTalk = UITableViewRowAction(style: .normal, title: "Add to User List") { (action, indexPath) in
-            
-            self.selectedSection = indexPath.section
-            self.selectedRow = indexPath.row
-            self.performSegue(withIdentifier: "SelectUserList", sender: self)
-            self.tableView.isEditing = false
-        }
-        
-        
-
         let shareFB = UITableViewRowAction(style: .normal, title: "Facebook") { (action, indexPath) in
-            self.selectedRow = indexPath.row   
+            self.SelectedRow = indexPath.row
             self.shareFB()
             /*
             self.selectedRow = indexPath.row
@@ -228,14 +218,14 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             self.shareAll()
         }
     
-        return [shareFB, shareTwitter, selectUserListForTalk]
+        return [shareFB, shareTwitter]
     }
 
 
     //MARK: Share Methods
     private func shareFB() {
     
-        let talk = self.filteredSectionTalks[selectedSection][selectedRow]
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
         //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
         let postText = ("<a title=\(talk.title)\n href=\(talk.URL)/>\nShared from the iPhone Audiodharma app")
         

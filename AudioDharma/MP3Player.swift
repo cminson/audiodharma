@@ -11,95 +11,93 @@ import UIKit
 import AVFoundation
 import CoreMedia
 
-let FAST_SEEK : Int64 = 25
+let FAST_SEEK : Int64 = 25  // number of seconds to move for each Seek operation
 
 class MP3Player : NSObject {
     
-    var player : AVPlayer = AVPlayer()
-    var playerItem : AVPlayerItem?
+    // MARK: Properties
+    var Delegate: PlayTalkController!
+    var Player : AVPlayer = AVPlayer()
+    var PlayerItem : AVPlayerItem?
     
-    var currentTrackIndex = 0
-    var tracks : [String] = [String]()
-    
+    // MARK: Init
     override init(){
+        
         super.init()
     }
     
+    // MARK: Public
     public func startTalk(talk: TalkData){
         
-        
-        let url : URL = URL(string: talk.URL)!
-        print(talk.URL)
         //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
-        self.playerItem  = AVPlayerItem(url: url)
-        self.player =  AVPlayer(playerItem : self.playerItem)
-        self.player.play()
+        let url : URL = URL(string: talk.URL)!
+        PlayerItem  = AVPlayerItem(url: url)
+        Player =  AVPlayer(playerItem : PlayerItem)
         
-        let notificationName = Notification.Name("SetTrackNameText")
-        //NotificationCenter.defaultCenter.postNotificationName("SetTrackNameText", object: nil)
-        NotificationCenter.default.post(name: notificationName, object: nil)
-        
+        NotificationCenter.default.addObserver(self,selector:
+                        #selector(self.talkHasCompleted),
+                        name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+                        object: PlayerItem)
+        Player.play()
     }
     
     public func play() {
         
-        self.player.play()
+        Player.play()
     }
     
     public func stop() {
         
-        self.player.pause()
-        player.seek(to: kCMTimeZero)
+        Player.pause()
+        Player.seek(to: kCMTimeZero)
     }
     
     public func pause() {
         
-        self.player.pause()
+        Player.pause()
     }
     
+    public func talkHasCompleted() {
+        
+        Delegate.talkHasCompleted()     // inform our owner that a talk is done
+    }
+
     public func seekFastForward() {
         
-        if let ct = self.playerItem?.currentTime(), let dt = player.currentItem?.asset.duration {
+        if let ct = PlayerItem?.currentTime(), let dt = Player.currentItem?.asset.duration {
             let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
             let durationTimeInSeconds = Int64(CMTimeGetSeconds(dt))
-            print(durationTimeInSeconds)
             
             if currentTimeInSeconds + FAST_SEEK < durationTimeInSeconds {
-                self.player.seek(to: CMTimeMake(currentTimeInSeconds + FAST_SEEK, 1))
+                Player.seek(to: CMTimeMake(currentTimeInSeconds + FAST_SEEK, 1))
 
             } else {
-                self.player.seek(to: CMTimeMake(durationTimeInSeconds, 1))
+                Player.seek(to: CMTimeMake(durationTimeInSeconds, 1))
             }
         }
     }
     
     public func seekFastBackward() {
         
-        if let ct = self.playerItem?.currentTime() {
+        if let ct = PlayerItem?.currentTime() {
             let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
             
             if currentTimeInSeconds - FAST_SEEK > Int64(0) {
-                self.player.seek(to: CMTimeMake(currentTimeInSeconds - FAST_SEEK, 1))
+                Player.seek(to: CMTimeMake(currentTimeInSeconds - FAST_SEEK, 1))
                 
             } else {
-                self.player.seek(to: CMTimeMake(0, 1))
+                Player.seek(to: CMTimeMake(0, 1))
             }
         }
     }
     
     public func currentTime()-> CMTime {
         
-        return self.player.currentTime()
+        return Player.currentTime()
     }
     
     public func nextTalk(talkFinishedPlaying:Bool) {
         
-    }
-    
-    public func getCurrentTrackName() -> String {
-        //let trackName = tracks[currentTrackIndex].lastPathComponent.stringByDeletingPathExtension
-        let trackName = "test"
-        return trackName
     }
     
     public func getCurrentTimeAsString() -> String {
@@ -107,9 +105,8 @@ class MP3Player : NSObject {
         var seconds = 0
         var minutes = 0
         
-        let ct = self.playerItem?.currentTime()
-        if (ct != nil) {
-            let time = CMTimeGetSeconds(ct!)
+        if let ct = PlayerItem?.currentTime() {
+            let time = CMTimeGetSeconds(ct)
         
             seconds = Int(time) % 60
             minutes = (Int(time) / 60) % 60
@@ -117,34 +114,34 @@ class MP3Player : NSObject {
         return String(format: "%0.2d:%0.2d",minutes,seconds)
      }
     
+    public func getCurrentTimeAsSeconds() -> Int {
+        
+        if let ct = PlayerItem?.currentTime()  {
+            let time = CMTimeGetSeconds(ct)
+            return Int(time)
+        }
+        return 0
+    }
     
-     public func getProgress()->Float {
+    public func getProgress()->Float {
         
         var theCurrentTime = 0.0
         var theCurrentDuration = 0.0
         
-        let currentTime = CMTimeGetSeconds(player.currentTime())
+        let currentTime = CMTimeGetSeconds(Player.currentTime())
         
-        let ct = player.currentItem?.asset.duration
-        if (ct != nil) {
-            let duration = CMTimeGetSeconds(ct!)
+        if let ct = Player.currentItem?.asset.duration {
+            let duration = CMTimeGetSeconds(ct)
             theCurrentTime = currentTime
             theCurrentDuration = duration
-            
         }
+        
         return Float(theCurrentTime / theCurrentDuration)
-     }
+    }
    
     public func setVolume(volume:Float){
         
-        player.volume = volume
-    }
-    
-    public func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
-        
-        if flag == true {
-            nextTalk(talkFinishedPlaying: true)
-        }
+        Player.volume = volume
     }
     
 }

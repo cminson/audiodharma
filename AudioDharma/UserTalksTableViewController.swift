@@ -66,10 +66,8 @@ class UserTalkTableViewController: UITableViewController {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
 
-            
-            let selectedTalk = self.selectedTalks[self.selectedRow]
-            print("DISPLAY_TALKPLAYER2 Talk duration: ", selectedTalk.duration)
-            playTalkController.talk = selectedTalk
+            playTalkController.TalkList = selectedTalks
+            playTalkController.CurrentTalkRow = selectedRow
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")

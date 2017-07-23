@@ -11,11 +11,11 @@ import UIKit
 class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
-    var selectedSection: Int = 0
-    var selectedRow: Int = 0
-    var folderSections: [[FolderData]] = []
-    var filteredFolderSections:  [[FolderData]] = []
-    let searchController = UISearchController(searchResultsController: nil)
+    var SelectedSection: Int = 0
+    var SelectedRow: Int = 0
+    var FolderSections: [[FolderData]] = []
+    var FilteredFolderSections:  [[FolderData]] = []
+    let SearchController = UISearchController(searchResultsController: nil)
     
 
     // MARK: Init
@@ -26,20 +26,20 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         TheDataModel.loadData()
         super.viewDidLoad()
 
-        self.filteredFolderSections = TheDataModel.folderSections
+        FilteredFolderSections = TheDataModel.folderSections
         
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        searchController.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        tableView.tableHeaderView = searchController.searchBar
+        SearchController.searchResultsUpdater = self
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
     }
     
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
-        self.searchController.view.removeFromSuperview()
+        SearchController.view.removeFromSuperview()
     }
 
     
@@ -61,8 +61,8 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-            let folder = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-            talkTableViewController.content = folder.content
+            let folder = FilteredFolderSections[SelectedSection][SelectedRow]
+            talkTableViewController.Content = folder.content
             talkTableViewController.title = folder.title
             
         case "SHOWUSERLISTS":
@@ -75,7 +75,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         }
         
         // dismiss any searching - must do this prior to executing the segue
-        searchController.isActive = false
+        SearchController.isActive = false
     }
 
     
@@ -110,25 +110,25 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             var sectionsPositionDict : [String: Int] = [:]
-            self.filteredFolderSections = []
+            FilteredFolderSections = []
             for sections in TheDataModel.folderSections {
                 for folderData in sections {
                     if folderData.title.lowercased().contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[folderData.section] == nil {
                             // new section seen.  create new array of folders for this section
-                            self.filteredFolderSections.append([folderData])
-                            sectionsPositionDict[folderData.section] = self.filteredFolderSections.count - 1
+                            FilteredFolderSections.append([folderData])
+                            sectionsPositionDict[folderData.section] = FilteredFolderSections.count - 1
                         } else {
                             // section already exists.  add folder to the existing array of talks
                             let sectionPosition = sectionsPositionDict[folderData.section]
-                            self.filteredFolderSections[sectionPosition!].append(folderData)
+                            FilteredFolderSections[sectionPosition!].append(folderData)
                         }
                     }
                 }
             }            
         } else {
-            self.filteredFolderSections = TheDataModel.folderSections
+            FilteredFolderSections = TheDataModel.folderSections
         }
         tableView.reloadData()
     }
@@ -142,18 +142,18 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return self.filteredFolderSections.count
+        return FilteredFolderSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
         //print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
-        return self.filteredFolderSections[section].count
+        return FilteredFolderSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return self.filteredFolderSections[section][0].section
+        return FilteredFolderSections[section][0].section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -175,7 +175,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         }
         
         //print("section = \(indexPath.section) row = \(indexPath.row)")
-        let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
+        let folder = FilteredFolderSections[indexPath.section][indexPath.row]
     
 
         cell.title.text = folder.title
@@ -201,10 +201,10 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.selectedSection = indexPath.section
-        self.selectedRow = indexPath.row
+        SelectedSection = indexPath.section
+        SelectedRow = indexPath.row
         
-        let folder = self.filteredFolderSections[indexPath.section][indexPath.row]
+        let folder = FilteredFolderSections[indexPath.section][indexPath.row]
         if (folder.content == "CUSTOM") {
             self.performSegue(withIdentifier: "SHOWUSERLISTS", sender: self)
         } else {
