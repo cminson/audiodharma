@@ -22,6 +22,7 @@ class UserTalkTableViewController: UITableViewController {
     
     // MARK: Init
     override func viewDidLoad() {
+        print("UserTalkTableViewController: viewDidLoad")
         super.viewDidLoad()
         
         //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
@@ -140,7 +141,9 @@ class UserTalkTableViewController: UITableViewController {
         SelectedRow = indexPath.row
         self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER2", sender: self)
     }
-    
+ 
+    #if WANTEDITING
+    // REMEMBER: if editing method below is active, then left-swipe Share will not work
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         
         return .none
@@ -169,5 +172,38 @@ class UserTalkTableViewController: UITableViewController {
         TheDataModel.UserLists[SelectedUserListIndex].talkFileNames = talkFileNames
         TheDataModel.saveUserListData()
       }
+    #endif
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        print("EditForAction")
+        SelectedRow = indexPath.row
+        
+        let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+            self.shareTalk()
+        }
+        return [shareTalk]
+    }
+    
+    
+    //MARK: Share
+    private func shareTalk() {
+        
+        print("shareTalk")
+        let sharedTalk = SelectedTalks[SelectedRow]
+        let shareText = "\(sharedTalk.title)\n\(sharedTalk.speaker)   \(sharedTalk.date)\nShared from the iPhone AudioDharma app"
+        
+        let objectsToShare:URL = URL(string: sharedTalk.URL)!
+        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
+        
+        // set up activity view controller
+        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+        
+        
+    }
 
 }

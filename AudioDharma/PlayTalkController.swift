@@ -72,10 +72,8 @@ class PlayTalkController: UIViewController {
     
     public func setTalkStartDisplay () {
         
-        activityIndicatorView.isHidden = true
-        activityTalkLoadingLabel.isHidden = true
-        talkFastForward.isEnabled = false
-        talkFastBackward.isEnabled = false
+        disableActivityIcons()
+        disableScanButtons()
         
         talkDuration.text = CurrentTalk.duration
         talkTitle.text = CurrentTalk.title
@@ -90,36 +88,39 @@ class PlayTalkController: UIViewController {
         MP3TalkPlayer = MP3Player()
         MP3TalkPlayer.Delegate = self
         
-        TalkTimer?.invalidate()
-        TalkTimer = nil
-
         CurrentTalkRow = CurrentTalkRow + 1
-        if CurrentTalkRow > TalkList.count {
+        if CurrentTalkRow >= TalkList.count {
             CurrentTalkRow = 0
         }
         CurrentTalk = TalkList[CurrentTalkRow]
         
         if (CurrentTalkRow == OriginalTalkRow) {
             // we've wrapped around and completed the talk list
-            //TBD
+            // stop the timer
+            stopTalkTimer()
             return
         }
 
         setTalkStartDisplay()
         talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
         
-        activityIndicatorView.isHidden = false
-        activityTalkLoadingLabel.isHidden = false
-        activityIndicatorView.startAnimating()
-        
+        enableActivityIcons()
         MP3TalkPlayer.startTalk(talk: CurrentTalk)
         startTalkTimer()
     }
 
+    // called when we get a notification from mp3Player that the current talk is done
+    public func talkHasCompleted () {
+        
+        // if option is enabled, play the next talk in the current series
+        if PlayEntireList == true {
+            Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(PlayTalkController.playNextTalk), userInfo: nil, repeats: false)
+        }
+    }
     
   
     // MARK: Actions
-   @IBAction func talkFastBackward(_ sender: UIButton) {
+    @IBAction func talkFastBackward(_ sender: UIButton) {
         
         self.MP3TalkPlayer.seekFastBackward()
     }
@@ -141,8 +142,7 @@ class PlayTalkController: UIViewController {
             TalkTimer?.invalidate()
             TalkTimer = nil
         
-            talkFastForward.isEnabled = false
-            talkFastBackward.isEnabled = false
+            disableScanButtons()
             
             MP3TalkPlayer.pause()
 
@@ -150,19 +150,14 @@ class PlayTalkController: UIViewController {
         } else {    // start or restart (after a previous pause) the talk
             TalkIsPlaying = true
             
+            enableActivityIcons()
+
             talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
             
-            talkFastForward.isEnabled = true
-            talkFastBackward.isEnabled = true
-
             // if talk hasn't begun yet (we're at the start), then show the "loading talks" and busy icon until talk is fully loaded.
             // otherwise (we're not at the start), just un-pause the talk
             let talkTime = MP3TalkPlayer.currentTime()
             if talkTime.value == 0 {
-                activityIndicatorView.isHidden = false
-                activityTalkLoadingLabel.isHidden = false
-                activityIndicatorView.startAnimating()
-                
                 MP3TalkPlayer.startTalk(talk: CurrentTalk)
                 startTalkTimer()
             }
@@ -175,6 +170,7 @@ class PlayTalkController: UIViewController {
     
     @IBAction func stopTalk(_ sender: UIBarButtonItem) {
         
+        print("StopTalk")
         if TalkIsPlaying == true {
             MP3TalkPlayer.stop()
             //talkTime.text = MP3TalkPlayer.getCurrentTimeAsString()
@@ -182,6 +178,7 @@ class PlayTalkController: UIViewController {
         }
         dismiss(animated: true, completion: nil)
     }
+
     
     @IBAction func togglePlayTalkSeries(_ sender: UIButton) {
         
@@ -199,40 +196,90 @@ class PlayTalkController: UIViewController {
         MP3TalkPlayer.setVolume(volume: sender.value)
     }
     
+    @IBAction func shareTalk(_ sender: UIBarButtonItem) {
+        shareAll()
+    }
+
+    
     
     // MARK: Private functions
     private func startTalkTimer(){
+        
+        // stop  previous timer, if any
+        stopTalkTimer()
+        
+        // start a new timer
+        TalkTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayTalkController.updateViewsWithTimer), userInfo: nil, repeats: true)
+    }
+    
+    private func stopTalkTimer(){
         
         if let timer = TalkTimer {
             timer.invalidate()
             TalkTimer = nil
         }
-        TalkTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayTalkController.updateViewsWithTimer), userInfo: nil, repeats: true)
     }
+
     
+    // called every second to update views
     @objc private func updateViewsWithTimer(){
         
         // if talk is  underway, then  stop the busy notifier and activate forward and backward buttons
         if MP3TalkPlayer.getCurrentTimeAsSeconds() > 0 {
-            activityIndicatorView.stopAnimating()
-            activityIndicatorView.isHidden = true
-            activityTalkLoadingLabel.isHidden = true
-            
-            talkFastForward.isEnabled = true
-            talkFastBackward.isEnabled = true
-
+            disableActivityIcons()
+            enableScanButtons()
         }
+        
+        // show current talk time
         talkTime.text = MP3TalkPlayer.getCurrentTimeAsString()
     }
     
-    // called when we get a notification from mp3Player that the current talk is done
-    public func talkHasCompleted () {
+    private func playTalk() {
         
-        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(PlayTalkController.playNextTalk), userInfo: nil, repeats: false)
-
-        print("TALK COMPLETED!")
+        
     }
     
+    private func enableActivityIcons() {
+        
+        activityIndicatorView.isHidden = false
+        activityTalkLoadingLabel.isHidden = false
+        activityIndicatorView.startAnimating()
+    }
+    
+    private func disableActivityIcons() {
+        
+        activityIndicatorView.isHidden = true
+        activityTalkLoadingLabel.isHidden = true
+        activityIndicatorView.stopAnimating()
+    }
+    
+    private func enableScanButtons() {
+        
+        talkFastForward.isEnabled = true
+        talkFastBackward.isEnabled = true
+    }
+    
+    private func disableScanButtons() {
+        
+        talkFastForward.isEnabled = false
+        talkFastBackward.isEnabled = false
+    }
+
+    private func shareAll() {
+        // text to share
+        let text = "This is some text that I want to share."
+        
+        // set up activity view controller
+        let textToShare = [ text ]
+        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        
+        // exclude some activity types from the list (optional)
+        //activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+    }
     
 
 }

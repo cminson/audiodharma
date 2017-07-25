@@ -33,6 +33,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
+        
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar

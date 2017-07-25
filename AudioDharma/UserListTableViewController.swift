@@ -23,7 +23,6 @@ class UserListTableViewController: UITableViewController {
         let savedUserList = TheDataModel.loadUserListData()
         TheDataModel.UserLists = savedUserList
         print("UserListTableViewController: getting userLists: \(savedUserList) ")
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +79,6 @@ class UserListTableViewController: UITableViewController {
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
 
         }
- 
     }
     
     @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
@@ -120,7 +118,7 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            return TheDataModel.UserLists.count
+        return TheDataModel.UserLists.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
