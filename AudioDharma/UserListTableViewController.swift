@@ -13,8 +13,7 @@ import os.log
 class UserListTableViewController: UITableViewController {
     
     //MARK: Properties
-    var selectedRow: Int = 0
-    
+    var SelectedRow: Int = 0
     
     // MARK: Init
     override func viewDidLoad() {
@@ -22,7 +21,7 @@ class UserListTableViewController: UITableViewController {
         super.viewDidLoad()
         
         let savedUserList = TheDataModel.loadUserListData()
-        TheDataModel.userLists = savedUserList
+        TheDataModel.UserLists = savedUserList
         print("UserListTableViewController: getting userLists: \(savedUserList) ")
 
     }
@@ -50,7 +49,7 @@ class UserListTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
-                addEditUserListController.editMode = false
+                addEditUserListController.EditMode = false
             }
             
         case "SHOWEDITUSERLIST":    // Edit an existing User List
@@ -59,12 +58,12 @@ class UserListTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let selectedUserList = TheDataModel.userLists[self.selectedRow]
+            let selectedUserList = TheDataModel.UserLists[SelectedRow]
 
             if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
-                addEditUserListController.userList = selectedUserList
+                addEditUserListController.UserList = selectedUserList
                 addEditUserListController.title = "Edit User List"
-                addEditUserListController.editMode = true
+                addEditUserListController.EditMode = true
             }
 
         case "SHOWUSERTALKS":   // Display all talks within the current User List
@@ -74,7 +73,7 @@ class UserListTableViewController: UITableViewController {
             
             // set the userList that we want to show talks for
             //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
-            userTalkTableViewController.selectedUserListIndex = self.selectedRow
+            userTalkTableViewController.SelectedUserListIndex = SelectedRow
 
             
         default:
@@ -86,20 +85,20 @@ class UserListTableViewController: UITableViewController {
     
     @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
         
-        if let addEditUserListController = sender.source as? AddEditUserListController, let userList = addEditUserListController.userList {
+        if let addEditUserListController = sender.source as? AddEditUserListController, let userList = addEditUserListController.UserList {
             
             // if edit mode = true, then this is an edit of an existing user list
             // otherwise we are adding a new user list
-            if addEditUserListController.editMode == true {
-                TheDataModel.userLists[selectedRow].title = userList.title
-                TheDataModel.userLists[selectedRow].image = userList.image
+            if addEditUserListController.EditMode == true {
+                TheDataModel.UserLists[SelectedRow].title = userList.title
+                TheDataModel.UserLists[SelectedRow].image = userList.image
                 TheDataModel.saveUserListData()
                 self.tableView.reloadData()
                 
             } else {
-                let newIndexPath = IndexPath(row: TheDataModel.userLists.count, section: 0)
+                let newIndexPath = IndexPath(row: TheDataModel.UserLists.count, section: 0)
                 
-                TheDataModel.userLists.append(userList)
+                TheDataModel.UserLists.append(userList)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
                 TheDataModel.saveUserListData()
             }
@@ -121,7 +120,7 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            return TheDataModel.userLists.count
+            return TheDataModel.UserLists.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,7 +131,7 @@ class UserListTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of UserListTableViewCell.")
         }
         
-        let userList = TheDataModel.userLists[indexPath.row]
+        let userList = TheDataModel.UserLists[indexPath.row]
         cell.title.text = userList.title
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         cell.listImage.image = userList.image
@@ -160,7 +159,7 @@ class UserListTableViewController: UITableViewController {
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 self.tableView.isEditing = false
 
-                TheDataModel.userLists.remove(at: indexPath.row)
+                TheDataModel.UserLists.remove(at: indexPath.row)
                 TheDataModel.saveUserListData()
                 self.tableView.reloadData()
             }))
@@ -174,7 +173,7 @@ class UserListTableViewController: UITableViewController {
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             
-            self.selectedRow = indexPath.row
+            self.SelectedRow = indexPath.row
             self.performSegue(withIdentifier: "SHOWEDITUSERLIST", sender: self)
             // share item at indexPath
             self.tableView.isEditing = false
@@ -187,15 +186,15 @@ class UserListTableViewController: UITableViewController {
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.selectedRow = indexPath.row
+        SelectedRow = indexPath.row
         self.performSegue(withIdentifier: "SHOWUSERTALKS", sender: self)
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        let movedFolder = TheDataModel.userLists[sourceIndexPath.row]
-        TheDataModel.userLists.remove(at: sourceIndexPath.row)
-        TheDataModel.userLists.insert(movedFolder, at: destinationIndexPath.row)
+        let movedFolder = TheDataModel.UserLists[sourceIndexPath.row]
+        TheDataModel.UserLists.remove(at: sourceIndexPath.row)
+        TheDataModel.UserLists.insert(movedFolder, at: destinationIndexPath.row)
         print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedFolder.title)")
       
     }

@@ -14,31 +14,32 @@ import os.log
 class AddEditUserListController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK: Properties
-    var userList: UserListData? = nil
-    var editMode: Bool = false
-    
+    var UserList: UserListData? = nil
+    var EditMode: Bool = false
+
     
     // MARK: Outlets
     @IBOutlet weak var userListTitle: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var userImageView: UIImageView!
     
-    let imagePicker = UIImagePickerController()
     
+    let ImagePicker = UIImagePickerController()
+
     
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("view loaded: \(String(describing: userList?.title))")
+        print("view loaded: \(String(describing: UserList?.title))")
 
-        if let title = userList?.title {
+        if let title = UserList?.title {
             if title.characters.count > 0 {
                 userListTitle.text = title
             }
         }
 
-        if let image = userList?.image {
+        if let image = UserList?.image {
             userImageView.image = image
         } else {
             userImageView.image = UIImage(named: "flower01")
@@ -47,7 +48,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
         
         userListTitle.delegate = self
 
-        imagePicker.delegate = self
+        ImagePicker.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -68,7 +69,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
         
         let title = userListTitle.text ?? ""
         let image = userImageView.image ?? UIImage(named: "flower01")
-        self.userList = UserListData(title: title, image: image!)
+        UserList = UserListData(title: title, image: image!)
         
     }
     
@@ -88,11 +89,11 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
     }
     
     @IBAction func loadImage(_ sender: UIButton) {
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        ImagePicker.allowsEditing = false
+        ImagePicker.sourceType = .photoLibrary
+        ImagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         
-        present(imagePicker, animated: true, completion: nil)
+        present(ImagePicker, animated: true, completion: nil)
     }
     
     

@@ -21,11 +21,11 @@ let KEY_ALLTALKS = "ALL"
 class Model {
     
     //MARK: Properties
-    var folderSections: [[FolderData]] = []   // 2d array of sections x folders
-    var keyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
-    var keyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
-    var nameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
-    var userLists: [UserListData] = []      // all the custom user lists defined by this user
+    var FolderSections: [[FolderData]] = []   // 2d array of sections x folders
+    var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
+    var KeyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
+    var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
+    var UserLists: [UserListData] = []      // all the custom user lists defined by this user
 
     
     // MARK: Init
@@ -37,7 +37,7 @@ class Model {
         loadFoldersFromFile(jsonLocation: "folders02")
         
         // get user data from storage and compute the stats
-        self.userLists = TheDataModel.loadUserListData()
+        UserLists = TheDataModel.loadUserListData()
         computeCustomUserListStats()
     }
     
@@ -46,7 +46,7 @@ class Model {
     public func saveUserListData() {
         
         print("saveUserListData to: ", UserListData.ArchiveURL.path)
-        NSKeyedArchiver.archiveRootObject(TheDataModel.userLists, toFile: UserListData.ArchiveURL.path)
+        NSKeyedArchiver.archiveRootObject(TheDataModel.UserLists, toFile: UserListData.ArchiveURL.path)
     }
     
     public func loadUserListData() -> [UserListData]  {
@@ -63,22 +63,22 @@ class Model {
     
     public func getTalks(content: String) -> [[TalkData]] {
         
-        return self.keyToTalks[content] ?? [[TalkData]]()
+        return KeyToTalks[content] ?? [[TalkData]]()
     }
     
     public func getFolderStats(content: String) -> FolderStats {
         
-        return self.keyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+        return KeyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
     }
     
     public func getUserLists() -> [UserListData] {
         
-        return self.userLists
+        return UserLists
     }
     
     func getTalkForName(name: String) -> TalkData? {
         
-        return self.nameToTalks[name]
+        return NameToTalks[name]
     }
     
     //
@@ -89,12 +89,12 @@ class Model {
         var totalSecondsAllLists = 0
         var talkCountAllLists = 0
             
-        for userList in self.userLists {
+        for userList in UserLists {
                 
             var totalSeconds = 0
             var talkCount = 0
             for talkName in userList.talkFileNames {
-                if let talk = nameToTalks[talkName] {
+                if let talk = NameToTalks[talkName] {
                     totalSeconds += talk.time
                     talkCount += 1
                 }
@@ -106,13 +106,13 @@ class Model {
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            self.keyToFolderStats[userList.title] = stats
+            KeyToFolderStats[userList.title] = stats
         }
         
         let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
             
         let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
-        self.keyToFolderStats["CUSTOM"] = stats
+        KeyToFolderStats["CUSTOM"] = stats
     }
     
     
@@ -149,38 +149,38 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
                 
-                self.nameToTalks[fileName] = talkData
+               NameToTalks[fileName] = talkData
                               
                 // add this talk to  list of all talks
                 // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section
-                if self.keyToTalks[KEY_ALLTALKS] == nil {
-                    self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
-                    self.keyToTalks[KEY_ALLTALKS]?.append([talkData])
+                if KeyToTalks[KEY_ALLTALKS] == nil {
+                    KeyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
+                    KeyToTalks[KEY_ALLTALKS]?.append([talkData])
                     
                 }
                 else {
-                    self.keyToTalks[KEY_ALLTALKS]?[0].append(talkData)
+                    KeyToTalks[KEY_ALLTALKS]?[0].append(talkData)
                 }
                 
                 // add talk to the list of talks for this speaker
                 // Note: there is only one talk section for speaker. talks for this spearker are stored in that section
-                if self.keyToTalks[speaker] == nil {
-                    self.keyToTalks[speaker] = [[TalkData]] ()
-                    self.keyToTalks[speaker]?.append([talkData])
+                if KeyToTalks[speaker] == nil {
+                    KeyToTalks[speaker] = [[TalkData]] ()
+                    KeyToTalks[speaker]?.append([talkData])
                 }
                 else {
-                    self.keyToTalks[speaker]?[0].append(talkData)
+                    KeyToTalks[speaker]?[0].append(talkData)
                 }
                 
                 talkCount += 1
-                print(talkData, talkCount)
+                //print(talkData, talkCount)
             }
         } catch {
             print(error)
         }
         
         let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-        self.keyToFolderStats[KEY_ALLTALKS] = stats
+        KeyToFolderStats[KEY_ALLTALKS] = stats
     }
     
     private func loadFoldersFromFile(jsonLocation: String) {
@@ -208,12 +208,12 @@ class Model {
                 // store folder in the 2D folderSection array (section x folder)
                 if folderSectionPositionDict[section] == nil {
                     // new section seen.  create new array of folders for this section
-                    self.folderSections.append([folderData])
-                    folderSectionPositionDict[section] = self.folderSections.count - 1
+                    FolderSections.append([folderData])
+                    folderSectionPositionDict[section] = FolderSections.count - 1
                 } else {
                     // section already exists.  add folder to the existing array of folders
                     let sectionPosition = folderSectionPositionDict[section]!
-                    self.folderSections[sectionPosition].append(folderData)
+                    FolderSections[sectionPosition].append(folderData)
                 }
                 
                 //print(self.folderSections.count)
@@ -236,21 +236,21 @@ class Model {
                     let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                     
                     // create the key -> talkData[] entry if it doesn't already exist
-                    if self.keyToTalks[content] == nil {
+                    if KeyToTalks[content] == nil {
                         //print("folder talks creating key for: \(content)")
-                        self.keyToTalks[content]  = []
+                        KeyToTalks[content]  = []
                     }
                     
                     // now add the talk data to this key
                     if talkSectionPositionDict[section] == nil {
                         // new section seen.  create new array of talks for this section
                         //print("new section seen. creating array for: \(content)")
-                        self.keyToTalks[content]!.append([talkData])
-                        talkSectionPositionDict[section] = self.keyToTalks[content]!.count - 1
+                        KeyToTalks[content]!.append([talkData])
+                        talkSectionPositionDict[section] = KeyToTalks[content]!.count - 1
                     } else {
                         // section already exists.  add talk to the existing array of talks
                         let sectionPosition = talkSectionPositionDict[section]!
-                        self.keyToTalks[content]![sectionPosition].append(talkData)
+                        KeyToTalks[content]![sectionPosition].append(talkData)
                         
                     }
                 }
@@ -263,10 +263,10 @@ class Model {
         // now compute stats for the folders
         // this means calculating the total numberof talks in each folder and total seconds for all talks in folder
         //
-        let folders = self.folderSections.joined()
+        let folders = FolderSections.joined()
         for folder in folders {
             
-            let talksInFolder = (self.keyToTalks[folder.content] ?? [[TalkData]]()).joined()
+            let talksInFolder = (KeyToTalks[folder.content] ?? [[TalkData]]()).joined()
             let talkCount = talksInFolder.count
             
             var totalSeconds = 0
@@ -275,10 +275,9 @@ class Model {
             }
             
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-            //let durationDisplay = "99,999:00:00"
             
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            self.keyToFolderStats[folder.content] = stats
+            KeyToFolderStats[folder.content] = stats
         }
     }
     
@@ -331,12 +330,12 @@ class Model {
                     // store folder in the 2D folderSection array (section x folder)
                     if folderSectionPositionDict[section] == nil {
                         // new section seen.  create new array of folders for this section
-                        self.folderSections.append([folderData])
-                        folderSectionPositionDict[section] = self.folderSections.count - 1
+                        self.FolderSections.append([folderData])
+                        folderSectionPositionDict[section] = self.FolderSections.count - 1
                     } else {
                         // section already exists.  add folder to the existing array of folders
                         let sectionPosition = folderSectionPositionDict[section]!
-                        self.folderSections[sectionPosition].append(folderData)
+                        self.FolderSections[sectionPosition].append(folderData)
                     }
                 
                     
@@ -358,19 +357,19 @@ class Model {
                         let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                         
                         // create the key -> talkData[] entry if it doesn't already exist
-                        if self.keyToTalks[content] == nil {
-                            self.keyToTalks[content]  = []
+                        if self.KeyToTalks[content] == nil {
+                            self.KeyToTalks[content]  = []
                         }
                         
                         // now add the talk data to this key
                         if talkSectionPositionDict[section] == nil {
                             // new section seen.  create new array of talks for this section
-                            self.keyToTalks[content]!.append([talkData])
-                            talkSectionPositionDict[section] = self.keyToTalks[content]!.count - 1
+                            self.KeyToTalks[content]!.append([talkData])
+                            talkSectionPositionDict[section] = self.KeyToTalks[content]!.count - 1
                         } else {
                             // section already exists.  add talk to the existing array of talks
                             let sectionPosition = talkSectionPositionDict[section]!
-                            self.keyToTalks[content]![sectionPosition].append(talkData)
+                            self.KeyToTalks[content]![sectionPosition].append(talkData)
                             
                         }
                     }
@@ -383,10 +382,10 @@ class Model {
             // now compute stats for the folders
             // this means calculating the total numberof talks in each folder and total seconds for all talks in folder
             //
-            let folders = self.folderSections.joined()
+            let folders = self.FolderSections.joined()
             for folder in folders {
                 
-                let talksInFolder = (self.keyToTalks[folder.content] ?? [[TalkData]]()).joined()
+                let talksInFolder = (self.KeyToTalks[folder.content] ?? [[TalkData]]()).joined()
                 let talkCount = talksInFolder.count
                 
                 var totalSeconds = 0
@@ -394,7 +393,7 @@ class Model {
                     totalSeconds += talk.time
                  }
                 let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-                self.keyToFolderStats[folder.content] = stats
+                self.KeyToFolderStats[folder.content] = stats
             }
             
         }
@@ -455,17 +454,17 @@ class Model {
                     
  
                     // add this talk to  list of all talks
-                    if self.keyToTalks[KEY_ALLTALKS] == nil {
-                        self.keyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
+                    if self.KeyToTalks[KEY_ALLTALKS] == nil {
+                        self.KeyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
                         
                     }
-                    self.keyToTalks[KEY_ALLTALKS]? += [[talkData]]
+                    self.KeyToTalks[KEY_ALLTALKS]? += [[talkData]]
                     
                     // add talk to the list of talks for this speaker
-                    if self.keyToTalks[speaker] == nil {
-                        self.keyToTalks[speaker] = [[TalkData]] ()
+                    if self.KeyToTalks[speaker] == nil {
+                        self.KeyToTalks[speaker] = [[TalkData]] ()
                     }
-                    self.keyToTalks[speaker]? += [[talkData]]
+                    self.KeyToTalks[speaker]? += [[talkData]]
                     
                     talkCount += 1
                 }
@@ -474,7 +473,7 @@ class Model {
             }
             
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.keyToFolderStats[KEY_ALLTALKS] = stats
+            self.KeyToFolderStats[KEY_ALLTALKS] = stats
 
         }
         task.resume()

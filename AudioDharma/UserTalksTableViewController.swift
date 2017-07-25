@@ -15,10 +15,9 @@ import UIKit
 class UserTalkTableViewController: UITableViewController {
     
     // MARK: Properties
-    var selectedUserListIndex: Int = 0         // into into the datamodel userlist array, the value is the selected user list to display
-    //var selectedUserList : UserListData!     // the selected user list for which we will display talks (obtain via selecteduserListIndex)
-    var selectedTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
-    var selectedRow: Int = 0
+    var SelectedUserListIndex: Int = 0         // into into the datamodel userlist array, the value is the selected user list to display
+    var SelectedTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
+    var SelectedRow: Int = 0
     
     
     // MARK: Init
@@ -28,9 +27,9 @@ class UserTalkTableViewController: UITableViewController {
         //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
 
         // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
-        for talkFileName in TheDataModel.userLists[selectedUserListIndex].talkFileNames {
+        for talkFileName in TheDataModel.UserLists[SelectedUserListIndex].talkFileNames {
             if let talk = TheDataModel.getTalkForName(name: talkFileName) {
-                selectedTalks.append(talk)
+                SelectedTalks.append(talk)
             }
         }
         
@@ -57,7 +56,7 @@ class UserTalkTableViewController: UITableViewController {
             }
             
             let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
-            addTalkTableViewController?.selectedTalks =  selectedTalks
+            addTalkTableViewController?.SelectedTalks =  SelectedTalks
             
         case "DISPLAY_TALKPLAYER2":   // play the selected talk in the MP3
             
@@ -66,8 +65,8 @@ class UserTalkTableViewController: UITableViewController {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
 
-            playTalkController.TalkList = selectedTalks
-            playTalkController.CurrentTalkRow = selectedRow
+            playTalkController.TalkList = SelectedTalks
+            playTalkController.CurrentTalkRow = SelectedRow
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -81,21 +80,21 @@ class UserTalkTableViewController: UITableViewController {
         //
         if let controller = sender.source as? UserAddTalkViewController {
             
-            self.selectedTalks = controller.selectedTalks
+            SelectedTalks = controller.SelectedTalks
             
             // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
             var talkFileNames = [String]()
-            for talk in self.selectedTalks {
+            for talk in SelectedTalks {
                 talkFileNames.append(talk.fileName)
                 //print("adding: ", talk.fileName)
                 
             }
             
             // save the resulting array into the userlist and then persist into storage
-            TheDataModel.userLists[selectedUserListIndex].talkFileNames = talkFileNames
+            TheDataModel.UserLists[SelectedUserListIndex].talkFileNames = talkFileNames
             
             // DEBUG
-            let test1 = TheDataModel.userLists[selectedUserListIndex].talkFileNames
+            let test1 = TheDataModel.UserLists[SelectedUserListIndex].talkFileNames
             for talk in test1 {
                 print("SAVED: ", talk)
                 
@@ -115,7 +114,7 @@ class UserTalkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.selectedTalks.count
+        return SelectedTalks.count
     }
     
     
@@ -127,7 +126,7 @@ class UserTalkTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of UserTalksTableViewCell.")
         }
         
-        let talk = self.selectedTalks[indexPath.row]
+        let talk = SelectedTalks[indexPath.row]
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
         cell.duration.text = talk.duration
@@ -138,7 +137,7 @@ class UserTalkTableViewController: UITableViewController {
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.selectedRow = indexPath.row
+        SelectedRow = indexPath.row
         self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER2", sender: self)
     }
     
@@ -154,20 +153,20 @@ class UserTalkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        let movedTalk = self.selectedTalks[sourceIndexPath.row]
-        self.selectedTalks.remove(at: sourceIndexPath.row)
-        self.selectedTalks.insert(movedTalk, at: destinationIndexPath.row)
+        let movedTalk = SelectedTalks[sourceIndexPath.row]
+        SelectedTalks.remove(at: sourceIndexPath.row)
+        SelectedTalks.insert(movedTalk, at: destinationIndexPath.row)
         print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedTalk.title)")
         
         
         // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
         var talkFileNames = [String]()
-        for talk in self.selectedTalks {
+        for talk in SelectedTalks {
             talkFileNames.append(talk.fileName)
         }
         
         // save the resulting array into the userlist and then persist into storage
-        TheDataModel.userLists[selectedUserListIndex].talkFileNames = talkFileNames
+        TheDataModel.UserLists[SelectedUserListIndex].talkFileNames = talkFileNames
         TheDataModel.saveUserListData()
       }
 

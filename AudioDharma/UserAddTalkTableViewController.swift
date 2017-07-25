@@ -11,15 +11,15 @@ import UIKit
 class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
-    var displayTalks: [TalkData] = []
-    var filteredTalks:  [TalkData] = []
-    var selectedRow: Int = 0
-    let searchController = UISearchController(searchResultsController: nil)
+    var DisplayTalks: [TalkData] = []
+    var FilteredTalks:  [TalkData] = []
+    var SelectedRow: Int = 0
+    let SearchController = UISearchController(searchResultsController: nil)
     
-    var content: String = ""
-    var selectedTalks: [TalkData] = [TalkData] ()
+    var Content: String = ""
+    var SelectedTalks: [TalkData] = [TalkData] ()
     
-    var selectedTalksByNameDict : [String: Bool] = [ : ]    // dict indexed by talk filename. value bool is user listed or not
+    var SelectedTalksByNameDict : [String: Bool] = [ : ]    // dict indexed by talk filename. value bool is user listed or not
     
     //MARK: Actions
     @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
@@ -40,8 +40,8 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         // and ALL talks.  selectedTalks are shown at the top. 
         //
         
-        for talk in self.selectedTalks {
-            selectedTalksByNameDict[talk.fileName] = true
+        for talk in SelectedTalks {
+            SelectedTalksByNameDict[talk.fileName] = true
             print("Selected Talk: ", talk.title)
             
         }
@@ -49,33 +49,33 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         
         let allTalks = TheDataModel.getTalks(content: KEY_ALLTALKS).joined()
         for talk in allTalks {
-            selectedTalksByNameDict[talk.fileName] = false
+            SelectedTalksByNameDict[talk.fileName] = false
         }
-        for talk in self.selectedTalks {
-            selectedTalksByNameDict[talk.fileName] = true
+        for talk in SelectedTalks {
+            SelectedTalksByNameDict[talk.fileName] = true
         }
 
         
         let setofAllTalks : Set<TalkData> = Set(allTalks)
-        let setOfSelectedTalks : Set<TalkData> = Set(self.selectedTalks)
+        let setOfSelectedTalks : Set<TalkData> = Set(SelectedTalks)
         let xorSet = setofAllTalks.symmetricDifference(setOfSelectedTalks)
         
-        self.displayTalks = self.selectedTalks + Array(xorSet)
-        self.filteredTalks = self.displayTalks
+        DisplayTalks = SelectedTalks + Array(xorSet)
+        FilteredTalks = DisplayTalks
         
         //searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        tableView.tableHeaderView = searchController.searchBar
-        searchController.searchBar.delegate = self
-        searchController.delegate = self
+        SearchController.searchResultsUpdater = self
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
         
         //self.tableView.allowsMultipleSelection = true
     }
     
     deinit {
-        self.searchController.view.removeFromSuperview()
+        SearchController.view.removeFromSuperview()
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,7 +83,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        searchController.isActive = false
+        SearchController.isActive = false
         
     }
     
@@ -117,14 +117,14 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
  
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
-            self.filteredTalks = []
-            for talk in self.displayTalks {
+            FilteredTalks = []
+            for talk in DisplayTalks {
                 if talk.title.lowercased().contains(searchText.lowercased()) {
-                    self.filteredTalks.append(talk)
+                    FilteredTalks.append(talk)
                 }
             }
         } else {
-            self.filteredTalks = self.displayTalks
+            FilteredTalks = DisplayTalks
         }
 
         tableView.reloadData()
@@ -138,22 +138,22 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.filteredTalks.count
+        return FilteredTalks.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.filteredTalks.count
+        return FilteredTalks.count
     }
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedRow = indexPath.row
+        SelectedRow = indexPath.row
 
         if let cell = tableView.cellForRow(at: indexPath) as? UserAddTalkTableViewCell {
-            let talk = self.filteredTalks[indexPath.row]
+            let talk = FilteredTalks[indexPath.row]
             
-            var userSelected = selectedTalksByNameDict[talk.fileName]
+            var userSelected = SelectedTalksByNameDict[talk.fileName]
             userSelected = (userSelected == true) ? false : true
-            selectedTalksByNameDict[talk.fileName] = userSelected
+            SelectedTalksByNameDict[talk.fileName] = userSelected
             
             setSelectedState(talk: talk, cell: cell)
             //cell.backgroundColor = UIColor.green
@@ -168,7 +168,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserAddTalkTableViewCell  else {
             fatalError("The dequeued cell is not an instance of UserAddTalkTableViewCell.")
         }
-        let talk = self.filteredTalks[indexPath.row]
+        let talk = FilteredTalks[indexPath.row]
         
         /*
         let backgroundView = UIView()
@@ -205,19 +205,19 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         // otherwise the new state is presumably on.
         // in that case, add the talk to selections
         var idx = 0
-        for aSelectedTalk in self.selectedTalks {
+        for aSelectedTalk in SelectedTalks {
             if changedTalk.fileName == aSelectedTalk.fileName {
-                selectedTalks.remove(at: idx)
+                SelectedTalks.remove(at: idx)
                 return
             }
             idx += 1
         }
-        self.selectedTalks.append(changedTalk)
+        SelectedTalks.append(changedTalk)
     }
     
     private func setSelectedState(talk: TalkData, cell: UserAddTalkTableViewCell) {
     
-        let userSelected = self.selectedTalksByNameDict[talk.fileName]
+        let userSelected = SelectedTalksByNameDict[talk.fileName]
         if userSelected == true {
             cell.userSelected.image = UIImage(named: "checkboxon")
             //cell.backgroundColor = UIColor.green

@@ -9,7 +9,6 @@
 import UIKit
 import Social
 
-
 class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
@@ -19,12 +18,13 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
     let SearchController = UISearchController(searchResultsController: nil)
-    
+    var SearchText = ""
     
     // MARK: Init
     override func viewDidLoad() {
         
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
+        print("view did load")
         super.viewDidLoad()
         
         SectionTalks = TheDataModel.getTalks(content: Content)
@@ -36,6 +36,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
+        
     }
     
     deinit {
@@ -49,7 +50,22 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         super.didReceiveMemoryWarning()
     }
     
+    // restore the search state, if any
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        print("viewwillapear TalkSearch: ",SearchText)
+
+        SearchController.isActive = true
+        if SearchText.characters.count > 0 {
+            SearchController.searchBar.text! = SearchText
+        }
+    }
+
+    // TBD
     override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
         
         SearchController.isActive = false
     }
@@ -60,10 +76,13 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         super.prepare(for: segue, sender: sender)
         
+        print("talktableviewcontroller:  prepare segue")
+        
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_TALKPLAYER1":
             print("DISPLAY_TALKPLAYER1")
+
             guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
                 else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -79,7 +98,9 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         // dismiss any searching - must do this prior to executing the segue
         // NOTE:  must do this on the return, as it will reset filteredSectionTalks and give us the wrong indexing if done earlier
+        SearchText = SearchController.searchBar.text!   //  save this off, so as to restore search state upon return
         SearchController.isActive = false
+        
     }
 
     @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
@@ -201,72 +222,53 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let shareFB = UITableViewRowAction(style: .normal, title: "Facebook") { (action, indexPath) in
-            self.SelectedRow = indexPath.row
-            self.shareFB()
-            /*
-            self.selectedRow = indexPath.row
-            self.performSegue(withIdentifier: "ShareTalk", sender: self)
-            // share item at indexPath
-            self.tableView.isEditing = false
- */
+        SelectedSection = indexPath.section
+        SelectedRow = indexPath.row
+
+        let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+            self.shareTalk()
         }
-    
-        let shareTwitter = UITableViewRowAction(style: .normal, title: "Twitter") { (action, indexPath) in
-            
-            //self.shareTwitter()
-            self.shareAll()
-        }
-    
-        return [shareFB, shareTwitter]
+        return [shareTalk]
     }
 
 
-    //MARK: Share Methods
-    private func shareFB() {
-    
-        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
-        //var postText = ("\(talk.title)\n \(talk.talkURL)\nShared from the iPhone Audiodharma app")
-        let postText = ("<a title=\(talk.title)\n href=\(talk.URL)/>\nShared from the iPhone Audiodharma app")
+    //MARK: Share
+    private func shareTalk() {
         
-        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook){
-            let facebookSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-            facebookSheet.setInitialText(postText)
-            self.present(facebookSheet, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    private func shareTwitter() {
-        
-        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter){
-            let twitterSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-            twitterSheet.setInitialText("Share on Twitter")
-            self.present(twitterSheet, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertController(title: "Accounts", message: "Please login to a Twitter account to share.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
+        print("shareTalk")
+        let sharedTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        let shareText = "\(sharedTalk.title)\n\(sharedTalk.speaker)   \(sharedTalk.date)\nShared from the iPhone AudioDharma app"
 
-    private func shareAll() {
-        // text to share
-        let text = "This is some text that I want to share."
+        let objectsToShare:URL = URL(string: sharedTalk.URL)!
+        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
         
-        // set up activity view controller
-        let textToShare = [ text ]
-        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+         // set up activity view controller
+        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
         
         // exclude some activity types from the list (optional)
-        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        //activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        
+        // save off search state and then turn off search. otherwise the modal will conflict with it
+        SearchText = SearchController.searchBar.text!
+        SearchController.isActive = false
         
         // present the view controller
         self.present(activityViewController, animated: true, completion: nil)
+        
+        // restore search state
+        SearchController.isActive = true
+        SearchController.searchBar.text = SearchText
+
+       
+        //self.perform(#selector(presentModal), with: activityViewController, afterDelay: 2.1)
+        
+    
+    }
+    
+    public func presentModal(activityViewController: UIActivityViewController) {
+        self.present(activityViewController, animated: true, completion: nil)
+    
     }
     
 }
