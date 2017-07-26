@@ -149,7 +149,7 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
                 
-               NameToTalks[fileName] = talkData
+                NameToTalks[fileName] = talkData
                               
                 // add this talk to  list of all talks
                 // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section

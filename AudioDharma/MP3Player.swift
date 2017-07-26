@@ -33,6 +33,8 @@ class MP3Player : NSObject {
         let url : URL = URL(string: talk.URL)!
         PlayerItem  = AVPlayerItem(url: url)
         Player =  AVPlayer(playerItem : PlayerItem)
+        Player.allowsExternalPlayback = true
+        
         
         NotificationCenter.default.addObserver(self,selector:
                         #selector(self.talkHasCompleted),

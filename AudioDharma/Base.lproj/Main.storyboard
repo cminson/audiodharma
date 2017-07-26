@@ -633,6 +633,11 @@
                                     <barButtonItem systemItem="pause" id="vvF-Y9-SId"/>
                                 </items>
                             </toolbar>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="whF-KT-Rhe">
+                                <rect key="frame" x="17" y="406" width="367" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -670,6 +675,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="MPVolumeParentView" destination="whF-KT-Rhe" id="NvB-Ap-QNt"/>
                         <outlet property="activityIndicatorView" destination="0wV-Lf-pSV" id="cuz-yx-Fhv"/>
                         <outlet property="activityTalkLoadingLabel" destination="Plc-Xt-mkM" id="zeO-Am-LXC"/>
                         <outlet property="metaInfo" destination="f1H-n6-dSw" id="tC2-fZ-bBw"/>

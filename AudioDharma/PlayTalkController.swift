@@ -39,6 +39,7 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var activityTalkLoadingLabel: UILabel!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
+    @IBOutlet weak var MPVolumeParentView: UIView!
     
     // MARK: Properties
     var TalkList : [TalkData]!
@@ -51,7 +52,8 @@ class PlayTalkController: UIViewController {
     var TalkIsPlaying: Bool = false
     var PlayEntireList: Bool = false
     
-    
+
+
     // Mark: Init
     override func viewDidLoad() {
         
@@ -63,6 +65,15 @@ class PlayTalkController: UIViewController {
         CurrentTalk = TalkList[CurrentTalkRow]
 
         setTalkStartDisplay()
+        
+        MPVolumeParentView.backgroundColor = UIColor.clear
+        let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
+        volumeView.showsRouteButton = true
+        volumeView.sizeToFit()
+        MPVolumeParentView.addSubview(volumeView)
+
+
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +91,8 @@ class PlayTalkController: UIViewController {
         metaInfo.text = CurrentTalk.speaker + "   " + CurrentTalk.date
         
         talkTime.text = MP3TalkPlayer.getCurrentTimeAsString()
-    }
+        
+     }
     
     public func playNextTalk() {
         
