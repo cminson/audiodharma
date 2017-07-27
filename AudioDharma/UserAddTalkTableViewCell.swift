@@ -14,6 +14,8 @@ class UserAddTalkTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var speakerPhoto: UIImageView!
     @IBOutlet weak var userSelected: UIImageView!
+    @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var duration: UILabel!
 
     
     // MARK: Properties

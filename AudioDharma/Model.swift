@@ -81,6 +81,23 @@ class Model {
         return NameToTalks[name]
     }
     
+    func generateTalkKey(name: String, date: String, duration: String) -> String {
+        
+        let key = name + "+!+" + date + "+!+" + duration
+        return key
+    }
+    
+    func unpackTalkKey(key: String) -> (name: String, date: String, duration: String) {
+        
+        let keyPartsArray = key.components(separatedBy: "+!+")
+        
+        let name = keyPartsArray[0]
+        let date = keyPartsArray[1]
+        let duration = keyPartsArray[2]
+        
+        return(name, date, duration)
+    }
+    
     //
     // generate the stats for the user-defined lists.
     //
@@ -99,7 +116,6 @@ class Model {
                     talkCount += 1
                 }
             }
-            
             
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
@@ -138,7 +154,7 @@ class Model {
                 let section = ""
                 
                 
-                let seconds = self.converDurationToSeconds(duration: duration)
+                let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
                 let urlPhrases = URL.components(separatedBy: "/")
@@ -149,6 +165,7 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
                 
+                print(fileName)
                 NameToTalks[fileName] = talkData
                               
                 // add this talk to  list of all talks
@@ -231,7 +248,7 @@ class Model {
                     let date = talk["date"] as? String ?? ""
                     let section = talk["section"] as? String ?? ""
                     
-                    let totalSeconds = self.converDurationToSeconds(duration: duration)
+                    let totalSeconds = self.convertDurationToSeconds(duration: duration)
                     
                     let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                     
@@ -352,7 +369,7 @@ class Model {
                         let date = talk["date"] as? String ?? ""
                         let section = talk["section"] as? String ?? ""
                         
-                        let totalSeconds = self.converDurationToSeconds(duration: duration)
+                        let totalSeconds = self.convertDurationToSeconds(duration: duration)
 
                         let talkData =  TalkData(title: titleTitle, URL: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                         
@@ -447,7 +464,7 @@ class Model {
                     let urlPhrases = URL.components(separatedBy: "/")
                     let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
                     
-                    let seconds = self.converDurationToSeconds(duration: duration)
+                    let seconds = self.convertDurationToSeconds(duration: duration)
                     totalSeconds += seconds
 
                     let talkData =  TalkData(title: title,  URL: URL,  fileName: urlFileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
@@ -479,7 +496,7 @@ class Model {
         task.resume()
     }
     
-    private func converDurationToSeconds(duration: String) -> Int {
+    public func convertDurationToSeconds(duration: String) -> Int {
         
         var totalSeconds: Int = 0
         var hours : Int = 0

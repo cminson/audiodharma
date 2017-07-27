@@ -42,8 +42,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         
         for talk in SelectedTalks {
             SelectedTalksByNameDict[talk.fileName] = true
-            print("Selected Talk: ", talk.title)
-            
+            //print("Selected Talk: ", talk.fileName, talk.title)
         }
         
         
@@ -55,7 +54,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
             SelectedTalksByNameDict[talk.fileName] = true
         }
 
-        
+        // xor the selectedTalks from Alltalks, so that selectedTalks won't be displayed twice
         let setofAllTalks : Set<TalkData> = Set(allTalks)
         let setOfSelectedTalks : Set<TalkData> = Set(SelectedTalks)
         let xorSet = setofAllTalks.symmetricDifference(setOfSelectedTalks)
@@ -126,6 +125,15 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         } else {
             FilteredTalks = DisplayTalks
         }
+        
+        
+        // DEBUG
+        /*
+        for talk in FilteredTalks {
+            print("SEARCH: ", talk.fileName, talk.title)
+        }
+ */
+
 
         tableView.reloadData()
     }
@@ -138,7 +146,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return FilteredTalks.count
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -154,11 +162,31 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
             var userSelected = SelectedTalksByNameDict[talk.fileName]
             userSelected = (userSelected == true) ? false : true
             SelectedTalksByNameDict[talk.fileName] = userSelected
+            //print("DidSelectRow for \(talk.fileName)  \(userSelected)")
             
+            // set the checkbox in the cell to reflect it's current selection state.
+            // gets a checkmark if selected, otherwise an empty box
             setSelectedState(talk: talk, cell: cell)
-            //cell.backgroundColor = UIColor.green
-            updateSelectedTalks(changedTalk: talk)
-        }
+
+            let backgroundView = UIView()
+            if userSelected == true {
+                SelectedTalks.append(talk)
+                backgroundView.backgroundColor = UIColor.green
+
+            } else {
+                var idx = 0
+                for selectedTalk in SelectedTalks {
+                    if talk.fileName == selectedTalk.fileName {
+                        SelectedTalks.remove(at: idx)
+                        backgroundView.backgroundColor = UIColor.white
+                        break
+                    }
+                    idx += 1
+                }
+            }
+            cell.selectedBackgroundView = backgroundView
+
+         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -170,20 +198,22 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         }
         let talk = FilteredTalks[indexPath.row]
         
-        /*
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.green
-        cell.selectedBackgroundView = backgroundView
- */
-        
         cell.title.text = talk.title
         cell.speakerPhoto.image = talk.speakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        setSelectedState(talk: talk, cell: cell)
+        cell.duration.text = talk.duration
+        cell.date.text = talk.date
 
+        setSelectedState(talk: talk, cell: cell)
+        
         return cell
     }
     
+    /*
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
+        cell.contentView.backgroundColor = UIColor.brown
+    }
+    */
     
     
     // MARK: Navigation
@@ -205,13 +235,16 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         // otherwise the new state is presumably on.
         // in that case, add the talk to selections
         var idx = 0
-        for aSelectedTalk in SelectedTalks {
-            if changedTalk.fileName == aSelectedTalk.fileName {
+        for selectedTalk in SelectedTalks {
+            if changedTalk.fileName == selectedTalk.fileName {
                 SelectedTalks.remove(at: idx)
                 return
             }
             idx += 1
         }
+    
+        
+        print("UserAddTalkTableView new selected talk: ", changedTalk.title, changedTalk.fileName)
         SelectedTalks.append(changedTalk)
     }
     
@@ -219,12 +252,12 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
         let userSelected = SelectedTalksByNameDict[talk.fileName]
         if userSelected == true {
-            cell.userSelected.image = UIImage(named: "checkboxon")
-            //cell.backgroundColor = UIColor.green
+            //cell.userSelected.image = UIImage(named: "checkboxon")
+            cell.backgroundColor = UIColor.green
             
         } else {
-            cell.userSelected.image = UIImage(named: "checkboxoff")
-            //cell.backgroundColor = UIColor.white
+            //cell.userSelected.image = UIImage(named: "checkboxoff")
+            cell.backgroundColor = UIColor.white
 
             
         }

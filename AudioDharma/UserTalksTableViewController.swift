@@ -15,7 +15,7 @@ import UIKit
 class UserTalkTableViewController: UITableViewController {
     
     // MARK: Properties
-    var SelectedUserListIndex: Int = 0         // into into the datamodel userlist array, the value is the selected user list to display
+    var SelectedUserListIndex: Int = 0         // index into the datamodel userlist array, the value is the selected user list to display
     var SelectedTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
     var SelectedRow: Int = 0
     
@@ -29,12 +29,15 @@ class UserTalkTableViewController: UITableViewController {
 
         // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
         for talkFileName in TheDataModel.UserLists[SelectedUserListIndex].talkFileNames {
+            print(talkFileName)
             if let talk = TheDataModel.getTalkForName(name: talkFileName) {
                 SelectedTalks.append(talk)
+            } else {
+                print("ERROR: could not locate \(talkFileName)")
             }
         }
         
-        //self.title = selectedUserList.title
+        self.title = TheDataModel.UserLists[SelectedUserListIndex].title
         //self.tableView.isEditing = true
     }
     

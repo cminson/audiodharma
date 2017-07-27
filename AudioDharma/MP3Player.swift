@@ -35,13 +35,16 @@ class MP3Player : NSObject {
         Player =  AVPlayer(playerItem : PlayerItem)
         Player.allowsExternalPlayback = true
         
-        
+        // get notification once talk ends
         NotificationCenter.default.addObserver(self,selector:
                         #selector(self.talkHasCompleted),
                         name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                         object: PlayerItem)
+        
         Player.play()
     }
+    
+    
     
     public func play() {
         
@@ -61,9 +64,15 @@ class MP3Player : NSObject {
     
     public func talkHasCompleted() {
         
+        print("Talk has completed")
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
-
+    
+    public func seekToTime(seconds: Int64) {
+        
+        Player.seek(to: CMTimeMake(seconds, 1))
+    }
+    
     public func seekFastForward() {
         
         if let ct = PlayerItem?.currentTime(), let dt = Player.currentItem?.asset.duration {
@@ -102,29 +111,36 @@ class MP3Player : NSObject {
         
     }
     
-    public func getCurrentTimeAsString() -> String {
-     
-        var seconds = 0
-        var minutes = 0
+    public func convertSecondsToDisplayString(timeInSeconds: Int) -> String {
         
-        if let ct = PlayerItem?.currentTime() {
-            let time = CMTimeGetSeconds(ct)
-        
-            seconds = Int(time) % 60
-            minutes = (Int(time) / 60) % 60
-        }
+        let seconds = Int(timeInSeconds) % 60
+        let minutes = (Int(timeInSeconds) / 60) % 60
+
         return String(format: "%0.2d:%0.2d",minutes,seconds)
-     }
+    }
+
     
-    public func getCurrentTimeAsSeconds() -> Int {
+    public func getCurrentTimeInSeconds() -> Int {
         
+        var time : Int = 0
+
         if let ct = PlayerItem?.currentTime()  {
-            let time = CMTimeGetSeconds(ct)
-            return Int(time)
+            time = Int(CMTimeGetSeconds(ct))
         }
-        return 0
+        return time
     }
     
+    public func getDurationInSeconds() -> Int {
+        
+        var time : Int = 0
+        
+        if let ct = PlayerItem?.duration {
+            time = Int(CMTimeGetSeconds(ct))
+            
+        }
+        return time
+    }
+
     public func getProgress()->Float {
         
         var theCurrentTime = 0.0
