@@ -192,21 +192,8 @@ class UserTalkTableViewController: UITableViewController {
     //MARK: Share
     private func shareTalk() {
         
-        print("shareTalk")
         let sharedTalk = SelectedTalks[SelectedRow]
-        let shareText = "\(sharedTalk.title)\n\(sharedTalk.speaker)   \(sharedTalk.date)\nShared from the iPhone AudioDharma app"
-        
-        let objectsToShare:URL = URL(string: sharedTalk.URL)!
-        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
-        
-        // set up activity view controller
-        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-        
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
-        
-        
+        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
 
 }

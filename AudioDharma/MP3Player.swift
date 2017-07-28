@@ -115,8 +115,10 @@ class MP3Player : NSObject {
         
         let seconds = Int(timeInSeconds) % 60
         let minutes = (Int(timeInSeconds) / 60) % 60
+        let hours = (Int(timeInSeconds) / 3600) % 3600
 
-        return String(format: "%0.2d:%0.2d",minutes,seconds)
+
+        return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
     }
 
     

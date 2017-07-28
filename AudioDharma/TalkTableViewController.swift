@@ -54,12 +54,11 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
-        print("viewwillapear TalkSearch: ",SearchText)
 
-        SearchController.isActive = true
         if SearchText.characters.count > 0 {
             SearchController.searchBar.text! = SearchText
         }
+
     }
 
     // TBD
@@ -75,8 +74,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        
-        print("talktableviewcontroller:  prepare segue")
         
         switch(segue.identifier ?? "") {
             
@@ -235,40 +232,17 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     //MARK: Share
     private func shareTalk() {
         
-        print("shareTalk")
         let sharedTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
-        let shareText = "\(sharedTalk.title)\n\(sharedTalk.speaker)   \(sharedTalk.date)\nShared from the iPhone AudioDharma app"
-
-        let objectsToShare:URL = URL(string: sharedTalk.URL)!
-        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
-        
-         // set up activity view controller
-        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-        
-        // exclude some activity types from the list (optional)
-        //activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
         
         // save off search state and then turn off search. otherwise the modal will conflict with it
         SearchText = SearchController.searchBar.text!
         SearchController.isActive = false
-        
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
+
+        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
         
         // restore search state
         SearchController.isActive = true
         SearchController.searchBar.text = SearchText
-
-       
-        //self.perform(#selector(presentModal), with: activityViewController, afterDelay: 2.1)
-        
-    
-    }
-    
-    public func presentModal(activityViewController: UIActivityViewController) {
-        self.present(activityViewController, animated: true, completion: nil)
-    
     }
     
 }

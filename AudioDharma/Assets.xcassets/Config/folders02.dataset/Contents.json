@@ -6,7 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "folders02.json"
+      "filename" : "folders02.json",
+      "universal-type-identifier" : "public.json"
     }
   ]
 }

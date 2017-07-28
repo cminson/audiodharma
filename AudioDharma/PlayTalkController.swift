@@ -34,21 +34,21 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var talkDuration: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
     @IBOutlet weak var talkPlayBack: UIButton!
-     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var activityTalkLoadingLabel: UILabel!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
     @IBOutlet weak var talkProgressSlider: UISlider!
-    //@IBOutlet weak var MPVolumeParentView: UIView!
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
-    
+    @IBOutlet weak var MPVolumeParentView: UIView!
+    @IBOutlet weak var playPauseBusyContainer: UIView!
     @IBOutlet weak var talkPlayPauseButton: UIBarButtonItem!
     
     
     // MARK: Properties
     var TalkList : [TalkData]!
-    var CurrentTalkRow : Int!
-    var OriginalTalkRow : Int!
+    var CurrentTalkRow : Int = 0
+    var OriginalTalkRow : Int = 0
     var CurrentTalk : TalkData!
 
     var TalkTimer : Timer?
@@ -68,20 +68,14 @@ class PlayTalkController: UIViewController {
         CurrentTalk = TalkList[CurrentTalkRow]
 
         resetTalkDisplay()
-        
-        
-        /*
-        talkProgressSlider.addTarget(self, action: Selector(("talkProgressSliderDone")), for: UIControlEvents.touchUpInside)
-        talkProgressSlider.addTarget(self, action: Selector(("talkProgressSliderStart")), for: UIControlEvents.touchDown)
-
-        */
-        /*
+ 
         MPVolumeParentView.backgroundColor = UIColor.clear
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
         volumeView.showsRouteButton = true
         volumeView.sizeToFit()
         MPVolumeParentView.addSubview(volumeView)
- */
+        
+        self.title = "1/1"
     }
     
     override func didReceiveMemoryWarning() {
@@ -97,9 +91,7 @@ class PlayTalkController: UIViewController {
         let durationInSeconds = MP3TalkPlayer.getDurationInSeconds()
         
         let currentTime = Int64(Float(durationInSeconds) * fractionTimeCompleted)
-        //print("Slider released!  fraction = \(fractionTimeCompleted) duration = \(durationInSeconds) currentTime = \(currentTime)")
         MP3TalkPlayer.seekToTime(seconds: currentTime)
-        
     }
     
     @IBAction func playOrPauseTalk(_ sender: UIBarButtonItem) {
@@ -116,7 +108,7 @@ class PlayTalkController: UIViewController {
             disableScanButtons()
             
             MP3TalkPlayer.pause()
-            
+        
             
         } else {    // start or restart (after a previous pause) the talk
             TalkIsPlaying = true
@@ -137,7 +129,11 @@ class PlayTalkController: UIViewController {
                 startTalkTimer()
             }
         }
+    }
+    
+    @IBAction func shareTalk(_ sender: UIBarButtonItem) {
         
+        self.shareCurrentTalk()
     }
 
     @IBAction func stopTalk(_ sender: UIBarButtonItem) {
@@ -157,10 +153,13 @@ class PlayTalkController: UIViewController {
         if PlayEntireList == true {
             PlayEntireList = false
             playTalkSeriesButton.setImage(UIImage(named: "checkboxoff"), for: UIControlState.normal)
+            self.title = "Playing 1/1"
             
         } else {
             PlayEntireList = true
             playTalkSeriesButton.setImage(UIImage(named: "blackcheckmark"), for: UIControlState.normal)
+            self.title = "Playing \(CurrentTalkRow+1)/\(TalkList.count)"
+
         }
     }
     
@@ -168,39 +167,8 @@ class PlayTalkController: UIViewController {
         MP3TalkPlayer.setVolume(volume: sender.value)
     }
     
-    @IBAction func shareTalk(_ sender: UIBarButtonItem) {
-        shareAll()
-    }
-    
-
-
-    /*
-    public func talkProgressSliderDone() {
-        let fractionTimeCompleted = talkProgressSlider.value
  
-        let durationInSeconds = MP3TalkPlayer.getDurationInSeconds()
-        
-        let currentTime = Int64(Float(durationInSeconds) * fractionTimeCompleted)
-        print("Slider released!  fraction = \(fractionTimeCompleted) duration = \(durationInSeconds) currentTime = \(currentTime)")
-
-        
-        MP3TalkPlayer.seekToTime(seconds: currentTime)
-        
-        let debug1 = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: Int(currentTime))
-        print("Slider Seek To: ", currentTime, debug1)
-
-        ShowSliderUpdates = true
-    }
-    
-    public func talkProgressSliderStart() {
-        print("Slider down!")
-        ShowSliderUpdates = false
-        
-    }
- */
-
-    
-    
+    // MARK: Public
     public func resetTalkDisplay () {
         
         disableActivityIcons()
@@ -219,8 +187,6 @@ class PlayTalkController: UIViewController {
      }
     
     public func playNextTalk() {
-        
-        print("Play Next Talk")
         
         CurrentTalkRow = CurrentTalkRow + 1
         if CurrentTalkRow >= TalkList.count {
@@ -241,6 +207,8 @@ class PlayTalkController: UIViewController {
         enableActivityIcons()
         MP3TalkPlayer.startTalk(talk: CurrentTalk)
         startTalkTimer()
+        
+        self.title = "Playing \(CurrentTalkRow)/\(TalkList.count)"
     }
 
     // called when we get a notification from mp3Player that the current talk is done
@@ -260,7 +228,6 @@ class PlayTalkController: UIViewController {
     
   
     // MARK: Actions
-   
     @IBAction func talkFastBackwards(_ sender: UIButton) {
         self.MP3TalkPlayer.seekFastBackward()
     }
@@ -268,7 +235,6 @@ class PlayTalkController: UIViewController {
     @IBAction func talkFastForwards(_ sender: UIButton) {
         self.MP3TalkPlayer.seekFastForward()
     }
-    
     
     
     @IBAction func toggleTalkPlay(_ sender: Any) {
@@ -310,7 +276,6 @@ class PlayTalkController: UIViewController {
     }
     
     
-    
     // MARK: Private functions
     private func startTalkTimer(){
         
@@ -328,7 +293,6 @@ class PlayTalkController: UIViewController {
             TalkTimer = nil
         }
     }
-
     
     // called every second to update views
     @objc private func updateViewsWithTimer(){
@@ -353,6 +317,7 @@ class PlayTalkController: UIViewController {
     
     private func enableActivityIcons() {
         
+        talkPlayBack.isHidden = true
         activityIndicatorView.isHidden = false
         activityTalkLoadingLabel.isHidden = false
         activityIndicatorView.startAnimating()
@@ -360,6 +325,7 @@ class PlayTalkController: UIViewController {
     
     private func disableActivityIcons() {
         
+        talkPlayBack.isHidden = false
         activityIndicatorView.isHidden = true
         activityTalkLoadingLabel.isHidden = true
         activityIndicatorView.stopAnimating()
@@ -379,22 +345,11 @@ class PlayTalkController: UIViewController {
         talkProgressSlider.isEnabled = false
     }
 
-    private func shareAll() {
-        // text to share
-        let text = "This is some text that I want to share."
+    private func shareCurrentTalk() {
         
-        // set up activity view controller
-        let textToShare = [ text ]
-        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-        
-        // exclude some activity types from the list (optional)
-        //activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
-        
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
+        let sharedTalk = CurrentTalk!
+        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
     
-
 }
 

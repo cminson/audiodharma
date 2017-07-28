@@ -22,7 +22,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
     @IBOutlet weak var userListTitle: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var userImageView: UIImageView!
-    
+    @IBOutlet weak var notesText: UITextView!
     
     let ImagePicker = UIImagePickerController()
 

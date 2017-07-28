@@ -76,26 +76,57 @@ class Model {
         return UserLists
     }
     
-    func getTalkForName(name: String) -> TalkData? {
+    public func getTalkForName(name: String) -> TalkData? {
         
         return NameToTalks[name]
     }
     
-    func generateTalkKey(name: String, date: String, duration: String) -> String {
+    public func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
-        let key = name + "+!+" + date + "+!+" + duration
-        return key
+        print("shareTalk")
+        let shareText = "\(sharedTalk.title)\n\(sharedTalk.speaker)   \(sharedTalk.date)\nShared from the iPhone AudioDharma app"
+        
+        let objectsToShare:URL = URL(string: sharedTalk.URL)!
+        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
+        
+        // set up activity view controller
+        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = controller.view // so that iPads won't crash
+                
+        // present the view controller
+        controller.present(activityViewController, animated: true, completion: nil)
+        
     }
-    
-    func unpackTalkKey(key: String) -> (name: String, date: String, duration: String) {
+
+    public func convertDurationToSeconds(duration: String) -> Int {
         
-        let keyPartsArray = key.components(separatedBy: "+!+")
-        
-        let name = keyPartsArray[0]
-        let date = keyPartsArray[1]
-        let duration = keyPartsArray[2]
-        
-        return(name, date, duration)
+        var totalSeconds: Int = 0
+        var hours : Int = 0
+        var minutes : Int = 0
+        var seconds : Int = 0
+        if duration != "" {
+            let durationArray = duration.components(separatedBy: ":")
+            let count = durationArray.count
+            if (count == 3) {
+                hours  = Int(durationArray[0])!
+                minutes  = Int(durationArray[1])!
+                seconds  = Int(durationArray[2])!
+            } else if (count == 2) {
+                hours  = 0
+                minutes  = Int(durationArray[0])!
+                seconds  = Int(durationArray[1])!
+                
+            } else if (count == 1) {
+                hours = 0
+                minutes  = 0
+                seconds  = Int(durationArray[0])!
+                
+            } else {
+                print("Exception to duration: \(durationArray)")
+            }
+        }
+        totalSeconds = (hours * 3600) + (minutes * 60) + seconds
+        return totalSeconds
     }
     
     //
@@ -165,7 +196,7 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  URL: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds )
                 
-                print(fileName)
+                //print(fileName)
                 NameToTalks[fileName] = talkData
                               
                 // add this talk to  list of all talks
@@ -496,36 +527,6 @@ class Model {
         task.resume()
     }
     
-    public func convertDurationToSeconds(duration: String) -> Int {
-        
-        var totalSeconds: Int = 0
-        var hours : Int = 0
-        var minutes : Int = 0
-        var seconds : Int = 0
-        if duration != "" {
-            let durationArray = duration.components(separatedBy: ":")
-            let count = durationArray.count
-            if (count == 3) {
-                hours  = Int(durationArray[0])!
-                minutes  = Int(durationArray[1])!
-                seconds  = Int(durationArray[2])!
-            } else if (count == 2) {
-                hours  = 0
-                minutes  = Int(durationArray[0])!
-                seconds  = Int(durationArray[1])!
-                
-            } else if (count == 1) {
-                hours = 0
-                minutes  = 0
-                seconds  = Int(durationArray[0])!
-                
-            } else {
-                print("Exception to duration: \(durationArray)")
-            }
-        }
-        totalSeconds = (hours * 3600) + (minutes * 60) + seconds
-        return totalSeconds
-    }
     
     private func secondsToDurationDisplay(seconds: Int) -> String {
     
@@ -543,5 +544,24 @@ class Model {
     
         return hoursStr + ":" + minutesStr + ":" + secondsStr
     }
+    
+    /*
+     func generateTalkKey(name: String, date: String, duration: String) -> String {
+     
+     let key = name + "+!+" + date + "+!+" + duration
+     return key
+     }
+     
+     func unpackTalkKey(key: String) -> (name: String, date: String, duration: String) {
+     
+     let keyPartsArray = key.components(separatedBy: "+!+")
+     
+     let name = keyPartsArray[0]
+     let date = keyPartsArray[1]
+     let duration = keyPartsArray[2]
+     
+     return(name, date, duration)
+     }
+     */
     
 }
