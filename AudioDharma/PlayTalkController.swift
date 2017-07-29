@@ -30,33 +30,42 @@ class PlayTalkController: UIViewController {
     
     // MARK: Outlets
     @IBOutlet weak var talkTitle: UILabel!
-    @IBOutlet weak var talkTime: UILabel!
     @IBOutlet weak var talkDuration: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
-    @IBOutlet weak var talkPlayBack: UIButton!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var activityTalkLoadingLabel: UILabel!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
     @IBOutlet weak var talkProgressSlider: UISlider!
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
     @IBOutlet weak var MPVolumeParentView: UIView!
     @IBOutlet weak var playPauseBusyContainer: UIView!
-    @IBOutlet weak var talkPlayPauseButton: UIBarButtonItem!
+    @IBOutlet weak var talkPlayPauseButton: UIButton!
+
     
+    // MARK: Constants
+    let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
+    enum TalkStates {                   // all possible states of the talk player
+        case INITIAL
+        case LOADING
+        case PLAYING
+        case PAUSED
+        case STOPPED
+        case FINISHED
+        case ALBUMFINISHED
+    }
     
     // MARK: Properties
-    var TalkList : [TalkData]!
+    var TalkPlayerStatus: TalkStates = TalkStates.INITIAL
     var CurrentTalkRow : Int = 0
     var OriginalTalkRow : Int = 0
+    var PlayEntireAlbum: Bool = false
+    
+    var TalkList : [TalkData]!
     var CurrentTalk : TalkData!
-
     var TalkTimer : Timer?
     var MP3TalkPlayer : MP3Player!
-    var TalkIsPlaying: Bool = false
-    var PlayEntireList: Bool = false
-    
 
+    
     // Mark: Init
     override func viewDidLoad() {
         
@@ -74,8 +83,6 @@ class PlayTalkController: UIViewController {
         volumeView.showsRouteButton = true
         volumeView.sizeToFit()
         MPVolumeParentView.addSubview(volumeView)
-        
-        self.title = "1/1"
     }
     
     override func didReceiveMemoryWarning() {
@@ -94,99 +101,128 @@ class PlayTalkController: UIViewController {
         MP3TalkPlayer.seekToTime(seconds: currentTime)
     }
     
-    @IBAction func playOrPauseTalk(_ sender: UIBarButtonItem) {
-        talkPlayBack.isSelected = false
+    @IBAction func talkFastBackwards(_ sender: UIButton) {
+        MP3TalkPlayer.seekFastBackward()
+    }
+    
+    @IBAction func talkFastForwards(_ sender: UIButton) {
+        MP3TalkPlayer.seekFastForward()
         
-        if TalkIsPlaying == true {  // pause the talk
-            TalkIsPlaying = false
-            
-            talkPlayBack.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
-            
-            TalkTimer?.invalidate()
-            TalkTimer = nil
-            
-            disableScanButtons()
-            
-            MP3TalkPlayer.pause()
-        
-            
-        } else {    // start or restart (after a previous pause) the talk
-            TalkIsPlaying = true
-            
-            enableActivityIcons()
-            
-            talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
-            
-            // if talk hasn't begun yet (we're at the start), then show the "loading talks" and busy icon until talk is fully loaded.
-            // otherwise (we're not at the start), just un-pause the talk
-            let talkTime = MP3TalkPlayer.currentTime()
-            if talkTime.value == 0 {
-                MP3TalkPlayer.startTalk(talk: CurrentTalk)
-                startTalkTimer()
-            }
-            else {
-                MP3TalkPlayer.play()
-                startTalkTimer()
-            }
+        if MP3TalkPlayer.getCurrentTimeInSeconds() >= MP3TalkPlayer.getDurationInSeconds() {
+            talkHasCompleted()
         }
+    }
+    
+    @IBAction func togglePlayTalkSeries(_ sender: UIButton) {
+        
+        // this toggles whether we play just the current talk vs current talk + all talks in its album
+        if PlayEntireAlbum == true {
+            PlayEntireAlbum = false
+            playTalkSeriesButton.setImage(UIImage(named: "checkboxoff"), for: UIControlState.normal)
+            
+        } else {
+            PlayEntireAlbum = true
+            playTalkSeriesButton.setImage(UIImage(named: "blackcheckmark"), for: UIControlState.normal)
+        }
+    }
+    
+    @IBAction func stopTalk(_ sender: UIBarButtonItem) {
+        
+        TalkPlayerStatus = .STOPPED
+
+        stopTalks()
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func shareTalk(_ sender: UIBarButtonItem) {
         
-        self.shareCurrentTalk()
+        let sharedTalk = CurrentTalk!
+        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
 
-    @IBAction func stopTalk(_ sender: UIBarButtonItem) {
+    @IBAction func playOrPauseTalk(_ sender: UIButton) {
         
-        print("StopTalk")
-        if TalkIsPlaying == true {
-            MP3TalkPlayer.stop()
-            //talkTime.text = MP3TalkPlayer.getCurrentTimeAsString()
-            TalkTimer?.invalidate()
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    @IBAction func togglePlayTalkSeries(_ sender: UIButton) {
+        talkPlayPauseButton.isSelected = false
         
-        if PlayEntireList == true {
-            PlayEntireList = false
-            playTalkSeriesButton.setImage(UIImage(named: "checkboxoff"), for: UIControlState.normal)
-            self.title = "Playing 1/1"
-            
-        } else {
-            PlayEntireList = true
-            playTalkSeriesButton.setImage(UIImage(named: "blackcheckmark"), for: UIControlState.normal)
-            self.title = "Playing \(CurrentTalkRow+1)/\(TalkList.count)"
-
+        switch TalkPlayerStatus {
+        case .INITIAL, .STOPPED, .FINISHED, .ALBUMFINISHED:
+            startTalk()
+        case .PAUSED:
+            restartTalk()
+        case .PLAYING:
+            pauseTalk()
+        default:
+            fatalError("Unknown TalkPlayerStatus")
         }
     }
     
-    @IBAction func setVolume(_ sender: UISlider) {
-        MP3TalkPlayer.setVolume(volume: sender.value)
+    // MARK: Functions
+    func startTalk() {
+        
+        TalkPlayerStatus = .LOADING
+        
+        talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
+        enableActivityIcons()
+        
+        MP3TalkPlayer.startTalk(talk: CurrentTalk)
+        startTalkTimer()
+        
+        updateTitleDisplay()
     }
     
- 
-    // MARK: Public
-    public func resetTalkDisplay () {
+    func restartTalk() {
+        
+        TalkPlayerStatus = .LOADING
+        
+        talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
+        enableActivityIcons()
+        
+        MP3TalkPlayer.play()
+        startTalkTimer()
+        
+        updateTitleDisplay()
+    }
+
+    func pauseTalk() {
+        
+        TalkPlayerStatus = .PAUSED
+        
+        talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
+        disableScanButtons()
+        
+        stopTalkTimer()
+        MP3TalkPlayer.pause()
+        
+        updateTitleDisplay()
+    }
+    
+    func stopTalks() {
+        
+
+        MP3TalkPlayer.stop()
+        stopTalkTimer()
+        
+        updateTitleDisplay()
+    }
+    
+    func resetTalkDisplay () {
+        
+        stopTalkTimer()
         
         disableActivityIcons()
         disableScanButtons()
         
-        TalkIsPlaying = false
         talkProgressSlider.value = 0.0
         
         talkTitle.text = CurrentTalk.title
         metaInfo.text = CurrentTalk.speaker + "   " + CurrentTalk.date
         
-        talkPlayBack.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
         
-        let time = MP3TalkPlayer.getCurrentTimeInSeconds()
-        talkTime.text = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: time)
+        updateTitleDisplay()
      }
     
-    public func playNextTalk() {
+    func playNextTalk() {
         
         CurrentTalkRow = CurrentTalkRow + 1
         if CurrentTalkRow >= TalkList.count {
@@ -195,139 +231,156 @@ class PlayTalkController: UIViewController {
         CurrentTalk = TalkList[CurrentTalkRow]
         
         if (CurrentTalkRow == OriginalTalkRow) {
+            
             // we've wrapped around and completed the talk list
-            // stop the timer
-            stopTalkTimer()
+            // stop the talk
+            TalkPlayerStatus = .ALBUMFINISHED
+            stopTalks()
             return
         }
 
         resetTalkDisplay()
-        talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
-        
-        enableActivityIcons()
-        MP3TalkPlayer.startTalk(talk: CurrentTalk)
-        startTalkTimer()
-        
-        self.title = "Playing \(CurrentTalkRow)/\(TalkList.count)"
+        startTalk()
     }
 
     // called when we get a notification from mp3Player that the current talk is done
-    public func talkHasCompleted () {
+    func talkHasCompleted () {
         
-        MP3TalkPlayer = MP3Player()
-        MP3TalkPlayer.Delegate = self
+        TalkPlayerStatus = .FINISHED
+        
+        MP3TalkPlayer.stop()
+        resetTalkDisplay()
 
         // if option is enabled, play the next talk in the current series
-        if PlayEntireList == true {
-            Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(PlayTalkController.playNextTalk), userInfo: nil, repeats: false)
-        } else {    // otherwise reset the display and keep the current tak
-            stopTalkTimer()
-            resetTalkDisplay()
+        if PlayEntireAlbum == true {
+            
+            // create a new MP3 player.  just to ensure state is fully cleared
+            MP3TalkPlayer = MP3Player()
+            MP3TalkPlayer.Delegate = self
+
+            // and then play next talk in SECONDS_TO_NEXT_TALK seconds
+            Timer.scheduledTimer(timeInterval: SECONDS_TO_NEXT_TALK, target: self, selector: #selector(PlayTalkController.playNextTalk), userInfo: nil, repeats: false)
         }
+        updateTitleDisplay()
     }
     
-  
-    // MARK: Actions
-    @IBAction func talkFastBackwards(_ sender: UIButton) {
-        self.MP3TalkPlayer.seekFastBackward()
-    }
-    
-    @IBAction func talkFastForwards(_ sender: UIButton) {
-        self.MP3TalkPlayer.seekFastForward()
-    }
-    
-    
-    @IBAction func toggleTalkPlay(_ sender: Any) {
-    
-        talkPlayBack.isSelected = false
-
-        if TalkIsPlaying == true {  // pause the talk
-            TalkIsPlaying = false
-            
-            talkPlayBack.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
-            
-            TalkTimer?.invalidate()
-            TalkTimer = nil
+    func updateTitleDisplay() {
         
-            disableScanButtons()
+        let currentTalkIndex = CurrentTalkRow + 1
+        
+        switch TalkPlayerStatus {
             
-            MP3TalkPlayer.pause()
+        case .LOADING:
+            if PlayEntireAlbum == true {
+                
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedTalkIndex = numberFormatter.string(from: NSNumber(value: currentTalkIndex)) ?? ""
+                let formattedTalkCount = numberFormatter.string(from: NSNumber(value: TalkList.count)) ?? ""
 
-            
-        } else {    // start or restart (after a previous pause) the talk
-            TalkIsPlaying = true
-            
-            enableActivityIcons()
-
-            talkPlayBack.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
-            
-            // if talk hasn't begun yet (we're at the start), then show the "loading talks" and busy icon until talk is fully loaded.
-            // otherwise (we're not at the start), just un-pause the talk
-            let talkTime = MP3TalkPlayer.currentTime()
-            if talkTime.value == 0 {
-                MP3TalkPlayer.startTalk(talk: CurrentTalk)
-                startTalkTimer()
+                self.title = "Loading Talk \(formattedTalkIndex)/\(formattedTalkCount)"
             }
             else {
-                MP3TalkPlayer.play()
-                startTalkTimer()
+                self.title = "Loading Talk"
             }
+        case .PLAYING:
+            let currentTime = MP3TalkPlayer.getCurrentTimeInSeconds()
+            let displayTime = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: currentTime)
+            
+            if PlayEntireAlbum == true {
+                
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedTalkIndex = numberFormatter.string(from: NSNumber(value: currentTalkIndex)) ?? ""
+                let formattedTalkCount = numberFormatter.string(from: NSNumber(value: TalkList.count)) ?? ""
+                
+                self.title = "Playing \(formattedTalkIndex)/\(formattedTalkCount)  \(displayTime)"
+            }
+            else {
+                
+                self.title = "Playing   \(displayTime)"
+            }
+        case .PAUSED:
+            let currentTime = MP3TalkPlayer.getCurrentTimeInSeconds()
+            let displayTime = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: currentTime)
+            
+            if PlayEntireAlbum == true {
+                
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedTalkIndex = numberFormatter.string(from: NSNumber(value: currentTalkIndex)) ?? ""
+                let formattedTalkCount = numberFormatter.string(from: NSNumber(value: TalkList.count)) ?? ""
+              
+                self.title = "Paused \(formattedTalkIndex)/\(formattedTalkCount)  \(displayTime)"
+            }
+            else {
+                self.title = "Paused \(displayTime)"
+            }
+        case .STOPPED:
+            self.title = "Stopped"
+        case .FINISHED:
+            self.title = "Talk Finished"
+        case .ALBUMFINISHED:
+            self.title = "Album Finished"
+        default:
+            self.title = ""
         }
     }
-    
-    
-    // MARK: Private functions
-    private func startTalkTimer(){
+
+    func startTalkTimer() {
         
         // stop  previous timer, if any
         stopTalkTimer()
         
-        // start a new timer
+        // start a new timer.  this calls a method to update the views once each second
         TalkTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayTalkController.updateViewsWithTimer), userInfo: nil, repeats: true)
     }
     
-    private func stopTalkTimer(){
+    func stopTalkTimer(){
         
         if let timer = TalkTimer {
+            
             timer.invalidate()
             TalkTimer = nil
         }
     }
     
     // called every second to update views
-    @objc private func updateViewsWithTimer(){
+    func updateViewsWithTimer(){
         
         // if talk is  underway, then stop the busy notifier and activate the display (buttons, durations etc)
         if MP3TalkPlayer.getCurrentTimeInSeconds() > 0 {
+            
+            TalkPlayerStatus = .PLAYING
+            
             disableActivityIcons()
             enableScanButtons()
          
-            // show current talk time and actual talk duration (which may be different from the what is claimed in the config)
+            // show current talk time and actual talk duration 
+            // note these may be different from what is stated in the (often inaccurate) config!
             let currentTime = MP3TalkPlayer.getCurrentTimeInSeconds()
             let duration = MP3TalkPlayer.getDurationInSeconds()
         
-            talkTime.text = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: currentTime)
             talkDuration.text = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: duration)
         
-
             let fractionTimeCompleted = Float(currentTime) / Float(duration)
             talkProgressSlider.value = fractionTimeCompleted
+            
+            updateTitleDisplay()
         }
     }
     
     private func enableActivityIcons() {
         
-        talkPlayBack.isHidden = true
+        talkPlayPauseButton.isHidden = true
         activityIndicatorView.isHidden = false
-        activityTalkLoadingLabel.isHidden = false
         activityIndicatorView.startAnimating()
     }
     
     private func disableActivityIcons() {
         
-        talkPlayBack.isHidden = false
+        talkPlayPauseButton.isHidden = false
         activityIndicatorView.isHidden = true
-        activityTalkLoadingLabel.isHidden = true
         activityIndicatorView.stopAnimating()
     }
     
@@ -343,12 +396,6 @@ class PlayTalkController: UIViewController {
         talkFastForward.isEnabled = false
         talkFastBackward.isEnabled = false
         talkProgressSlider.isEnabled = false
-    }
-
-    private func shareCurrentTalk() {
-        
-        let sharedTalk = CurrentTalk!
-        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
     
 }

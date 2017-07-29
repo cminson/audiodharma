@@ -213,7 +213,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
-        print("Seleced Section: \(SelectedSection)   Selected Row: \(SelectedRow)")
+        //print("Seleced Section: \(SelectedSection)   Selected Row: \(SelectedRow)")
         self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER1", sender: self)
     }
 

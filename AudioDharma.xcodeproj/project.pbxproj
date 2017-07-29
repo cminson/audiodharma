@@ -16,6 +16,7 @@
 		835B9F811EF2CA9B009AF991 /* TalkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B9F801EF2CA9B009AF991 /* TalkTableViewController.swift */; };
 		835F52391F099A9F00F8A4B9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835F52381F099A9F00F8A4B9 /* AVFoundation.framework */; };
 		8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */; };
+		837C3DD31F2D0342005C9A0A /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C3DD21F2D0342005C9A0A /* HelpViewController.swift */; };
 		8387D63E1EFC05180025006B /* FolderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63D1EFC05180025006B /* FolderData.swift */; };
 		8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */; };
 		8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D6411EFC07E20025006B /* FolderTableViewCell.swift */; };
@@ -44,6 +45,7 @@
 		835B9F801EF2CA9B009AF991 /* TalkTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkTableViewController.swift; sourceTree = "<group>"; };
 		835F52381F099A9F00F8A4B9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		837C3DD21F2D0342005C9A0A /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		8387D63D1EFC05180025006B /* FolderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderData.swift; sourceTree = "<group>"; };
 		8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		8387D6411EFC07E20025006B /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				835B9F7A1EF1B0BC009AF991 /* TalkData.swift */,
 				8387D63D1EFC05180025006B /* FolderData.swift */,
 				83C22CB41F184E87002503AE /* DonationsViewController.swift */,
+				837C3DD21F2D0342005C9A0A /* HelpViewController.swift */,
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
 				834BEC621EFC7C6C00CBC0C2 /* SplashViewController.swift */,
@@ -214,6 +217,7 @@
 				834BEC631EFC7C6C00CBC0C2 /* SplashViewController.swift in Sources */,
 				83CA12491F028CEA00798D20 /* UserListTableViewCell.swift in Sources */,
 				83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */,
+				837C3DD31F2D0342005C9A0A /* HelpViewController.swift in Sources */,
 				8387D6421EFC07E20025006B /* FolderTableViewCell.swift in Sources */,
 				83F1A7E21F1FEA3E009B9669 /* AddEditUserListController.swift in Sources */,
 				83432FC01F0AB373002926AC /* MP3Player.swift in Sources */,

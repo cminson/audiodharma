@@ -26,8 +26,9 @@ class MP3Player : NSObject {
         super.init()
     }
     
-    // MARK: Public
-    public func startTalk(talk: TalkData){
+    
+    // MARK: Functions
+    func startTalk(talk: TalkData){
         
         //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
         let url : URL = URL(string: talk.URL)!
@@ -46,34 +47,33 @@ class MP3Player : NSObject {
     
     
     
-    public func play() {
+    func play() {
         
         Player.play()
     }
     
-    public func stop() {
+    func stop() {
         
         Player.pause()
         Player.seek(to: kCMTimeZero)
     }
     
-    public func pause() {
+    func pause() {
         
         Player.pause()
     }
     
-    public func talkHasCompleted() {
+    func talkHasCompleted() {
         
-        print("Talk has completed")
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
     
-    public func seekToTime(seconds: Int64) {
+    func seekToTime(seconds: Int64) {
         
         Player.seek(to: CMTimeMake(seconds, 1))
     }
     
-    public func seekFastForward() {
+    func seekFastForward() {
         
         if let ct = PlayerItem?.currentTime(), let dt = Player.currentItem?.asset.duration {
             let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
@@ -88,7 +88,7 @@ class MP3Player : NSObject {
         }
     }
     
-    public func seekFastBackward() {
+    func seekFastBackward() {
         
         if let ct = PlayerItem?.currentTime() {
             let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
@@ -102,16 +102,12 @@ class MP3Player : NSObject {
         }
     }
     
-    public func currentTime()-> CMTime {
+    func currentTime()-> CMTime {
         
         return Player.currentTime()
     }
     
-    public func nextTalk(talkFinishedPlaying:Bool) {
-        
-    }
-    
-    public func convertSecondsToDisplayString(timeInSeconds: Int) -> String {
+    func convertSecondsToDisplayString(timeInSeconds: Int) -> String {
         
         let seconds = Int(timeInSeconds) % 60
         let minutes = (Int(timeInSeconds) / 60) % 60
@@ -120,9 +116,8 @@ class MP3Player : NSObject {
 
         return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
     }
-
     
-    public func getCurrentTimeInSeconds() -> Int {
+    func getCurrentTimeInSeconds() -> Int {
         
         var time : Int = 0
 
@@ -132,7 +127,7 @@ class MP3Player : NSObject {
         return time
     }
     
-    public func getDurationInSeconds() -> Int {
+    func getDurationInSeconds() -> Int {
         
         var time : Int = 0
         
@@ -143,7 +138,7 @@ class MP3Player : NSObject {
         return time
     }
 
-    public func getProgress()->Float {
+    func getProgress()->Float {
         
         var theCurrentTime = 0.0
         var theCurrentDuration = 0.0
@@ -158,10 +153,5 @@ class MP3Player : NSObject {
         
         return Float(theCurrentTime / theCurrentDuration)
     }
-   
-    public func setVolume(volume:Float){
-        
-        Player.volume = volume
-    }
-    
+       
 }

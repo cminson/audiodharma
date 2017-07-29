@@ -19,7 +19,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     var SearchText: String = ""
 
     
-
     // MARK: Init
     override func viewDidLoad() {
         
@@ -37,7 +36,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
-        
     }
     
     deinit {
@@ -53,10 +51,8 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("viewWillDisappear")
         
         SearchController.isActive = false
-        
     }
 
 

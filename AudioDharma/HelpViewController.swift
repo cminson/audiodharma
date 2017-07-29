@@ -1,16 +1,14 @@
 //
-//  DonationsViewController.swift
+//  HelpViewController.swift
 //  AudioDharma
 //
-//  Created by Christopher on 7/13/17.
+//  Created by Christopher on 7/29/17.
 //  Copyright © 2017 Christopher Minson. All rights reserved.
 //
 
 import UIKit
 
-class DonationsViewController: UIViewController {
-    @IBOutlet weak var cancel: UIBarButtonItem!
-    
+class HelpViewController: UIViewController {
 
     override func viewDidLoad() {
         
@@ -22,9 +20,10 @@ class DonationsViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func cancel(_ sender: Any) {
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
         
         dismiss(animated: true, completion: nil)
     }
     
+
 }
