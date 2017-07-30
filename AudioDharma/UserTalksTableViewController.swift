@@ -124,11 +124,8 @@ class UserTalkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "UserTalksTableViewCell"
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserTalksTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of UserTalksTableViewCell.")
-        }
+        let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         
         let talk = SelectedTalks[indexPath.row]
         cell.title.text = talk.title

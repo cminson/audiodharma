@@ -183,11 +183,16 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "TalkTableViewCell"
         
+        /*
+         let cellIdentifier = "TalkTableViewCell"
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TalkTableViewCell  else {
             fatalError("The dequeued cell is not an instance of TalkTableViewCell.")
         }
+         */
+  
+        let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         

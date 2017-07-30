@@ -151,7 +151,7 @@ class UserListTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             
-            let refreshAlert = UIAlertController(title: "Delete List", message: "Are you sure?", preferredStyle: UIAlertControllerStyle.alert)
+            let refreshAlert = UIAlertController(title: "Delete Album", message: "Are you sure?", preferredStyle: UIAlertControllerStyle.alert)
  
 
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in

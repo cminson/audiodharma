@@ -156,7 +156,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         SelectedRow = indexPath.row
 
-        if let cell = tableView.cellForRow(at: indexPath) as? UserAddTalkTableViewCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? TalkCell {
             let talk = FilteredTalks[indexPath.row]
             
             var userSelected = SelectedTalksByNameDict[talk.fileName]
@@ -191,11 +191,15 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        /*
         let cellIdentifier = "UserAddTalkTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserAddTalkTableViewCell  else {
             fatalError("The dequeued cell is not an instance of UserAddTalkTableViewCell.")
         }
+ */
+        
+        let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredTalks[indexPath.row]
         
         cell.title.text = talk.title
@@ -248,7 +252,7 @@ class UserAddTalkViewController: UITableViewController, UISearchBarDelegate, UIS
         SelectedTalks.append(changedTalk)
     }
     
-    private func setSelectedState(talk: TalkData, cell: UserAddTalkTableViewCell) {
+    private func setSelectedState(talk: TalkData, cell: TalkCell) {
     
         let userSelected = SelectedTalksByNameDict[talk.fileName]
         if userSelected == true {

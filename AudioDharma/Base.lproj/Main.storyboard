@@ -539,7 +539,7 @@
                                 <rect key="frame" x="0.0" y="692" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Tips" id="DFn-gc-D1K">
+                                    <barButtonItem title="Help" id="DFn-gc-D1K">
                                         <connections>
                                             <segue destination="zHd-f9-W9d" kind="presentation" id="q0A-Aq-AZG"/>
                                         </connections>
