@@ -8,6 +8,8 @@
 
 import UIKit
 
+let TheDataModel = Model()
+
 class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties

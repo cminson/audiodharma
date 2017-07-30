@@ -31,15 +31,15 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("view loaded: \(String(describing: UserList?.title))")
+        print("view loaded: \(String(describing: UserList?.Title))")
 
-        if let title = UserList?.title {
+        if let title = UserList?.Title {
             if title.characters.count > 0 {
                 userListTitle.text = title
             }
         }
 
-        if let image = UserList?.image {
+        if let image = UserList?.Image {
             userImageView.image = image
         } else {
             userImageView.image = UIImage(named: "flower01")

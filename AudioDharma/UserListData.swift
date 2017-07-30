@@ -13,65 +13,60 @@ class UserListData: NSObject, NSCoding {
     
     // MARK: Persistance
     struct PropertyKey {
-        static let title = "title"
-        static let talkFileNames = "talkFileNames"
-        static let image = "image"
+        static let Title = "Title"
+        static let TalkFileNames = "TalkFileNames"
+        static let Image = "Image"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("UserListData")
 
     
     // MARK: Properties
-    var title: String = ""
-    var talkFileNames:  [String] = [String] ()
-    var image: UIImage
+    var Title: String = ""
+    var TalkFileNames:  [String] = [String] ()
+    var Image: UIImage
 
     
     // MARK: Init
-
     init(title: String, image: UIImage) {
-        self.title = title
-        self.image = image
-        print("Init 1 Created User folder.  Title: \(title) ")
+        Title = title
+        Image = image
     }
 
 
     init(title: String,  image: UIImage, talkFileNames: [String]) {
-        self.title = title
-        self.image = image
-        self.talkFileNames = talkFileNames
-        print("Init 2 Created User folder.  Title: \(title) ")
+        Title = title
+        Image = image
+        TalkFileNames = talkFileNames
     }
     
     
     // MARK: NSCoding
     func encode(with aCoder: NSCoder) {
         
-        print("UserFolderData: Encode")
-        aCoder.encode(title, forKey: PropertyKey.title)
-        aCoder.encode(image, forKey: PropertyKey.image)
-        aCoder.encode(talkFileNames, forKey: PropertyKey.talkFileNames)
+        aCoder.encode(Title, forKey: PropertyKey.Title)
+        aCoder.encode(Image, forKey: PropertyKey.Image)
+        aCoder.encode(TalkFileNames, forKey: PropertyKey.TalkFileNames)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
         
-        print("UserFolderData: Decode")
-        guard let title = aDecoder.decodeObject(forKey: PropertyKey.title) as? String else {
+        guard let title = aDecoder.decodeObject(forKey: PropertyKey.Title) as? String else {
             os_log("Unable to decode the title for a USListData object.", log: OSLog.default, type: .debug)
             return nil
         }
         
-        guard let image = aDecoder.decodeObject(forKey: PropertyKey.image) as? UIImage else {
+        guard let image = aDecoder.decodeObject(forKey: PropertyKey.Image) as? UIImage else {
             os_log("Unable to decode the image for a UIImage object.", log: OSLog.default, type: .debug)
             return nil
         }
        
-        guard let talkFileNames = aDecoder.decodeObject(forKey: PropertyKey.talkFileNames) as? [String] else {
+        guard let talkFileNames = aDecoder.decodeObject(forKey: PropertyKey.TalkFileNames) as? [String] else {
             os_log("Unable to decode the talkFileNames for a [String] object.", log: OSLog.default, type: .debug)
             return nil
         }
-        self.init(title: title, image: image, talkFileNames: talkFileNames)
         
+        self.init(title: title, image: image, talkFileNames: talkFileNames)
     }
     
     

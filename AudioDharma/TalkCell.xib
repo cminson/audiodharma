@@ -6,9 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,54 +18,41 @@
                 <rect key="frame" x="0.0" y="0.0" width="418" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-HT-Bye">
-                        <rect key="frame" x="3" y="5" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="40" id="Zsv-J3-ipK"/>
-                        </constraints>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="noteicon" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
+                        <rect key="frame" x="337" y="19" width="8" height="8"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-ia-l6x">
-                        <rect key="frame" x="50" y="8" width="290" height="34"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-HT-Bye">
+                        <rect key="frame" x="1" y="5" width="40" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pd-06-Ypg">
+                        <rect key="frame" x="347" y="23" width="70" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZG-DA-B6i">
+                        <rect key="frame" x="347" y="6" width="70" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-ia-l6x">
+                        <rect key="frame" x="44" y="3" width="290" height="43"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pd-06-Ypg">
-                        <rect key="frame" x="345" y="21" width="70" height="20"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZG-DA-B6i">
-                        <rect key="frame" x="345" y="5" width="70" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="70" id="gPG-RF-L15"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="baseline" secondItem="Xpy-ia-l6x" secondAttribute="firstBaseline" id="FLw-NF-mVu"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="Xpy-ia-l6x" secondAttribute="centerY" id="GMQ-V9-S6W"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="top" secondItem="dZG-DA-B6i" secondAttribute="top" id="ODK-hK-anh"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="Qsd-Zf-fc2"/>
-                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="R8r-5s-4p4"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="trailing" secondItem="8pd-06-Ypg" secondAttribute="trailing" id="RTe-mS-LUd"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="XzB-2D-4PQ"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="5" id="Zu7-Fk-CjL"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dZG-DA-B6i" secondAttribute="trailing" constant="-5" id="eYf-BO-hbd"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="leading" secondItem="8pd-06-Ypg" secondAttribute="leading" id="eip-Ow-ydG"/>
-                    <constraint firstItem="8pd-06-Ypg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="13" id="fbP-xO-hCk"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="8pd-06-Ypg" secondAttribute="bottom" constant="0.6666666666666643" id="nUC-Ru-5oU"/>
-                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="leading" secondItem="yVe-HT-Bye" secondAttribute="trailing" constant="7" id="vsI-aF-Otw"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="weM-Wj-bug"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="date" destination="dZG-DA-B6i" id="S2O-OL-H3a"/>
                 <outlet property="duration" destination="8pd-06-Ypg" id="0Fm-rQ-alu"/>
+                <outlet property="noteImage" destination="eJ9-2D-Cve" id="tGu-eD-e5r"/>
                 <outlet property="speakerPhoto" destination="yVe-HT-Bye" id="hw5-3W-y0Z"/>
                 <outlet property="title" destination="Xpy-ia-l6x" id="lSq-9e-OUj"/>
             </connections>
@@ -77,5 +61,6 @@
     </objects>
     <resources>
         <image name="Earth" width="495" height="371"/>
+        <image name="noteicon" width="25" height="25"/>
     </resources>
 </document>

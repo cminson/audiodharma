@@ -88,6 +88,8 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             //print(self.selectedSection, self.selectedRow)
             playTalkController.CurrentTalkRow = SelectedRow
             playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
+        case "DISPLAY_NOTE1":
+            print("DISPLAY_NOTE1")
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -100,10 +102,12 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
     }
 
-    @IBAction func unwindToTalkList(sender: UIStoryboardSegue) {
-        // TBD
-    }
+    @IBAction func unwindNotesTalkList(sender: UIStoryboardSegue) {   // called from NotesController
 
+       
+    }
+    
+    
     
     // MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -183,15 +187,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        /*
-         let cellIdentifier = "TalkTableViewCell"
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TalkTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of TalkTableViewCell.")
-        }
-         */
-  
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
@@ -227,14 +222,25 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
 
+        let note = UITableViewRowAction(style: .normal, title: "Note") { (action, indexPath) in
+            self.viewEditNote()
+        }
+        
         let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.shareTalk()
         }
-        return [shareTalk]
+
+        return [note, shareTalk]
     }
 
 
     //MARK: Share
+    private func viewEditNote() {
+        self.performSegue(withIdentifier: "DISPLAY_NOTE1", sender: self)
+        
+    }
+    
+    
     private func shareTalk() {
         
         let sharedTalk = FilteredSectionTalks[SelectedSection][SelectedRow]

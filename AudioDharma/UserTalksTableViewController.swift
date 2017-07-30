@@ -28,7 +28,7 @@ class UserTalkTableViewController: UITableViewController {
         //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
 
         // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
-        for talkFileName in TheDataModel.UserLists[SelectedUserListIndex].talkFileNames {
+        for talkFileName in TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames {
             print(talkFileName)
             if let talk = TheDataModel.getTalkForName(name: talkFileName) {
                 SelectedTalks.append(talk)
@@ -37,7 +37,7 @@ class UserTalkTableViewController: UITableViewController {
             }
         }
         
-        self.title = TheDataModel.UserLists[SelectedUserListIndex].title
+        self.title = TheDataModel.UserLists[SelectedUserListIndex].Title
         //self.tableView.isEditing = true
     }
     
@@ -95,10 +95,10 @@ class UserTalkTableViewController: UITableViewController {
             }
             
             // save the resulting array into the userlist and then persist into storage
-            TheDataModel.UserLists[SelectedUserListIndex].talkFileNames = talkFileNames
+            TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames = talkFileNames
             
             // DEBUG
-            let test1 = TheDataModel.UserLists[SelectedUserListIndex].talkFileNames
+            let test1 = TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames
             for talk in test1 {
                 print("SAVED: ", talk)
                 

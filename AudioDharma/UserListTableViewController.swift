@@ -88,8 +88,8 @@ class UserListTableViewController: UITableViewController {
             // if edit mode = true, then this is an edit of an existing user list
             // otherwise we are adding a new user list
             if addEditUserListController.EditMode == true {
-                TheDataModel.UserLists[SelectedRow].title = userList.title
-                TheDataModel.UserLists[SelectedRow].image = userList.image
+                TheDataModel.UserLists[SelectedRow].Title = userList.Title
+                TheDataModel.UserLists[SelectedRow].Image = userList.Image
                 TheDataModel.saveUserListData()
                 self.tableView.reloadData()
                 
@@ -130,11 +130,11 @@ class UserListTableViewController: UITableViewController {
         }
         
         let userList = TheDataModel.UserLists[indexPath.row]
-        cell.title.text = userList.title
+        cell.title.text = userList.Title
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        cell.listImage.image = userList.image
+        cell.listImage.image = userList.Image
         
-        let folderStats = TheDataModel.getFolderStats(content: userList.title)
+        let folderStats = TheDataModel.getFolderStats(content: userList.Title)
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -193,7 +193,7 @@ class UserListTableViewController: UITableViewController {
         let movedFolder = TheDataModel.UserLists[sourceIndexPath.row]
         TheDataModel.UserLists.remove(at: sourceIndexPath.row)
         TheDataModel.UserLists.insert(movedFolder, at: destinationIndexPath.row)
-        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedFolder.title)")
+        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedFolder.Title)")
       
     }
    
