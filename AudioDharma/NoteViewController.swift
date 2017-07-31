@@ -8,32 +8,63 @@
 
 import UIKit
 
-class NoteViewController: UIViewController {
 
+
+class NoteViewController: UIViewController, UITextViewDelegate {
+
+    // MARK: Outlets
+    @IBOutlet weak var noteTextView: UITextView!
+    @IBOutlet weak var deleteNoteButton: UIButton!
+    
+    
+    // MARK: Properties
+    var TalkFileName: String = ""
+    var TextHasBeenChanged: Bool = false
+    
+    
+    // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        noteTextView.delegate = self
+        
+        //noteTextView.setContentOffset(CGPoint.zero, animated: false)
+        noteTextView.contentInset = UIEdgeInsetsMake(-60, 0,0,0);
+        
+        let borderColor : UIColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
+        noteTextView.layer.borderWidth = 0.5
+        noteTextView.layer.borderColor = borderColor.cgColor
+        noteTextView.layer.cornerRadius = 5.0
+        
+        if let noteText = TheDataModel.UserNotes[TalkFileName] {
+            noteTextView.text = noteText.Notes
+        }
     }
 
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func dismiss(_ sender: UIBarButtonItem) {
-            dismiss(animated: true, completion: nil)
+    
+    // MARK: Actions
+    @IBAction func deleteNoteText(_ sender: UIButton) {
+        
+        noteTextView.text = ""
+        TextHasBeenChanged = true
     }
     
+    
+    // MARK: Delegates
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        textField.resignFirstResponder();
+        return true;
     }
-    */
+    
+    func textViewDidChange(_ textView: UITextView) {
+
+        TextHasBeenChanged = true
+    }
 
 }

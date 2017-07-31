@@ -15,10 +15,10 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="418" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="418" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="noteicon" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
                         <rect key="frame" x="337" y="19" width="8" height="8"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -61,6 +61,5 @@
     </objects>
     <resources>
         <image name="Earth" width="495" height="371"/>
-        <image name="noteicon" width="25" height="25"/>
     </resources>
 </document>

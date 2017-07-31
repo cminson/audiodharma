@@ -59,10 +59,10 @@ class UserTalkTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let addTalkTableViewController = navController.viewControllers.last as? UserAddTalkViewController
+            let addTalkTableViewController = navController.viewControllers.last as? UserEditTalksController
             addTalkTableViewController?.SelectedTalks =  SelectedTalks
             
-        case "DISPLAY_TALKPLAYER2":   // play the selected talk in the MP3
+        case "DISPLAY_TALKPLAYER":   // play the selected talk in the MP3
             
             guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
                 else {
@@ -72,24 +72,35 @@ class UserTalkTableViewController: UITableViewController {
             playTalkController.TalkList = SelectedTalks
             playTalkController.CurrentTalkRow = SelectedRow
             
+        case "DISPLAY_NOTE":
+            guard let navController = segue.destination as? UINavigationController, let noteViewController = navController.viewControllers.last as? NoteViewController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            //print(self.selectedSection, self.selectedRow)
+            let talk = SelectedTalks[SelectedRow]
+            noteViewController.TalkFileName = talk.FileName
+            noteViewController.title = talk.Title
+            
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
      }
     
-    @IBAction func unwindToUserTalkList(sender: UIStoryboardSegue) {   // called from Add Talks
+    @IBAction func unwindEditTalkList(sender: UIStoryboardSegue) {  // called from UserAddTalkViewController
         
         //
         // gather the talks selected in Add Talks and store them off
         //
-        if let controller = sender.source as? UserAddTalkViewController {
+        if let controller = sender.source as? UserEditTalksController {
             
             SelectedTalks = controller.SelectedTalks
             
             // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
             var talkFileNames = [String]()
             for talk in SelectedTalks {
-                talkFileNames.append(talk.fileName)
+                talkFileNames.append(talk.FileName)
                 //print("adding: ", talk.fileName)
                 
             }
@@ -109,6 +120,35 @@ class UserTalkTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
+
+        if let controller = sender.source as? NoteViewController {
+            
+            if controller.TextHasBeenChanged == true {
+                
+                controller.TextHasBeenChanged = false   // just to make sure ...
+                
+                let talk = SelectedTalks[SelectedRow]
+                let noteText  = controller.noteTextView.text!
+                print("noteText = ", noteText)
+                
+                //
+                // if there is a note for this talk fileName, then save it in the note dictionary
+                // otherwise clear this note dictionary entry
+                if (noteText.characters.count > 2) {
+                    TheDataModel.UserNotes[talk.FileName] = UserNoteData(notes: noteText)
+                } else {
+                    TheDataModel.UserNotes[talk.FileName] = nil
+                }
+                TheDataModel.saveUserNoteData()
+                let indexPath = IndexPath(row: SelectedRow, section: 0)
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+                
+            }
+            
+        }
+    }
+    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -124,14 +164,20 @@ class UserTalkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
-        
         let talk = SelectedTalks[indexPath.row]
-        cell.title.text = talk.title
-        cell.speakerPhoto.image = talk.speakerPhoto
-        cell.duration.text = talk.duration
-        cell.date.text = talk.date
+
+        // if there is a Note entry for this talk, then show the note icon in cell
+        if let _ = TheDataModel.UserNotes[talk.FileName] {
+            cell.noteImage.image = UIImage(named: "noteicon")!
+        } else {
+            cell.noteImage = nil
+        }
+
+        cell.title.text = talk.Title
+        cell.speakerPhoto.image = talk.SpeakerPhoto
+        cell.duration.text = talk.Duration
+        cell.date.text = talk.Date
 
         return cell
     }
@@ -139,7 +185,7 @@ class UserTalkTableViewController: UITableViewController {
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         SelectedRow = indexPath.row
-        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER2", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
  
     #if WANTEDITING
@@ -179,14 +225,23 @@ class UserTalkTableViewController: UITableViewController {
         print("EditForAction")
         SelectedRow = indexPath.row
         
+        let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
+            self.viewEditNote()
+        }
+
         let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.shareTalk()
         }
-        return [shareTalk]
+        return [shareTalk, noteTalk]
     }
     
     
     //MARK: Share
+    private func viewEditNote() {
+        
+        self.performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
+    }
+    
     private func shareTalk() {
         
         let sharedTalk = SelectedTalks[SelectedRow]

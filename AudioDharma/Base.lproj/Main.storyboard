@@ -25,8 +25,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks" id="VXF-Dh-aL5"/>
                     <connections>
-                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER1" id="C6A-Dz-FfT"/>
-                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAY_NOTE1" id="4Sx-D1-YLI"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
+                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAY_NOTE" id="4Sx-D1-YLI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -46,7 +46,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f0e-Sg-sP2" id="j34-Dz-SeW">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A List" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-fh-og8">
@@ -144,8 +144,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER2" id="30e-7l-0p1"/>
-                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAYNOTE2" id="OFE-qN-xVe"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="30e-7l-0p1"/>
+                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAY_NOTE" id="OFE-qN-xVe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -171,19 +171,12 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Your Notes" translatesAutoresizingMaskIntoConstraints="NO" id="QF8-hp-eE1">
-                                <rect key="frame" x="57" y="140" width="300" height="133"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jNK-RU-s4O">
-                                <rect key="frame" x="57" y="293" width="300" height="149"/>
+                                <rect key="frame" x="57" y="135" width="300" height="149"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AUG-Pv-vgm">
-                                <rect key="frame" x="57" y="450" width="300" height="40"/>
+                                <rect key="frame" x="57" y="299" width="300" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Change Image"/>
                                 <connections>
@@ -206,7 +199,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="notesText" destination="QF8-hp-eE1" id="eDf-uo-LGe"/>
                         <outlet property="saveButton" destination="GwO-K4-Fqr" id="mWk-GF-Loc"/>
                         <outlet property="userImageView" destination="jNK-RU-s4O" id="a38-pU-OiQ"/>
                         <outlet property="userListTitle" destination="dAy-Sf-Ql1" id="kip-Ib-P2R"/>
@@ -217,10 +209,10 @@
             </objects>
             <point key="canvasLocation" x="-1400" y="2306"/>
         </scene>
-        <!--Add & Remove Talks -->
+        <!--Edit Custom Talk List-->
         <scene sceneID="NKy-2s-6YI">
             <objects>
-                <tableViewController id="EIX-tq-R4j" customClass="UserAddTalkViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="EIX-tq-R4j" customClass="UserEditTalksController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f3t-Od-nxX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -230,15 +222,10 @@
                             <outlet property="delegate" destination="EIX-tq-R4j" id="RHN-VD-ye2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add &amp; Remove Talks " id="daP-mt-RlJ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ibP-4d-rLT">
+                    <navigationItem key="navigationItem" title="Edit Custom Talk List" prompt="" id="daP-mt-RlJ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="REb-ho-qyI">
                             <connections>
-                                <action selector="dismiss:" destination="EIX-tq-R4j" id="LiI-vh-gBD"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="PIB-aI-0jf">
-                            <connections>
-                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindToUserTalkListWithSender:" id="qd7-qp-6dx"/>
+                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindEditTalkListWithSender:" id="Eq2-0V-FRq"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -246,7 +233,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="33.333333333333336" y="1905.9782608695655"/>
+            <point key="canvasLocation" x="141" y="1878"/>
         </scene>
         <!--Albums-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -261,7 +248,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bAb-mF-tZt" id="8T0-Oe-sCR">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WD5-q6-tg1">
@@ -579,25 +566,42 @@
                     <view key="view" contentMode="scaleToFill" id="blM-ql-hLg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="dfdsds" translatesAutoresizingMaskIntoConstraints="NO" id="DEs-5q-MmB">
+                                <rect key="frame" x="20" y="107" width="374" height="193"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UG5-WD-9Mr">
+                                <rect key="frame" x="128" y="308" width="158" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Delete Note"/>
+                                <connections>
+                                    <action selector="deleteNoteText:" destination="a54-As-Y2F" eventType="touchUpInside" id="rDa-o3-7us"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="yAa-cB-Fr0">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="done" id="Shf-T1-ATm">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="thC-MV-yTv">
                             <connections>
-                                <action selector="dismiss:" destination="a54-As-Y2F" id="tVY-m1-BQZ"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="3vg-Sf-7Ep">
-                            <connections>
-                                <segue destination="RbE-Yd-DLP" kind="unwind" unwindAction="unwindNotesTalkListWithSender:" id="Kg3-wn-6Va"/>
+                                <segue destination="RbE-Yd-DLP" kind="unwind" unwindAction="unwindNotesViewWithSender:" id="s82-j9-13n"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="deleteNoteButton" destination="UG5-WD-9Mr" id="eeV-az-FwC"/>
+                        <outlet property="noteTextView" destination="DEs-5q-MmB" id="3qa-YT-ZGY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-90" y="941"/>
+            <point key="canvasLocation" x="-99" y="941"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -722,8 +726,8 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4Sx-D1-YLI"/>
         <segue reference="Je7-85-m7J"/>
+        <segue reference="OFE-qN-xVe"/>
         <segue reference="30e-7l-0p1"/>
     </inferredMetricsTieBreakers>
 </document>

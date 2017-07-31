@@ -11,30 +11,30 @@ import UIKit
 
 class TalkData: NSObject {
     
-    //MARK: Properties
-    var title: String
+    // MARK: Properties
+    var Title: String
     var URL: String
-    var fileName: String
-    var date: String
-    var duration: String
-    var speaker: String
-    var speakerPhoto: UIImage
-    var section: String
-    var time: Int
+    var FileName: String
+    var Date: String
+    var Duration: String
+    var Speaker: String
+    var SpeakerPhoto: UIImage
+    var Section: String
+    var Time: Int
+    var HasNotes: Bool
     
-    
-    init(title: String,  URL: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
-        self.title = title
-        self.URL = URL
-        self.fileName = fileName
-        self.date = date
-        self.duration = duration
-        self.speaker = speaker
-        self.speakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
-        self.section = section
-        self.time = time
-        
-
+    // MARK: Init
+    init(title: String,  url: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int, hasNotes: Bool) {
+        Title = title
+        URL = url
+        FileName = fileName
+        Date = date
+        Duration = duration
+        Speaker = speaker
+        SpeakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
+        Section = section
+        Time = time
+        HasNotes = hasNotes
     }
 
 }

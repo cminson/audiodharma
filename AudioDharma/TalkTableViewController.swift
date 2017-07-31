@@ -24,7 +24,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     override func viewDidLoad() {
         
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
-        print("view did load")
         super.viewDidLoad()
         
         SectionTalks = TheDataModel.getTalks(content: Content)
@@ -36,7 +35,6 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
-        
     }
     
     deinit {
@@ -77,8 +75,8 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
         switch(segue.identifier ?? "") {
             
-        case "DISPLAY_TALKPLAYER1":
-            print("DISPLAY_TALKPLAYER1")
+        case "DISPLAY_TALKPLAYER":
+            print("DISPLAY_TALKPLAYER")
 
             guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
                 else {
@@ -88,9 +86,17 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             //print(self.selectedSection, self.selectedRow)
             playTalkController.CurrentTalkRow = SelectedRow
             playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
-        case "DISPLAY_NOTE1":
-            print("DISPLAY_NOTE1")
+        case "DISPLAY_NOTE":
+            guard let navController = segue.destination as? UINavigationController, let noteViewController = navController.viewControllers.last as? NoteViewController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
             
+            //print(self.selectedSection, self.selectedRow)
+            let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+            noteViewController.TalkFileName = talk.FileName
+            noteViewController.title = talk.Title
+
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
         }
@@ -102,11 +108,32 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         
     }
 
-    @IBAction func unwindNotesTalkList(sender: UIStoryboardSegue) {   // called from NotesController
+    @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
 
-       
+        if let controller = sender.source as? NoteViewController {
+            
+            if controller.TextHasBeenChanged == true {
+                
+                controller.TextHasBeenChanged = false   // just to make sure ...
+                
+                let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+                let noteText  = controller.noteTextView.text!
+                print("noteText = ", noteText)
+                
+                //
+                // if there is a note for this talk fileName, then save it in the note dictionary
+                // otherwise clear this note dictionary entry
+                if (noteText.characters.count > 1) {
+                    TheDataModel.UserNotes[talk.FileName] = UserNoteData(notes: noteText)
+                } else {
+                    TheDataModel.UserNotes[talk.FileName] = nil
+                }
+                TheDataModel.saveUserNoteData()
+                let indexPath = IndexPath(row: SelectedRow, section: SelectedSection)
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.top)
+           }
+        }
     }
-    
     
     
     // MARK: UISearchBarDelegate
@@ -142,15 +169,15 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             FilteredSectionTalks = []
             for sections in SectionTalks {
                 for talkData in sections {
-                    if talkData.title.lowercased().contains(searchText.lowercased()) {
+                    if talkData.Title.lowercased().contains(searchText.lowercased()) {
                         
-                        if sectionsPositionDict[talkData.section] == nil {
+                        if sectionsPositionDict[talkData.Section] == nil {
                             // new section seen.  create new array of talks for this section
                             FilteredSectionTalks.append([talkData])
-                            sectionsPositionDict[talkData.section] = FilteredSectionTalks.count - 1
+                            sectionsPositionDict[talkData.Section] = FilteredSectionTalks.count - 1
                         } else {
                             // section already exists.  add talk to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[talkData.section]
+                            let sectionPosition = sectionsPositionDict[talkData.Section]
                             FilteredSectionTalks[sectionPosition!].append(talkData)
                         }
                     }
@@ -182,20 +209,26 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return FilteredSectionTalks[section][0].section
+        return FilteredSectionTalks[section][0].Section
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
-        
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
-        cell.title.text = talk.title
-        cell.speakerPhoto.image = talk.speakerPhoto
+        // if there is a Note entry for this talk, then show the note icon in cell
+        if let _ = TheDataModel.UserNotes[talk.FileName] {
+            cell.noteImage.image = UIImage(named: "noteicon")!
+        } else {
+            cell.noteImage = nil
+        }
+        
+        cell.title.text = talk.Title
+        cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        cell.duration.text = talk.duration
-        cell.date.text = talk.date
+        cell.duration.text = talk.Duration
+        cell.date.text = talk.Date
         
         return cell
     }
@@ -214,7 +247,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         //print("Seleced Section: \(SelectedSection)   Selected Row: \(SelectedRow)")
-        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER1", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -222,7 +255,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
 
-        let note = UITableViewRowAction(style: .normal, title: "Note") { (action, indexPath) in
+        let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
         }
         
@@ -230,14 +263,14 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             self.shareTalk()
         }
 
-        return [note, shareTalk]
+        return [shareTalk, noteTalk]
     }
 
 
     //MARK: Share
     private func viewEditNote() {
-        self.performSegue(withIdentifier: "DISPLAY_NOTE1", sender: self)
         
+        self.performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
     

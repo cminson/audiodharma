@@ -77,7 +77,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
         
         print("UserAddTalkViewController")
         
-        if let _ = sender.source as? UserAddTalkViewController {
+        if let _ = sender.source as? UserEditTalksController {
             //let userTalkList = sourceViewController.filteredSectionTalks
         }
     }

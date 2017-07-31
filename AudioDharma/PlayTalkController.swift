@@ -214,8 +214,8 @@ class PlayTalkController: UIViewController {
         
         talkProgressSlider.value = 0.0
         
-        talkTitle.text = CurrentTalk.title
-        metaInfo.text = CurrentTalk.speaker + "   " + CurrentTalk.date
+        talkTitle.text = CurrentTalk.Title
+        metaInfo.text = CurrentTalk.Speaker + "   " + CurrentTalk.Date
         
         talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
         
