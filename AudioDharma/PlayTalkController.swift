@@ -23,7 +23,8 @@ import AVKit
 import AVFoundation
 import MediaPlayer
 
-//  https://code.tutsplus.com/tutorials/build-an-mp3-player-with-av-foundation--cms-24482
+
+
 class PlayTalkController: UIViewController {
     
     static let TopColor = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)

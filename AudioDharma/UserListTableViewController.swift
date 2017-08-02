@@ -123,11 +123,7 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "UserListTableViewCell"
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserListTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of UserListTableViewCell.")
-        }
+        let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
         
         let userList = TheDataModel.UserLists[indexPath.row]
         cell.title.text = userList.Title

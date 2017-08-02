@@ -21,10 +21,9 @@ class TalkData: NSObject {
     var SpeakerPhoto: UIImage
     var Section: String
     var Time: Int
-    var HasNotes: Bool
     
     // MARK: Init
-    init(title: String,  url: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int, hasNotes: Bool) {
+    init(title: String,  url: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
         Title = title
         URL = url
         FileName = fileName
@@ -34,7 +33,6 @@ class TalkData: NSObject {
         SpeakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
         Section = section
         Time = time
-        HasNotes = hasNotes
     }
 
 }

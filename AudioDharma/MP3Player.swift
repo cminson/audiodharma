@@ -12,6 +12,8 @@ import AVFoundation
 import CoreMedia
 
 let FAST_SEEK : Int64 = 25  // number of seconds to move for each Seek operation
+let TALK_BASE = "http://www.audiodharma.org"
+
 
 class MP3Player : NSObject {
     
@@ -31,7 +33,9 @@ class MP3Player : NSObject {
     func startTalk(talk: TalkData){
         
         //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
-        let url : URL = URL(string: talk.URL)!
+        let url : URL = URL(string: TALK_BASE + talk.URL)!
+        print(url)
+        
         PlayerItem  = AVPlayerItem(url: url)
         Player =  AVPlayer(playerItem : PlayerItem)
         Player.allowsExternalPlayback = true

@@ -42,8 +42,8 @@ class Model {
         //loadFoldersFromWeb(jsonLocation: "http://www.ezimba.com/ad/folders01.json")
         //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         // get baseline talks and folders
-        loadTalksFromFile(jsonLocation: "talks02")
-        loadFoldersFromFile(jsonLocation: "folders02")
+        loadTalksFromFile(jsonLocation: "talks01")
+        loadFoldersFromFile(jsonLocation: "folders01")
         
         // compute stats for custom albums (computing number of talks inside each one)
         computeCustomUserListStats()
@@ -211,6 +211,7 @@ class Model {
                 let title = talk["title"] as? String ?? ""
                 let speaker = talk["speaker"] as? String ?? ""
                 let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                let fileName = talk["filename"] as? String ?? ""
                 let duration = talk["duration"] as? String ?? ""
                 let date = talk["date"] as? String ?? ""
                 let section = ""
@@ -218,18 +219,8 @@ class Model {
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
-                let urlPhrases = URL.components(separatedBy: "/")
-                var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
-                fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
-
-                if let noteData = UserNotes[fileName] {
-                    if noteData.Notes.characters.count < 2 {
-                        UserNotes[fileName] = nil
-                    }
-                }
-                let hasNotes = UserNotes[fileName] != nil
                 
-                let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds, hasNotes: hasNotes )
+                let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                 
                 //print(fileName)
                 NameToTalks[fileName] = talkData
@@ -256,7 +247,7 @@ class Model {
                 }
                 
                 talkCount += 1
-                //print(talkData, talkCount)
+                print(talkData, talkCount)
             }
         } catch {
             print(error)
@@ -321,7 +312,7 @@ class Model {
                     fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
                     
                     let hasNotes = UserNotes[fileName] != nil
-                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds, hasNotes: hasNotes)
+                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                     
                     // create the key -> talkData[] entry if it doesn't already exist
                     if KeyToTalks[content] == nil {
@@ -443,7 +434,7 @@ class Model {
                         let totalSeconds = self.convertDurationToSeconds(duration: duration)
 
                         let hasNotes = false // TBD DEV
-                        let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds, hasNotes: hasNotes)
+                        let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
                         
                         // create the key -> talkData[] entry if it doesn't already exist
                         if self.KeyToTalks[content] == nil {
@@ -540,7 +531,7 @@ class Model {
                     totalSeconds += seconds
 
                     let hasNotes = false // TBD DEV
-                    let talkData =  TalkData(title: title,  url: URL,  fileName: urlFileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds, hasNotes: hasNotes)
+                    let talkData =  TalkData(title: title,  url: URL,  fileName: urlFileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                     
  
                     // add this talk to  list of all talks

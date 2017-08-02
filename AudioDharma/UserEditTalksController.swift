@@ -59,8 +59,9 @@ class UserEditTalksController: UITableViewController, UISearchBarDelegate, UISea
         let setOfSelectedTalks : Set<TalkData> = Set(SelectedTalks)
         let xorSet = setofAllTalks.symmetricDifference(setOfSelectedTalks)
         
-        DisplayTalks = SelectedTalks + Array(xorSet)
+        DisplayTalks = SelectedTalks + Array(xorSet).sorted(by: { $0.Date > $1.Date })
         FilteredTalks = DisplayTalks
+        //FilteredTalks = DisplayTalks
         
         //searchController = UISearchController(searchResultsController: nil)
         SearchController.searchResultsUpdater = self

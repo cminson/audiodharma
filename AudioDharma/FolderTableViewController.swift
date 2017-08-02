@@ -180,16 +180,12 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "FolderTableViewCell"
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FolderTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of FolderTableViewCell.")
-        }
+        let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
+
         
         //print("section = \(indexPath.section) row = \(indexPath.row)")
         let folder = FilteredFolderSections[indexPath.section][indexPath.row]
     
-
         cell.title.text = folder.title
         cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
         if folder.image.characters.count > 0 {
