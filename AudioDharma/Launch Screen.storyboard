@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="audiodharma01" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
-                                <rect key="frame" x="82" y="181" width="250" height="375"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
+                                <rect key="frame" x="-40.666666666666657" y="183" width="495.33333333333337" height="371"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -39,6 +39,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="audiodharma01" width="250" height="375"/>
+        <image name="Earth" width="495" height="371"/>
     </resources>
 </document>
