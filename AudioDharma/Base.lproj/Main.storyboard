@@ -32,6 +32,38 @@
             </objects>
             <point key="canvasLocation" x="-741" y="170"/>
         </scene>
+        <!--Talks by Speakers-->
+        <scene sceneID="XFU-xf-pVT">
+            <objects>
+                <tableViewController id="3TL-of-6t5" customClass="SpeakersTableViewController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DSL-lx-OlQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yO1-h0-U1d">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yO1-h0-U1d" id="EY1-6l-duf">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="3TL-of-6t5" id="cJ5-7n-zQg"/>
+                            <outlet property="delegate" destination="3TL-of-6t5" id="OrE-sf-Qfu"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Talks by Speakers" id="hKw-C4-xAf"/>
+                    <connections>
+                        <segue destination="gZV-DG-fA4" kind="show" identifier="SHOWTALKS" id="Ebq-8j-F1C"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2068" y="941"/>
+        </scene>
         <!--Personal Albums-->
         <scene sceneID="wMU-4h-6ek">
             <objects>
@@ -190,11 +222,12 @@
                     <connections>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="SHOWTALKS" id="hEa-61-IsL"/>
                         <segue destination="1IO-y8-7fd" kind="show" identifier="SHOWUSERLISTS" id="QLr-Lj-k1Y"/>
+                        <segue destination="3TL-of-6t5" kind="show" identifier="SHOWSPEAKERALBUMS" id="DdA-ae-LVe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1466.4000000000001" y="167.76611694152925"/>
+            <point key="canvasLocation" x="-1436" y="170"/>
         </scene>
         <!--Play Talk Controller-->
         <scene sceneID="eic-Lc-ttk">
@@ -352,7 +385,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1515.9420289855075" y="525"/>
+            <point key="canvasLocation" x="2423.1884057971015" y="525"/>
         </scene>
         <!--Donations-->
         <scene sceneID="ONQ-Br-3u5">
@@ -394,7 +427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3537.68115942029" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="4444.927536231884" y="1244.8369565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
@@ -478,7 +511,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-99" y="941"/>
+            <point key="canvasLocation" x="807.24637681159425" y="940.76086956521749"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -496,7 +529,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ig3-ci-zdE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="884.05797101449286" y="527.44565217391312"/>
+            <point key="canvasLocation" x="1791.304347826087" y="527.44565217391312"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RVu-SL-aJf">
@@ -539,7 +572,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu5-QY-ZHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1942.0289855072465" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="2849.275362318841" y="1241.5760869565217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mKy-ot-PZ1">
@@ -557,7 +590,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fb-mf-Bnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2872.4637681159425" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="3779.7101449275365" y="1244.8369565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MWX-gm-l4W">
@@ -575,7 +608,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ibt-qa-SsQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1271.0144927536232" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="2178.2608695652175" y="1241.5760869565217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLM-gG-pH8">
@@ -593,7 +626,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cs3-tt-Lu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-742.02898550724649" y="940.76086956521749"/>
+            <point key="canvasLocation" x="165.21739130434784" y="940.76086956521749"/>
         </scene>
     </scenes>
     <resources>
@@ -603,8 +636,9 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Ebq-8j-F1C"/>
+        <segue reference="C6A-Dz-FfT"/>
+        <segue reference="4Sx-D1-YLI"/>
         <segue reference="Je7-85-m7J"/>
-        <segue reference="OFE-qN-xVe"/>
-        <segue reference="30e-7l-0p1"/>
     </inferredMetricsTieBreakers>
 </document>

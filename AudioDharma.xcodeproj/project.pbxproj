@@ -23,6 +23,7 @@
 		8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */; };
 		839E53861F324CFC00D0A102 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E53841F324CFC00D0A102 /* FolderCell.swift */; };
 		839E53871F324CFC00D0A102 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839E53851F324CFC00D0A102 /* FolderCell.xib */; };
+		83BF9D081F33B19F006367CF /* SpeakersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakersTableViewController.swift */; };
 		83C22CB51F184E87002503AE /* DonationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsViewController.swift */; };
 		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
 		83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */; };
@@ -52,6 +53,7 @@
 		8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		839E53841F324CFC00D0A102 /* FolderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		839E53851F324CFC00D0A102 /* FolderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FolderCell.xib; sourceTree = "<group>"; };
+		83BF9D071F33B19F006367CF /* SpeakersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersTableViewController.swift; sourceTree = "<group>"; };
 		83C22CB41F184E87002503AE /* DonationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsViewController.swift; sourceTree = "<group>"; };
 		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				83DC0D641EF17B390071CAD3 /* Main.storyboard */,
 				83DC0D601EF17B390071CAD3 /* AppDelegate.swift */,
 				8387D63F1EFC07AD0025006B /* FolderTableViewController.swift */,
+				83BF9D071F33B19F006367CF /* SpeakersTableViewController.swift */,
 				835B9F801EF2CA9B009AF991 /* TalkTableViewController.swift */,
 				83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */,
 				83EF51AB1F042EF9000678B0 /* UserTalksTableViewController.swift */,
@@ -227,6 +230,7 @@
 				83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,
 				835B9F7B1EF1B0BC009AF991 /* TalkData.swift in Sources */,
+				83BF9D081F33B19F006367CF /* SpeakersTableViewController.swift in Sources */,
 				837C3DD81F2D34B7005C9A0A /* TalkCell.swift in Sources */,
 				8387D6401EFC07AD0025006B /* FolderTableViewController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkTableViewController.swift in Sources */,

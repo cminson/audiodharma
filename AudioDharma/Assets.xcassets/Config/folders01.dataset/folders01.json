@@ -4,7 +4,7 @@
 		"title":"All Talks",
 		"content":"ALL",
 		"section":"",
-		"image":"buddha01"
+		"image":"Earth"
 	},
 	{
 		"title":"Your Personal Albums",
@@ -23,6 +23,12 @@
 		"content":"Andrea Fella",
 		"section":"",
 		"image":"Andrea Fella"
+	},
+	{
+		"title":"Talks by All Speakers",
+		"content":"ALLSPEAKERS",
+		"section":"",
+		"image":"buddha01"
 	},
 	{
 		"title":"Introduction To Meditation",
