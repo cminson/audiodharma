@@ -4,7 +4,7 @@
 		"title":"All Talks",
 		"content":"ALL",
 		"section":"",
-		"image":"Earth"
+		"image":"buddha01"
 	},
 	{
 		"title":"Your Personal Albums",
@@ -28,7 +28,7 @@
 		"title":"Talks by All Speakers",
 		"content":"ALLSPEAKERS",
 		"section":"",
-		"image":"buddha01"
+		"image":"person"
 	},
 	{
 		"title":"Introduction To Meditation",
@@ -903,7 +903,7 @@
 		"title":"Anapanasati - Breathing Mindfulness",
 		"content":"Folder.Anapanasati",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -1397,7 +1397,7 @@
 		"title":"Chants",
 		"content":"Folder.Chants",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -1423,7 +1423,7 @@
 		"title":"Buddhist Meditation",
 		"content":"Folder.BM",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -1485,7 +1485,7 @@
 		"title":"Concentration",
 		"content":"Folder.Concentration",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -1700,7 +1700,7 @@
 		"title":"Daily Life Practice",
 		"content":"Folder.DLP",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -3292,7 +3292,7 @@
 		"title":"Daylong Meditation Retreats",
 		"content":"Folder.DMR",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -3642,7 +3642,7 @@
 		"title":"Death - Dying in the Dharma",
 		"content":"Folder.Dying",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -3677,7 +3677,7 @@
 		"title":"Dharma Practice Series - The Paramis", 
 		"content":"Folder.DPS",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -4261,7 +4261,7 @@
 		"title":"The Eightfold Path",
 		"content":"Folder.8P",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -4341,7 +4341,7 @@
 		"title":"The Five Hindrances",
 		"content":"Folder.5H",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -4727,7 +4727,7 @@
 		"title":"Five Spiritual Facilities",
 		"content":"Folder.5SF",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -4780,7 +4780,7 @@
 		"title":"Four Noble Truths",
 		"content":"Folder.4NT",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -5427,7 +5427,7 @@
 		"title":"Guided Meditations",
 		"content":"Folder.GM1",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -5941,7 +5941,7 @@
 		"title":"Intermediate Mindfulness",
 		"content":"Folder.IM",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6021,7 +6021,7 @@
 		"title":"Introduction to Meditation",
 		"content":"Folder.IntroMed1",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6146,7 +6146,7 @@
 		"title":"LovingKindness - Metta1",
 		"content":"Folder.Metta1",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6307,7 +6307,7 @@
 		"title":"Not Self",
 		"content":"Folder.NotSelf",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6360,7 +6360,7 @@
 		"title":"Pain",
 		"content":"Folder.Pain",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6521,7 +6521,7 @@
 		"title":"Character - The 10 Paramis",
 		"content":"Folder.Paramis",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -6880,7 +6880,7 @@
 		"title":"Practice Notes (1)",
 		"content":"Folder.Practice1",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -7761,7 +7761,7 @@
 		"title":"Practice Notes (2)",
 		"content":"Folder.Practice2",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -8669,7 +8669,7 @@
 		"title":"Practice Notes (3)",
 		"content":"Folder.PracticeSeries",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -8992,7 +8992,7 @@
 		"title":"Q & A with Gil Fronsdal",
 		"content":"Folder.QAndA",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -9081,7 +9081,7 @@
 		"title":"Taking Refuge",
 		"content":"Folder.TakingRefuge",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -9152,7 +9152,7 @@
 		"title":"Satipatthana Sutta",
 		"content":"Folder.SatSuta",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -9286,7 +9286,7 @@
 		"title":"Seven Factors of Awakening",
 		"content":"Folder.7Factors",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -9411,7 +9411,7 @@
 		"title":"Social and Public Concerns",
 		"content":"Folder.SPC",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",
@@ -9581,7 +9581,7 @@
 		"title":"Twelve Steps to Freedom",
 		"content":"Folder.12Freedom",
 		"section":"Series Talks",
-		"image":"",
+		"image":"sequence",
 		"talks":[
 			{
 				"section":"__",

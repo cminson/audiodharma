@@ -15,6 +15,7 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
     var FilteredFolders:  [FolderData] = []
     let SearchController = UISearchController(searchResultsController: nil)
     var SearchText: String = ""
+    var Test: Int = 0
     
 
     // MARK: Init
