@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DonationsViewController: UIViewController {
+class DonationsController: UIViewController {
     @IBOutlet weak var cancel: UIBarButtonItem!
     
 

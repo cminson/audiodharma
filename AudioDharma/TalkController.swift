@@ -9,7 +9,7 @@
 import UIKit
 import Social
 
-class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class TalkController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
     var SectionTalks: [[TalkData]] = []
@@ -86,16 +86,16 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
             //print(self.selectedSection, self.selectedRow)
             playTalkController.CurrentTalkRow = SelectedRow
             playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
-        case "DISPLAY_NOTE":
-            guard let navController = segue.destination as? UINavigationController, let noteViewController = navController.viewControllers.last as? NoteViewController
+        case "DISPLAY_NOTES":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? NoteController
                 else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
             
             //print(self.selectedSection, self.selectedRow)
             let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
-            noteViewController.TalkFileName = talk.FileName
-            noteViewController.title = talk.Title
+            controller.TalkFileName = talk.FileName
+            controller.title = talk.Title
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -110,7 +110,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
 
     @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
 
-        if let controller = sender.source as? NoteViewController {
+        if let controller = sender.source as? NoteController {
             
             if controller.TextHasBeenChanged == true {
                 
@@ -118,19 +118,13 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
                 
                 let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
                 let noteText  = controller.noteTextView.text!
-                print("noteText = ", noteText)
+                //print("noteText = ", noteText)
                 
-                //
-                // if there is a note for this talk fileName, then save it in the note dictionary
-                // otherwise clear this note dictionary entry
-                if (noteText.characters.count > 1) {
-                    TheDataModel.UserNotes[talk.FileName] = UserNoteData(notes: noteText)
-                } else {
-                    TheDataModel.UserNotes[talk.FileName] = nil
-                }
-                TheDataModel.saveUserNoteData()
+                TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
+
                 let indexPath = IndexPath(row: SelectedRow, section: SelectedSection)
-                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.top)
+                //self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.top)
+                self.tableView.reloadData()
            }
         }
     }
@@ -280,7 +274,7 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     //MARK: Share
     private func viewEditNote() {
         
-        self.performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_NOTES", sender: self)
     }
     
     

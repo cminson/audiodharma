@@ -12,7 +12,7 @@ import os.log
 
 
 
-class FolderData: NSObject {
+class AlbumData: NSObject {
     
     //MARK: Properties
     var title: String

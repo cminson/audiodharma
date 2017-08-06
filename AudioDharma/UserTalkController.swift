@@ -12,7 +12,7 @@ import UIKit
 //
 // Displays the talks that a user has stored in their User List
 //
-class UserTalkTableViewController: UITableViewController {
+class UserTalkController: UITableViewController {
     
     // MARK: Properties
     var SelectedUserListIndex: Int = 0         // index into the datamodel userlist array, the value is the selected user list to display
@@ -28,7 +28,7 @@ class UserTalkTableViewController: UITableViewController {
         //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
 
         // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
-        for talkFileName in TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames {
+        for talkFileName in TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames {
             print(talkFileName)
             if let talk = TheDataModel.getTalkForName(name: talkFileName) {
                 SelectedTalks.append(talk)
@@ -37,7 +37,7 @@ class UserTalkTableViewController: UITableViewController {
             }
         }
         
-        self.title = TheDataModel.UserLists[SelectedUserListIndex].Title
+        self.title = TheDataModel.UserAlbums[SelectedUserListIndex].Title
         //self.tableView.isEditing = true
     }
     
@@ -59,29 +59,29 @@ class UserTalkTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let addTalkTableViewController = navController.viewControllers.last as? UserEditTalksController
-            addTalkTableViewController?.SelectedTalks =  SelectedTalks
+            let controller = navController.viewControllers.last as? UserTalksEditController
+            controller?.SelectedTalks =  SelectedTalks
             
         case "DISPLAY_TALKPLAYER":   // play the selected talk in the MP3
             
-            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? PlayTalkController
                 else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
 
-            playTalkController.TalkList = SelectedTalks
-            playTalkController.CurrentTalkRow = SelectedRow
+            controller.TalkList = SelectedTalks
+            controller.CurrentTalkRow = SelectedRow
             
         case "DISPLAY_NOTE":
-            guard let navController = segue.destination as? UINavigationController, let noteViewController = navController.viewControllers.last as? NoteViewController
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? NoteController
                 else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
             
             //print(self.selectedSection, self.selectedRow)
             let talk = SelectedTalks[SelectedRow]
-            noteViewController.TalkFileName = talk.FileName
-            noteViewController.title = talk.Title
+            controller.TalkFileName = talk.FileName
+            controller.title = talk.Title
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -93,7 +93,7 @@ class UserTalkTableViewController: UITableViewController {
         //
         // gather the talks selected in Add Talks and store them off
         //
-        if let controller = sender.source as? UserEditTalksController {
+        if let controller = sender.source as? UserTalksEditController {
             
             SelectedTalks = controller.SelectedTalks
             
@@ -106,15 +106,15 @@ class UserTalkTableViewController: UITableViewController {
             }
             
             // save the resulting array into the userlist and then persist into storage
-            TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames = talkFileNames
+            TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames = talkFileNames
             
             // DEBUG
-            let test1 = TheDataModel.UserLists[SelectedUserListIndex].TalkFileNames
+            let test1 = TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames
             for talk in test1 {
                 print("SAVED: ", talk)
                 
             }
-            TheDataModel.saveUserListData()
+            TheDataModel.saveUserAlbumData()
             TheDataModel.computeUserListStats()
             self.tableView.reloadData()
         }
@@ -122,7 +122,7 @@ class UserTalkTableViewController: UITableViewController {
     
     @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
 
-        if let controller = sender.source as? NoteViewController {
+        if let controller = sender.source as? NoteController {
             
             if controller.TextHasBeenChanged == true {
                 
@@ -130,17 +130,10 @@ class UserTalkTableViewController: UITableViewController {
                 
                 let talk = SelectedTalks[SelectedRow]
                 let noteText  = controller.noteTextView.text!
-                print("noteText = ", noteText)
+                //print("noteText = ", noteText)
                 
-                //
-                // if there is a note for this talk fileName, then save it in the note dictionary
-                // otherwise clear this note dictionary entry
-                if (noteText.characters.count > 2) {
-                    TheDataModel.UserNotes[talk.FileName] = UserNoteData(notes: noteText)
-                } else {
-                    TheDataModel.UserNotes[talk.FileName] = nil
-                }
-                TheDataModel.saveUserNoteData()
+                TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
+
                 let indexPath = IndexPath(row: SelectedRow, section: 0)
                 self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
                 

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
     var SelectedRow: Int = 0
-    var FilteredFolders:  [FolderData] = []
+    var FilteredAlbums:  [AlbumData] = []
     let SearchController = UISearchController(searchResultsController: nil)
     var SearchText: String = ""
     var Test: Int = 0
@@ -25,7 +25,7 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
         
         super.viewDidLoad()
         
-        FilteredFolders = TheDataModel.SpeakerFolders
+        FilteredAlbums = TheDataModel.SpeakerAlbums
         
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
@@ -63,13 +63,13 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
         print("FolderTableView: Segue")
         switch segue.identifier ?? "" {
             
-        case "SHOWTALKS":
-            guard let talkTableViewController = segue.destination as? TalkTableViewController else {
+        case "DISPLAY_TALKS":
+            guard let controller = segue.destination as? TalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let folder = FilteredFolders[SelectedRow]
-            talkTableViewController.Content = folder.content
-            talkTableViewController.title = folder.title
+            let folder = FilteredAlbums[SelectedRow]
+            controller.Content = folder.content
+            controller.title = folder.title
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -110,15 +110,15 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
         
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
-            FilteredFolders = []
-            for folderData in TheDataModel.SpeakerFolders {
-                if folderData.title.lowercased().contains(searchText.lowercased()) {
-                        FilteredFolders.append(folderData)
+            FilteredAlbums = []
+            for albumData in TheDataModel.SpeakerAlbums {
+                if albumData.title.lowercased().contains(searchText.lowercased()) {
+                        FilteredAlbums.append(albumData)
                 }
             }
         } else {
             
-            FilteredFolders = TheDataModel.SpeakerFolders
+            FilteredAlbums = TheDataModel.SpeakerAlbums
         }
         tableView.reloadData()
     }
@@ -137,34 +137,34 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return FilteredFolders.count
+        return FilteredAlbums.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
+        let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
         
         
         //print("section = \(indexPath.section) row = \(indexPath.row)")
-        let folder = FilteredFolders[indexPath.row]
+        let album = FilteredAlbums[indexPath.row]
         
-        cell.title.text = folder.title
-        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        if folder.image.characters.count > 0 {
-            cell.listImage.image = UIImage(named: folder.image) ?? UIImage(named: "defaultPhoto")!
+        cell.title.text = album.title
+        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        if album.image.characters.count > 0 {
+            cell.albumCover.image = UIImage(named: album.image) ?? UIImage(named: "defaultPhoto")!
         } else {
-            cell.listImage.image = UIImage(named: folder.title) ?? UIImage(named: "defaultPhoto")!
+            cell.albumCover.image = UIImage(named: album.title) ?? UIImage(named: "defaultPhoto")!
         }
         
-        let folderStats = TheDataModel.getFolderStats(content: folder.content)
+        let albumStats = TheDataModel.getAlbumStats(content: album.content)
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value:folderStats.totalTalks))
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: albumStats.totalTalks))
         cell.statTalkCount.text = formattedNumber
         
         
-        cell.statTotalTime.text = folderStats.durationDisplay
+        cell.statTotalTime.text = albumStats.durationDisplay
         
         return cell
     }
@@ -172,6 +172,7 @@ class SpeakersTableViewController: UITableViewController, UISearchBarDelegate, U
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         SelectedRow = indexPath.row
-        self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
     }
+    
 }

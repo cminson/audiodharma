@@ -1,5 +1,5 @@
 //
-//  FolderCell.swift
+//  AlbumCell.swift
 //  AudioDharma
 //
 //  Created by Christopher on 8/2/17.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class FolderCell: UITableViewCell {
+class AlbumCell: UITableViewCell {
 
-    @IBOutlet weak var listImage: UIImageView!
+    @IBOutlet weak var albumCover: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var statTalkCount: UILabel!
     @IBOutlet weak var statTotalTime: UILabel!

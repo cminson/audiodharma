@@ -9,7 +9,7 @@
 import UIKit
 import os.log
 
-class UserListData: NSObject, NSCoding {
+class UserAlbumData: NSObject, NSCoding {
     
     // MARK: Persistance
     struct PropertyKey {
@@ -18,7 +18,7 @@ class UserListData: NSObject, NSCoding {
         static let Image = "Image"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("UserListData")
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("UserAlbumData")
 
     
     // MARK: Properties

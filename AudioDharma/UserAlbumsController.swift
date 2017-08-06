@@ -10,16 +10,19 @@ import UIKit
 import os.log
 
 
-class UserListTableViewController: UITableViewController {
+class UserAlbumsController: UITableViewController {
     
     //MARK: Properties
     var SelectedRow: Int = 0
+    
+
+
     
     // MARK: Init
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+                
         // TDB DEV DONT NEED?
         /*
         let savedUserList = TheDataModel.loadUserListData()
@@ -44,38 +47,39 @@ class UserListTableViewController: UITableViewController {
        
         super.prepare(for: segue, sender: sender)
         
+        print(segue.identifier)
         switch(segue.identifier ?? "") {
             
-        case "SHOWADDUSERLIST":     // Add a New User List
+        case "DISPLAY_ADD_ALBUM":     // Add a New User Album
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
-                addEditUserListController.EditMode = false
+            if let controller = navController.viewControllers.last as? UserAlbumEditController {
+                controller.EditMode = false
             }
             
-        case "SHOWEDITUSERLIST":    // Edit an existing User List
+        case "DISPLAY_EDIT_ALBUM":    // Edit an existing User Album
  
             guard let navController = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let selectedUserList = TheDataModel.UserLists[SelectedRow]
+            let selectedUserAlbum = TheDataModel.UserAlbums[SelectedRow]
 
-            if let addEditUserListController = navController.viewControllers.last as? AddEditUserListController {
-                addEditUserListController.UserList = selectedUserList
-                addEditUserListController.title = "Edit User List"
-                addEditUserListController.EditMode = true
+            if let controller = navController.viewControllers.last as? UserAlbumEditController {
+                controller.UserAlbum = selectedUserAlbum
+                controller.title = "Edit User List"
+                controller.EditMode = true
             }
 
-        case "SHOWUSERTALKS":   // Display all talks within the current User List
-            guard let userTalkTableViewController = segue.destination as? UserTalkTableViewController else {
+        case "DISPLAY_USER_TALKS":   // Display all talks within the current User List
+            guard let controller = segue.destination as? UserTalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
             // set the userList that we want to show talks for
             //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
-            userTalkTableViewController.SelectedUserListIndex = SelectedRow
+            controller.SelectedUserListIndex = SelectedRow
 
             
         default:
@@ -84,24 +88,24 @@ class UserListTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func unwindToUserList(sender: UIStoryboardSegue) {
+    @IBAction func unwindToUserAlbum(sender: UIStoryboardSegue) {
         
-        if let addEditUserListController = sender.source as? AddEditUserListController, let userList = addEditUserListController.UserList {
+        if let controller = sender.source as? UserAlbumEditController, let userAlbum = controller.UserAlbum {
             
             // if edit mode = true, then this is an edit of an existing user list
             // otherwise we are adding a new user list
-            if addEditUserListController.EditMode == true {
-                TheDataModel.UserLists[SelectedRow].Title = userList.Title
-                TheDataModel.UserLists[SelectedRow].Image = userList.Image
-                TheDataModel.saveUserListData()
+            if controller.EditMode == true {
+                TheDataModel.UserAlbums[SelectedRow].Title = userAlbum.Title
+                TheDataModel.UserAlbums[SelectedRow].Image = userAlbum.Image
+                TheDataModel.saveUserAlbumData()
                 self.tableView.reloadData()
                 
             } else {
-                let newIndexPath = IndexPath(row: TheDataModel.UserLists.count, section: 0)
+                let newIndexPath = IndexPath(row: TheDataModel.UserAlbums.count, section: 0)
                 
-                TheDataModel.UserLists.append(userList)
+                TheDataModel.UserAlbums.append(userAlbum)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
-                TheDataModel.saveUserListData()
+                TheDataModel.saveUserAlbumData()
             }
         }
     }
@@ -121,27 +125,27 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return TheDataModel.UserLists.count
+        return TheDataModel.UserAlbums.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
+        let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
         
-        let userList = TheDataModel.UserLists[indexPath.row]
-        cell.title.text = userList.Title
-        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        cell.listImage.image = userList.Image
+        let userAlbum = TheDataModel.UserAlbums[indexPath.row]
+        cell.title.text = userAlbum.Title
+        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        cell.albumCover.image = userAlbum.Image
         
-        let folderStats = TheDataModel.getFolderStats(content: userList.Title)
+        let albumStats = TheDataModel.getAlbumStats(content: userAlbum.Title)
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value:folderStats.totalTalks))
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: albumStats.totalTalks))
         cell.statTalkCount.text = formattedNumber
         
         
-        cell.statTotalTime.text = folderStats.durationDisplay
+        cell.statTotalTime.text = albumStats.durationDisplay
 
         return cell
     }
@@ -156,8 +160,8 @@ class UserListTableViewController: UITableViewController {
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 self.tableView.isEditing = false
 
-                TheDataModel.UserLists.remove(at: indexPath.row)
-                TheDataModel.saveUserListData()
+                TheDataModel.UserAlbums.remove(at: indexPath.row)
+                TheDataModel.saveUserAlbumData()
                 self.tableView.reloadData()
             }))
             
@@ -171,7 +175,7 @@ class UserListTableViewController: UITableViewController {
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             
             self.SelectedRow = indexPath.row
-            self.performSegue(withIdentifier: "SHOWEDITUSERLIST", sender: self)
+            self.performSegue(withIdentifier: "DISPLAY_EDIT_ALBUM", sender: self)
             // share item at indexPath
             self.tableView.isEditing = false
         }
@@ -184,15 +188,15 @@ class UserListTableViewController: UITableViewController {
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         SelectedRow = indexPath.row
-        self.performSegue(withIdentifier: "SHOWUSERTALKS", sender: self)
+        self.performSegue(withIdentifier: "DISPLAY_USER_TALKS", sender: self)
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        let movedFolder = TheDataModel.UserLists[sourceIndexPath.row]
-        TheDataModel.UserLists.remove(at: sourceIndexPath.row)
-        TheDataModel.UserLists.insert(movedFolder, at: destinationIndexPath.row)
-        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedFolder.Title)")
+        let movedAlbum = TheDataModel.UserAlbums[sourceIndexPath.row]
+        TheDataModel.UserAlbums.remove(at: sourceIndexPath.row)
+        TheDataModel.UserAlbums.insert(movedAlbum, at: destinationIndexPath.row)
+        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedAlbum.Title)")
       
     }
    

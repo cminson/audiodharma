@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserEditTalksController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
     var DisplayTalks: [TalkData] = []

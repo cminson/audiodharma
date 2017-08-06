@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class NoteViewController: UIViewController, UITextViewDelegate {
+class NoteController: UIViewController, UITextViewDelegate {
 
     // MARK: Outlets
     @IBOutlet weak var noteTextView: UITextView!
@@ -36,9 +36,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         noteTextView.layer.borderColor = borderColor.cgColor
         noteTextView.layer.cornerRadius = 5.0
         
-        if let noteText = TheDataModel.UserNotes[TalkFileName] {
-            noteTextView.text = noteText.Notes
-        }
+        noteTextView.text = TheDataModel.getNoteForTalk(talkFileName: TalkFileName)
     }
 
     override func didReceiveMemoryWarning() {

@@ -1,5 +1,5 @@
 ///
-//  AddUserListViewController.swift
+//  AddUserAlbumViewController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 7/11/17.
@@ -11,18 +11,16 @@ import UIKit
 import UIKit
 import os.log
 
-class AddEditUserListController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK: Properties
-    var UserList: UserListData? = nil
+    var UserAlbum: UserAlbumData? = nil
     var EditMode: Bool = false
 
-    
     // MARK: Outlets
-    @IBOutlet weak var userListTitle: UITextField!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var userAlbumTitle: UITextField!
     @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var notesText: UITextView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     let ImagePicker = UIImagePickerController()
 
@@ -31,22 +29,22 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("view loaded: \(String(describing: UserList?.Title))")
+        print("view loaded: \(String(describing: UserAlbum?.Title))")
 
-        if let title = UserList?.Title {
+        if let title = UserAlbum?.Title {
             if title.characters.count > 0 {
-                userListTitle.text = title
+                userAlbumTitle.text = title
             }
         }
 
-        if let image = UserList?.Image {
+        if let image = UserAlbum?.Image {
             userImageView.image = image
         } else {
             userImageView.image = UIImage(named: "flower01")
             
         }
         
-        userListTitle.delegate = self
+        userAlbumTitle.delegate = self
 
         ImagePicker.delegate = self
     }
@@ -67,21 +65,11 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
             return
         }
         
-        let title = userListTitle.text ?? ""
+        let title = userAlbumTitle.text ?? ""
         let image = userImageView.image ?? UIImage(named: "flower01")
-        UserList = UserListData(title: title, image: image!)
+        UserAlbum = UserAlbumData(title: title, image: image!)
         
     }
-    
-    @IBAction func unwindToUserListView(sender: UIStoryboardSegue) {
-        
-        print("UserAddTalkViewController")
-        
-        if let _ = sender.source as? UserEditTalksController {
-            //let userTalkList = sourceViewController.filteredSectionTalks
-        }
-    }
-    
     
     // MARK: Actions
     @IBAction func cancel(_ sender: Any) {
@@ -120,7 +108,7 @@ class AddEditUserListController: UIViewController, UIImagePickerControllerDelega
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        userListTitle.text = textField.text
+        userAlbumTitle.text = textField.text
     }
 
 }

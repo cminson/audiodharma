@@ -13,7 +13,7 @@ import os.log
 let TheDataModel = Model()
 let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
 //let DEVICE_ID:UInt32 = arc4random_uniform(100000000)
-struct FolderStats {
+struct AlbumStats {
     var totalTalks: Int
     var totalSeconds: Int
     var durationDisplay: String
@@ -30,17 +30,17 @@ let KEY_TALKSBEINGPLAYED = "KEY_TALKSBEINGPLAYED"
 let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
 let URL_GETACTIVITY = "http://www.ezimba.com/AD/test01.json"
 
-let MAX_TALKHISTORY_COUNT = 50
+let MAX_TALKHISTORY_COUNT = 3
 
 class Model {
     
     //MARK: Properties
     var RootTableView: UITableViewController!   // the top level display.  we keep this handle so we can force reloads when needed
     
-    var FolderSections: [[FolderData]] = []   // 2d array of sections x folders
-    var SpeakerFolders: [FolderData] = []     // array of folders for all speakers
+    var AlbumSections: [[AlbumData]] = []   // 2d array of sections x Albums
+    var SpeakerAlbums: [AlbumData] = []     // array of Albums for all speakers
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
-    var KeyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
+    var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
     var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
     
     var TalkHistoryList: [TalkHistoryData] = []
@@ -48,7 +48,7 @@ class Model {
     
     
     // MARK: Persistant Data
-    var UserLists: [UserListData] = []      // all the custom user lists defined by this user.
+    var UserAlbums: [UserAlbumData] = []      // all the custom user lists defined by this user.
     var UserNotes: [String: UserNoteData] = [:]      // all the  user notes defined by this user, indexed by fileName
     
     
@@ -56,39 +56,35 @@ class Model {
     func loadData() {
         
         // start getting sangha information from web
-        TheDataModel.getTalksCurrentlyBeingPlayed()
+        getTalksCurrentlyBeingPlayed()
 
-        // get baseline talks and folders
+        // get baseline talks and Albums
         loadTalksFromFile(jsonLocation: "talks01")
-        loadFoldersFromFile(jsonLocation: "folders01")
+        loadAlbumsFromFile(jsonLocation: "albums01")
         computeSpeakerStats()
 
         
         // get user data from storage and compute stats
-        UserLists = TheDataModel.loadUserListData()
+        UserAlbums = TheDataModel.loadUserAlbumData()
         computeUserListStats()
         UserNotes = TheDataModel.loadUserNoteData()
         computeNotesListStats()
         TalkHistoryList = TheDataModel.loadTalkHistoryData()
         computeHistoryListStats()
-
-
     }
     
     
     // MARK: Persistant API
-    func saveUserListData() {
+    func saveUserAlbumData() {
         
-        print("saveUserListData to: ", UserListData.ArchiveURL.path)
-        NSKeyedArchiver.archiveRootObject(TheDataModel.UserLists, toFile: UserListData.ArchiveURL.path)
+        print("saveUserListData to: ", UserAlbumData.ArchiveURL.path)
+        NSKeyedArchiver.archiveRootObject(TheDataModel.UserAlbums, toFile: UserAlbumData.ArchiveURL.path)
     }
     
     func saveUserNoteData() {
         
         print("saveUserNoteData to: ", UserNoteData.ArchiveURL.path)
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserNotes, toFile: UserNoteData.ArchiveURL.path)
-        
-        self.computeNotesListStats()
     }
     
     func saveTalkHistoryData() {
@@ -99,16 +95,16 @@ class Model {
     }
 
 
-    func loadUserListData() -> [UserListData]  {
+    func loadUserAlbumData() -> [UserAlbumData]  {
         
-        print("loadUserList from: ", UserListData.ArchiveURL.path)
+        print("UserAlbumData from: ", UserAlbumData.ArchiveURL.path)
         
-        if let userListData = NSKeyedUnarchiver.unarchiveObject(withFile: UserListData.ArchiveURL.path) as? [UserListData] {
+        if let userAlbumData = NSKeyedUnarchiver.unarchiveObject(withFile: UserAlbumData.ArchiveURL.path) as? [UserAlbumData] {
             
-            return userListData
+            return userAlbumData
         } else {
             
-            return [UserListData] ()
+            return [UserAlbumData] ()
         }
 
     }
@@ -176,14 +172,14 @@ class Model {
         
     }
     
-    func getFolderStats(content: String) -> FolderStats {
+    func getAlbumStats(content: String) -> AlbumStats {
         
-        return KeyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+        return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
     }
     
-    func getUserLists() -> [UserListData] {
+    func getUserAlbums() -> [UserAlbumData] {
         
-        return UserLists
+        return UserAlbums
     }
     
     func getTalkForName(name: String) -> TalkData? {
@@ -202,12 +198,39 @@ class Model {
         let talkHistory = TalkHistoryData(fileName: talk.FileName)
         TalkHistoryList.append(talkHistory)
         
-        computeHistoryListStats()
+        // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
-
-        // refresh the top view so that stat display for Recent History will be updated
+        computeHistoryListStats()
         RootTableView.tableView.reloadData()
     }
+    
+    func addNoteToTalk(noteText: String, talkFileName: String) {
+        
+        //
+        // if there is a note text for this talk fileName, then save it in the note dictionary
+        // otherwise clear this note dictionary entry
+        if (noteText.characters.count > 1) {
+            UserNotes[talkFileName] = UserNoteData(notes: noteText)
+        } else {
+            UserNotes[talkFileName] = nil
+        }
+        
+        // save the data, recompute stats, reload root view to display updated stats
+        saveUserNoteData()
+        computeNotesListStats()
+        RootTableView.tableView.reloadData()
+    }
+    
+    func getNoteForTalk(talkFileName: String) -> String {
+        
+        var noteText = ""
+        
+        if let userNoteData = TheDataModel.UserNotes[talkFileName]   {
+            noteText = userNoteData.Notes
+        }
+        return noteText
+    }
+
     
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
@@ -281,8 +304,8 @@ class Model {
                 print(error)
             }
             
-            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.KeyToFolderStats[KEY_TALKSBEINGPLAYED] = stats
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
+            self.KeyToAlbumStats[KEY_TALKSBEINGPLAYED] = stats
             print("TalksBeingPlayed: Done")
             
         }
@@ -321,7 +344,7 @@ class Model {
     }
     
     //
-    // generate the stats for the notes folder
+    // generate the stats for the notes Album
     //
     func computeNotesListStats() {
         
@@ -336,10 +359,10 @@ class Model {
             }
         }
                 
-        let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-        let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
         
-        KeyToFolderStats[KEY_NOTES] = stats
+        KeyToAlbumStats[KEY_NOTES] = stats
     }
   
     
@@ -356,10 +379,10 @@ class Model {
             }
         }
         
-        let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-        let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
         
-        KeyToFolderStats[KEY_TALKHISTORY] = stats
+        KeyToAlbumStats[KEY_TALKHISTORY] = stats
     }
     
     //
@@ -370,11 +393,11 @@ class Model {
         var totalUserListCount = 0
         var totalUserTalkSecondsCount = 0
         
-        for userList in UserLists {
+        for userAlbum in UserAlbums {
                 
             var talkCount = 0
             var totalSeconds = 0
-            for talkName in userList.TalkFileNames {
+            for talkName in userAlbum.TalkFileNames {
                 if let talk = NameToTalks[talkName] {
                     totalSeconds += talk.Time
                     talkCount += 1
@@ -383,16 +406,16 @@ class Model {
             
             totalUserListCount += 1
             totalUserTalkSecondsCount += totalSeconds
-            let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+            let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
             
-            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            KeyToFolderStats[userList.Title] = stats
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            KeyToAlbumStats[userAlbum.Title] = stats
         }
         
-        let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
-        let stats = FolderStats(totalTalks: totalUserListCount, totalSeconds: totalUserTalkSecondsCount, durationDisplay: durationDisplayAllLists)
+        let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
+        let stats = AlbumStats(totalTalks: totalUserListCount, totalSeconds: totalUserTalkSecondsCount, durationDisplay: durationDisplayAllLists)
         
-        KeyToFolderStats[KEY_CUSTOMALBUMS] = stats
+        KeyToAlbumStats[KEY_CUSTOMALBUMS] = stats
     }
     
     //
@@ -403,9 +426,9 @@ class Model {
         var totalSecondsAllLists = 0
         var talkCountAllLists = 0
         
-        for folder in SpeakerFolders {
+        for Album in SpeakerAlbums {
             
-            let content = folder.content
+            let content = Album.content
             var totalSeconds = 0
             var talkCount = 0
             for talk in (KeyToTalks[content]?[0])! {
@@ -415,16 +438,16 @@ class Model {
             
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
-            let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+            let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
             
-            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            KeyToFolderStats[content] = stats
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            KeyToAlbumStats[content] = stats
         }
         
-        let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
+        let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalSecondsAllLists)
         
-        let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
-        KeyToFolderStats[KEY_ALLSPEAKERS] = stats
+        let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+        KeyToAlbumStats[KEY_ALLSPEAKERS] = stats
     }
 
     
@@ -451,7 +474,7 @@ class Model {
                 let date = talk["date"] as? String ?? ""
                 let section = ""
                 
-                let seconds = self.convertDurationToSeconds(duration: duration)
+                let seconds = convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
                 
@@ -477,10 +500,10 @@ class Model {
                     KeyToTalks[speaker] = [[TalkData]] ()
                     KeyToTalks[speaker]?.append([talkData])
                     
-                    // create a folder for this speaker and add to array of speaker folders
+                    // create a Album for this speaker and add to array of speaker Albums
                     // this array will be referenced by SpeakersTableViewController
-                    let folderData =  FolderData(title: speaker, content: speaker, section: "", image: speaker)
-                    SpeakerFolders.append(folderData)
+                    let albumData =  AlbumData(title: speaker, content: speaker, section: "", image: speaker)
+                    SpeakerAlbums.append(albumData)
                 }
                 else {
                     KeyToTalks[speaker]?[0].append(talkData)
@@ -493,49 +516,47 @@ class Model {
             print(error)
         }
         
-        let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-        KeyToFolderStats[KEY_ALLTALKS] = stats
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
+        KeyToAlbumStats[KEY_ALLTALKS] = stats
         
-        SpeakerFolders = SpeakerFolders.sorted(by: { $0.content < $1.content })
+        SpeakerAlbums = SpeakerAlbums.sorted(by: { $0.content < $1.content })
     }
     
-    private func loadFoldersFromFile(jsonLocation: String) {
+    private func loadAlbumsFromFile(jsonLocation: String) {
         
         let asset = NSDataAsset(name: jsonLocation, bundle: Bundle.main)
 
-        var folderSectionPositionDict : [String: Int] = [:]
+        var AlbumSectionPositionDict : [String: Int] = [:]
         do {
             
             let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
             //print(json)
             
-            // for each folder entry ...
-            // store off the folder into the folderSections array
+            // for each Album entry ...
+            // store off the Album into the AlbumSections array
             // also store of the optional list of talks
-            for folder in json["folders"] as? [AnyObject] ?? [] {
+            for Album in json["albums"] as? [AnyObject] ?? [] {
                 
-                let title = folder["title"] as? String ?? ""
-                let content = folder["content"] as? String ?? ""
-                var section = folder["section"] as? String ?? ""
-                let image = folder["image"] as? String ?? ""
-                let talkList = folder["talks"] as? [AnyObject] ?? []
-                let folderData =  FolderData(title: title, content: content, section: section, image: image)
+                let title = Album["title"] as? String ?? ""
+                let content = Album["content"] as? String ?? ""
+                var section = Album["section"] as? String ?? ""
+                let image = Album["image"] as? String ?? ""
+                let talkList = Album["talks"] as? [AnyObject] ?? []
+                let albumData =  AlbumData(title: title, content: content, section: section, image: image)
                 
                 
-                // store folder in the 2D folderSection array (section x folder)
-                if folderSectionPositionDict[section] == nil {
-                    // new section seen.  create new array of folders for this section
-                    FolderSections.append([folderData])
-                    folderSectionPositionDict[section] = FolderSections.count - 1
+                // store Album in the 2D AlbumSection array (section x Album)
+                if AlbumSectionPositionDict[section] == nil {
+                    // new section seen.  create new array of Albums for this section
+                    AlbumSections.append([albumData])
+                    AlbumSectionPositionDict[section] = AlbumSections.count - 1
                 } else {
-                    // section already exists.  add folder to the existing array of folders
-                    let sectionPosition = folderSectionPositionDict[section]!
-                    FolderSections[sectionPosition].append(folderData)
+                    // section already exists.  add Album to the existing array of Albums
+                    let sectionPosition = AlbumSectionPositionDict[section]!
+                    AlbumSections[sectionPosition].append(albumData)
                 }
                 
-                //print(self.folderSections.count)
-                
-                // get the optional talk array for this folder
+                // get the optional talk array for this Album
                 // if exists, store off all the talks in keyToTalks keyed by 'content' id
                 // the value for this key is a 2d array (section x talks)
                 var talkSectionPositionDict : [String: Int] = [:]
@@ -562,7 +583,7 @@ class Model {
                     
                     // create the key -> talkData[] entry if it doesn't already exist
                     if KeyToTalks[content] == nil {
-                        //print("folder talks creating key for: \(content)")
+                        //print("Album talks creating key for: \(content)")
                         KeyToTalks[content]  = []
                     }
                     
@@ -585,29 +606,29 @@ class Model {
         }
         
         //
-        // now compute stats for the folders
-        // this means calculating the total numberof talks in each folder and total seconds for all talks in folder
+        // now compute stats for the Albums
+        // this means calculating the total numberof talks in each Album and total seconds for all talks in Album
         //
-        let folders = FolderSections.joined()
-        for folder in folders {
+        let Albums = AlbumSections.joined()
+        for Album in Albums {
             
-            let talksInFolder = (KeyToTalks[folder.content] ?? [[TalkData]]()).joined()
-            let talkCount = talksInFolder.count
+            let talksInAlbum = (KeyToTalks[Album.content] ?? [[TalkData]]()).joined()
+            let talkCount = talksInAlbum.count
             
             var totalSeconds = 0
-            for talk in talksInFolder {
+            for talk in talksInAlbum {
                 totalSeconds += talk.Time
             }
             
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             
-            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            KeyToFolderStats[folder.content] = stats
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            KeyToAlbumStats[Album.content] = stats
         }
     }
     
     
-    private func loadFoldersFromWeb(jsonLocation: String) {
+    private func loadAlbumsFromWeb(jsonLocation: String) {
         
         let requestURL : URL? = URL(string: jsonLocation)
         let urlRequest = URLRequest(url : requestURL!)
@@ -634,37 +655,37 @@ class Model {
                 return
             }
             
-            var folderSectionPositionDict : [String: Int] = [:]
+            var AlbumSectionPositionDict : [String: Int] = [:]
             //parsing the response
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
                 
-                // for each folder entry ...
-                // store off the folder into the folderSections array
+                // for each Album entry ...
+                // store off the Album into the AlbumSections array
                 // also store of the optional list of talks
-                for folder in json["folders"] as? [AnyObject] ?? [] {
+                for Album in json["Albums"] as? [AnyObject] ?? [] {
                     
-                    let title = folder["title"] as? String ?? ""
-                    let content = folder["content"] as? String ?? ""
-                    let section = folder["section"] as? String ?? ""
-                    let image = folder["image"] as? String ?? ""
-                    let talkList = folder["talks"] as? [AnyObject] ?? []
-                    let folderData =  FolderData(title: title, content: content, section: section, image: image)
+                    let title = Album["title"] as? String ?? ""
+                    let content = Album["content"] as? String ?? ""
+                    let section = Album["section"] as? String ?? ""
+                    let image = Album["image"] as? String ?? ""
+                    let talkList = Album["talks"] as? [AnyObject] ?? []
+                    let albumData =  AlbumData(title: title, content: content, section: section, image: image)
                     
-                    // store folder in the 2D folderSection array (section x folder)
-                    if folderSectionPositionDict[section] == nil {
-                        // new section seen.  create new array of folders for this section
-                        self.FolderSections.append([folderData])
-                        folderSectionPositionDict[section] = self.FolderSections.count - 1
+                    // store Album in the 2D AlbumSection array (section x Album)
+                    if AlbumSectionPositionDict[section] == nil {
+                        // new section seen.  create new array of Albums for this section
+                        self.AlbumSections.append([albumData])
+                        AlbumSectionPositionDict[section] = self.AlbumSections.count - 1
                     } else {
-                        // section already exists.  add folder to the existing array of folders
-                        let sectionPosition = folderSectionPositionDict[section]!
-                        self.FolderSections[sectionPosition].append(folderData)
+                        // section already exists.  add Album to the existing array of Albums
+                        let sectionPosition = AlbumSectionPositionDict[section]!
+                        self.AlbumSections[sectionPosition].append(albumData)
                     }
                 
                     
-                    // get the optional talk array for this folder 
+                    // get the optional talk array for this Album 
                     // if exists, store off all the talks in keyToTalks keyed by 'content' id
                     // the value for this key is a 2d array (section x talks)
                     var talkSectionPositionDict : [String: Int] = [:]
@@ -704,21 +725,21 @@ class Model {
             }
             
             //
-            // now compute stats for the folders
-            // this means calculating the total numberof talks in each folder and total seconds for all talks in folder
+            // now compute stats for the Albums
+            // this means calculating the total numberof talks in each Album and total seconds for all talks in Album
             //
-            let folders = self.FolderSections.joined()
-            for folder in folders {
+            let Albums = self.AlbumSections.joined()
+            for Album in Albums {
                 
-                let talksInFolder = (self.KeyToTalks[folder.content] ?? [[TalkData]]()).joined()
-                let talkCount = talksInFolder.count
+                let talksInAlbum = (self.KeyToTalks[Album.content] ?? [[TalkData]]()).joined()
+                let talkCount = talksInAlbum.count
                 
                 var totalSeconds = 0
-                for talk in talksInFolder {
+                for talk in talksInAlbum {
                     totalSeconds += talk.Time
                  }
-                let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-                self.KeyToFolderStats[folder.content] = stats
+                let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
+                self.KeyToAlbumStats[Album.content] = stats
             }
             
         }
@@ -794,8 +815,8 @@ class Model {
                 print(error)
             }
             
-            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.KeyToFolderStats[KEY_ALLTALKS] = stats
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
+            self.KeyToAlbumStats[KEY_ALLTALKS] = stats
 
         }
         task.resume()

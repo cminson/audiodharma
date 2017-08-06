@@ -1,5 +1,5 @@
 //
-//  FoldersTableViewController.swift
+//  AlbumsTableViewController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/22/17.
@@ -9,13 +9,13 @@
 import UIKit
 
 
-class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class AlbumController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
-    var FolderSections: [[FolderData]] = []
-    var FilteredFolderSections:  [[FolderData]] = []
+    var AlbumSections: [[AlbumData]] = []
+    var FilteredAlbumSections:  [[AlbumData]] = []
     let SearchController = UISearchController(searchResultsController: nil)
     var SearchText: String = ""
 
@@ -24,12 +24,12 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     override func viewDidLoad() {
         
         self.tableView.delegate = self
-        TheDataModel.RootTableView = self
+        TheDataModel.RootTableView = self  // this allows reloads when stats change
         
         TheDataModel.loadData()
         super.viewDidLoad()
 
-        FilteredFolderSections = TheDataModel.FolderSections
+        FilteredAlbumSections = TheDataModel.AlbumSections
         
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
@@ -66,22 +66,22 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         switch segue.identifier ?? "" {
             
-        case "SHOWTALKS":
-            guard let talkTableViewController = segue.destination as? TalkTableViewController else {
+        case "DISPLAY_TALKS":
+            guard let controller = segue.destination as? TalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            //let currentTitle = self.filteredFolderSections[self.selectedSection][self.selectedRow]
-            let folder = FilteredFolderSections[SelectedSection][SelectedRow]
-            talkTableViewController.Content = folder.content
-            talkTableViewController.title = folder.title
+            //let currentTitle = self.filteredAlbumSections[self.selectedSection][self.selectedRow]
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
+            controller.Content = Album.content
+            controller.title = Album.title
             
-        case "SHOWUSERLISTS":
-            guard let _ = segue.destination as? UserListTableViewController else {
+        case "DISPLAY_USER_ALBUMS":
+            guard let _ = segue.destination as? UserAlbumsController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-        case "SHOWSPEAKERALBUMS":
-            guard let _ = segue.destination as? SpeakersTableViewController else {
+        case "DISLAY_SPEAKER_ALBUMS":
+            guard let _ = segue.destination as? SpeakerController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
            
@@ -121,25 +121,25 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             var sectionsPositionDict : [String: Int] = [:]
-            FilteredFolderSections = []
-            for sections in TheDataModel.FolderSections {
-                for folderData in sections {
-                    if folderData.title.lowercased().contains(searchText.lowercased()) {
+            FilteredAlbumSections = []
+            for sections in TheDataModel.AlbumSections {
+                for AlbumData in sections {
+                    if AlbumData.title.lowercased().contains(searchText.lowercased()) {
                         
-                        if sectionsPositionDict[folderData.section] == nil {
-                            // new section seen.  create new array of folders for this section
-                            FilteredFolderSections.append([folderData])
-                            sectionsPositionDict[folderData.section] = FilteredFolderSections.count - 1
+                        if sectionsPositionDict[AlbumData.section] == nil {
+                            // new section seen.  create new array of Albums for this section
+                            FilteredAlbumSections.append([AlbumData])
+                            sectionsPositionDict[AlbumData.section] = FilteredAlbumSections.count - 1
                         } else {
-                            // section already exists.  add folder to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[folderData.section]
-                            FilteredFolderSections[sectionPosition!].append(folderData)
+                            // section already exists.  add Album to the existing array of talks
+                            let sectionPosition = sectionsPositionDict[AlbumData.section]
+                            FilteredAlbumSections[sectionPosition!].append(AlbumData)
                         }
                     }
                 }
             }            
         } else {
-            FilteredFolderSections = TheDataModel.FolderSections
+            FilteredAlbumSections = TheDataModel.AlbumSections
         }
         tableView.reloadData()
     }
@@ -152,17 +152,17 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return FilteredFolderSections.count
+        return FilteredAlbumSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return FilteredFolderSections[section].count
+        return FilteredAlbumSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return FilteredFolderSections[section][0].section
+        return FilteredAlbumSections[section][0].section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -177,28 +177,29 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
+        let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
 
         
-        let folder = FilteredFolderSections[indexPath.section][indexPath.row]
+        let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
     
-        cell.title.text = folder.title
-        cell.listImage.contentMode = UIViewContentMode.scaleAspectFit
-        if folder.image.characters.count > 0 {
-            cell.listImage.image = UIImage(named: folder.image) ?? UIImage(named: "defaultPhoto")!
+        cell.title.text = Album.title
+        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        if Album.image.characters.count > 0 {
+            cell.albumCover.image = UIImage(named: Album.image) ?? UIImage(named: "defaultPhoto")!
         } else {
-            cell.listImage.image = UIImage(named: folder.title) ?? UIImage(named: "defaultPhoto")!
+            cell.albumCover.image = UIImage(named: Album.title) ?? UIImage(named: "defaultPhoto")!
         }
         
-        let folderStats = TheDataModel.getFolderStats(content: folder.content)
+        let AlbumStats = TheDataModel.getAlbumStats(content: Album.content)
+        print(Album.content, AlbumStats)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let formattedNumber = numberFormatter.string(from: NSNumber(value:folderStats.totalTalks))
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:AlbumStats.totalTalks))
         cell.statTalkCount.text = formattedNumber
         
         
-        cell.statTotalTime.text = folderStats.durationDisplay
+        cell.statTotalTime.text = AlbumStats.durationDisplay
  
         return cell
     }
@@ -208,21 +209,21 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         
-        let folder = FilteredFolderSections[indexPath.section][indexPath.row]
+        let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
         
-        switch folder.content {
+        switch Album.content {
             
         case KEY_CUSTOMALBUMS:
-            self.performSegue(withIdentifier: "SHOWUSERLISTS", sender: self)
+            self.performSegue(withIdentifier: "DISPLAY_USER_ALBUMS", sender: self)
             
         case KEY_ALLSPEAKERS:
-            self.performSegue(withIdentifier: "SHOWSPEAKERALBUMS", sender: self)
+            self.performSegue(withIdentifier: "DISLAY_SPEAKER_ALBUMS", sender: self)
             
         case KEY_TALKHISTORY:
-            self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
+            self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
 
         default:
-            self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
+            self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
         }
     }
     
