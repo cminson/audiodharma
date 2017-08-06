@@ -9,25 +9,42 @@
 import UIKit
 import os.log
 
-
+// MARK: App Global Vars
+let TheDataModel = Model()
+let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
+//let DEVICE_ID:UInt32 = arc4random_uniform(100000000)
 struct FolderStats {
     var totalTalks: Int
     var totalSeconds: Int
     var durationDisplay: String
 }
-let KEY_ALLTALKS = "ALL"
-let KEY_ALLSPEAKERS = "ALLSPEAKERS"
-let KEY_CUSTOMALBUMS = "CUSTOM"
 
+// MARK: App Global Constants
+let KEY_ALLTALKS = "KEY_ALLTALKS"
+let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
+let KEY_CUSTOMALBUMS = "KEY_CUSTOMALBUMS"
+let KEY_NOTES = "KEY_NOTES"
+let KEY_TALKHISTORY = "KEY_TALKHISTORY"
+let KEY_TALKSBEINGPLAYED = "KEY_TALKSBEINGPLAYED"
+
+let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
+let URL_GETACTIVITY = "http://www.ezimba.com/AD/test01.json"
+
+let MAX_TALKHISTORY_COUNT = 50
 
 class Model {
     
     //MARK: Properties
+    var RootTableView: UITableViewController!   // the top level display.  we keep this handle so we can force reloads when needed
+    
     var FolderSections: [[FolderData]] = []   // 2d array of sections x folders
     var SpeakerFolders: [FolderData] = []     // array of folders for all speakers
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
     var KeyToFolderStats: [String: FolderStats] = [:] // dictionary keyed by content, value is stat struct for folders
-    var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by name of talk, value is the talk data (used by userList code to lazily bind)
+    var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
+    
+    var TalkHistoryList: [TalkHistoryData] = []
+    var TalksBeingPlayed: [TalkData] = []
     
     
     // MARK: Persistant Data
@@ -38,22 +55,23 @@ class Model {
     // MARK: Init
     func loadData() {
         
-        // get user data from storage
-        UserLists = TheDataModel.loadUserListData()
-        UserNotes = TheDataModel.loadUserNoteData()
+        // start getting sangha information from web
+        TheDataModel.getTalksCurrentlyBeingPlayed()
 
-        //loadFoldersFromWeb(jsonLocation: "http://www.ezimba.com/ad/folders01.json")
-        //loadTalksFromWeb(jsonLocation: "http://www.ezimba.com/ad/talks01.json")"
         // get baseline talks and folders
         loadTalksFromFile(jsonLocation: "talks01")
         loadFoldersFromFile(jsonLocation: "folders01")
-        
-        // compute stats for custom albums (computing number of talks inside each one), and the same for by speaker
-        computeCustomUserListStats()
         computeSpeakerStats()
+
         
-        let test = KeyToFolderStats[KEY_ALLSPEAKERS]
-        print("ALLSPEAKER STATS = ", test)
+        // get user data from storage and compute stats
+        UserLists = TheDataModel.loadUserListData()
+        computeUserListStats()
+        UserNotes = TheDataModel.loadUserNoteData()
+        computeNotesListStats()
+        TalkHistoryList = TheDataModel.loadTalkHistoryData()
+        computeHistoryListStats()
+
 
     }
     
@@ -69,7 +87,17 @@ class Model {
         
         print("saveUserNoteData to: ", UserNoteData.ArchiveURL.path)
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserNotes, toFile: UserNoteData.ArchiveURL.path)
+        
+        self.computeNotesListStats()
     }
+    
+    func saveTalkHistoryData() {
+        
+        print("saveTalkHistoryData to: ", TalkHistoryData.ArchiveURL.path)
+        NSKeyedArchiver.archiveRootObject(TheDataModel.TalkHistoryList, toFile: TalkHistoryData.ArchiveURL.path)
+        
+    }
+
 
     func loadUserListData() -> [UserListData]  {
         
@@ -82,6 +110,7 @@ class Model {
             
             return [UserListData] ()
         }
+
     }
     
     func loadUserNoteData() -> [String: UserNoteData]  {
@@ -97,20 +126,58 @@ class Model {
             return [String: UserNoteData] ()
         }
     }
+    
+    func loadTalkHistoryData() -> [TalkHistoryData]  {
+        
+        print("loadTalkHistoryData from: ", TalkHistoryData.ArchiveURL.path)
+        
+        if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveURL.path)
+            as? [TalkHistoryData] {
+            
+            return talkHistory
+        } else {
+            
+            return [TalkHistoryData] ()
+        }
+    }
 
     
     // MARK: API
     func getTalks(content: String) -> [[TalkData]] {
         
-        return KeyToTalks[content] ?? [[TalkData]]()
+        switch content {
+        case KEY_NOTES:
+            var talks = [TalkData] ()
+            for (fileName, _) in UserNotes {
+                if let talk = NameToTalks[fileName] {
+                    talks.append(talk)
+                }
+            }
+            return [talks]
+        case KEY_TALKHISTORY:
+            var talks = [TalkData] ()
+            for talkHistory in TalkHistoryList {
+                let fileName = talkHistory.FileName
+                if let talk = NameToTalks[fileName] {
+                    talks.append(talk)
+                }
+            }
+            return [talks]
+            
+        case KEY_TALKSBEINGPLAYED:
+            
+            //self.getTalksBeingPlayed()
+            return [TalksBeingPlayed.sorted(by: { $0.Date < $1.Date })]
+
+        default:
+            return KeyToTalks[content] ?? [[TalkData]]()
+        }
+        
+        
     }
     
     func getFolderStats(content: String) -> FolderStats {
         
-        print(content)
-        let stat = KeyToFolderStats[KEY_ALLSPEAKERS]
-        print(stat)
-
         return KeyToFolderStats[content] ?? FolderStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
     }
     
@@ -122,6 +189,24 @@ class Model {
     func getTalkForName(name: String) -> TalkData? {
         
         return NameToTalks[name]
+    }
+    
+    func addToTalkHistory(talk: TalkData) {
+        
+        let count = TalkHistoryList.count
+        
+        if count > MAX_TALKHISTORY_COUNT {
+            TalkHistoryList.remove(at: 0)
+        }
+        
+        let talkHistory = TalkHistoryData(fileName: talk.FileName)
+        TalkHistoryList.append(talkHistory)
+        
+        computeHistoryListStats()
+        saveTalkHistoryData()
+
+        // refresh the top view so that stat display for Recent History will be updated
+        RootTableView.tableView.reloadData()
     }
     
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
@@ -139,6 +224,69 @@ class Model {
         // present the view controller
         controller.present(activityViewController, animated: true, completion: nil)
         
+    }
+    
+    func getTalksCurrentlyBeingPlayed() {
+        
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        
+        let requestURL : URL? = URL(string: URL_GETACTIVITY)
+        let urlRequest = URLRequest(url : requestURL!)
+        
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            if (statusCode == 200) {
+                print("Download: success")
+            }
+            
+            // make sure we got data
+            guard let responseData = data else {
+                print("Download: error")
+                return
+            }
+            
+            //parsing the response
+            var talkCount = 0
+            var totalSeconds = 0
+            do {
+                
+                let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
+                
+                for talkstat in json["talkstats"] as? [AnyObject] ?? [] {
+                    
+                    let urlFileName = talkstat["filename"] as? String ?? ""
+                    let time = talkstat["time"] as? String ?? ""
+                    
+                    if let talk = self.NameToTalks[urlFileName] {
+                        let duration = talk.Duration
+                        
+                        let seconds = self.convertDurationToSeconds(duration: duration)
+                        totalSeconds += seconds
+                        talkCount += 1
+                        // add this talk to  list of talks being played
+                        self.TalksBeingPlayed.append(talk)
+                       
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            
+            let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
+            self.KeyToFolderStats[KEY_TALKSBEINGPLAYED] = stats
+            print("TalksBeingPlayed: Done")
+            
+        }
+        task.resume()
     }
 
     func convertDurationToSeconds(duration: String) -> Int {
@@ -173,17 +321,59 @@ class Model {
     }
     
     //
+    // generate the stats for the notes folder
+    //
+    func computeNotesListStats() {
+        
+        var talkCount = 0
+        var totalSeconds = 0
+        
+        for (fileName, _) in UserNotes {
+            
+            if let talk = NameToTalks[fileName] {
+                totalSeconds += talk.Time
+                talkCount += 1
+            }
+        }
+                
+        let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        
+        KeyToFolderStats[KEY_NOTES] = stats
+    }
+  
+    
+    func computeHistoryListStats() {
+        
+        var talkCount = 0
+        var totalSeconds = 0
+        
+        for talkHistory in TalkHistoryList {
+            let fileName = talkHistory.FileName
+            if let talk = NameToTalks[fileName] {
+                totalSeconds += talk.Time
+                talkCount += 1
+            }
+        }
+        
+        let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        
+        KeyToFolderStats[KEY_TALKHISTORY] = stats
+    }
+    
+    //
     // generate the stats for the user-defined lists.
     //
-    func computeCustomUserListStats() {
+    func computeUserListStats() {
         
-        var totalSecondsAllLists = 0
-        var talkCountAllLists = 0
-            
+        var totalUserListCount = 0
+        var totalUserTalkSecondsCount = 0
+        
         for userList in UserLists {
                 
-            var totalSeconds = 0
             var talkCount = 0
+            var totalSeconds = 0
             for talkName in userList.TalkFileNames {
                 if let talk = NameToTalks[talkName] {
                     totalSeconds += talk.Time
@@ -191,20 +381,23 @@ class Model {
                 }
             }
             
-            talkCountAllLists += talkCount
-            totalSecondsAllLists += totalSeconds
+            totalUserListCount += 1
+            totalUserTalkSecondsCount += totalSeconds
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = FolderStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             KeyToFolderStats[userList.Title] = stats
         }
         
-        let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalSecondsAllLists)
-            
-        let stats = FolderStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+        let durationDisplayAllLists = self.secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
+        let stats = FolderStats(totalTalks: totalUserListCount, totalSeconds: totalUserTalkSecondsCount, durationDisplay: durationDisplayAllLists)
+        
         KeyToFolderStats[KEY_CUSTOMALBUMS] = stats
     }
     
+    //
+    // generate the stats for the speaker talk album.
+    //
     func computeSpeakerStats() {
         
         var totalSecondsAllLists = 0
@@ -294,7 +487,7 @@ class Model {
                 }
                 
                 talkCount += 1
-                print(talkData, talkCount)
+                //print(talkData, talkCount)
             }
         } catch {
             print(error)
@@ -328,10 +521,6 @@ class Model {
                 let talkList = folder["talks"] as? [AnyObject] ?? []
                 let folderData =  FolderData(title: title, content: content, section: section, image: image)
                 
-                // the '_' character indicates no section
-                if section.range(of:"_") != nil {
-                    section = ""
-                }
                 
                 // store folder in the 2D folderSection array (section x folder)
                 if folderSectionPositionDict[section] == nil {
@@ -357,7 +546,11 @@ class Model {
                     let URL = talk["url"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
-                    let section = talk["section"] as? String ?? ""
+                    var section = talk["section"] as? String ?? ""
+                    
+                    if section.range(of:"_") != nil {
+                        section = ""
+                    }
                     
                     let totalSeconds = self.convertDurationToSeconds(duration: duration)
                     
@@ -572,19 +765,16 @@ class Model {
                     let title = talk["title"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
                     let URL = talk["url"] as? String ?? ""
+                    let urlFileName = talk["filename"] as? String ?? ""
                     let duration = talk["duration"] as? String ?? ""
                     let date = talk["date"] as? String ?? ""
                     let section = ""
-                    
-                    let urlPhrases = URL.components(separatedBy: "/")
-                    let urlFileName = urlPhrases[urlPhrases.endIndex - 1]
                     
                     let seconds = self.convertDurationToSeconds(duration: duration)
                     totalSeconds += seconds
 
                     let talkData =  TalkData(title: title,  url: URL,  fileName: urlFileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                     
- 
                     // add this talk to  list of all talks
                     if self.KeyToTalks[KEY_ALLTALKS] == nil {
                         self.KeyToTalks[KEY_ALLTALKS] = [[TalkData]] ()
@@ -611,7 +801,7 @@ class Model {
         task.resume()
     }
     
-    
+   
     private func secondsToDurationDisplay(seconds: Int) -> String {
     
         let hours = seconds / 3600

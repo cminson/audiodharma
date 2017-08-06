@@ -84,6 +84,10 @@ class PlayTalkController: UIViewController {
         volumeView.showsRouteButton = true
         volumeView.sizeToFit()
         MPVolumeParentView.addSubview(volumeView)
+        
+        // start the background report thread (reporting status to web)
+        Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -169,6 +173,8 @@ class PlayTalkController: UIViewController {
         startTalkTimer()
         
         updateTitleDisplay()
+        
+        TheDataModel.addToTalkHistory(talk: CurrentTalk)
     }
     
     func restartTalk() {
@@ -368,7 +374,17 @@ class PlayTalkController: UIViewController {
             talkProgressSlider.value = fractionTimeCompleted
             
             updateTitleDisplay()
+            
         }
+    }
+    
+    // called every CLOUD_UPDATE_SECONDS.  records status info to web point
+    func updateStatusToCloudTimer() {
+        
+        if TalkPlayerStatus == TalkStates.PLAYING {
+            
+        }
+         
     }
     
     private func enableActivityIcons() {

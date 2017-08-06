@@ -20,9 +20,12 @@ class UserListTableViewController: UITableViewController {
         
         super.viewDidLoad()
         
+        // TDB DEV DONT NEED?
+        /*
         let savedUserList = TheDataModel.loadUserListData()
         TheDataModel.UserLists = savedUserList
         print("UserListTableViewController: getting userLists: \(savedUserList) ")
+         */
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,7 +110,7 @@ class UserListTableViewController: UITableViewController {
     // MARK: Table Data Source
     override func viewWillAppear(_ animated: Bool) {
         
-        TheDataModel.computeCustomUserListStats()
+        TheDataModel.computeUserListStats()
         self.tableView.reloadData()
     }
     

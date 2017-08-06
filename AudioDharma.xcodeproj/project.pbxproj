@@ -27,6 +27,7 @@
 		83C22CB51F184E87002503AE /* DonationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsViewController.swift */; };
 		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
 		83CA123F1F028B8A00798D20 /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */; };
+		83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D318791F3669FA00200542 /* TalkHistoryData.swift */; };
 		83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D601EF17B390071CAD3 /* AppDelegate.swift */; };
 		83DC0D631EF17B390071CAD3 /* PlayTalkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC0D621EF17B390071CAD3 /* PlayTalkController.swift */; };
 		83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DC0D641EF17B390071CAD3 /* Main.storyboard */; };
@@ -57,6 +58,7 @@
 		83C22CB41F184E87002503AE /* DonationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsViewController.swift; sourceTree = "<group>"; };
 		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
+		83D318791F3669FA00200542 /* TalkHistoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkHistoryData.swift; sourceTree = "<group>"; };
 		83DC0D5D1EF17B390071CAD3 /* AudioDharma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioDharma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DC0D601EF17B390071CAD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83DC0D621EF17B390071CAD3 /* PlayTalkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayTalkController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				834BEC641EFC90D400CBC0C2 /* Model.swift */,
 				837C3DDC1F2E1BD2005C9A0A /* UserNoteData.swift */,
 				83FCA9461F02BFF100B9664D /* UserListData.swift */,
+				83D318791F3669FA00200542 /* TalkHistoryData.swift */,
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
 			);
@@ -227,6 +230,7 @@
 				83432FC01F0AB373002926AC /* MP3Player.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserEditTalksController.swift in Sources */,
+				83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */,
 				83EF51AC1F042EF9000678B0 /* UserTalksTableViewController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,
 				835B9F7B1EF1B0BC009AF991 /* TalkData.swift in Sources */,

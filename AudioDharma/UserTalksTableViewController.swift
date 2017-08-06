@@ -115,7 +115,7 @@ class UserTalkTableViewController: UITableViewController {
                 
             }
             TheDataModel.saveUserListData()
-            TheDataModel.computeCustomUserListStats()
+            TheDataModel.computeUserListStats()
             self.tableView.reloadData()
         }
     }

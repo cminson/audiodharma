@@ -197,21 +197,31 @@ class TalkTableViewController: UITableViewController, UISearchBarDelegate, UISea
     // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        //print("Number of sections: \(self.filteredSectionTalks.count)")
+        print("Number of sections: \(self.FilteredSectionTalks.count)")
         return FilteredSectionTalks.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        //print("Section: \(section)  Number of rows: \(self.filteredSectionTalks[section].count)")
+        print("Section: \(section)  Number of rows: \(self.FilteredSectionTalks[section].count)")
         return FilteredSectionTalks[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return FilteredSectionTalks[section][0].Section
+        var sectionTitle = ""
+        
+        if FilteredSectionTalks.count >= section {
+            let talksInSection = FilteredSectionTalks[section]
+            if talksInSection.count > 0 {
+                sectionTitle = talksInSection[0].Section
+            }
+        }
+        return sectionTitle
     }
     
+    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell

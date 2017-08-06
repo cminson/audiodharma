@@ -8,7 +8,6 @@
 
 import UIKit
 
-let TheDataModel = Model()
 
 class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
@@ -25,6 +24,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     override func viewDidLoad() {
         
         self.tableView.delegate = self
+        TheDataModel.RootTableView = self
         
         TheDataModel.loadData()
         super.viewDidLoad()
@@ -64,7 +64,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         super.prepare(for: segue, sender: sender)
         
-        print("FolderTableView: Segue")
         switch segue.identifier ?? "" {
             
         case "SHOWTALKS":
@@ -82,7 +81,7 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
             }
             
         case "SHOWSPEAKERALBUMS":
-            guard let speakerTableViewController = segue.destination as? SpeakersTableViewController else {
+            guard let _ = segue.destination as? SpeakersTableViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
            
@@ -98,32 +97,27 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     // MARK: UISearchBarDelegate
     func presentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
+        //debug("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     
     // MARK: UISearchControllerDelegate
     func willPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func didPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
     }
     
 
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
-        print("updateSearchResults")
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             var sectionsPositionDict : [String: Int] = [:]
@@ -152,7 +146,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
-        print("filtering...")
     }
 
 
@@ -164,7 +157,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        //print("Number of rows in section: \(TheDataModel.folderSections[section].count)")
         return FilteredFolderSections[section].count
     }
     
@@ -188,7 +180,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         let cell = Bundle.main.loadNibNamed("FolderCell", owner: self, options: nil)?.first as! FolderCell
 
         
-        //print("section = \(indexPath.section) row = \(indexPath.row)")
         let folder = FilteredFolderSections[indexPath.section][indexPath.row]
     
         cell.title.text = folder.title
@@ -200,7 +191,6 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         }
         
         let folderStats = TheDataModel.getFolderStats(content: folder.content)
-        print(folder.content)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -219,11 +209,19 @@ class FoldersTableViewController: UITableViewController, UISearchBarDelegate, UI
         SelectedRow = indexPath.row
         
         let folder = FilteredFolderSections[indexPath.section][indexPath.row]
-        if (folder.content == "CUSTOM") {
+        
+        switch folder.content {
+            
+        case KEY_CUSTOMALBUMS:
             self.performSegue(withIdentifier: "SHOWUSERLISTS", sender: self)
-        } else if (folder.content == "ALLSPEAKERS") {
+            
+        case KEY_ALLSPEAKERS:
             self.performSegue(withIdentifier: "SHOWSPEAKERALBUMS", sender: self)
-        } else {
+            
+        case KEY_TALKHISTORY:
+            self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
+
+        default:
             self.performSegue(withIdentifier: "SHOWTALKS", sender: self)
         }
     }
