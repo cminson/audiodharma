@@ -1,5 +1,5 @@
 //
-//  HelpViewController.swift
+//  HelpController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 7/29/17.

@@ -1,5 +1,5 @@
 //
-//  UserListTableViewController.swift
+//  UserAlbumsController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/27/17.
@@ -16,19 +16,11 @@ class UserAlbumsController: UITableViewController {
     var SelectedRow: Int = 0
     
 
-
-    
     // MARK: Init
     override func viewDidLoad() {
         
         super.viewDidLoad()
                 
-        // TDB DEV DONT NEED?
-        /*
-        let savedUserList = TheDataModel.loadUserListData()
-        TheDataModel.UserLists = savedUserList
-        print("UserListTableViewController: getting userLists: \(savedUserList) ")
-         */
     }
     
     override func didReceiveMemoryWarning() {
@@ -39,7 +31,7 @@ class UserAlbumsController: UITableViewController {
     
     // MARK: Navigation
     //
-    // Seque pathways:
+    // Segue pathways:
     // If Plus button  clicked, then add a User List (SHOWADDUSERLIST)
     // If Edit slider button clicked, then edit selected User List (SHOWUSEREDITLIST)
     // If a User List is selected, then show all talks in this list (SHOWUSERTALKS)
@@ -47,7 +39,7 @@ class UserAlbumsController: UITableViewController {
        
         super.prepare(for: segue, sender: sender)
         
-        print(segue.identifier)
+        print("UserAlbumsSegue: ", segue.identifier)
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_ADD_ALBUM":     // Add a New User Album
@@ -88,25 +80,27 @@ class UserAlbumsController: UITableViewController {
         }
     }
     
-    @IBAction func unwindToUserAlbum(sender: UIStoryboardSegue) {
+    @IBAction func unwindAlbumEditToUserAlbums(sender: UIStoryboardSegue) {
         
         if let controller = sender.source as? UserAlbumEditController, let userAlbum = controller.UserAlbum {
             
-            // if edit mode = true, then this is an edit of an existing user list
-            // otherwise we are adding a new user list
+            // if edit mode = true, then this is an edit of an existing user album
+            // otherwise we are adding a new user album
             if controller.EditMode == true {
                 TheDataModel.UserAlbums[SelectedRow].Title = userAlbum.Title
                 TheDataModel.UserAlbums[SelectedRow].Image = userAlbum.Image
-                TheDataModel.saveUserAlbumData()
-                self.tableView.reloadData()
                 
             } else {
                 let newIndexPath = IndexPath(row: TheDataModel.UserAlbums.count, section: 0)
                 
                 TheDataModel.UserAlbums.append(userAlbum)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
-                TheDataModel.saveUserAlbumData()
             }
+            
+            TheDataModel.saveUserAlbumData()
+            TheDataModel.computeUserAlbumStats()
+            self.tableView.reloadData()
+            TheDataModel.RootController.tableView.reloadData()
         }
     }
 
@@ -114,7 +108,7 @@ class UserAlbumsController: UITableViewController {
     // MARK: Table Data Source
     override func viewWillAppear(_ animated: Bool) {
         
-        TheDataModel.computeUserListStats()
+        TheDataModel.computeUserAlbumStats()
         self.tableView.reloadData()
     }
     
@@ -137,7 +131,7 @@ class UserAlbumsController: UITableViewController {
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
         cell.albumCover.image = userAlbum.Image
         
-        let albumStats = TheDataModel.getAlbumStats(content: userAlbum.Title)
+        let albumStats = TheDataModel.getAlbumStats(content: userAlbum.Content)
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -163,6 +157,8 @@ class UserAlbumsController: UITableViewController {
                 TheDataModel.UserAlbums.remove(at: indexPath.row)
                 TheDataModel.saveUserAlbumData()
                 self.tableView.reloadData()
+                TheDataModel.RootController.tableView.reloadData()
+
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in

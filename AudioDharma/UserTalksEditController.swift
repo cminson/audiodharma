@@ -1,5 +1,5 @@
 //
-//  UserAddTalkTableViewController.swift
+//  UserTalksEditController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/28/17.
@@ -192,17 +192,16 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        /*
-        let cellIdentifier = "UserAddTalkTableViewCell"
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? UserAddTalkTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of UserAddTalkTableViewCell.")
-        }
- */
-        
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredTalks[indexPath.row]
         
+        // if there is a Note entry for this talk, then show the note icon in cell
+        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+            cell.noteImage.image = UIImage(named: "noteicon")!
+        } else {
+            cell.noteImage = nil
+        }
+
         cell.title.text = talk.Title
         cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
@@ -221,17 +220,6 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     */
     
     
-    // MARK: Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        super.prepare(for: segue, sender: sender)
-        
-        
-        print("useraddtalktable prepare to seque")
-        
-    }
-    
-
     // MARK: Private
     private func updateSelectedTalks(changedTalk: TalkData) {
         
@@ -248,8 +236,7 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
             idx += 1
         }
     
-        
-        print("UserAddTalkTableView new selected talk: ", changedTalk.Title, changedTalk.FileName)
+        print(" new selected talk: ", changedTalk.Title, changedTalk.FileName)
         SelectedTalks.append(changedTalk)
     }
     

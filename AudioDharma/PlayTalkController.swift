@@ -6,23 +6,11 @@
 //  Copyright © 2017 Christopher Minson. All rights reserved.
 //
 
-/*
- 
- AVAudioPlayer
- 
- AVPlayerController
- 
- -(void)sliderValueChanged:(UISlider *)slider
- {
- self.audioPlayer.volume = slider.value / 100.0;
- }
- */
 
 import UIKit
 import AVKit
 import AVFoundation
 import MediaPlayer
-
 
 
 class PlayTalkController: UIViewController {

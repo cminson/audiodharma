@@ -35,7 +35,7 @@ let MAX_TALKHISTORY_COUNT = 3
 class Model {
     
     //MARK: Properties
-    var RootTableView: UITableViewController!   // the top level display.  we keep this handle so we can force reloads when needed
+    var RootController: UITableViewController!   // controller for top level display. keep this handle to force reloads when needed
     
     var AlbumSections: [[AlbumData]] = []   // 2d array of sections x Albums
     var SpeakerAlbums: [AlbumData] = []     // array of Albums for all speakers
@@ -43,12 +43,14 @@ class Model {
     var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
     var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
     
-    var TalkHistoryList: [TalkHistoryData] = []
+    var TalkHistoryAlbum: [TalkHistoryData] = []
     var TalksBeingPlayed: [TalkData] = []
+    
+    var KeyAlbumStats: AlbumStats!
     
     
     // MARK: Persistant Data
-    var UserAlbums: [UserAlbumData] = []      // all the custom user lists defined by this user.
+    var UserAlbums: [UserAlbumData] = []      // all the custom user albums defined by this user.
     var UserNotes: [String: UserNoteData] = [:]      // all the  user notes defined by this user, indexed by fileName
     
     
@@ -57,7 +59,7 @@ class Model {
         
         // start getting sangha information from web
         getTalksCurrentlyBeingPlayed()
-
+        
         // get baseline talks and Albums
         loadTalksFromFile(jsonLocation: "talks01")
         loadAlbumsFromFile(jsonLocation: "albums01")
@@ -66,11 +68,19 @@ class Model {
         
         // get user data from storage and compute stats
         UserAlbums = TheDataModel.loadUserAlbumData()
-        computeUserListStats()
+        computeUserAlbumStats()
         UserNotes = TheDataModel.loadUserNoteData()
-        computeNotesListStats()
-        TalkHistoryList = TheDataModel.loadTalkHistoryData()
-        computeHistoryListStats()
+        computeNotesStats()
+        TalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
+        computeHistoryStats()
+        
+        /*
+        if let stats = KeyToAlbumStats[KEY_TALKSBEINGPLAYED] {
+            print("KEY_TALKSBEINGPLAYED: ", stats)
+        } else {
+            print("no content for: ", KEY_TALKSBEINGPLAYED)
+        }
+         */
     }
     
     
@@ -90,7 +100,7 @@ class Model {
     func saveTalkHistoryData() {
         
         print("saveTalkHistoryData to: ", TalkHistoryData.ArchiveURL.path)
-        NSKeyedArchiver.archiveRootObject(TheDataModel.TalkHistoryList, toFile: TalkHistoryData.ArchiveURL.path)
+        NSKeyedArchiver.archiveRootObject(TheDataModel.TalkHistoryAlbum, toFile: TalkHistoryData.ArchiveURL.path)
         
     }
 
@@ -106,7 +116,6 @@ class Model {
             
             return [UserAlbumData] ()
         }
-
     }
     
     func loadUserNoteData() -> [String: UserNoteData]  {
@@ -152,13 +161,13 @@ class Model {
             return [talks]
         case KEY_TALKHISTORY:
             var talks = [TalkData] ()
-            for talkHistory in TalkHistoryList {
+            for talkHistory in TalkHistoryAlbum {
                 let fileName = talkHistory.FileName
                 if let talk = NameToTalks[fileName] {
                     talks.append(talk)
                 }
             }
-            return [talks]
+            return [talks.reversed()]
             
         case KEY_TALKSBEINGPLAYED:
             
@@ -168,13 +177,22 @@ class Model {
         default:
             return KeyToTalks[content] ?? [[TalkData]]()
         }
-        
-        
-    }
+     }
     
     func getAlbumStats(content: String) -> AlbumStats {
         
-        return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+        //print("Album Stats Content: ", content)
+        switch content {
+            
+        case KEY_TALKSBEINGPLAYED:
+            return KeyAlbumStats
+
+        default:
+            return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+            
+        }
+        
+        
     }
     
     func getUserAlbums() -> [UserAlbumData] {
@@ -189,19 +207,19 @@ class Model {
     
     func addToTalkHistory(talk: TalkData) {
         
-        let count = TalkHistoryList.count
+        let count = TalkHistoryAlbum.count
         
         if count > MAX_TALKHISTORY_COUNT {
-            TalkHistoryList.remove(at: 0)
+            TalkHistoryAlbum.remove(at: 0)
         }
         
         let talkHistory = TalkHistoryData(fileName: talk.FileName)
-        TalkHistoryList.append(talkHistory)
+        TalkHistoryAlbum.append(talkHistory)
         
         // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
-        computeHistoryListStats()
-        RootTableView.tableView.reloadData()
+        computeHistoryStats()
+        RootController.tableView.reloadData()
     }
     
     func addNoteToTalk(noteText: String, talkFileName: String) {
@@ -217,8 +235,8 @@ class Model {
         
         // save the data, recompute stats, reload root view to display updated stats
         saveUserNoteData()
-        computeNotesListStats()
-        RootTableView.tableView.reloadData()
+        computeNotesStats()
+        RootController.tableView.reloadData()
     }
     
     func getNoteForTalk(talkFileName: String) -> String {
@@ -229,6 +247,14 @@ class Model {
             noteText = userNoteData.Notes
         }
         return noteText
+    }
+    
+    func talkHasNotes(talkFileName: String) -> Bool {
+ 
+        if let _ = TheDataModel.UserNotes[talkFileName] {
+            return true
+        }
+        return false
     }
 
     
@@ -304,9 +330,10 @@ class Model {
                 print(error)
             }
             
-            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.KeyToAlbumStats[KEY_TALKSBEINGPLAYED] = stats
-            print("TalksBeingPlayed: Done")
+            let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            self.KeyAlbumStats = stats
+            print("TalksBeingPlayed: Done ", stats)
             
         }
         task.resume()
@@ -346,7 +373,7 @@ class Model {
     //
     // generate the stats for the notes Album
     //
-    func computeNotesListStats() {
+    func computeNotesStats() {
         
         var talkCount = 0
         var totalSeconds = 0
@@ -366,12 +393,12 @@ class Model {
     }
   
     
-    func computeHistoryListStats() {
+    func computeHistoryStats() {
         
         var talkCount = 0
         var totalSeconds = 0
         
-        for talkHistory in TalkHistoryList {
+        for talkHistory in TalkHistoryAlbum {
             let fileName = talkHistory.FileName
             if let talk = NameToTalks[fileName] {
                 totalSeconds += talk.Time
@@ -386,9 +413,9 @@ class Model {
     }
     
     //
-    // generate the stats for the user-defined lists.
+    // generate the stats for the user-defined albums.
     //
-    func computeUserListStats() {
+    func computeUserAlbumStats() {
         
         var totalUserListCount = 0
         var totalUserTalkSecondsCount = 0
@@ -409,7 +436,8 @@ class Model {
             let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            KeyToAlbumStats[userAlbum.Title] = stats
+            KeyToAlbumStats[userAlbum.Content] = stats
+            //print("computerUserAlbumStats: ", userAlbum.Title)
         }
         
         let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
@@ -426,9 +454,9 @@ class Model {
         var totalSecondsAllLists = 0
         var talkCountAllLists = 0
         
-        for Album in SpeakerAlbums {
+        for album in SpeakerAlbums {
             
-            let content = Album.content
+            let content = album.Content
             var totalSeconds = 0
             var talkCount = 0
             for talk in (KeyToTalks[content]?[0])! {
@@ -519,7 +547,7 @@ class Model {
         let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
         KeyToAlbumStats[KEY_ALLTALKS] = stats
         
-        SpeakerAlbums = SpeakerAlbums.sorted(by: { $0.content < $1.content })
+        SpeakerAlbums = SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
     }
     
     private func loadAlbumsFromFile(jsonLocation: String) {
@@ -612,7 +640,7 @@ class Model {
         let Albums = AlbumSections.joined()
         for Album in Albums {
             
-            let talksInAlbum = (KeyToTalks[Album.content] ?? [[TalkData]]()).joined()
+            let talksInAlbum = (KeyToTalks[Album.Content] ?? [[TalkData]]()).joined()
             let talkCount = talksInAlbum.count
             
             var totalSeconds = 0
@@ -623,7 +651,7 @@ class Model {
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            KeyToAlbumStats[Album.content] = stats
+            KeyToAlbumStats[Album.Content] = stats
         }
     }
     
@@ -731,7 +759,7 @@ class Model {
             let Albums = self.AlbumSections.joined()
             for Album in Albums {
                 
-                let talksInAlbum = (self.KeyToTalks[Album.content] ?? [[TalkData]]()).joined()
+                let talksInAlbum = (self.KeyToTalks[Album.Content] ?? [[TalkData]]()).joined()
                 let talkCount = talksInAlbum.count
                 
                 var totalSeconds = 0
@@ -739,7 +767,7 @@ class Model {
                     totalSeconds += talk.Time
                  }
                 let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-                self.KeyToAlbumStats[Album.content] = stats
+                self.KeyToAlbumStats[Album.Content] = stats
             }
             
         }

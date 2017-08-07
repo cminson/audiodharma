@@ -1,5 +1,5 @@
 //
-//  SpeakersTableViewController.swift
+//  SpeakerController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 8/3/17.
@@ -60,16 +60,15 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         super.prepare(for: segue, sender: sender)
         
-        print("FolderTableView: Segue")
         switch segue.identifier ?? "" {
             
         case "DISPLAY_TALKS":
             guard let controller = segue.destination as? TalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let folder = FilteredAlbums[SelectedRow]
-            controller.Content = folder.content
-            controller.title = folder.title
+            let album = FilteredAlbums[SelectedRow]
+            controller.Content = album.Content
+            controller.title = album.Title
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -112,7 +111,7 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
             
             FilteredAlbums = []
             for albumData in TheDataModel.SpeakerAlbums {
-                if albumData.title.lowercased().contains(searchText.lowercased()) {
+                if albumData.Title.lowercased().contains(searchText.lowercased()) {
                         FilteredAlbums.append(albumData)
                 }
             }
@@ -148,15 +147,15 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         //print("section = \(indexPath.section) row = \(indexPath.row)")
         let album = FilteredAlbums[indexPath.row]
         
-        cell.title.text = album.title
+        cell.title.text = album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
-        if album.image.characters.count > 0 {
-            cell.albumCover.image = UIImage(named: album.image) ?? UIImage(named: "defaultPhoto")!
+        if album.Image.characters.count > 0 {
+            cell.albumCover.image = UIImage(named: album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {
-            cell.albumCover.image = UIImage(named: album.title) ?? UIImage(named: "defaultPhoto")!
+            cell.albumCover.image = UIImage(named: album.Title) ?? UIImage(named: "defaultPhoto")!
         }
         
-        let albumStats = TheDataModel.getAlbumStats(content: album.content)
+        let albumStats = TheDataModel.getAlbumStats(content: album.Content)
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal

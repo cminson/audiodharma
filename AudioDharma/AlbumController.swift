@@ -1,5 +1,5 @@
 //
-//  AlbumsTableViewController.swift
+//  AlbumController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/22/17.
@@ -23,8 +23,9 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     // MARK: Init
     override func viewDidLoad() {
         
+        print("AlbumController: viewDidLoad")
         self.tableView.delegate = self
-        TheDataModel.RootTableView = self  // this allows reloads when stats change
+        TheDataModel.RootController = self  // this allows reloads when stats change
         
         TheDataModel.loadData()
         super.viewDidLoad()
@@ -39,6 +40,17 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        print("viewWillAppear")
+        self.tableView.reloadData()
+
+        super.viewWillAppear(animated)
+        
+    }
+
+  
     
     deinit {
         
@@ -72,8 +84,8 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             }
             //let currentTitle = self.filteredAlbumSections[self.selectedSection][self.selectedRow]
             let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
-            controller.Content = Album.content
-            controller.title = Album.title
+            controller.Content = Album.Content
+            controller.title = Album.Title
             
         case "DISPLAY_USER_ALBUMS":
             guard let _ = segue.destination as? UserAlbumsController else {
@@ -124,15 +136,15 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             FilteredAlbumSections = []
             for sections in TheDataModel.AlbumSections {
                 for AlbumData in sections {
-                    if AlbumData.title.lowercased().contains(searchText.lowercased()) {
+                    if AlbumData.Title.lowercased().contains(searchText.lowercased()) {
                         
-                        if sectionsPositionDict[AlbumData.section] == nil {
+                        if sectionsPositionDict[AlbumData.Section] == nil {
                             // new section seen.  create new array of Albums for this section
                             FilteredAlbumSections.append([AlbumData])
-                            sectionsPositionDict[AlbumData.section] = FilteredAlbumSections.count - 1
+                            sectionsPositionDict[AlbumData.Section] = FilteredAlbumSections.count - 1
                         } else {
                             // section already exists.  add Album to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[AlbumData.section]
+                            let sectionPosition = sectionsPositionDict[AlbumData.Section]
                             FilteredAlbumSections[sectionPosition!].append(AlbumData)
                         }
                     }
@@ -162,7 +174,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return FilteredAlbumSections[section][0].section
+        return FilteredAlbumSections[section][0].Section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -182,16 +194,16 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
         let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
     
-        cell.title.text = Album.title
+        cell.title.text = Album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
-        if Album.image.characters.count > 0 {
-            cell.albumCover.image = UIImage(named: Album.image) ?? UIImage(named: "defaultPhoto")!
+        if Album.Image.characters.count > 0 {
+            cell.albumCover.image = UIImage(named: Album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {
-            cell.albumCover.image = UIImage(named: Album.title) ?? UIImage(named: "defaultPhoto")!
+            cell.albumCover.image = UIImage(named: Album.Title) ?? UIImage(named: "defaultPhoto")!
         }
         
-        let AlbumStats = TheDataModel.getAlbumStats(content: Album.content)
-        print(Album.content, AlbumStats)
+        let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
+        //print(Album.Content, AlbumStats)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -211,7 +223,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
         let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
         
-        switch Album.content {
+        switch Album.Content {
             
         case KEY_CUSTOMALBUMS:
             self.performSegue(withIdentifier: "DISPLAY_USER_ALBUMS", sender: self)

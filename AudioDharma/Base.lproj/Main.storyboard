@@ -109,7 +109,7 @@
                     <navigationItem key="navigationItem" title="Your Talks" id="2R3-Gd-KTi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PcK-Lv-x6m">
                             <connections>
-                                <segue destination="XOb-Pw-Qua" kind="presentation" identifier="DISPLAY_EDITTALKS" id="RgU-lG-aEy"/>
+                                <segue destination="dvc-bL-tY8" kind="show" identifier="DISPLAY_EDITUSERTALKS" id="mfD-nz-QKH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -157,19 +157,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Album" id="cQR-Oh-vYx">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Kys-47-rGm">
+                        <barButtonItem key="leftBarButtonItem" systemItem="save" id="QVj-cF-ciq">
                             <connections>
-                                <action selector="cancel:" destination="Ac4-Jo-Vf8" id="vTa-qf-iUz"/>
+                                <segue destination="r5N-9A-7qQ" kind="unwind" unwindAction="unwindAlbumEditToUserAlbumsWithSender:" id="yZu-wE-srb"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="GwO-K4-Fqr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="D9p-y3-I4E">
                             <connections>
-                                <segue destination="r5N-9A-7qQ" kind="unwind" unwindAction="unwindToUserListWithSender:" id="vp5-yj-fbW"/>
+                                <action selector="cancel:" destination="Ac4-Jo-Vf8" id="rfb-yd-cnG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="saveButton" destination="GwO-K4-Fqr" id="mWk-GF-Loc"/>
                         <outlet property="userAlbumTitle" destination="dAy-Sf-Ql1" id="KEl-BZ-7jI"/>
                         <outlet property="userImageView" destination="jNK-RU-s4O" id="PeL-fm-14Z"/>
                     </connections>
@@ -182,7 +181,7 @@
         <!--Edit Custom Talk List-->
         <scene sceneID="NKy-2s-6YI">
             <objects>
-                <tableViewController id="EIX-tq-R4j" customClass="UserEditTalksController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="EIX-tq-R4j" customClass="UserTalksEditController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f3t-Od-nxX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -195,7 +194,7 @@
                     <navigationItem key="navigationItem" title="Edit Custom Talk List" prompt="" id="daP-mt-RlJ">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="REb-ho-qyI">
                             <connections>
-                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindEditTalkListWithSender:" id="Eq2-0V-FRq"/>
+                                <segue destination="lcW-Ai-bFf" kind="unwind" unwindAction="unwindTalkEditToUserTalksWithSender:" id="YAa-lC-7oS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -203,7 +202,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="141" y="1878"/>
+            <point key="canvasLocation" x="807" y="1892"/>
         </scene>
         <!--Albums-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -427,7 +426,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4444.927536231884" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="5350.7246376811599" y="1244.8369565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
@@ -446,24 +445,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgk-vs-lGS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2119" y="2110"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="y7A-aR-3Mw">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XOb-Pw-Qua" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="upA-qx-ZKi">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="EIX-tq-R4j" kind="relationship" relationship="rootViewController" id="pbQ-bT-0Bc"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MQm-pX-D1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-639" y="2442"/>
         </scene>
         <!--Note Controller-->
         <scene sceneID="Bay-hx-moG">
@@ -499,7 +480,7 @@
                     <navigationItem key="navigationItem" id="yAa-cB-Fr0">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="thC-MV-yTv">
                             <connections>
-                                <segue destination="RbE-Yd-DLP" kind="unwind" unwindAction="unwindNotesViewWithSender:" id="s82-j9-13n"/>
+                                <segue destination="RbE-Yd-DLP" kind="unwind" unwindAction="unwindNotesEditToTalkWithSender:" id="dkr-n5-5g5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -572,7 +553,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu5-QY-ZHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2849.275362318841" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="3756.521739130435" y="1241.5760869565217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mKy-ot-PZ1">
@@ -590,7 +571,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fb-mf-Bnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3779.7101449275365" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="4686.9565217391309" y="1244.8369565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MWX-gm-l4W">
@@ -608,7 +589,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ibt-qa-SsQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2178.2608695652175" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="3085.507246376812" y="1241.5760869565217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLM-gG-pH8">
@@ -628,6 +609,24 @@
             </objects>
             <point key="canvasLocation" x="165.21739130434784" y="940.76086956521749"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="6gP-rx-q0v">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dvc-bL-tY8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iZz-z4-MJc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EIX-tq-R4j" kind="relationship" relationship="rootViewController" id="yc0-BU-OZ2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PSX-GA-GNu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140.57971014492756" y="1877.4456521739132"/>
+        </scene>
     </scenes>
     <resources>
         <image name="checkboxoff" width="112" height="112"/>
@@ -636,9 +635,9 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ebq-8j-F1C"/>
         <segue reference="ZR1-MZ-juM"/>
+        <segue reference="OFE-qN-xVe"/>
         <segue reference="30e-7l-0p1"/>
-        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="Ebq-8j-F1C"/>
     </inferredMetricsTieBreakers>
 </document>

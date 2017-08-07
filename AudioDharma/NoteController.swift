@@ -1,5 +1,5 @@
 //
-//  NoteViewController.swift
+//  NoteController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 7/30/17.
@@ -20,6 +20,7 @@ class NoteController: UIViewController, UITextViewDelegate {
     // MARK: Properties
     var TalkFileName: String = ""
     var TextHasBeenChanged: Bool = false
+    var ParentController: UITableViewController!
     
     
     // MARK: Init
@@ -50,6 +51,7 @@ class NoteController: UIViewController, UITextViewDelegate {
         
         noteTextView.text = ""
         TextHasBeenChanged = true
+        ParentController.tableView.reloadData()
     }
     
     

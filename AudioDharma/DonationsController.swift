@@ -1,5 +1,5 @@
 //
-//  DonationsViewController.swift
+//  DonationsController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 7/13/17.

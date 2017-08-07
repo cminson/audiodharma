@@ -1,5 +1,5 @@
 ///
-//  AddUserAlbumViewController.swift
+//  UserAlbumEditController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 7/11/17.
@@ -14,9 +14,10 @@ import os.log
 class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK: Properties
-    var UserAlbum: UserAlbumData? = nil
-    var EditMode: Bool = false
+    var UserAlbum: UserAlbumData? = nil // album we are editing, if any
+    var EditMode: Bool = false  // flags if this is an edit of existing Album vs  add of a new Album
 
+    
     // MARK: Outlets
     @IBOutlet weak var userAlbumTitle: UITextField!
     @IBOutlet weak var userImageView: UIImageView!
@@ -58,24 +59,20 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        
-        // Configure the destination view controller only when the save button is pressed.
-        guard let button = sender as? UIBarButtonItem, button === saveButton else {
-            os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
-            return
-        }
-        
+         
         let title = userAlbumTitle.text ?? ""
         let image = userImageView.image ?? UIImage(named: "flower01")
         UserAlbum = UserAlbumData(title: title, image: image!)
         
+        print("Created UserAlbum: ", UserAlbum?.Title, UserAlbum?.Content)
     }
     
     // MARK: Actions
-    @IBAction func cancel(_ sender: Any) {
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        
         dismiss(animated: true, completion: nil)
     }
-    
+        
     @IBAction func loadImage(_ sender: UIButton) {
         ImagePicker.allowsEditing = false
         ImagePicker.sourceType = .photoLibrary

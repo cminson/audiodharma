@@ -24,6 +24,7 @@ class TalkData: NSObject {
     
     // MARK: Init
     init(title: String,  url: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
+        
         Title = title
         URL = url
         FileName = fileName

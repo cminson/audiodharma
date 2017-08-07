@@ -1,6 +1,6 @@
 //
 //
-//  UserTalkTableViewController.swift
+//  UserTalkController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/15/17.
@@ -88,7 +88,7 @@ class UserTalkController: UITableViewController {
         }
      }
     
-    @IBAction func unwindEditTalkList(sender: UIStoryboardSegue) {  // called from UserAddTalkViewController
+    @IBAction func unwindTalkEditToUserTalks(sender: UIStoryboardSegue) {  // called from UserTalkEditViewController
         
         //
         // gather the talks selected in Add Talks and store them off
@@ -108,19 +108,13 @@ class UserTalkController: UITableViewController {
             // save the resulting array into the userlist and then persist into storage
             TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames = talkFileNames
             
-            // DEBUG
-            let test1 = TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames
-            for talk in test1 {
-                print("SAVED: ", talk)
-                
-            }
             TheDataModel.saveUserAlbumData()
-            TheDataModel.computeUserListStats()
+            TheDataModel.computeUserAlbumStats()
             self.tableView.reloadData()
         }
     }
     
-    @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
+    @IBAction func unwindNotesEditToTalk(sender: UIStoryboardSegue) {   // called from NotesController
 
         if let controller = sender.source as? NoteController {
             
@@ -161,7 +155,7 @@ class UserTalkController: UITableViewController {
         let talk = SelectedTalks[indexPath.row]
 
         // if there is a Note entry for this talk, then show the note icon in cell
-        if let _ = TheDataModel.UserNotes[talk.FileName] {
+        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
             cell.noteImage.image = UIImage(named: "noteicon")!
         } else {
             cell.noteImage = nil

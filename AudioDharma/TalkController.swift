@@ -1,5 +1,5 @@
 //
-//  TalkTableViewController.swift
+//  TalkController.swift
 //  AudioDharma
 //
 //  Created by Christopher on 6/15/17.
@@ -26,6 +26,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         super.viewDidLoad()
         
+        print("TalkViewController: viewDidLoad")
         SectionTalks = TheDataModel.getTalks(content: Content)
         FilteredSectionTalks = SectionTalks
         
@@ -96,6 +97,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
             controller.TalkFileName = talk.FileName
             controller.title = talk.Title
+            controller.ParentController = self
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -108,7 +110,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
     }
 
-    @IBAction func unwindNotesView(sender: UIStoryboardSegue) {   // called from NotesController
+    @IBAction func unwindNotesEditToTalk(sender: UIStoryboardSegue) {   // called from NotesController
 
         if let controller = sender.source as? NoteController {
             
@@ -122,8 +124,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 
                 TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
 
-                let indexPath = IndexPath(row: SelectedRow, section: SelectedSection)
-                //self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.top)
                 self.tableView.reloadData()
            }
         }
@@ -221,8 +221,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
-        // if there is a Note entry for this talk, then show the note icon in cell
-        if let _ = TheDataModel.UserNotes[talk.FileName] {
+        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
             cell.noteImage.image = UIImage(named: "noteicon")!
         } else {
             cell.noteImage = nil
