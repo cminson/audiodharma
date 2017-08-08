@@ -36,6 +36,11 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         tableView.tableHeaderView = SearchController.searchBar
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        SearchController.isActive = false
+    }
+
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
@@ -47,12 +52,6 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         super.didReceiveMemoryWarning()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        
-        SearchController.isActive = false
-    }
-    
     
     
     // MARK: Navigation
@@ -80,30 +79,6 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
     }
     
     
-    // MARK: UISearchBarDelegate
-    func presentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    
-    // MARK: UISearchControllerDelegate
-    func willPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-        //debugPrint("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -120,11 +95,6 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
             FilteredAlbums = TheDataModel.SpeakerAlbums
         }
         tableView.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
-        print("filtering...")
     }
     
     

@@ -30,13 +30,14 @@ let KEY_TALKSBEINGPLAYED = "KEY_TALKSBEINGPLAYED"
 let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
 let URL_GETACTIVITY = "http://www.ezimba.com/AD/test01.json"
 
-let MAX_TALKHISTORY_COUNT = 3
+let MAX_TALKHISTORY_COUNT = 20
+
+let TALK_BASE = "http://www.audiodharma.org"
+
 
 class Model {
     
     //MARK: Properties
-    var RootController: UITableViewController!   // controller for top level display. keep this handle to force reloads when needed
-    
     var AlbumSections: [[AlbumData]] = []   // 2d array of sections x Albums
     var SpeakerAlbums: [AlbumData] = []     // array of Albums for all speakers
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
@@ -191,14 +192,75 @@ class Model {
             return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
             
         }
-        
-        
-    }
+     }
     
     func getUserAlbums() -> [UserAlbumData] {
         
         return UserAlbums
     }
+    
+    func updateUserAlbum(updatedAlbum: UserAlbumData) {
+        
+        for (index, album) in UserAlbums.enumerated() {
+        
+            if album.Content == updatedAlbum.Content {
+            
+                print("updatedUserAlbum: ", index, album.Title)
+                UserAlbums[index] = updatedAlbum
+                break
+            }
+        }
+    }
+    
+    func addToUserAlbums(album: UserAlbumData) {
+        
+        UserAlbums.append(album)
+    }
+    
+    func getUserAlbumTalks(userAlbum: UserAlbumData) -> [TalkData]{
+        
+        var userAlbumTalks = [TalkData] ()
+        
+        for talkFileName in userAlbum.TalkFileNames {
+            //print(talkFileName)
+            if let talk = getTalkForName(name: talkFileName) {
+                userAlbumTalks.append(talk)
+            } else {
+                print("ERROR: could not locate \(talkFileName)")
+            }
+        }
+        
+        return userAlbumTalks
+    }
+    
+    func saveUserAlbumTalks(userAlbum: UserAlbumData, talks: [TalkData]) {
+
+        var userAlbumIndex = 0
+        for album in UserAlbums {
+            
+            if album.Content == userAlbum.Content {
+                break
+            }
+            userAlbumIndex += 1
+        }
+        
+        if userAlbumIndex == UserAlbums.count {
+            print("Error: No Index Seen")
+            return
+        }
+        
+        var talkFileNames = [String]()
+        for talk in talks {
+            talkFileNames.append(talk.FileName)
+        }
+        
+        // save the resulting array into the userlist and then persist into storage
+        UserAlbums[userAlbumIndex].TalkFileNames = talkFileNames
+        
+        saveUserAlbumData()
+        computeUserAlbumStats()
+    }
+
     
     func getTalkForName(name: String) -> TalkData? {
         
@@ -206,10 +268,8 @@ class Model {
     }
     
     func addToTalkHistory(talk: TalkData) {
-        
-        let count = TalkHistoryAlbum.count
-        
-        if count > MAX_TALKHISTORY_COUNT {
+                
+        if TalkHistoryAlbum.count >= MAX_TALKHISTORY_COUNT {
             TalkHistoryAlbum.remove(at: 0)
         }
         
@@ -219,7 +279,6 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
         computeHistoryStats()
-        RootController.tableView.reloadData()
     }
     
     func addNoteToTalk(noteText: String, talkFileName: String) {
@@ -236,7 +295,6 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveUserNoteData()
         computeNotesStats()
-        RootController.tableView.reloadData()
     }
     
     func getNoteForTalk(talkFileName: String) -> String {
@@ -257,22 +315,21 @@ class Model {
         return false
     }
 
-    
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
-        print("shareTalk")
-        let shareText = "\(sharedTalk.Title)\n\(sharedTalk.Speaker)   \(sharedTalk.Date)\nShared from the iPhone AudioDharma app"
+        let titleText = "\(sharedTalk.Title) by \(sharedTalk.Speaker)\n"
+        let bylineText = "This talk was shared from the iPhone AudioDharma app"
+
+        let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
+        let objectsToShare: URL = URL(string: TALK_BASE + sharedTalk.URL)!
         
-        let objectsToShare:URL = URL(string: sharedTalk.URL)!
         let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
+        //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
         
-        // set up activity view controller
         let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = controller.view // so that iPads won't crash
                 
-        // present the view controller
         controller.present(activityViewController, animated: true, completion: nil)
-        
     }
     
     func getTalksCurrentlyBeingPlayed() {
@@ -333,8 +390,6 @@ class Model {
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             self.KeyAlbumStats = stats
-            print("TalksBeingPlayed: Done ", stats)
-            
         }
         task.resume()
     }

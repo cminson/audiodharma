@@ -20,8 +20,6 @@ class NoteController: UIViewController, UITextViewDelegate {
     // MARK: Properties
     var TalkFileName: String = ""
     var TextHasBeenChanged: Bool = false
-    var ParentController: UITableViewController!
-    
     
     // MARK: Init
     override func viewDidLoad() {
@@ -51,7 +49,6 @@ class NoteController: UIViewController, UITextViewDelegate {
         
         noteTextView.text = ""
         TextHasBeenChanged = true
-        ParentController.tableView.reloadData()
     }
     
     

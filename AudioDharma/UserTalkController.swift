@@ -10,38 +10,61 @@
 import UIKit
 
 //
-// Displays the talks that a user has stored in their User List
+// Displays the talks that a user has stored in their User Album
 //
-class UserTalkController: UITableViewController {
+class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     // MARK: Properties
-    var SelectedUserListIndex: Int = 0         // index into the datamodel userlist array, the value is the selected user list to display
-    var SelectedTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
+    var UserAlbum: UserAlbumData!   // the userAlbum that we are currently viewing
+    var FilteredTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
     var SelectedRow: Int = 0
-    
+    let SearchController = UISearchController(searchResultsController: nil)
+    var SearchText = ""
+
     
     // MARK: Init
     override func viewDidLoad() {
-        print("UserTalkTableViewController: viewDidLoad")
         super.viewDidLoad()
         
-        //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
+        FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
 
-        // turn the name-only array of talks into an array of actual TALKDATAs (ie: look up name in Model dict)
-        for talkFileName in TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames {
-            print(talkFileName)
-            if let talk = TheDataModel.getTalkForName(name: talkFileName) {
-                SelectedTalks.append(talk)
-            } else {
-                print("ERROR: could not locate \(talkFileName)")
-            }
-        }
+        self.title = UserAlbum.Title
         
-        self.title = TheDataModel.UserAlbums[SelectedUserListIndex].Title
+        SearchController.searchResultsUpdater = self
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
+
         //self.tableView.isEditing = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
+        // restore the search state, if any
+        if SearchText.characters.count > 0 {
+            SearchController.searchBar.text! = SearchText
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        
+        SearchController.isActive = false
+    }
+    
+    deinit {
+        
+        // this view tends to hang around in the parent.  this clears it
+        SearchController.view.removeFromSuperview()
+    }
+    
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
     }
 
@@ -60,7 +83,7 @@ class UserTalkController: UITableViewController {
             }
             
             let controller = navController.viewControllers.last as? UserTalksEditController
-            controller?.SelectedTalks =  SelectedTalks
+            controller?.SelectedTalks =  FilteredTalks
             
         case "DISPLAY_TALKPLAYER":   // play the selected talk in the MP3
             
@@ -69,7 +92,7 @@ class UserTalkController: UITableViewController {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
 
-            controller.TalkList = SelectedTalks
+            controller.TalkList = FilteredTalks
             controller.CurrentTalkRow = SelectedRow
             
         case "DISPLAY_NOTE":
@@ -79,13 +102,18 @@ class UserTalkController: UITableViewController {
             }
             
             //print(self.selectedSection, self.selectedRow)
-            let talk = SelectedTalks[SelectedRow]
+            let talk = FilteredTalks[SelectedRow]
             controller.TalkFileName = talk.FileName
             controller.title = talk.Title
             
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
+        
+        // dismiss any searching - must do this prior to executing the segue
+        // NOTE:  must do this on the return, as it will reset filteredSectionTalks and give us the wrong indexing if done earlier
+        SearchText = SearchController.searchBar.text!   //  save this off, so as to restore search state upon return
+        SearchController.isActive = false
      }
     
     @IBAction func unwindTalkEditToUserTalks(sender: UIStoryboardSegue) {  // called from UserTalkEditViewController
@@ -95,22 +123,10 @@ class UserTalkController: UITableViewController {
         //
         if let controller = sender.source as? UserTalksEditController {
             
-            SelectedTalks = controller.SelectedTalks
+            FilteredTalks = controller.SelectedTalks
+            TheDataModel.saveUserAlbumTalks(userAlbum: UserAlbum, talks: FilteredTalks)
             
-            // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
-            var talkFileNames = [String]()
-            for talk in SelectedTalks {
-                talkFileNames.append(talk.FileName)
-                //print("adding: ", talk.fileName)
-                
-            }
-            
-            // save the resulting array into the userlist and then persist into storage
-            TheDataModel.UserAlbums[SelectedUserListIndex].TalkFileNames = talkFileNames
-            
-            TheDataModel.saveUserAlbumData()
-            TheDataModel.computeUserAlbumStats()
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
     }
     
@@ -122,7 +138,7 @@ class UserTalkController: UITableViewController {
                 
                 controller.TextHasBeenChanged = false   // just to make sure ...
                 
-                let talk = SelectedTalks[SelectedRow]
+                let talk = FilteredTalks[SelectedRow]
                 let noteText  = controller.noteTextView.text!
                 //print("noteText = ", noteText)
                 
@@ -132,10 +148,29 @@ class UserTalkController: UITableViewController {
                 self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
                 
             }
-            
         }
     }
     
+    
+    // MARK: UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            
+            FilteredTalks = []
+            for talk in TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum) {
+                if talk.Title.lowercased().contains(searchText.lowercased()) {
+                    FilteredTalks.append(talk)
+                }
+            }
+        } else {
+            
+            FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
+        }
+
+        tableView.reloadData()
+    }
+
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -145,14 +180,14 @@ class UserTalkController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return SelectedTalks.count
+        return FilteredTalks.count
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
-        let talk = SelectedTalks[indexPath.row]
+        let talk = FilteredTalks[indexPath.row]
 
         // if there is a Note entry for this talk, then show the note icon in cell
         if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
@@ -231,7 +266,7 @@ class UserTalkController: UITableViewController {
     
     private func shareTalk() {
         
-        let sharedTalk = SelectedTalks[SelectedRow]
+        let sharedTalk = FilteredTalks[SelectedRow]
         TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
 

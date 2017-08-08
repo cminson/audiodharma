@@ -26,7 +26,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         super.viewDidLoad()
         
-        print("TalkViewController: viewDidLoad")
         SectionTalks = TheDataModel.getTalks(content: Content)
         FilteredSectionTalks = SectionTalks
         
@@ -38,6 +37,29 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         tableView.tableHeaderView = SearchController.searchBar
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
+        SectionTalks = TheDataModel.getTalks(content: Content)
+        FilteredSectionTalks = SectionTalks
+        
+        // restore the search state, if any
+        if SearchText.characters.count > 0 {
+            SearchController.searchBar.text! = SearchText
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        
+        SearchController.isActive = false
+    }
+
+    
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
@@ -47,25 +69,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
-    }
-    
-    // restore the search state, if any
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-
-        if SearchText.characters.count > 0 {
-            SearchController.searchBar.text! = SearchText
-        }
-
-    }
-
-    // TBD
-    override func viewWillDisappear(_ animated: Bool) {
-        
-        super.viewWillDisappear(animated)
-        
-        SearchController.isActive = false
     }
     
     
@@ -97,7 +100,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
             controller.TalkFileName = talk.FileName
             controller.title = talk.Title
-            controller.ParentController = self
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -130,30 +132,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
     
     
-    // MARK: UISearchBarDelegate
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //searchBar.resignFirstResponder()
-    }
-    
-    
-    // MARK: UISearchControllerDelegate
-    func presentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-    }
-    
-    
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -163,7 +141,16 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             FilteredSectionTalks = []
             for sections in SectionTalks {
                 for talkData in sections {
-                    if talkData.Title.lowercased().contains(searchText.lowercased()) {
+                    let notes = TheDataModel.getNoteForTalk(talkFileName: talkData.FileName).lowercased()
+                    
+                    let searchedData = talkData.Title.lowercased() + talkData.Speaker.lowercased() + talkData.Date + notes
+                    
+                    if notes.characters.count > 2 {
+                        print(searchedData)
+                        
+                    }
+
+                    if searchedData.contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[talkData.Section] == nil {
                             // new section seen.  create new array of talks for this section
@@ -183,11 +170,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         tableView.reloadData()
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-
-
+    
     // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         

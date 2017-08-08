@@ -23,9 +23,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     // MARK: Init
     override func viewDidLoad() {
         
-        print("AlbumController: viewDidLoad")
         self.tableView.delegate = self
-        TheDataModel.RootController = self  // this allows reloads when stats change
         
         TheDataModel.loadData()
         super.viewDidLoad()
@@ -43,25 +41,8 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     
     override func viewWillAppear(_ animated: Bool) {
         
-        print("viewWillAppear")
-        self.tableView.reloadData()
-
         super.viewWillAppear(animated)
-        
-    }
-
-  
-    
-    deinit {
-        
-        // this view tends to hang around in the parent.  this clears it
-        SearchController.view.removeFromSuperview()
-    }
-
-
-    override func didReceiveMemoryWarning() {
-        
-        super.didReceiveMemoryWarning()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,8 +50,18 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         SearchController.isActive = false
     }
 
+    deinit {
+        
+        // this view tends to hang around in the parent.  this clears it
+        SearchController.view.removeFromSuperview()
+    }
 
+    override func didReceiveMemoryWarning() {
+        
+        super.didReceiveMemoryWarning()
+    }
     
+
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -106,27 +97,6 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         SearchController.isActive = false
     }
 
-    
-    // MARK: UISearchBarDelegate
-    func presentSearchController(_ searchController: UISearchController) {
-        //debug("UISearchControllerDelegate invoked method: \(__FUNCTION__).")
-    }
-    
-    
-    // MARK: UISearchControllerDelegate
-    func willPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-    }
-    
-
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -156,10 +126,6 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         tableView.reloadData()
     }
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
-    }
-
 
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -185,9 +151,8 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         header.textLabel?.textColor = UIColor.white
         header.textLabel?.textAlignment = NSTextAlignment.center
     }
-    
-    
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
 
@@ -203,7 +168,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         }
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
-        //print(Album.Content, AlbumStats)
+        print(Album.Content, AlbumStats)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal

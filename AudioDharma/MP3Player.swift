@@ -12,7 +12,6 @@ import AVFoundation
 import CoreMedia
 
 let FAST_SEEK : Int64 = 25  // number of seconds to move for each Seek operation
-let TALK_BASE = "http://www.audiodharma.org"
 
 
 class MP3Player : NSObject {

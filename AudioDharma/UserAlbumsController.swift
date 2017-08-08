@@ -10,22 +10,58 @@ import UIKit
 import os.log
 
 
-class UserAlbumsController: UITableViewController {
+class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating   {
     
     //MARK: Properties
     var SelectedRow: Int = 0
-    
+    var FilteredUserAlbums:  [UserAlbumData] = []
+    let SearchController = UISearchController(searchResultsController: nil)
+    var SearchText: String = ""
 
+    
     // MARK: Init
     override func viewDidLoad() {
         
         super.viewDidLoad()
-                
+        
+        SearchController.searchResultsUpdater = self
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
+        
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
+        FilteredUserAlbums = TheDataModel.UserAlbums
+        TheDataModel.computeUserAlbumStats()
+        
+        if SearchText.characters.count > 0 {
+            SearchController.searchBar.text! = SearchText
+        }
+        
+        tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        SearchController.isActive = false
+    }
+
+
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
+    }
+    
+    deinit {
+        
+        // this view tends to hang around in the parent.  this clears it
+        SearchController.view.removeFromSuperview()
     }
 
     
@@ -39,7 +75,6 @@ class UserAlbumsController: UITableViewController {
        
         super.prepare(for: segue, sender: sender)
         
-        print("UserAlbumsSegue: ", segue.identifier)
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_ADD_ALBUM":     // Add a New User Album
@@ -47,7 +82,7 @@ class UserAlbumsController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             if let controller = navController.viewControllers.last as? UserAlbumEditController {
-                controller.EditMode = false
+                controller.AddingNewAlbum = true
             }
             
         case "DISPLAY_EDIT_ALBUM":    // Edit an existing User Album
@@ -56,12 +91,12 @@ class UserAlbumsController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let selectedUserAlbum = TheDataModel.UserAlbums[SelectedRow]
+            let selectedUserAlbum = FilteredUserAlbums[SelectedRow]
 
             if let controller = navController.viewControllers.last as? UserAlbumEditController {
                 controller.UserAlbum = selectedUserAlbum
                 controller.title = "Edit User List"
-                controller.EditMode = true
+                controller.AddingNewAlbum = false
             }
 
         case "DISPLAY_USER_TALKS":   // Display all talks within the current User List
@@ -69,9 +104,9 @@ class UserAlbumsController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            // set the userList that we want to show talks for
-            //userTalkTableViewController.selectedUserList = TheDataModel.userLists[self.selectedRow]
-            controller.SelectedUserListIndex = SelectedRow
+            // set the userAlbum  that we want to show talks for
+            let selectedUserAlbum = FilteredUserAlbums[SelectedRow]
+            controller.UserAlbum = selectedUserAlbum
 
             
         default:
@@ -82,36 +117,51 @@ class UserAlbumsController: UITableViewController {
     
     @IBAction func unwindAlbumEditToUserAlbums(sender: UIStoryboardSegue) {
         
-        if let controller = sender.source as? UserAlbumEditController, let userAlbum = controller.UserAlbum {
+        if let controller = sender.source as? UserAlbumEditController, let controllerUserAlbum = controller.UserAlbum {
             
-            // if edit mode = true, then this is an edit of an existing user album
-            // otherwise we are adding a new user album
-            if controller.EditMode == true {
-                TheDataModel.UserAlbums[SelectedRow].Title = userAlbum.Title
-                TheDataModel.UserAlbums[SelectedRow].Image = userAlbum.Image
+            // if true, adding a new album.  otherwise editing an existing
+            if controller.AddingNewAlbum == true {
+                let newIndexPath = IndexPath(row: FilteredUserAlbums.count, section: 0)
                 
-            } else {
-                let newIndexPath = IndexPath(row: TheDataModel.UserAlbums.count, section: 0)
-                
-                TheDataModel.UserAlbums.append(userAlbum)
+                FilteredUserAlbums.append(controllerUserAlbum)
+                TheDataModel.addToUserAlbums(album: controllerUserAlbum)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+            } else {
+                FilteredUserAlbums[SelectedRow] = controllerUserAlbum
+                //userAlbum.Title = controllerUserAlbum.Title
+                //userAlbum.Image = controllerUserAlbum.Image
+                TheDataModel.updateUserAlbum(updatedAlbum: controllerUserAlbum)
+                
             }
             
             TheDataModel.saveUserAlbumData()
             TheDataModel.computeUserAlbumStats()
             self.tableView.reloadData()
-            TheDataModel.RootController.tableView.reloadData()
+            //TheDataModel.RootController.tableView.reloadData()
         }
     }
-
-
-    // MARK: Table Data Source
-    override func viewWillAppear(_ animated: Bool) {
+    
+     
+    // MARK: UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
         
-        TheDataModel.computeUserAlbumStats()
-        self.tableView.reloadData()
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            
+            FilteredUserAlbums = []
+            for album in TheDataModel.UserAlbums {
+                if album.Title.lowercased().contains(searchText.lowercased()) {
+                    FilteredUserAlbums.append(album)
+                }
+            }
+        } else {
+            FilteredUserAlbums = TheDataModel.UserAlbums
+        }
+        tableView.reloadData()
     }
     
+
+    // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -119,14 +169,14 @@ class UserAlbumsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return TheDataModel.UserAlbums.count
+        return FilteredUserAlbums.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
         
-        let userAlbum = TheDataModel.UserAlbums[indexPath.row]
+        let userAlbum = FilteredUserAlbums[indexPath.row]
         cell.title.text = userAlbum.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
         cell.albumCover.image = userAlbum.Image
@@ -154,11 +204,13 @@ class UserAlbumsController: UITableViewController {
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 self.tableView.isEditing = false
 
-                TheDataModel.UserAlbums.remove(at: indexPath.row)
+                self.FilteredUserAlbums.remove(at: indexPath.row)
+                
                 TheDataModel.saveUserAlbumData()
-                self.tableView.reloadData()
-                TheDataModel.RootController.tableView.reloadData()
+                TheDataModel.computeUserAlbumStats()
 
+                self.tableView.reloadData()
+                //TheDataModel.RootController.tableView.reloadData()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
@@ -189,9 +241,9 @@ class UserAlbumsController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        let movedAlbum = TheDataModel.UserAlbums[sourceIndexPath.row]
-        TheDataModel.UserAlbums.remove(at: sourceIndexPath.row)
-        TheDataModel.UserAlbums.insert(movedAlbum, at: destinationIndexPath.row)
+        let movedAlbum = FilteredUserAlbums[sourceIndexPath.row]
+        FilteredUserAlbums.remove(at: sourceIndexPath.row)
+        FilteredUserAlbums.insert(movedAlbum, at: destinationIndexPath.row)
         print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedAlbum.Title)")
       
     }

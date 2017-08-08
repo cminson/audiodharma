@@ -21,11 +21,6 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     
     var SelectedTalksByNameDict : [String: Bool] = [ : ]    // dict indexed by talk filename. value bool is user listed or not
     
-    //MARK: Actions
-    @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
-        dismiss(animated: true, completion: nil)
-    }
-    
     
     // MARK: Init
     override func viewDidLoad() {
@@ -87,31 +82,12 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
     }
     
-    
-    // MARK: - UISearchBarDelegate
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //searchBar.resignFirstResponder()
+    //MARK: Actions
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
+        dismiss(animated: true, completion: nil)
     }
     
-    
-    // MARK: - UISearchControllerDelegate
-    func presentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-    }
-    
-    
+
     // MARK: - UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
  
@@ -126,22 +102,7 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         } else {
             FilteredTalks = DisplayTalks
         }
-        
-        
-        // DEBUG
-        /*
-        for talk in FilteredTalks {
-            print("SEARCH: ", talk.fileName, talk.title)
-        }
- */
-
-
         tableView.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
-        
     }
     
     
@@ -212,12 +173,6 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
         return cell
     }
-    
-    /*
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
-        cell.contentView.backgroundColor = UIColor.brown
-    }
-    */
     
     
     // MARK: Private

@@ -15,7 +15,7 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
     
     // MARK: Properties
     var UserAlbum: UserAlbumData? = nil // album we are editing, if any
-    var EditMode: Bool = false  // flags if this is an edit of existing Album vs  add of a new Album
+    var AddingNewAlbum: Bool = false  // flags if this is an edit of existing Album vs  add of a new Album
 
     
     // MARK: Outlets
@@ -31,6 +31,11 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         super.viewDidLoad()
         
         print("view loaded: \(String(describing: UserAlbum?.Title))")
+        
+        // we're adding a new record (vs editing an existing)
+        if AddingNewAlbum == true {
+            UserAlbum = UserAlbumData(title: "Album Title", image: UIImage(named: "flower01")!)
+        }
 
         if let title = UserAlbum?.Title {
             if title.characters.count > 0 {
@@ -46,7 +51,6 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         }
         
         userAlbumTitle.delegate = self
-
         ImagePicker.delegate = self
     }
     
@@ -60,11 +64,10 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         
         super.prepare(for: segue, sender: sender)
          
-        let title = userAlbumTitle.text ?? ""
-        let image = userImageView.image ?? UIImage(named: "flower01")
-        UserAlbum = UserAlbumData(title: title, image: image!)
+        UserAlbum?.Title = userAlbumTitle.text ?? ""
+        UserAlbum?.Image = userImageView.image ?? UIImage(named: "flower01")!
         
-        print("Created UserAlbum: ", UserAlbum?.Title, UserAlbum?.Content)
+        //print("Modified UserAlbum: ", UserAlbum?.Title, UserAlbum?.Content)
     }
     
     // MARK: Actions
