@@ -25,7 +25,7 @@
                     <navigationItem key="navigationItem" title="Talks" id="VXF-Dh-aL5"/>
                     <connections>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
-                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAY_NOTES" id="4Sx-D1-YLI"/>
+                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="4Sx-D1-YLI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -115,7 +115,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="30e-7l-0p1"/>
-                        <segue destination="aLz-WS-sHw" kind="show" identifier="DISPLAY_NOTE" id="OFE-qN-xVe"/>
+                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="OFE-qN-xVe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -492,7 +492,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="807.24637681159425" y="940.76086956521749"/>
+            <point key="canvasLocation" x="832" y="941"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -636,8 +636,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="OFE-qN-xVe"/>
-        <segue reference="30e-7l-0p1"/>
         <segue reference="Ebq-8j-F1C"/>
+        <segue reference="30e-7l-0p1"/>
+        <segue reference="OFE-qN-xVe"/>
     </inferredMetricsTieBreakers>
 </document>

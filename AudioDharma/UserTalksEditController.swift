@@ -19,14 +19,10 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     var Content: String = ""
     var SelectedTalks: [TalkData] = [TalkData] ()
     
-    var SelectedTalksByNameDict : [String: Bool] = [ : ]    // dict indexed by talk filename. value bool is user listed or not
-    
+    var SelectedTalksByNameDict : [String: Bool] = [ : ]    // is this filename in an album
     
     // MARK: Init
     override func viewDidLoad() {
-        
-        print("UserAddtalkTableView: viewDidLoad")
-        //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         
         super.viewDidLoad()
         
@@ -70,17 +66,20 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     }
     
     deinit {
+        
         SearchController.view.removeFromSuperview()
     }
     
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        SearchController.isActive = false
         
+        SearchController.isActive = false
     }
+    
     
     //MARK: Actions
     @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked
@@ -147,7 +146,6 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
                 }
             }
             cell.selectedBackgroundView = backgroundView
-
          }
     }
     
@@ -191,7 +189,7 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
             idx += 1
         }
     
-        print(" new selected talk: ", changedTalk.Title, changedTalk.FileName)
+        //print(" new selected talk: ", changedTalk.Title, changedTalk.FileName)
         SelectedTalks.append(changedTalk)
     }
     
@@ -205,14 +203,7 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         } else {
             //cell.userSelected.image = UIImage(named: "checkboxoff")
             cell.backgroundColor = UIColor.white
-
-            
         }
-
-        
     }
-    
-  
-
     
 }

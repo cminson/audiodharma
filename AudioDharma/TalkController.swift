@@ -80,14 +80,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_TALKPLAYER":
-            print("DISPLAY_TALKPLAYER")
 
             guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
                 else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            //print(self.selectedSection, self.selectedRow)
             playTalkController.CurrentTalkRow = SelectedRow
             playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
         case "DISPLAY_NOTES":
@@ -96,10 +94,11 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                     fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            //print(self.selectedSection, self.selectedRow)
             let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
             controller.TalkFileName = talk.FileName
             controller.title = talk.Title
+            //print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
+
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -120,13 +119,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 
                 controller.TextHasBeenChanged = false   // just to make sure ...
                 
-                let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
-                let noteText  = controller.noteTextView.text!
-                //print("noteText = ", noteText)
-                
-                TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
-
-                self.tableView.reloadData()
+                if let talk = TheDataModel.NameToTalks[controller.TalkFileName] {
+                    let noteText  = controller.noteTextView.text!
+                    TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
+                    
+                    tableView.reloadData()
+                }
            }
         }
     }
@@ -145,11 +143,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                     
                     let searchedData = talkData.Title.lowercased() + talkData.Speaker.lowercased() + talkData.Date + notes
                     
-                    if notes.characters.count > 2 {
-                        print(searchedData)
-                        
-                    }
-
                     if searchedData.contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[talkData.Section] == nil {
@@ -174,13 +167,11 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        print("Number of sections: \(self.FilteredSectionTalks.count)")
         return FilteredSectionTalks.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        print("Section: \(section)  Number of rows: \(self.FilteredSectionTalks[section].count)")
         return FilteredSectionTalks[section].count
     }
     
@@ -232,8 +223,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
-        //print("Seleced Section: \(SelectedSection)   Selected Row: \(SelectedRow)")
-        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
+        performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -256,7 +246,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     //MARK: Share
     private func viewEditNote() {
         
-        self.performSegue(withIdentifier: "DISPLAY_NOTES", sender: self)
+        performSegue(withIdentifier: "DISPLAY_NOTES", sender: self)
     }
     
     

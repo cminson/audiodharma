@@ -75,13 +75,7 @@ class Model {
         TalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
         computeHistoryStats()
         
-        /*
-        if let stats = KeyToAlbumStats[KEY_TALKSBEINGPLAYED] {
-            print("KEY_TALKSBEINGPLAYED: ", stats)
-        } else {
-            print("no content for: ", KEY_TALKSBEINGPLAYED)
-        }
-         */
+     
     }
     
     
@@ -182,7 +176,6 @@ class Model {
     
     func getAlbumStats(content: String) -> AlbumStats {
         
-        //print("Album Stats Content: ", content)
         switch content {
             
         case KEY_TALKSBEINGPLAYED:
@@ -205,7 +198,6 @@ class Model {
         
             if album.Content == updatedAlbum.Content {
             
-                print("updatedUserAlbum: ", index, album.Title)
                 UserAlbums[index] = updatedAlbum
                 break
             }
@@ -222,7 +214,6 @@ class Model {
         var userAlbumTalks = [TalkData] ()
         
         for talkFileName in userAlbum.TalkFileNames {
-            //print(talkFileName)
             if let talk = getTalkForName(name: talkFileName) {
                 userAlbumTalks.append(talk)
             } else {
@@ -286,8 +277,10 @@ class Model {
         //
         // if there is a note text for this talk fileName, then save it in the note dictionary
         // otherwise clear this note dictionary entry
-        if (noteText.characters.count > 1) {
+        if (noteText.characters.count > 0) {
             UserNotes[talkFileName] = UserNoteData(notes: noteText)
+            print("Setting \(talkFileName) to \(noteText)")
+
         } else {
             UserNotes[talkFileName] = nil
         }
@@ -563,7 +556,6 @@ class Model {
                 
                 let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
                 
-                //print(fileName)
                 NameToTalks[fileName] = talkData
                               
                 // add this talk to  list of all talks
@@ -593,7 +585,6 @@ class Model {
                 }
                 
                 talkCount += 1
-                //print(talkData, talkCount)
             }
         } catch {
             print(error)
@@ -613,7 +604,6 @@ class Model {
         do {
             
             let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-            //print(json)
             
             // for each Album entry ...
             // store off the Album into the AlbumSections array

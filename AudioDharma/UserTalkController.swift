@@ -138,15 +138,12 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
                 
                 controller.TextHasBeenChanged = false   // just to make sure ...
                 
-                let talk = FilteredTalks[SelectedRow]
-                let noteText  = controller.noteTextView.text!
-                //print("noteText = ", noteText)
-                
-                TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
-
-                let indexPath = IndexPath(row: SelectedRow, section: 0)
-                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
-                
+                if let talk = TheDataModel.NameToTalks[controller.TalkFileName] {
+                    let noteText  = controller.noteTextView.text!
+                    TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
+                    
+                    tableView.reloadData()
+                }
             }
         }
     }
@@ -207,7 +204,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         SelectedRow = indexPath.row
-        self.performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
+        performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
  
     #if WANTEDITING
@@ -261,7 +258,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     //MARK: Share
     private func viewEditNote() {
         
-        self.performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
+        performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
     private func shareTalk() {

@@ -108,7 +108,6 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
             let selectedUserAlbum = FilteredUserAlbums[SelectedRow]
             controller.UserAlbum = selectedUserAlbum
 
-            
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
 
