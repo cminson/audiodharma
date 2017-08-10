@@ -26,6 +26,7 @@ let KEY_CUSTOMALBUMS = "KEY_CUSTOMALBUMS"
 let KEY_NOTES = "KEY_NOTES"
 let KEY_TALKHISTORY = "KEY_TALKHISTORY"
 let KEY_TALKSBEINGPLAYED = "KEY_TALKSBEINGPLAYED"
+let KEY_ALLSERIES = "KEY_ALLSERIES"
 
 let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
 let URL_GETACTIVITY = "http://www.ezimba.com/AD/test01.json"
@@ -40,6 +41,8 @@ class Model {
     //MARK: Properties
     var AlbumSections: [[AlbumData]] = []   // 2d array of sections x Albums
     var SpeakerAlbums: [AlbumData] = []     // array of Albums for all speakers
+    var SeriesAlbums: [AlbumData] = []     // array of Albums for all series
+
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
     var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
     var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
@@ -62,10 +65,10 @@ class Model {
         getTalksCurrentlyBeingPlayed()
         
         // get baseline talks and Albums
-        loadTalksFromFile(jsonLocation: "talks01")
-        loadAlbumsFromFile(jsonLocation: "albums01")
+        loadTalksFromFile(jsonLocation: "alltalks")
+        loadAlbumsFromFile(jsonLocation: "albums02")
         computeSpeakerStats()
-
+        computeSeriesStats()
         
         // get user data from storage and compute stats
         UserAlbums = TheDataModel.loadUserAlbumData()
@@ -74,35 +77,28 @@ class Model {
         computeNotesStats()
         TalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
         computeHistoryStats()
-        
-     
     }
     
     
     // MARK: Persistant API
     func saveUserAlbumData() {
         
-        print("saveUserListData to: ", UserAlbumData.ArchiveURL.path)
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserAlbums, toFile: UserAlbumData.ArchiveURL.path)
     }
     
     func saveUserNoteData() {
         
-        print("saveUserNoteData to: ", UserNoteData.ArchiveURL.path)
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserNotes, toFile: UserNoteData.ArchiveURL.path)
     }
     
     func saveTalkHistoryData() {
         
-        print("saveTalkHistoryData to: ", TalkHistoryData.ArchiveURL.path)
         NSKeyedArchiver.archiveRootObject(TheDataModel.TalkHistoryAlbum, toFile: TalkHistoryData.ArchiveURL.path)
         
     }
 
 
     func loadUserAlbumData() -> [UserAlbumData]  {
-        
-        print("UserAlbumData from: ", UserAlbumData.ArchiveURL.path)
         
         if let userAlbumData = NSKeyedUnarchiver.unarchiveObject(withFile: UserAlbumData.ArchiveURL.path) as? [UserAlbumData] {
             
@@ -115,8 +111,6 @@ class Model {
     
     func loadUserNoteData() -> [String: UserNoteData]  {
         
-        print("loadUserNoteData from: ", UserNoteData.ArchiveURL.path)
-        
         if let userNotes = NSKeyedUnarchiver.unarchiveObject(withFile: UserNoteData.ArchiveURL.path)
             as? [String: UserNoteData] {
             
@@ -128,8 +122,6 @@ class Model {
     }
     
     func loadTalkHistoryData() -> [TalkHistoryData]  {
-        
-        print("loadTalkHistoryData from: ", TalkHistoryData.ArchiveURL.path)
         
         if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveURL.path)
             as? [TalkHistoryData] {
@@ -180,6 +172,9 @@ class Model {
             
         case KEY_TALKSBEINGPLAYED:
             return KeyAlbumStats
+        case KEY_ALLTALKS:
+            let stats = KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+            return stats
 
         default:
             return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
@@ -216,8 +211,6 @@ class Model {
         for talkFileName in userAlbum.TalkFileNames {
             if let talk = getTalkForName(name: talkFileName) {
                 userAlbumTalks.append(talk)
-            } else {
-                print("ERROR: could not locate \(talkFileName)")
             }
         }
         
@@ -236,7 +229,6 @@ class Model {
         }
         
         if userAlbumIndex == UserAlbums.count {
-            print("Error: No Index Seen")
             return
         }
         
@@ -279,7 +271,6 @@ class Model {
         // otherwise clear this note dictionary entry
         if (noteText.characters.count > 0) {
             UserNotes[talkFileName] = UserNoteData(notes: noteText)
-            print("Setting \(talkFileName) to \(noteText)")
 
         } else {
             UserNotes[talkFileName] = nil
@@ -310,8 +301,8 @@ class Model {
 
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
-        let titleText = "\(sharedTalk.Title) by \(sharedTalk.Speaker)\n"
-        let bylineText = "This talk was shared from the iPhone AudioDharma app"
+        //let titleText = "\(sharedTalk.Title) by \(sharedTalk.Speaker)\n"
+        //let bylineText = "This talk was shared from the iPhone AudioDharma app"
 
         let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
         let objectsToShare: URL = URL(string: TALK_BASE + sharedTalk.URL)!
@@ -525,8 +516,40 @@ class Model {
         let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
         KeyToAlbumStats[KEY_ALLSPEAKERS] = stats
     }
-
     
+    //
+    // generate the stats for the series talk album.
+    //
+    func computeSeriesStats() {
+        
+        var totalSecondsAllLists = 0
+        var talkCountAllLists = 0
+        
+        for album in SeriesAlbums {
+            
+            let content = album.Content
+            var totalSeconds = 0
+            var talkCount = 0
+            for talk in (KeyToTalks[content]?[0])! {
+                totalSeconds += talk.Time
+                talkCount += 1
+            }
+            
+            talkCountAllLists += talkCount
+            totalSecondsAllLists += totalSeconds
+            let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+            
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            KeyToAlbumStats[content] = stats
+        }
+        
+        let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalSecondsAllLists)
+        
+        let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+        KeyToAlbumStats[KEY_ALLSERIES] = stats
+    }
+
+
     
     // MARK: Private
     private func loadTalksFromFile(jsonLocation: String) {
@@ -543,6 +566,7 @@ class Model {
             for talk in json["talks"] as? [AnyObject] ?? [] {
                 
                 let title = talk["title"] as? String ?? ""
+                let series = talk["series"] as? String ?? ""
                 let speaker = talk["speaker"] as? String ?? ""
                 let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let fileName = talk["filename"] as? String ?? ""
@@ -576,12 +600,32 @@ class Model {
                     KeyToTalks[speaker]?.append([talkData])
                     
                     // create a Album for this speaker and add to array of speaker Albums
-                    // this array will be referenced by SpeakersTableViewController
-                    let albumData =  AlbumData(title: speaker, content: speaker, section: "", image: speaker)
+                    // this array will be referenced by SpeakersController
+                    let albumData =  AlbumData(title: speaker, content: speaker, section: "", image: speaker, date: date)
                     SpeakerAlbums.append(albumData)
                 }
                 else {
                     KeyToTalks[speaker]?[0].append(talkData)
+                }
+                
+                // if a series is specified, add to a series list
+                if series.characters.count > 1 {
+                    
+                    let seriesKey = series
+                    if KeyToTalks[seriesKey] == nil {
+                        KeyToTalks[seriesKey] = [[TalkData]] ()
+                        KeyToTalks[seriesKey]?.append([talkData])
+                        
+                        // create a Album for this series and add to array of series Albums
+                        // this array will be referenced by SeriesController
+                        let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
+                        SeriesAlbums.append(albumData)
+                    }
+                    else {
+                        KeyToTalks[seriesKey]?[0].append(talkData)
+                    }
+                    
+                    
                 }
                 
                 talkCount += 1
@@ -594,6 +638,8 @@ class Model {
         KeyToAlbumStats[KEY_ALLTALKS] = stats
         
         SpeakerAlbums = SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
+        SeriesAlbums = SeriesAlbums.sorted(by: { $0.Date > $1.Date })
+
     }
     
     private func loadAlbumsFromFile(jsonLocation: String) {
@@ -615,7 +661,7 @@ class Model {
                 var section = Album["section"] as? String ?? ""
                 let image = Album["image"] as? String ?? ""
                 let talkList = Album["talks"] as? [AnyObject] ?? []
-                let albumData =  AlbumData(title: title, content: content, section: section, image: image)
+                let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
                 
                 
                 // store Album in the 2D AlbumSection array (section x Album)
@@ -693,9 +739,13 @@ class Model {
                 totalSeconds += talk.Time
             }
             
+            // DEV TBD TESTING MAX DISPLAY SIZE
+            //totalSeconds += (60 * 60) * 10000
+            
             let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            //print(stats)
             KeyToAlbumStats[Album.Content] = stats
         }
     }
@@ -744,7 +794,7 @@ class Model {
                     let section = Album["section"] as? String ?? ""
                     let image = Album["image"] as? String ?? ""
                     let talkList = Album["talks"] as? [AnyObject] ?? []
-                    let albumData =  AlbumData(title: title, content: content, section: section, image: image)
+                    let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
                     
                     // store Album in the 2D AlbumSection array (section x Album)
                     if AlbumSectionPositionDict[section] == nil {
@@ -889,7 +939,7 @@ class Model {
             }
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.KeyToAlbumStats[KEY_ALLTALKS] = stats
+            //self.KeyToAlbumStats[KEY_ALLTALKS] = stats
 
         }
         task.resume()

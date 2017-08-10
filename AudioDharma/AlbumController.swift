@@ -39,11 +39,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         tableView.tableHeaderView = SearchController.searchBar
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
+   
     
     override func viewWillDisappear(_ animated: Bool) {
         
@@ -87,7 +83,12 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             guard let _ = segue.destination as? SpeakerController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-           
+            
+        case "DISPLAY_SERIES_ALBUMS":
+            guard let _ = segue.destination as? SeriesController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
@@ -168,7 +169,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         }
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
-        print(Album.Content, AlbumStats)
+        //print(Album.Content, AlbumStats)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -198,6 +199,9 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             
         case KEY_TALKHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
+            
+        case KEY_ALLSERIES:
+            self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)
 
         default:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)

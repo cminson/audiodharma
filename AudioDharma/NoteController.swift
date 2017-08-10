@@ -30,10 +30,13 @@ class NoteController: UIViewController, UITextViewDelegate {
         //noteTextView.setContentOffset(CGPoint.zero, animated: false)
         noteTextView.contentInset = UIEdgeInsetsMake(-60, 0,0,0);
         
-        let borderColor : UIColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
-        noteTextView.layer.borderWidth = 0.5
+        //let borderColor : UIColor = UIColor(red: 0.10, green: 1.00, blue: 0.10, alpha: 1.0)
+        let borderColor : UIColor = UIColor(red: 0.0, green: 0.10, blue: 0.0, alpha: 1.0)
+        noteTextView.layer.borderWidth = 1.0
         noteTextView.layer.borderColor = borderColor.cgColor
         noteTextView.layer.cornerRadius = 5.0
+        
+     
         
         noteTextView.text = TheDataModel.getNoteForTalk(talkFileName: TalkFileName)
     }

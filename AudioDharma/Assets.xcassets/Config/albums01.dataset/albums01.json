@@ -43,7 +43,7 @@
 		"image":"star"
 	},
 	{
-		"title":"Right Now: Talks Being Played by Others",
+		"title":"Now: Talks Being Played by Others",
 		"content":"KEY_TALKSBEINGPLAYED",
 		"section":"Sangha",
 		"image":"star"
@@ -11788,6 +11788,12 @@
 				"duration":"58:24"
 			}
 			]
-		}
+		},
+	{
+		"title":"All Talk Series",
+		"content":"KEY_ALLSERIES",
+		"section":"Series Talks",
+		"image":"sequence"
+    }
 	]
 }

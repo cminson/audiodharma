@@ -73,6 +73,11 @@ class PlayTalkController: UIViewController {
         volumeView.sizeToFit()
         MPVolumeParentView.addSubview(volumeView)
         
+        let d1 = volumeView.areWirelessRoutesAvailable
+        print("D1: ", d1)
+        let d2 = volumeView.showsRouteButton
+        print("D2: ", d2)
+        
         // start the background report thread (reporting status to web)
         Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
 

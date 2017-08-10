@@ -18,14 +18,16 @@ class AlbumData: NSObject {
     var Content: String
     var Section: String
     var Image: String
+    var Date: String
     
     
-    init(title: String, content: String, section: String, image: String) {
+    init(title: String, content: String, section: String, image: String, date: String) {
         
         Title = title
         Content = content
         Section = section
         Image = image
+        Date = date
     }
     
 }

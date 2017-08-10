@@ -64,6 +64,37 @@
             </objects>
             <point key="canvasLocation" x="-2068" y="941"/>
         </scene>
+        <!--Series Controller-->
+        <scene sceneID="Iig-hh-eKf">
+            <objects>
+                <tableViewController id="tIY-Xq-HRV" customClass="SeriesController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bqb-M0-c6w">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LSI-cJ-xYf">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LSI-cJ-xYf" id="xC9-45-n20">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="tIY-Xq-HRV" id="Vfv-8o-K9R"/>
+                            <outlet property="delegate" destination="tIY-Xq-HRV" id="wT0-jy-hwp"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Jkk-Sj-9ca"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1106" y="942"/>
+        </scene>
         <!--Personal Albums-->
         <scene sceneID="wMU-4h-6ek">
             <objects>
@@ -222,6 +253,7 @@
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="hEa-61-IsL"/>
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
+                        <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -459,7 +491,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEs-5q-MmB">
-                                <rect key="frame" x="20" y="107" width="374" height="193"/>
+                                <rect key="frame" x="20" y="137" width="374" height="125"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -467,13 +499,20 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UG5-WD-9Mr">
-                                <rect key="frame" x="128" y="308" width="158" height="30"/>
+                                <rect key="frame" x="128" y="286" width="158" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Delete Note"/>
                                 <connections>
                                     <action selector="deleteNoteText:" destination="a54-As-Y2F" eventType="touchUpInside" id="rDa-o3-7us"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Note Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-Wj-WqW">
+                                <rect key="frame" x="20" y="108" width="374" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -492,7 +531,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="832" y="941"/>
+            <point key="canvasLocation" x="831.88405797101461" y="940.76086956521749"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -541,6 +580,42 @@
                     <view key="view" contentMode="scaleToFill" id="ZFO-1i-Yyq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
+                                <rect key="frame" x="20" y="176" width="374" height="104"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Talks are organized by Albums. The top right number is the number of talks in this album. Below it is the total time for these talks.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Swipe any Talk right to left.  " lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="24e-Gf-gtN">
+                                <rect key="frame" x="16" y="368" width="374" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This will bring up a menu of options for that talk.  In this way you can, for example, add notes or share a talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqK-5t-5C8">
+                                <rect key="frame" x="16" y="517" width="382" height="95"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
+                                <rect key="frame" x="12" y="122" width="382" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TalkBeingSwiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
+                                <rect key="frame" x="12" y="300" width="382" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TalkSwiped" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
+                                <rect key="frame" x="16" y="449" width="382" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Audiodharma Tips" id="ntc-At-Bez">
@@ -629,15 +704,18 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Album01" width="619" height="73"/>
+        <image name="TalkBeingSwiped" width="618" height="76"/>
+        <image name="TalkSwiped" width="614" height="77"/>
         <image name="checkboxoff" width="112" height="112"/>
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="Ebq-8j-F1C"/>
         <segue reference="30e-7l-0p1"/>
-        <segue reference="OFE-qN-xVe"/>
+        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="ZR1-MZ-juM"/>
     </inferredMetricsTieBreakers>
 </document>
