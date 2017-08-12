@@ -40,16 +40,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yO1-h0-U1d">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yO1-h0-U1d" id="EY1-6l-duf">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="3TL-of-6t5" id="cJ5-7n-zQg"/>
                             <outlet property="delegate" destination="3TL-of-6t5" id="OrE-sf-Qfu"/>
@@ -64,7 +54,7 @@
             </objects>
             <point key="canvasLocation" x="-2068" y="941"/>
         </scene>
-        <!--Series Controller-->
+        <!--Talks by Series-->
         <scene sceneID="Iig-hh-eKf">
             <objects>
                 <tableViewController id="tIY-Xq-HRV" customClass="SeriesController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -72,21 +62,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LSI-cJ-xYf">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LSI-cJ-xYf" id="xC9-45-n20">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="tIY-Xq-HRV" id="Vfv-8o-K9R"/>
                             <outlet property="delegate" destination="tIY-Xq-HRV" id="wT0-jy-hwp"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Talks by Series" id="Ngy-Ed-83g"/>
                     <connections>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Jkk-Sj-9ca"/>
                     </connections>
@@ -438,7 +419,6 @@
         <!--Dana-->
         <scene sceneID="ONQ-Br-3u5">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="2bZ-Wd-tyk" customClass="DonationsController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TIz-cX-6W6"/>
@@ -451,9 +431,9 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
                                 <rect key="frame" x="20" y="87" width="374" height="267"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <mutableString key="text">Dana is the Buddhist word for giving. It is in the spirit of generosity that Audio Dharma and the Insight Meditation Center (IMC) continues a 2500-year-old Buddhist tradition of providing the teachings freely to all who are interested. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
+                                <string key="text">Dana is the Buddhist word for giving. It is in the spirit of generosity that Audio Dharma and the Insight Meditation Center (IMC) continues a 2500-year-old Buddhist tradition of providing the teachings freely to all who are interested. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
 
-Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with tax ID 77-0450217.</mutableString>
+Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with tax ID 77-0450217.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -485,6 +465,7 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
                         <outlet property="cancel" destination="j2Y-JE-WS4" id="Q52-QP-ZVZ"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5350.7246376811599" y="1244.8369565217392"/>
         </scene>
@@ -767,11 +748,11 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="C6A-Dz-FfT"/>
-        <segue reference="hEa-61-IsL"/>
+        <segue reference="ZR1-MZ-juM"/>
         <segue reference="GV9-nD-g6a"/>
         <segue reference="E25-DH-xyE"/>
-        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="Jkk-Sj-9ca"/>
         <segue reference="4Sx-D1-YLI"/>
+        <segue reference="C6A-Dz-FfT"/>
     </inferredMetricsTieBreakers>
 </document>
