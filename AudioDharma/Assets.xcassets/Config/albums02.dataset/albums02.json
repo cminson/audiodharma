@@ -31,30 +31,6 @@
 		"image":"sequence"
     },
 	{
-		"title":"Your Personal Albums",
-		"content":"KEY_CUSTOMALBUMS",
-		"section":"Sangha",
-		"image":"star"
-	},
-	{
-		"title":"Your Recent Talk History",
-		"content":"KEY_TALKHISTORY",
-		"section":"Sangha",
-		"image":"star"
-	},
-	{
-		"title":"Your Notated Talks",
-		"content":"KEY_NOTES",
-		"section":"Sangha",
-		"image":"star"
-	},
-	{
-		"title":"Now: Talks Being Played by Others",
-		"content":"KEY_TALKSBEINGPLAYED",
-		"section":"Sangha",
-		"image":"star"
-	},
-	{
 		"title":"Introduction To Meditation",
 		"content":"Album.IntroToMeditation",
 		"section":"Recommended Talks",
@@ -922,6 +898,30 @@
 				"duration":"43:08"
 			}
 		]
+	},
+	{
+		"title":"Your Personal Albums",
+		"content":"KEY_CUSTOMALBUMS",
+		"section":"Sangha",
+		"image":"star"
+	},
+	{
+		"title":"Your Recent Talk History",
+		"content":"KEY_TALKHISTORY",
+		"section":"Sangha",
+		"image":"star"
+	},
+	{
+		"title":"Your Notated Talks",
+		"content":"KEY_NOTES",
+		"section":"Sangha",
+		"image":"star"
+	},
+	{
+		"title":"Now: Talks Being Played by Others",
+		"content":"KEY_TALKSBEINGPLAYED",
+		"section":"Sangha",
+		"image":"star"
 	}
 	]
 }

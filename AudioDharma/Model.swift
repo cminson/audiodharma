@@ -44,6 +44,7 @@ class Model {
     var SeriesAlbums: [AlbumData] = []     // array of Albums for all series
 
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
+
     var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
     var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
     
@@ -160,6 +161,10 @@ class Model {
             
             //self.getTalksBeingPlayed()
             return [TalksBeingPlayed.sorted(by: { $0.Date < $1.Date })]
+            
+        case KEY_ALLSERIES:
+            return KeyToTalks[content] ?? [[TalkData]]()
+
 
         default:
             return KeyToTalks[content] ?? [[TalkData]]()
@@ -610,8 +615,9 @@ class Model {
                 
                 // if a series is specified, add to a series list
                 if series.characters.count > 1 {
-                    
-                    let seriesKey = series
+                
+                    let seriesKey = "SERIES" + series
+                    print(seriesKey)
                     if KeyToTalks[seriesKey] == nil {
                         KeyToTalks[seriesKey] = [[TalkData]] ()
                         KeyToTalks[seriesKey]?.append([talkData])

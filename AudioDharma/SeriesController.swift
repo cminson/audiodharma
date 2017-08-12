@@ -67,6 +67,7 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
             }
             let album = FilteredAlbums[SelectedRow]
             controller.Content = album.Content
+            print(controller.Content)
             controller.title = album.Title
             
         default:
