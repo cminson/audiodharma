@@ -88,6 +88,14 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             guard let _ = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+        case "DISPLAY_HELP":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")

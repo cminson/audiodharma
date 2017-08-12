@@ -9,8 +9,10 @@
 import UIKit
 
 class DonationsController: UIViewController {
-    @IBOutlet weak var cancel: UIBarButtonItem!
     
+    let DONATIONS_PAGE = "http://audiodharma.org/donate/"
+    
+    @IBOutlet weak var cancel: UIBarButtonItem!
 
     override func viewDidLoad() {
         
@@ -25,6 +27,13 @@ class DonationsController: UIViewController {
     @IBAction func cancel(_ sender: Any) {
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func gotoDonationPage(_ sender: UIButton) {
+        
+        if let url = URL(string: DONATIONS_PAGE) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
 }

@@ -77,7 +77,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LSI-cJ-xYf" id="xC9-45-n20">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -243,6 +243,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bc9-ee-ygr">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem title="Help" id="8cy-uU-Ibx">
+                                    <connections>
+                                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="GV9-nD-g6a"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="vks-uS-GSx"/>
+                                <barButtonItem title="Donate" id="ofJ-Vi-fGN" userLabel="Donate">
+                                    <connections>
+                                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="E25-DH-xyE"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="EU2-EN-w2e" id="rcu-EZ-lY4"/>
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
@@ -418,9 +435,10 @@
             </objects>
             <point key="canvasLocation" x="2423.1884057971015" y="525"/>
         </scene>
-        <!--Donations-->
+        <!--Dana-->
         <scene sceneID="ONQ-Br-3u5">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="2bZ-Wd-tyk" customClass="DonationsController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TIz-cX-6W6"/>
@@ -430,22 +448,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVW-j7-e0v">
-                                <rect key="frame" x="20" y="182" width="374" height="161"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
+                                <rect key="frame" x="20" y="87" width="374" height="267"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Future IMC Donation Page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWW-sU-cux">
-                                <rect key="frame" x="20" y="107" width="374" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <mutableString key="text">Dana is the Buddhist word for giving. It is in the spirit of generosity that Audio Dharma and the Insight Meditation Center (IMC) continues a 2500-year-old Buddhist tradition of providing the teachings freely to all who are interested. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
+
+Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with tax ID 77-0450217.</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
+                                <rect key="frame" x="20" y="378" width="374" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                <size key="titleShadowOffset" width="0.0" height="-1"/>
+                                <state key="normal" title="Make A Donation">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="gotoDonationPage:" destination="2bZ-Wd-tyk" eventType="touchUpInside" id="FuR-MG-Hx6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Donations" id="prv-pp-wyR">
+                    <navigationItem key="navigationItem" title="Dana" id="prv-pp-wyR">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="j2Y-JE-WS4">
                             <connections>
                                 <action selector="cancel:" destination="2bZ-Wd-tyk" id="p95-Ky-MWT"/>
@@ -456,7 +485,6 @@
                         <outlet property="cancel" destination="j2Y-JE-WS4" id="Q52-QP-ZVZ"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5350.7246376811599" y="1244.8369565217392"/>
         </scene>
@@ -582,37 +610,61 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
-                                <rect key="frame" x="20" y="176" width="374" height="104"/>
+                                <rect key="frame" x="12" y="136" width="382" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Talks are organized by Albums. The top right number is the number of talks in this album. Below it is the total time for these talks.</string>
+                                <string key="text">Talks are organized by Albums. For each album, The top right field is the number of talks in this album. Below it is the total time for these talks.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Swipe any Talk right to left.  " lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="24e-Gf-gtN">
-                                <rect key="frame" x="16" y="368" width="374" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This will bring up a menu of options for that talk.  In this way you can, for example, add notes or share a talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqK-5t-5C8">
-                                <rect key="frame" x="16" y="517" width="382" height="95"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
+                                <rect key="frame" x="12" y="288" width="382" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
-                                <rect key="frame" x="12" y="122" width="382" height="60"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
+                                <rect key="frame" x="12" y="82" width="382" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TalkBeingSwiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
-                                <rect key="frame" x="12" y="300" width="382" height="60"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
+                                <rect key="frame" x="12" y="233" width="382" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TalkSwiped" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
-                                <rect key="frame" x="16" y="449" width="382" height="60"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
+                                <rect key="frame" x="12" y="387" width="382" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
+                                <rect key="frame" x="12" y="518" width="382" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
+                                <rect key="frame" x="12" y="437" width="382" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
+                                <rect key="frame" x="12" y="582" width="382" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
+                                <rect key="frame" x="12" y="217" width="382" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
+                                <rect key="frame" x="12" y="368" width="382" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
+                                <rect key="frame" x="12" y="502" width="382" height="5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -704,18 +756,22 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Album01" width="619" height="73"/>
-        <image name="TalkBeingSwiped" width="618" height="76"/>
-        <image name="TalkSwiped" width="614" height="77"/>
+        <image name="album01" width="623" height="79"/>
+        <image name="blackline" width="200" height="6"/>
         <image name="checkboxoff" width="112" height="112"/>
+        <image name="talk01" width="623" height="74"/>
+        <image name="talkbeingswiped" width="623" height="74"/>
+        <image name="talkshowingmenu" width="619" height="74"/>
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="30e-7l-0p1"/>
-        <segue reference="Jkk-Sj-9ca"/>
-        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="C6A-Dz-FfT"/>
+        <segue reference="hEa-61-IsL"/>
+        <segue reference="GV9-nD-g6a"/>
+        <segue reference="E25-DH-xyE"/>
         <segue reference="ZR1-MZ-juM"/>
+        <segue reference="4Sx-D1-YLI"/>
     </inferredMetricsTieBreakers>
 </document>
