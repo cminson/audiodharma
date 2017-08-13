@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nVm-cn-ozb">
-    <device id="retina5_5" orientation="portrait">
+    <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,9 +15,26 @@
             <objects>
                 <tableViewController id="gZV-DG-fA4" customClass="TalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="bDv-84-ufe">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="m8w-qb-NIR">
+                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem title="Help" id="Qhm-JE-rrK">
+                                    <connections>
+                                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="bTy-eA-amS"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="SdO-fO-itt"/>
+                                <barButtonItem title="Donate" id="9DA-Kx-gwk">
+                                    <connections>
+                                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="yIu-mL-keA"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="gZV-DG-fA4" id="VmM-73-CH3"/>
                             <outlet property="delegate" destination="gZV-DG-fA4" id="DeK-AJ-JOC"/>
@@ -37,7 +55,7 @@
             <objects>
                 <tableViewController id="3TL-of-6t5" customClass="SpeakerController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DSL-lx-OlQ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -59,7 +77,7 @@
             <objects>
                 <tableViewController id="tIY-Xq-HRV" customClass="SeriesController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bqb-M0-c6w">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -81,7 +99,7 @@
             <objects>
                 <tableViewController id="1IO-y8-7fd" customClass="UserAlbumsController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kqN-WY-YVC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -110,7 +128,7 @@
             <objects>
                 <tableViewController id="0GJ-yc-Oar" customClass="UserTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="hU3-4W-PQV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -143,7 +161,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SQR-s2-8st"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hCD-JQ-W1H">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Album Title" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dAy-Sf-Ql1">
@@ -195,7 +213,7 @@
             <objects>
                 <tableViewController id="EIX-tq-R4j" customClass="UserTalksEditController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f3t-Od-nxX">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -221,11 +239,11 @@
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="AlbumController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="hZ2-S1-rEv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bc9-ee-ygr">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem title="Help" id="8cy-uU-Ibx">
@@ -267,7 +285,7 @@
                         <viewControllerLayoutGuide type="bottom" id="qSA-PQ-5ij"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Yz5-ce-4Qk">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
@@ -299,7 +317,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T9L-mj-PIQ">
-                                <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="1322" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem title="Help" id="DFn-gc-D1K">
@@ -425,22 +443,22 @@
                         <viewControllerLayoutGuide type="bottom" id="eWU-0Z-WDo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1jb-ng-HGP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="20" y="87" width="374" height="267"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Dana is the Buddhist word for giving. It is in the spirit of generosity that Audio Dharma and the Insight Meditation Center (IMC) continues a 2500-year-old Buddhist tradition of providing the teachings freely to all who are interested. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
-
-Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with tax ID 77-0450217.</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
+                                <rect key="frame" x="20" y="609.5" width="984" height="147"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
+                                </constraints>
+                                <string key="text">AudioDharma is a free service run by the Insight Medication Center of Redwood City, California. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
+</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
-                                <rect key="frame" x="20" y="378" width="374" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
+                                <rect key="frame" x="20" y="810.5" width="984" height="33"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <size key="titleShadowOffset" width="0.0" height="-1"/>
                                 <state key="normal" title="Make A Donation">
@@ -453,6 +471,15 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="centerY" secondItem="1jb-ng-HGP" secondAttribute="centerY" id="1fl-1s-uUR"/>
+                            <constraint firstItem="pdm-IH-cag" firstAttribute="top" secondItem="xhQ-bs-KAh" secondAttribute="bottom" constant="54" id="3Wy-fl-ZVm"/>
+                            <constraint firstItem="pdm-IH-cag" firstAttribute="leading" secondItem="xhQ-bs-KAh" secondAttribute="leading" id="U0V-Cg-R1s"/>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="leading" secondItem="1jb-ng-HGP" secondAttribute="leading" constant="20" id="i18-7r-AGC"/>
+                            <constraint firstItem="pdm-IH-cag" firstAttribute="trailing" secondItem="xhQ-bs-KAh" secondAttribute="trailing" id="joV-6e-9qv"/>
+                            <constraint firstAttribute="trailing" secondItem="xhQ-bs-KAh" secondAttribute="trailing" constant="20" id="o7B-Se-vPG"/>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="centerX" secondItem="1jb-ng-HGP" secondAttribute="centerX" id="r3W-ZB-jBM"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Dana" id="prv-pp-wyR">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="j2Y-JE-WS4">
@@ -467,7 +494,7 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5350.7246376811599" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="5349.375" y="1243.75"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
@@ -496,32 +523,32 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
                         <viewControllerLayoutGuide type="bottom" id="rXD-xp-DXl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="blM-ql-hLg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEs-5q-MmB">
-                                <rect key="frame" x="20" y="137" width="374" height="125"/>
+                                <rect key="frame" x="20" y="146" width="374" height="94"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Note Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-Wj-WqW">
+                                <rect key="frame" x="164" y="114" width="86" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UG5-WD-9Mr">
-                                <rect key="frame" x="128" y="286" width="158" height="30"/>
+                                <rect key="frame" x="128" y="266" width="158" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Delete Note"/>
                                 <connections>
                                     <action selector="deleteNoteText:" destination="a54-As-Y2F" eventType="touchUpInside" id="rDa-o3-7us"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Note Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-Wj-WqW">
-                                <rect key="frame" x="20" y="108" width="374" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -587,69 +614,118 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
                         <viewControllerLayoutGuide type="bottom" id="mD5-vw-7e5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ZFO-1i-Yyq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
-                                <rect key="frame" x="12" y="136" width="382" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
+                                <rect key="frame" x="12" y="136" width="992" height="80"/>
                                 <string key="text">Talks are organized by Albums. For each album, The top right field is the number of talks in this album. Below it is the total time for these talks.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
-                                <rect key="frame" x="12" y="288" width="382" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
+                                <rect key="frame" x="12" y="288" width="992" height="80"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
-                                <rect key="frame" x="12" y="82" width="382" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
+                                <rect key="frame" x="12" y="82" width="992" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="eRH-u6-ED3"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
-                                <rect key="frame" x="12" y="233" width="382" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
+                                <rect key="frame" x="12" y="233" width="992" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="W00-Ly-CvI"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
-                                <rect key="frame" x="12" y="387" width="382" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
+                                <rect key="frame" x="12" y="387" width="992" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="dku-Ta-siX"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
-                                <rect key="frame" x="12" y="518" width="382" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
+                                <rect key="frame" x="12" y="518" width="992" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="IZp-ku-DmB"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
-                                <rect key="frame" x="12" y="437" width="382" height="69"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
+                                <rect key="frame" x="12" y="437" width="992" height="69"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
-                                <rect key="frame" x="12" y="582" width="382" height="69"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
+                                <rect key="frame" x="12" y="582" width="992" height="699"/>
                                 <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
-                                <rect key="frame" x="12" y="217" width="382" height="5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
+                                <rect key="frame" x="12" y="217" width="992" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="0fY-72-gEp"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
-                                <rect key="frame" x="12" y="368" width="382" height="5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
+                                <rect key="frame" x="12" y="368" width="992" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="5u9-qU-yFG"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
-                                <rect key="frame" x="12" y="502" width="382" height="5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
+                                <rect key="frame" x="12" y="502" width="992" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="hdI-AC-Yos"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mD5-vw-7e5" firstAttribute="top" secondItem="TFN-ET-z5v" secondAttribute="bottom" constant="85" id="13c-u1-jsL"/>
+                            <constraint firstItem="XTI-ey-ROK" firstAttribute="top" secondItem="3mn-Qx-7h8" secondAttribute="bottom" constant="55" id="39y-WK-hh3"/>
+                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="top" secondItem="mL9-nY-rAD" secondAttribute="bottom" constant="14" id="3i5-jt-D0E"/>
+                            <constraint firstItem="mL9-nY-rAD" firstAttribute="top" secondItem="Y4M-Jb-KSm" secondAttribute="bottom" id="3mU-XG-ufx"/>
+                            <constraint firstItem="XTI-ey-ROK" firstAttribute="leading" secondItem="w4O-yu-uJv" secondAttribute="leading" id="511-jB-Wj7"/>
+                            <constraint firstItem="T4E-rp-qwb" firstAttribute="top" secondItem="hsT-yd-cYr" secondAttribute="bottom" constant="75" id="67W-CN-7jY"/>
+                            <constraint firstItem="hsT-yd-cYr" firstAttribute="trailing" secondItem="oKR-nL-VCl" secondAttribute="trailing" id="8xp-vM-x1I"/>
+                            <constraint firstItem="DJK-6o-Nog" firstAttribute="top" secondItem="T4E-rp-qwb" secondAttribute="bottom" constant="11" id="8zg-Vi-0b7"/>
+                            <constraint firstItem="hsT-yd-cYr" firstAttribute="leading" secondItem="oKR-nL-VCl" secondAttribute="leading" id="BBf-vW-Yqp"/>
+                            <constraint firstItem="TFN-ET-z5v" firstAttribute="top" secondItem="w4O-yu-uJv" secondAttribute="bottom" constant="4" id="Dxv-ae-CU9"/>
+                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="leading" secondItem="XTI-ey-ROK" secondAttribute="leading" id="EMa-bU-97f"/>
+                            <constraint firstItem="w4O-yu-uJv" firstAttribute="trailing" secondItem="TFN-ET-z5v" secondAttribute="trailing" id="EiT-vm-JRP"/>
+                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="trailing" secondItem="3eC-NP-Nyf" secondAttribute="trailing" id="F9Q-6d-kbJ"/>
+                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="trailing" secondItem="XTI-ey-ROK" secondAttribute="trailing" id="MoA-OX-M4i"/>
+                            <constraint firstItem="mL9-nY-rAD" firstAttribute="leading" secondItem="3mn-Qx-7h8" secondAttribute="leading" id="Ouv-fP-GSe"/>
+                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="trailing" secondItem="mL9-nY-rAD" secondAttribute="trailing" id="PdX-XB-SL5"/>
+                            <constraint firstItem="w4O-yu-uJv" firstAttribute="top" secondItem="3eC-NP-Nyf" secondAttribute="bottom" constant="12" id="QeQ-hZ-agw"/>
+                            <constraint firstItem="DJK-6o-Nog" firstAttribute="trailing" secondItem="Y4M-Jb-KSm" secondAttribute="trailing" id="Rmn-w4-9Ql"/>
+                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="top" secondItem="mL9-nY-rAD" secondAttribute="bottom" constant="64" id="Ru7-cx-RDw"/>
+                            <constraint firstItem="T4E-rp-qwb" firstAttribute="leading" secondItem="DJK-6o-Nog" secondAttribute="leading" id="SGI-55-qq5"/>
+                            <constraint firstItem="mL9-nY-rAD" firstAttribute="trailing" secondItem="3mn-Qx-7h8" secondAttribute="trailing" id="Xvd-jq-a8G"/>
+                            <constraint firstItem="T4E-rp-qwb" firstAttribute="trailing" secondItem="DJK-6o-Nog" secondAttribute="trailing" id="bCJ-4d-h53"/>
+                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="leading" secondItem="mL9-nY-rAD" secondAttribute="leading" id="gIm-Pe-8sR"/>
+                            <constraint firstItem="hsT-yd-cYr" firstAttribute="leading" secondItem="ZFO-1i-Yyq" secondAttribute="leadingMargin" constant="-8" id="h2y-RA-swV"/>
+                            <constraint firstItem="mL9-nY-rAD" firstAttribute="top" secondItem="DJK-6o-Nog" secondAttribute="bottom" constant="75" id="hXA-jy-XS2"/>
+                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="top" secondItem="T4E-rp-qwb" secondAttribute="bottom" constant="66" id="j98-a5-ijQ"/>
+                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="leading" secondItem="3eC-NP-Nyf" secondAttribute="leading" id="k2L-4W-N7k"/>
+                            <constraint firstItem="T4E-rp-qwb" firstAttribute="top" secondItem="oKR-nL-VCl" secondAttribute="bottom" constant="1" id="lCo-qc-RFM"/>
+                            <constraint firstItem="oKR-nL-VCl" firstAttribute="leading" secondItem="T4E-rp-qwb" secondAttribute="leading" id="rRW-AW-GoM"/>
+                            <constraint firstItem="XTI-ey-ROK" firstAttribute="trailing" secondItem="w4O-yu-uJv" secondAttribute="trailing" id="sh5-Dm-UwQ"/>
+                            <constraint firstItem="hsT-yd-cYr" firstAttribute="trailing" secondItem="ZFO-1i-Yyq" secondAttribute="trailingMargin" id="tTe-0d-7qE"/>
+                            <constraint firstItem="hsT-yd-cYr" firstAttribute="top" secondItem="GVr-ag-kSG" secondAttribute="bottom" constant="18" id="uW8-Vz-Dyd"/>
+                            <constraint firstItem="oKR-nL-VCl" firstAttribute="trailing" secondItem="T4E-rp-qwb" secondAttribute="trailing" id="v6Y-Pl-S3C"/>
+                            <constraint firstItem="oKR-nL-VCl" firstAttribute="top" secondItem="GVr-ag-kSG" secondAttribute="bottom" constant="72" id="wrT-S1-XSc"/>
+                            <constraint firstItem="DJK-6o-Nog" firstAttribute="leading" secondItem="Y4M-Jb-KSm" secondAttribute="leading" id="xNv-4V-JNO"/>
+                            <constraint firstItem="w4O-yu-uJv" firstAttribute="top" secondItem="XTI-ey-ROK" secondAttribute="bottom" constant="11" id="xfQ-Fw-Jv1"/>
+                            <constraint firstItem="w4O-yu-uJv" firstAttribute="leading" secondItem="TFN-ET-z5v" secondAttribute="leading" id="zcl-bd-UsH"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Audiodharma Tips" id="ntc-At-Bez">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="bYb-z8-9uP">
@@ -748,11 +824,11 @@ Insight Meditation Center of the Mid-Peninsula is a 501(c)(3) organization, with
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="GV9-nD-g6a"/>
-        <segue reference="E25-DH-xyE"/>
-        <segue reference="Jkk-Sj-9ca"/>
-        <segue reference="4Sx-D1-YLI"/>
         <segue reference="C6A-Dz-FfT"/>
+        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="yIu-mL-keA"/>
+        <segue reference="bTy-eA-amS"/>
+        <segue reference="4Sx-D1-YLI"/>
     </inferredMetricsTieBreakers>
 </document>

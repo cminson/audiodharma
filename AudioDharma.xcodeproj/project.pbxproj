@@ -23,9 +23,9 @@
 		8387D6401EFC07AD0025006B /* AlbumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* AlbumController.swift */; };
 		839E53861F324CFC00D0A102 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E53841F324CFC00D0A102 /* AlbumCell.swift */; };
 		839E53871F324CFC00D0A102 /* AlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839E53851F324CFC00D0A102 /* AlbumCell.xib */; };
+		83ADC90F1F40DB4F00D4D9C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */; };
 		83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakerController.swift */; };
 		83C22CB51F184E87002503AE /* DonationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsController.swift */; };
-		83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */; };
 		83CA123F1F028B8A00798D20 /* UserAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */; };
 		83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D318791F3669FA00200542 /* TalkHistoryData.swift */; };
 		83DBF7191F3CDA26005A13F7 /* SeriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DBF7181F3CDA26005A13F7 /* SeriesController.swift */; };
@@ -55,9 +55,9 @@
 		8387D63F1EFC07AD0025006B /* AlbumController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumController.swift; sourceTree = "<group>"; };
 		839E53841F324CFC00D0A102 /* AlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		839E53851F324CFC00D0A102 /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
+		83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83BF9D071F33B19F006367CF /* SpeakerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakerController.swift; sourceTree = "<group>"; };
 		83C22CB41F184E87002503AE /* DonationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsController.swift; sourceTree = "<group>"; };
-		83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlbumsController.swift; sourceTree = "<group>"; };
 		83D318791F3669FA00200542 /* TalkHistoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkHistoryData.swift; sourceTree = "<group>"; };
 		83DBF7181F3CDA26005A13F7 /* SeriesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesController.swift; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 				8387D63D1EFC05180025006B /* AlbumData.swift */,
 				8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */,
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
-				83C3C18A1EFD82AF007BAC99 /* Assets.xcassets */,
+				83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */,
 			);
 			path = AudioDharma;
 			sourceTree = "<group>";
@@ -208,9 +208,9 @@
 			files = (
 				839E53871F324CFC00D0A102 /* AlbumCell.xib in Resources */,
 				8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */,
-				83C3C18B1EFD82AF007BAC99 /* Assets.xcassets in Resources */,
 				837C3DD91F2D34B7005C9A0A /* TalkCell.xib in Resources */,
 				83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */,
+				83ADC90F1F40DB4F00D4D9C5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

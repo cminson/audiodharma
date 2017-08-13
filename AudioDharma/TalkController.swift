@@ -98,7 +98,16 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             controller.TalkFileName = talk.FileName
             controller.title = talk.Title
             //print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
-
+            
+        case "DISPLAY_HELP":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            

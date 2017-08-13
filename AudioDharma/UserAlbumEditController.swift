@@ -25,16 +25,36 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
     
     let ImagePicker = UIImagePickerController()
 
+    let MAXUSERALBUMIMAGES = 15
+    var UserAlbumImageList : [UIImage] = [UIImage] ()
     
     // MARK: Init
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        userImageView.contentMode = UIViewContentMode.scaleAspectFit
+
+        
+        for i in 1...MAXUSERALBUMIMAGES {
+            
+            let name = "useralbumcover" + String(format: "%02d", i)
+            if let libraryImage = UIImage(named: name) {
+                
+                UserAlbumImageList.append(libraryImage)
+            }
+        }
         
         print("view loaded: \(String(describing: UserAlbum?.Title))")
         
         // we're adding a new record (vs editing an existing)
         if AddingNewAlbum == true {
-            UserAlbum = UserAlbumData(title: "Album Title", image: UIImage(named: "flower01")!)
+            
+            let count : UInt32 = UInt32(UserAlbumImageList.count - 1)
+            let randomNum = Int(arc4random_uniform(count))
+            let libraryImage = UserAlbumImageList[randomNum]
+            
+            UserAlbum = UserAlbumData(title: "Album Title", image: libraryImage)
         }
 
         if let title = UserAlbum?.Title {

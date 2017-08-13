@@ -22,6 +22,8 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
     // MARK: Init
     override func viewDidLoad() {
         
+        print("UserAlbumsController viewDidLoad")
+
         super.viewDidLoad()
         
         SearchController.searchResultsUpdater = self
@@ -35,6 +37,7 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
     
     override func viewWillAppear(_ animated: Bool) {
         
+        print("UserAlbumsController viewWillAppear")
         super.viewWillAppear(animated)
         
         FilteredUserAlbums = TheDataModel.UserAlbums
@@ -123,11 +126,11 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
                 let newIndexPath = IndexPath(row: FilteredUserAlbums.count, section: 0)
                 
                 FilteredUserAlbums.append(controllerUserAlbum)
-                TheDataModel.addToUserAlbums(album: controllerUserAlbum)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                TheDataModel.addUserAlbum(album: controllerUserAlbum)
+                //tableView.insertRows(at: [newIndexPath], with: .automatic)
 
             } else {
-                FilteredUserAlbums[SelectedRow] = controllerUserAlbum
+                //FilteredUserAlbums[SelectedRow] = controllerUserAlbum
                 //userAlbum.Title = controllerUserAlbum.Title
                 //userAlbum.Image = controllerUserAlbum.Image
                 TheDataModel.updateUserAlbum(updatedAlbum: controllerUserAlbum)
@@ -205,11 +208,11 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
 
                 self.FilteredUserAlbums.remove(at: indexPath.row)
                 
+                TheDataModel.removeUserAlbum(at: indexPath.row)
                 TheDataModel.saveUserAlbumData()
                 TheDataModel.computeUserAlbumStats()
 
                 self.tableView.reloadData()
-                //TheDataModel.RootController.tableView.reloadData()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in

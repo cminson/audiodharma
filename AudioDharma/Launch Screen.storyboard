@@ -22,23 +22,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
-                                <rect key="frame" x="-40.666666666666657" y="183" width="495.33333333333337" height="371"/>
+                                <rect key="frame" x="132" y="293" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="3iw-jq-wRl"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="GrJ-Vi-ZaI"/>
+                                    <constraint firstAttribute="height" constant="150" id="jWc-4S-OoY"/>
+                                    <constraint firstAttribute="width" constant="150" id="jz1-u7-yHw"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="NuX-87-14Q"/>
-                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="pbH-hv-0r8"/>
+                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Nwo-LT-S4j"/>
+                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="fUn-EU-wny"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="50.724637681159422" y="374.18478260869568"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Earth" width="495" height="371"/>
+        <image name="Earth" width="250" height="250"/>
     </resources>
 </document>

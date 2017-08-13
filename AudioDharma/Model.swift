@@ -204,9 +204,26 @@ class Model {
         }
     }
     
-    func addToUserAlbums(album: UserAlbumData) {
+    func addUserAlbum(album: UserAlbumData) {
         
         UserAlbums.append(album)
+    }
+    
+    func removeUserAlbum(at: Int) {
+        
+        UserAlbums.remove(at: at)
+    }
+    
+    func removeUserAlbum(userAlbum: UserAlbumData) {
+        
+        for (index, album) in UserAlbums.enumerated() {
+            
+            if album.Content == userAlbum.Content {
+                
+                UserAlbums.remove(at: index)
+                break
+            }
+        }
     }
     
     func getUserAlbumTalks(userAlbum: UserAlbumData) -> [TalkData]{
@@ -617,7 +634,7 @@ class Model {
                 if series.characters.count > 1 {
                 
                     let seriesKey = "SERIES" + series
-                    print(seriesKey)
+                    //print(seriesKey)
                     if KeyToTalks[seriesKey] == nil {
                         KeyToTalks[seriesKey] = [[TalkData]] ()
                         KeyToTalks[seriesKey]?.append([talkData])
