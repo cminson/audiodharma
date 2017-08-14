@@ -25,6 +25,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
         self.tableView.delegate = self
         
+        TheDataModel.RootController = self
         TheDataModel.loadData()
         super.viewDidLoad()
 
@@ -39,10 +40,20 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         tableView.tableHeaderView = SearchController.searchBar
     }
     
-   
+  
+    override func viewWillAppear(_ animated: Bool) {
+
+        print("AlbumController: viewWillAppear")
+
+        super.viewWillAppear(animated)
+
+    }
+
     
     override func viewWillDisappear(_ animated: Bool) {
         
+        print("AlbumController: viewWillDisappear")
+
         SearchController.isActive = false
     }
 
@@ -139,11 +150,15 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
+        print("AlbumController numberofsections: ",FilteredAlbumSections.count)
+
         return FilteredAlbumSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
+        print("AlbumController numberofrowsinsections: ",FilteredAlbumSections[section].count)
+        
         return FilteredAlbumSections[section].count
     }
     
@@ -163,6 +178,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        print("AlbumController updating cell at row: ",indexPath.row)
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
 
         

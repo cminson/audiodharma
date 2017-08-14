@@ -734,6 +734,12 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="helpImage01" destination="hsT-yd-cYr" id="dRZ-aB-JJG"/>
+                        <outlet property="helpImage02" destination="DJK-6o-Nog" id="1Rd-bU-lJ3"/>
+                        <outlet property="helpImage03" destination="3mn-Qx-7h8" id="SIL-YW-ecs"/>
+                        <outlet property="helpImage04" destination="w4O-yu-uJv" id="BRy-rt-F6j"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu5-QY-ZHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

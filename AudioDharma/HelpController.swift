@@ -9,10 +9,24 @@
 import UIKit
 
 class HelpController: UIViewController {
+    
+    
 
+    @IBOutlet weak var helpImage01: UIImageView!
+    @IBOutlet weak var helpImage02: UIImageView!
+    @IBOutlet weak var helpImage03: UIImageView!
+    @IBOutlet weak var helpImage04: UIImageView!
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        helpImage01.contentMode = UIViewContentMode.scaleAspectFit
+        helpImage02.contentMode = UIViewContentMode.scaleAspectFit
+        helpImage03.contentMode = UIViewContentMode.scaleAspectFit
+        helpImage04.contentMode = UIViewContentMode.scaleAspectFit
+
     }
 
     override func didReceiveMemoryWarning() {
