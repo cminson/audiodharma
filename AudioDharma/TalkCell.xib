@@ -16,35 +16,35 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="418" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="418" height="49.666666666666664"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
-                        <rect key="frame" x="337" y="19" width="8" height="8"/>
+                        <rect key="frame" x="337" y="19" width="8" height="7"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="8" id="FN0-RY-qqq"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-HT-Bye">
-                        <rect key="frame" x="1" y="5" width="40" height="40"/>
+                        <rect key="frame" x="1" y="5" width="40" height="39"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="Ej1-dk-Gxo"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pd-06-Ypg">
-                        <rect key="frame" x="336" y="23" width="80" height="20"/>
+                        <rect key="frame" x="336" y="23" width="80" height="19"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-ia-l6x">
-                        <rect key="frame" x="46" y="3" width="290" height="43"/>
+                        <rect key="frame" x="46" y="3" width="290" height="42"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZG-DA-B6i">
-                        <rect key="frame" x="336" y="5" width="80" height="20"/>
+                        <rect key="frame" x="336" y="5" width="80" height="19"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -62,6 +62,7 @@
                     <constraint firstItem="yVe-HT-Bye" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="I5Q-8n-f7B"/>
                     <constraint firstItem="eJ9-2D-Cve" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="1" id="Kpi-Dc-XM7"/>
                     <constraint firstItem="yVe-HT-Bye" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-7" id="Qjz-F7-iKD"/>
+                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Qk0-Gw-7qP"/>
                     <constraint firstAttribute="bottomMargin" secondItem="8pd-06-Ypg" secondAttribute="bottom" constant="-1.3333333333333357" id="TFU-j6-lXf"/>
                     <constraint firstItem="eJ9-2D-Cve" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="XdD-IE-vXq"/>
                     <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="Xpy-ia-l6x" secondAttribute="centerY" id="awG-vx-Pfv"/>
@@ -82,6 +83,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Earth" width="495" height="371"/>
+        <image name="Earth" width="250" height="250"/>
     </resources>
 </document>

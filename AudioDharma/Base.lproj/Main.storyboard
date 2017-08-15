@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nVm-cn-ozb">
-    <device id="ipad12_9" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,26 +15,9 @@
             <objects>
                 <tableViewController id="gZV-DG-fA4" customClass="TalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="bDv-84-ufe">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="m8w-qb-NIR">
-                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <items>
-                                <barButtonItem title="Help" id="Qhm-JE-rrK">
-                                    <connections>
-                                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="bTy-eA-amS"/>
-                                    </connections>
-                                </barButtonItem>
-                                <barButtonItem style="plain" systemItem="flexibleSpace" id="SdO-fO-itt"/>
-                                <barButtonItem title="Donate" id="9DA-Kx-gwk">
-                                    <connections>
-                                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="yIu-mL-keA"/>
-                                    </connections>
-                                </barButtonItem>
-                            </items>
-                        </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="gZV-DG-fA4" id="VmM-73-CH3"/>
                             <outlet property="delegate" destination="gZV-DG-fA4" id="DeK-AJ-JOC"/>
@@ -55,7 +38,7 @@
             <objects>
                 <tableViewController id="3TL-of-6t5" customClass="SpeakerController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DSL-lx-OlQ">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -77,7 +60,7 @@
             <objects>
                 <tableViewController id="tIY-Xq-HRV" customClass="SeriesController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bqb-M0-c6w">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -99,7 +82,7 @@
             <objects>
                 <tableViewController id="1IO-y8-7fd" customClass="UserAlbumsController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kqN-WY-YVC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -128,7 +111,7 @@
             <objects>
                 <tableViewController id="0GJ-yc-Oar" customClass="UserTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="hU3-4W-PQV">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -161,7 +144,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SQR-s2-8st"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hCD-JQ-W1H">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Album Title" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dAy-Sf-Ql1">
@@ -213,7 +196,7 @@
             <objects>
                 <tableViewController id="EIX-tq-R4j" customClass="UserTalksEditController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f3t-Od-nxX">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -239,26 +222,9 @@
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="AlbumController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="hZ2-S1-rEv">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bc9-ee-ygr">
-                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <items>
-                                <barButtonItem title="Help" id="8cy-uU-Ibx">
-                                    <connections>
-                                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="GV9-nD-g6a"/>
-                                    </connections>
-                                </barButtonItem>
-                                <barButtonItem style="plain" systemItem="flexibleSpace" id="vks-uS-GSx"/>
-                                <barButtonItem title="Donate" id="ofJ-Vi-fGN" userLabel="Donate">
-                                    <connections>
-                                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="E25-DH-xyE"/>
-                                    </connections>
-                                </barButtonItem>
-                            </items>
-                        </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="EU2-EN-w2e" id="rcu-EZ-lY4"/>
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
@@ -266,6 +232,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Albums" id="ZPM-Q5-ruw"/>
                     <connections>
+                        <outlet property="buttonHelp" destination="BHN-m6-ylO" id="n8u-b5-bhn"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="hEa-61-IsL"/>
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
@@ -273,6 +240,11 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Item" image="questionmark" id="BHN-m6-ylO" userLabel="ButtonHelp">
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="LT8-Qb-3xj"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-1436" y="170"/>
         </scene>
@@ -285,7 +257,7 @@
                         <viewControllerLayoutGuide type="bottom" id="qSA-PQ-5ij"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Yz5-ce-4Qk">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
@@ -316,29 +288,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T9L-mj-PIQ">
-                                <rect key="frame" x="0.0" y="1322" width="1024" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem title="Help" id="DFn-gc-D1K">
-                                        <connections>
-                                            <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="q0A-Aq-AZG"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="apU-iD-xaK"/>
-                                    <barButtonItem title="Share" id="aBi-lk-ffW">
-                                        <connections>
-                                            <action selector="shareTalk:" destination="Bai-ex-z2B" id="Bhs-68-uHQ"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4y3-2e-B0B"/>
-                                    <barButtonItem title="Donate" id="YRv-gD-Huq">
-                                        <connections>
-                                            <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="1iP-Mb-SXw"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
                                 <rect key="frame" x="88" y="265" width="240" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -443,11 +392,11 @@
                         <viewControllerLayoutGuide type="bottom" id="eWU-0Z-WDo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1jb-ng-HGP">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="20" y="609.5" width="984" height="147"/>
+                                <rect key="frame" x="20" y="295" width="374" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
                                 </constraints>
@@ -458,7 +407,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
-                                <rect key="frame" x="20" y="810.5" width="984" height="33"/>
+                                <rect key="frame" x="20" y="496" width="374" height="33"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <size key="titleShadowOffset" width="0.0" height="-1"/>
                                 <state key="normal" title="Make A Donation">
@@ -523,7 +472,7 @@
                         <viewControllerLayoutGuide type="bottom" id="rXD-xp-DXl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="blM-ql-hLg">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEs-5q-MmB">
@@ -590,20 +539,24 @@
         <!--Navigation Controller-->
         <scene sceneID="RVu-SL-aJf">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nVm-cn-ozb" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nVm-cn-ozb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gGm-ag-i3t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="XJQ-zL-yLF">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="EU2-EN-w2e" kind="relationship" relationship="rootViewController" id="Uqd-4K-XCd"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j4i-GK-pF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2142" y="170"/>
+            <point key="canvasLocation" x="-2139" y="170"/>
         </scene>
         <!--Audiodharma Tips-->
         <scene sceneID="3HU-nD-q64">
@@ -614,73 +567,73 @@
                         <viewControllerLayoutGuide type="bottom" id="mD5-vw-7e5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ZFO-1i-Yyq">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
-                                <rect key="frame" x="12" y="136" width="992" height="80"/>
+                                <rect key="frame" x="12" y="136" width="382" height="80"/>
                                 <string key="text">Talks are organized by Albums. For each album, The top right field is the number of talks in this album. Below it is the total time for these talks.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
-                                <rect key="frame" x="12" y="288" width="992" height="80"/>
+                                <rect key="frame" x="12" y="288" width="382" height="80"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
-                                <rect key="frame" x="12" y="82" width="992" height="60"/>
+                                <rect key="frame" x="12" y="82" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="eRH-u6-ED3"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
-                                <rect key="frame" x="12" y="233" width="992" height="60"/>
+                                <rect key="frame" x="12" y="233" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="W00-Ly-CvI"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
-                                <rect key="frame" x="12" y="387" width="992" height="60"/>
+                                <rect key="frame" x="12" y="387" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="dku-Ta-siX"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
-                                <rect key="frame" x="12" y="518" width="992" height="60"/>
+                                <rect key="frame" x="12" y="518" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="IZp-ku-DmB"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
-                                <rect key="frame" x="12" y="437" width="992" height="69"/>
+                                <rect key="frame" x="12" y="437" width="382" height="69"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
-                                <rect key="frame" x="12" y="582" width="992" height="699"/>
+                                <rect key="frame" x="12" y="582" width="382" height="69"/>
                                 <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
-                                <rect key="frame" x="12" y="217" width="992" height="5"/>
+                                <rect key="frame" x="12" y="217" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="0fY-72-gEp"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
-                                <rect key="frame" x="12" y="368" width="992" height="5"/>
+                                <rect key="frame" x="12" y="368" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="5u9-qU-yFG"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
-                                <rect key="frame" x="12" y="502" width="992" height="5"/>
+                                <rect key="frame" x="12" y="502" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="hdI-AC-Yos"/>
                                 </constraints>
@@ -822,6 +775,7 @@
         <image name="album01" width="623" height="79"/>
         <image name="blackline" width="200" height="6"/>
         <image name="checkboxoff" width="112" height="112"/>
+        <image name="questionmark" width="112" height="112"/>
         <image name="talk01" width="623" height="74"/>
         <image name="talkbeingswiped" width="623" height="74"/>
         <image name="talkshowingmenu" width="619" height="74"/>
@@ -830,11 +784,9 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="C6A-Dz-FfT"/>
-        <segue reference="Jkk-Sj-9ca"/>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="yIu-mL-keA"/>
-        <segue reference="bTy-eA-amS"/>
+        <segue reference="hEa-61-IsL"/>
         <segue reference="4Sx-D1-YLI"/>
+        <segue reference="C6A-Dz-FfT"/>
+        <segue reference="ZR1-MZ-juM"/>
     </inferredMetricsTieBreakers>
 </document>

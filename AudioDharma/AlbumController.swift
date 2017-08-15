@@ -11,6 +11,8 @@ import UIKit
 
 class AlbumController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    
     //MARK: Properties
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
@@ -38,12 +40,15 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        
+        self.setToolbarItems([buttonHelp], animated: false)
     }
     
   
     override func viewWillAppear(_ animated: Bool) {
-
-        print("AlbumController: viewWillAppear")
 
         super.viewWillAppear(animated)
 
@@ -52,8 +57,6 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("AlbumController: viewWillDisappear")
-
         SearchController.isActive = false
     }
 
@@ -150,15 +153,11 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        print("AlbumController numberofsections: ",FilteredAlbumSections.count)
-
         return FilteredAlbumSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        print("AlbumController numberofrowsinsections: ",FilteredAlbumSections[section].count)
-        
         return FilteredAlbumSections[section].count
     }
     
@@ -178,7 +177,6 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("AlbumController updating cell at row: ",indexPath.row)
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
 
         
@@ -193,7 +191,6 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         }
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
-        //print(Album.Content, AlbumStats)
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
