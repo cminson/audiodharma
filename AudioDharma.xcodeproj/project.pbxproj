@@ -25,6 +25,7 @@
 		839E53861F324CFC00D0A102 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E53841F324CFC00D0A102 /* AlbumCell.swift */; };
 		839E53871F324CFC00D0A102 /* AlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839E53851F324CFC00D0A102 /* AlbumCell.xib */; };
 		83ADC90F1F40DB4F00D4D9C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */; };
+		83BBD9CB1F45E8DA001CEF09 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */; };
 		83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakerController.swift */; };
 		83C22CB51F184E87002503AE /* DonationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsController.swift */; };
 		83CA123F1F028B8A00798D20 /* UserAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */; };
@@ -58,6 +59,8 @@
 		839E53841F324CFC00D0A102 /* AlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		839E53851F324CFC00D0A102 /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
 		83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
+		83BBD9CD1F45E940001CEF09 /* ZipArchive.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ZipArchive.framework.dSYM; path = Carthage/Build/iOS/ZipArchive.framework.dSYM; sourceTree = "<group>"; };
 		83BF9D071F33B19F006367CF /* SpeakerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakerController.swift; sourceTree = "<group>"; };
 		83C22CB41F184E87002503AE /* DonationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsController.swift; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlbumsController.swift; sourceTree = "<group>"; };
@@ -81,6 +84,7 @@
 			files = (
 				835F52391F099A9F00F8A4B9 /* AVFoundation.framework in Frameworks */,
 				834C4CCD1F0570CE00512E7C /* Social.framework in Frameworks */,
+				83BBD9CB1F45E8DA001CEF09 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +94,7 @@
 		834C4CCB1F0570CE00512E7C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */,
 				835F52381F099A9F00F8A4B9 /* AVFoundation.framework */,
 				834C4CCC1F0570CE00512E7C /* Social.framework */,
 			);
@@ -99,6 +104,7 @@
 		83DC0D541EF17B390071CAD3 = {
 			isa = PBXGroup;
 			children = (
+				83BBD9CD1F45E940001CEF09 /* ZipArchive.framework.dSYM */,
 				83DC0D5F1EF17B390071CAD3 /* AudioDharma */,
 				83DC0D5E1EF17B390071CAD3 /* Products */,
 				834C4CCB1F0570CE00512E7C /* Frameworks */,
@@ -159,6 +165,7 @@
 				83DC0D591EF17B390071CAD3 /* Sources */,
 				83DC0D5A1EF17B390071CAD3 /* Frameworks */,
 				83DC0D5B1EF17B390071CAD3 /* Resources */,
+				83BBD9CF1F45E96E001CEF09 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -218,6 +225,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		83BBD9CF1F45E96E001CEF09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ZipArchive.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZipArchive.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		83DC0D591EF17B390071CAD3 /* Sources */ = {
@@ -364,6 +389,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = V25Y65GL8V;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = AudioDharma/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.AudioDharma;
@@ -377,6 +406,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = V25Y65GL8V;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = AudioDharma/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.AudioDharma;

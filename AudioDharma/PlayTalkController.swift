@@ -57,6 +57,7 @@ class PlayTalkController: UIViewController {
     var TalkTimer : Timer?
     var MP3TalkPlayer : MP3Player!
 
+    var DEBUG: MPVolumeView!
     
     // Mark: Init
     override func viewDidLoad() {
@@ -81,12 +82,11 @@ class PlayTalkController: UIViewController {
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
 
-        
-        let d1 = volumeView.areWirelessRoutesAvailable
-        print("D1: ", d1)
-        let d2 = volumeView.showsRouteButton
-        print("D2: ", d2)
-        
+        DEBUG = volumeView
+        let d1 = volumeView.areWirelessRoutesAvailable  // false
+        let d2 = volumeView.isWirelessRouteActive   // true
+        let d3 = volumeView.showsRouteButton
+        print(d1, d2, d3)
         // start the background report thread (reporting status to web)
         Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
 
@@ -187,6 +187,12 @@ class PlayTalkController: UIViewController {
         updateTitleDisplay()
         
         TheDataModel.addToTalkHistory(talk: CurrentTalk)
+        
+        let d1 = DEBUG.areWirelessRoutesAvailable  // false
+        let d2 = DEBUG.isWirelessRouteActive   // true
+        let d3 = DEBUG.showsRouteButton
+        print(d1, d2, d3)
+
     }
     
     func restartTalk() {

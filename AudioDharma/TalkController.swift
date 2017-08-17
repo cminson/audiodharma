@@ -231,8 +231,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         let header = view as! UITableViewHeaderFooterView
         
-        view.tintColor = UIColor.black
-        header.textLabel?.textColor = UIColor.white
+        view.tintColor = SECTION_BACKGROUND
+        header.textLabel?.textColor = SECTION_TEXT
         header.textLabel?.textAlignment = NSTextAlignment.center
     }
     

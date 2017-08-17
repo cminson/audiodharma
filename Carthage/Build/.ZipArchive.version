@@ -1,0 +1,21 @@
+{
+  "iOS" : [
+    {
+      "hash" : "6531457c5ec6492c22c665b8336e2a2912b74f028639acd65f10acfa8b0083bf",
+      "name" : "ZipArchive"
+    }
+  ],
+  "commitish" : "v2.0.3",
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "Mac" : [
+    {
+      "hash" : "780e052bf15a8e8c3fd549652c8303e358f5a5b574149968065d6298f9807cc8",
+      "name" : "ZipArchive"
+    }
+  ]
+}
