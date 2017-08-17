@@ -25,11 +25,25 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks" id="VXF-Dh-aL5"/>
                     <connections>
+                        <outlet property="buttonDonate" destination="bKF-AN-BVr" id="eTs-Gs-lg0"/>
+                        <outlet property="buttonHelp" destination="nad-WU-age" id="a18-RM-Pv2"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="4Sx-D1-YLI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="nad-WU-age">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="R8F-Mg-qzM"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="bKF-AN-BVr">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="ie0-kf-o7Q"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-741" y="170"/>
         </scene>
@@ -48,10 +62,24 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks by Speakers" id="hKw-C4-xAf"/>
                     <connections>
+                        <outlet property="buttonDonate" destination="biB-pZ-N7G" id="HOR-CF-qST"/>
+                        <outlet property="buttonHelp" destination="HVo-Tk-Ya2" id="gmJ-og-LxX"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Ebq-8j-F1C"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="HVo-Tk-Ya2">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="Xv9-MG-xiH"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="biB-pZ-N7G">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="B6o-GF-pY3"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-2068" y="941"/>
         </scene>
@@ -70,10 +98,24 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks by Series" id="Ngy-Ed-83g"/>
                     <connections>
+                        <outlet property="buttonDonate" destination="jsq-4Z-1Sp" id="dRn-XK-4Ma"/>
+                        <outlet property="buttonHelp" destination="lMB-mN-zSG" id="4tW-6N-ncQ"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Jkk-Sj-9ca"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="lMB-mN-zSG">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="ffI-Hi-abN"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="jsq-4Z-1Sp">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="eae-sD-01f"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-1106" y="942"/>
         </scene>
@@ -98,11 +140,25 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonDonate" destination="9DH-Pr-5mk" id="vmd-iS-K2R"/>
+                        <outlet property="buttonHelp" destination="mqo-HD-URT" id="Ejf-Ui-vHU"/>
                         <segue destination="Kw1-KX-Agt" kind="show" identifier="DISPLAY_EDIT_ALBUM" id="Je7-85-m7J"/>
                         <segue destination="0GJ-yc-Oar" kind="show" identifier="DISPLAY_USER_TALKS" id="dCY-Lg-B8b"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="mqo-HD-URT">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="Q6U-eh-IhZ" kind="presentation" identifier="DISPLAY_HELP2" id="iBj-yR-2Hw"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="9DH-Pr-5mk">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="OXf-AC-97C"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-1497" y="1613"/>
         </scene>
@@ -127,11 +183,19 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonDonate" destination="fg5-mf-bdZ" id="oMA-gi-F4L"/>
+                        <outlet property="buttonHelp" destination="aCi-ID-H8Q" id="pLm-Ya-hOg"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="30e-7l-0p1"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="OFE-qN-xVe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="aCi-ID-H8Q">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="fg5-mf-bdZ">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-742" y="1662"/>
         </scene>
@@ -182,11 +246,15 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonDonate" destination="lUB-cJ-sIo" id="8r9-rd-yuH"/>
+                        <outlet property="buttonHelp" destination="PiA-2x-XRu" id="BV9-Ni-ntN"/>
                         <outlet property="userAlbumTitle" destination="dAy-Sf-Ql1" id="KEl-BZ-7jI"/>
                         <outlet property="userImageView" destination="jNK-RU-s4O" id="PeL-fm-14Z"/>
                     </connections>
                 </viewController>
                 <exit id="r5N-9A-7qQ" userLabel="Exit" sceneMemberID="exit"/>
+                <barButtonItem image="icoqm" id="PiA-2x-XRu"/>
+                <barButtonItem image="icoheart" id="lUB-cJ-sIo"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2HI-gB-gv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1400" y="2306"/>
@@ -232,7 +300,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Albums" id="ZPM-Q5-ruw"/>
                     <connections>
-                        <outlet property="buttonHelp" destination="BHN-m6-ylO" id="n8u-b5-bhn"/>
+                        <outlet property="buttonDonate" destination="YSF-zE-0YA" id="LZp-vc-PAi"/>
+                        <outlet property="buttonHelp" destination="AWh-vc-YZs" id="qAZ-1B-a3c"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="hEa-61-IsL"/>
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
@@ -240,9 +309,16 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem title="Item" image="questionmark" id="BHN-m6-ylO" userLabel="ButtonHelp">
+                <barButtonItem image="icoheart" id="YSF-zE-0YA">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP" id="LT8-Qb-3xj"/>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="ZGd-hh-xhM"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoqm" id="AWh-vc-YZs">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="loI-AD-EMM"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -368,6 +444,9 @@
                     <connections>
                         <outlet property="MPVolumeParentView" destination="26d-i7-odO" id="jo7-Gr-ksd"/>
                         <outlet property="activityIndicatorView" destination="0wV-Lf-pSV" id="cuz-yx-Fhv"/>
+                        <outlet property="buttonDonate" destination="JbA-wx-my2" id="l3e-qB-RRu"/>
+                        <outlet property="buttonHelp" destination="0dS-lE-bLz" id="Mii-hz-lJ3"/>
+                        <outlet property="buttonShare" destination="D7D-Bq-4v3" id="WZG-Zf-PpY"/>
                         <outlet property="metaInfo" destination="f1H-n6-dSw" id="tC2-fZ-bBw"/>
                         <outlet property="playPauseBusyContainer" destination="psa-S8-0R3" id="GUL-19-7Xl"/>
                         <outlet property="playTalkSeriesButton" destination="Gr4-Hw-MTd" id="V37-5c-hfQ"/>
@@ -380,6 +459,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="0dS-lE-bLz">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="0NB-hD-hUX"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="JbA-wx-my2">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="eYb-A4-FTX"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoshare" id="D7D-Bq-4v3">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <action selector="shareTalk:" destination="Bai-ex-z2B" id="Bng-eL-GZU"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="2423.1884057971015" y="525"/>
         </scene>
@@ -396,7 +493,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="20" y="295" width="374" height="147"/>
+                                <rect key="frame" x="20" y="294.66666666666669" width="374" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
                                 </constraints>
@@ -407,7 +504,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
-                                <rect key="frame" x="20" y="496" width="374" height="33"/>
+                                <rect key="frame" x="20" y="495.66666666666663" width="374" height="32.999999999999886"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <size key="titleShadowOffset" width="0.0" height="-1"/>
                                 <state key="normal" title="Make A Donation">
@@ -443,18 +540,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5349.375" y="1243.75"/>
+            <point key="canvasLocation" x="5494" y="1242"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kw1-KX-Agt" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Kw1-KX-Agt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="npp-jj-ctJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1qj-RW-Lnu">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Ac4-Jo-Vf8" kind="relationship" relationship="rootViewController" id="lVd-hH-h1u"/>
                     </connections>
@@ -521,13 +622,17 @@
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Pkn-Ga-I1o" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Pkn-Ga-I1o" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pYb-xF-Gta">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="LSa-sq-Al5">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Bai-ex-z2B" kind="relationship" relationship="rootViewController" id="Blg-iK-DbW"/>
                     </connections>
@@ -561,7 +666,7 @@
         <!--Audiodharma Tips-->
         <scene sceneID="3HU-nD-q64">
             <objects>
-                <viewController id="V2n-zP-nAh" customClass="HelpController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="V2n-zP-nAh" customClass="HelpController1" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GVr-ag-kSG"/>
                         <viewControllerLayoutGuide type="bottom" id="mD5-vw-7e5"/>
@@ -571,69 +676,69 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
-                                <rect key="frame" x="12" y="136" width="382" height="80"/>
+                                <rect key="frame" x="12" y="92" width="382" height="80"/>
                                 <string key="text">Talks are organized by Albums. For each album, The top right field is the number of talks in this album. Below it is the total time for these talks.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
-                                <rect key="frame" x="12" y="288" width="382" height="80"/>
+                                <rect key="frame" x="12" y="244" width="382" height="80"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
-                                <rect key="frame" x="12" y="82" width="382" height="60"/>
+                                <rect key="frame" x="12" y="38" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="eRH-u6-ED3"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
-                                <rect key="frame" x="12" y="233" width="382" height="60"/>
+                                <rect key="frame" x="12" y="189" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="W00-Ly-CvI"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
-                                <rect key="frame" x="12" y="387" width="382" height="60"/>
+                                <rect key="frame" x="12" y="343" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="dku-Ta-siX"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
-                                <rect key="frame" x="12" y="518" width="382" height="60"/>
+                                <rect key="frame" x="12" y="474" width="382" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="IZp-ku-DmB"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
-                                <rect key="frame" x="12" y="437" width="382" height="69"/>
+                                <rect key="frame" x="12" y="393" width="382" height="69"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
-                                <rect key="frame" x="12" y="582" width="382" height="69"/>
+                                <rect key="frame" x="12" y="538" width="382" height="113"/>
                                 <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
-                                <rect key="frame" x="12" y="217" width="382" height="5"/>
+                                <rect key="frame" x="12" y="173" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="0fY-72-gEp"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
-                                <rect key="frame" x="12" y="368" width="382" height="5"/>
+                                <rect key="frame" x="12" y="324" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="5u9-qU-yFG"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
-                                <rect key="frame" x="12" y="502" width="382" height="5"/>
+                                <rect key="frame" x="12" y="458" width="382" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="hdI-AC-Yos"/>
                                 </constraints>
@@ -696,7 +801,52 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu5-QY-ZHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3756.521739130435" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="3832" y="1856"/>
+        </scene>
+        <!--Audiodharma Tips-->
+        <scene sceneID="fko-EQ-yWt">
+            <objects>
+                <viewController id="rJ5-yh-J9s" userLabel="Audiodharma Tips" customClass="HelpController2" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RmE-5s-ixw"/>
+                        <viewControllerLayoutGuide type="bottom" id="8CI-xR-GP1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JkC-p3-foq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-n2-z1J">
+                                <rect key="frame" x="10" y="64" width="406" height="938"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="useralbum01" translatesAutoresizingMaskIntoConstraints="NO" id="Jdg-rW-9MM">
+                                        <rect key="frame" x="6" y="226" width="380" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="14" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKQ-t4-cNg">
+                                        <rect key="frame" x="8" y="465" width="356" height="290"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Axh-pe-CdA">
+                        <barButtonItem key="leftBarButtonItem" title="Done" id="Moa-n0-fFh">
+                            <connections>
+                                <action selector="dismissHelp:" destination="rJ5-yh-J9s" id="QcJ-Lp-fEV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4sl-he-yye" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3831.884057971015" y="2498.6413043478265"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mKy-ot-PZ1">
@@ -714,7 +864,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fb-mf-Bnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4686.9565217391309" y="1244.8369565217392"/>
+            <point key="canvasLocation" x="4801" y="1245"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MWX-gm-l4W">
@@ -732,7 +882,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ibt-qa-SsQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3085.507246376812" y="1241.5760869565217"/>
+            <point key="canvasLocation" x="3161" y="1856"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLM-gG-pH8">
@@ -770,23 +920,46 @@
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="1877.4456521739132"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="1dR-ms-uHN">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q6U-eh-IhZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Cl6-aa-Ac0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rJ5-yh-J9s" kind="relationship" relationship="rootViewController" id="8zQ-Mo-Vws"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6jf-st-uyb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3152" y="2500"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="album01" width="623" height="79"/>
+        <image name="album01" width="622" height="76"/>
         <image name="blackline" width="200" height="6"/>
         <image name="checkboxoff" width="112" height="112"/>
-        <image name="questionmark" width="112" height="112"/>
+        <image name="icoheart" width="25" height="25"/>
+        <image name="icoqm" width="25" height="25"/>
+        <image name="icoshare" width="25" height="25"/>
         <image name="talk01" width="623" height="74"/>
-        <image name="talkbeingswiped" width="623" height="74"/>
-        <image name="talkshowingmenu" width="619" height="74"/>
+        <image name="talkbeingswiped" width="622" height="74"/>
+        <image name="talkshowingmenu" width="623" height="80"/>
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
+        <image name="useralbum01" width="621" height="69"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hEa-61-IsL"/>
-        <segue reference="4Sx-D1-YLI"/>
-        <segue reference="C6A-Dz-FfT"/>
         <segue reference="ZR1-MZ-juM"/>
+        <segue reference="30e-7l-0p1"/>
+        <segue reference="OFE-qN-xVe"/>
+        <segue reference="Ebq-8j-F1C"/>
+        <segue reference="0NB-hD-hUX"/>
+        <segue reference="OXf-AC-97C"/>
     </inferredMetricsTieBreakers>
 </document>

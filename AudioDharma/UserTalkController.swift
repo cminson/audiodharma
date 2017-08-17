@@ -13,6 +13,8 @@ import UIKit
 // Displays the talks that a user has stored in their User Album
 //
 class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
     
     // MARK: Properties
     var UserAlbum: UserAlbumData!   // the userAlbum that we are currently viewing
@@ -36,6 +38,12 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+
 
         //self.tableView.isEditing = true
     }

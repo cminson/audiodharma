@@ -13,6 +13,9 @@ import os.log
 
 class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
+    
     // MARK: Properties
     var UserAlbum: UserAlbumData? = nil // album we are editing, if any
     var AddingNewAlbum: Bool = false  // flags if this is an edit of existing Album vs  add of a new Album
@@ -72,6 +75,12 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         
         userAlbumTitle.delegate = self
         ImagePicker.delegate = self
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+
     }
     
     override func didReceiveMemoryWarning() {

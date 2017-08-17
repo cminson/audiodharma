@@ -11,6 +11,8 @@ import os.log
 
 
 class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating   {
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
     
     //MARK: Properties
     var SelectedRow: Int = 0
@@ -33,6 +35,12 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+ 
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +118,11 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
             // set the userAlbum  that we want to show talks for
             let selectedUserAlbum = FilteredUserAlbums[SelectedRow]
             controller.UserAlbum = selectedUserAlbum
+            
+        case "DISPLAY_HELP2":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
 
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
@@ -123,11 +136,11 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
             
             // if true, adding a new album.  otherwise editing an existing
             if controller.AddingNewAlbum == true {
-                let newIndexPath = IndexPath(row: FilteredUserAlbums.count, section: 0)
-                
+                //let newIndexPath = IndexPath(row: FilteredUserAlbums.count, section: 0)
+                //tableView.insertRows(at: [newIndexPath], with: .automatic)
+
                 FilteredUserAlbums.append(controllerUserAlbum)
                 TheDataModel.addUserAlbum(album: controllerUserAlbum)
-                //tableView.insertRows(at: [newIndexPath], with: .automatic)
 
             } else {
                 //FilteredUserAlbums[SelectedRow] = controllerUserAlbum
@@ -231,6 +244,7 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         }
     
         edit.backgroundColor = UIColor.blue
+        delete.backgroundColor = UIColor.red
         
         return [delete, edit]
     }

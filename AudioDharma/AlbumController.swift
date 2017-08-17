@@ -12,6 +12,7 @@ import UIKit
 class AlbumController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
     
     //MARK: Properties
     var SelectedSection: Int = 0
@@ -43,8 +44,9 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
         
-        self.setToolbarItems([buttonHelp], animated: false)
     }
     
   
@@ -102,7 +104,7 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             guard let _ = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-        case "DISPLAY_HELP":
+        case "DISPLAY_HELP1":
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }

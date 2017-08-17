@@ -10,6 +10,9 @@ import UIKit
 
 class SeriesController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
 
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
+    
     //MARK: Properties
     var SelectedRow: Int = 0
     var FilteredAlbums:  [AlbumData] = []
@@ -34,6 +37,12 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +79,16 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
             print(controller.Content)
             controller.title = album.Title
             
+        case "DISPLAY_HELP1":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }

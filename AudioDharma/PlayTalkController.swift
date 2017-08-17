@@ -30,6 +30,9 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var playPauseBusyContainer: UIView!
     @IBOutlet weak var talkPlayPauseButton: UIButton!
 
+    @IBOutlet var buttonHelp: UIBarButtonItem!
+    @IBOutlet var buttonDonate: UIBarButtonItem!
+    @IBOutlet var buttonShare: UIBarButtonItem!
     
     // MARK: Constants
     let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
@@ -72,6 +75,12 @@ class PlayTalkController: UIViewController {
         volumeView.showsRouteButton = true
         volumeView.sizeToFit()
         MPVolumeParentView.addSubview(volumeView)
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
+
         
         let d1 = volumeView.areWirelessRoutesAvailable
         print("D1: ", d1)
@@ -132,11 +141,21 @@ class PlayTalkController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    
+    @IBAction func shareTalk(_ sender: UIBarButtonItem) {
+        
+        let sharedTalk = CurrentTalk!
+        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
+
+    }
+    
+    /*
     @IBAction func shareTalk(_ sender: UIBarButtonItem) {
         
         let sharedTalk = CurrentTalk!
         TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
     }
+ */
 
     @IBAction func playOrPauseTalk(_ sender: UIButton) {
         
