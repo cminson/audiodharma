@@ -426,10 +426,17 @@
                                     <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="26d-i7-odO">
-                                <rect key="frame" x="36" y="600" width="343" height="79"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OKU-JM-LdZ">
+                                <rect key="frame" x="16" y="526" width="378" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
+                                        <rect key="frame" x="18" y="15" width="343" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -442,7 +449,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="MPVolumeParentView" destination="26d-i7-odO" id="jo7-Gr-ksd"/>
+                        <outlet property="MPVolumeParentView" destination="c6Q-Eg-NEA" id="QOa-qD-HnZ"/>
                         <outlet property="activityIndicatorView" destination="0wV-Lf-pSV" id="cuz-yx-Fhv"/>
                         <outlet property="buttonDonate" destination="JbA-wx-my2" id="l3e-qB-RRu"/>
                         <outlet property="buttonHelp" destination="0dS-lE-bLz" id="Mii-hz-lJ3"/>
@@ -955,11 +962,11 @@
         <image name="useralbum01" width="621" height="69"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="30e-7l-0p1"/>
-        <segue reference="OFE-qN-xVe"/>
         <segue reference="Ebq-8j-F1C"/>
+        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="OFE-qN-xVe"/>
+        <segue reference="30e-7l-0p1"/>
+        <segue reference="eYb-A4-FTX"/>
         <segue reference="0NB-hD-hUX"/>
-        <segue reference="OXf-AC-97C"/>
     </inferredMetricsTieBreakers>
 </document>

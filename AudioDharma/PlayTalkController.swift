@@ -26,9 +26,9 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var talkProgressSlider: UISlider!
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
-    @IBOutlet weak var MPVolumeParentView: UIView!
     @IBOutlet weak var playPauseBusyContainer: UIView!
     @IBOutlet weak var talkPlayPauseButton: UIButton!
+    @IBOutlet weak var MPVolumeParentView: UIView!
 
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
@@ -57,7 +57,6 @@ class PlayTalkController: UIViewController {
     var TalkTimer : Timer?
     var MP3TalkPlayer : MP3Player!
 
-    var DEBUG: MPVolumeView!
     
     // Mark: Init
     override func viewDidLoad() {
@@ -74,19 +73,19 @@ class PlayTalkController: UIViewController {
         MPVolumeParentView.backgroundColor = UIColor.clear
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
         volumeView.showsRouteButton = true
-        volumeView.sizeToFit()
+        //volumeView.backgroundColor = UIColor.gray
+        //volumeView.sizeToFit()
+        
+        let point = CGPoint(x: MPVolumeParentView.frame.size.width  / 2,y : (MPVolumeParentView.frame.size.height / 2) + 5)
+        volumeView.center = point
         MPVolumeParentView.addSubview(volumeView)
+
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
 
-        DEBUG = volumeView
-        let d1 = volumeView.areWirelessRoutesAvailable  // false
-        let d2 = volumeView.isWirelessRouteActive   // true
-        let d3 = volumeView.showsRouteButton
-        print(d1, d2, d3)
         // start the background report thread (reporting status to web)
         Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
 
@@ -187,13 +186,7 @@ class PlayTalkController: UIViewController {
         updateTitleDisplay()
         
         TheDataModel.addToTalkHistory(talk: CurrentTalk)
-        
-        let d1 = DEBUG.areWirelessRoutesAvailable  // false
-        let d2 = DEBUG.isWirelessRouteActive   // true
-        let d3 = DEBUG.showsRouteButton
-        print(d1, d2, d3)
-
-    }
+            }
     
     func restartTalk() {
         
