@@ -203,7 +203,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
 
         cell.title.text = talk.Title
         cell.speakerPhoto.image = talk.SpeakerPhoto
-        cell.duration.text = talk.Duration
+        cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
 
         return cell

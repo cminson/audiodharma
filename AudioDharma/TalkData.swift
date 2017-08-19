@@ -16,24 +16,33 @@ class TalkData: NSObject {
     var URL: String
     var FileName: String
     var Date: String
-    var Duration: String
     var Speaker: String
     var SpeakerPhoto: UIImage
     var Section: String
-    var Time: Int
+    var DurationDisplay: String
+    
+    var DurationInSeconds: Int
+    
+    var DatePlayed: String!
+    var TimePlayed: String!
+    var Location: String!
     
     // MARK: Init
-    init(title: String,  url: String, fileName: String, date: String, duration: String, speaker: String, section: String, time: Int) {
+    init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String, durationInSeconds: Int) {
         
         Title = title
         URL = url
         FileName = fileName
         Date = date
-        Duration = duration
+        DurationDisplay = durationDisplay
         Speaker = speaker
         SpeakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
         Section = section
-        Time = time
+        DurationInSeconds = durationInSeconds
+        
+        DatePlayed = ""
+        TimePlayed = ""
+        Location = ""
     }
 
 }

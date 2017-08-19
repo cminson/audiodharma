@@ -32,7 +32,7 @@ class MP3Player : NSObject {
     func startTalk(talk: TalkData){
         
         //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
-        let url : URL = URL(string: TALK_BASE + talk.URL)!
+        let url : URL = URL(string: MP3_ROOT + talk.URL)!
         print(url)
         
         PlayerItem  = AVPlayerItem(url: url)
@@ -40,10 +40,12 @@ class MP3Player : NSObject {
         Player.allowsExternalPlayback = true
         
         // get notification once talk ends
+#if FORLATER
         NotificationCenter.default.addObserver(self,selector:
                         #selector(self.talkHasCompleted),
                         name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                         object: PlayerItem)
+#endif
         
         Player.play()
     }
@@ -65,11 +67,13 @@ class MP3Player : NSObject {
         
         Player.pause()
     }
-    
+
+#if FORLATER
     func talkHasCompleted() {
         
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
+#endif
     
     func seekToTime(seconds: Int64) {
         

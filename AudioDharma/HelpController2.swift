@@ -28,12 +28,12 @@ class HelpController2: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-
-    @IBAction func dismissHelp(_ sender: UIBarButtonItem) {
-        
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
 
     }
+    
+    
     
 
 }

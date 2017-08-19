@@ -104,6 +104,24 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
             guard let _ = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            
+        case "DISPLAY_YOUR_HISTORY":
+            guard let controller = segue.destination as? HistoryController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
+            controller.Content = Album.Content
+            controller.title = Album.Title
+            
+       case "DISPLAY_SANGHA_HISTORY":
+            guard let controller = segue.destination as? HistoryController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
+            controller.Content = Album.Content
+            controller.title = Album.Title
+
         case "DISPLAY_HELP1":
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -220,8 +238,11 @@ class AlbumController: UITableViewController, UISearchBarDelegate, UISearchContr
         case KEY_ALLSPEAKERS:
             self.performSegue(withIdentifier: "DISLAY_SPEAKER_ALBUMS", sender: self)
             
-        case KEY_TALKHISTORY:
-            self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
+        case KEY_YOUR_TALKHISTORY:
+            self.performSegue(withIdentifier: "DISPLAY_YOUR_HISTORY", sender: self)
+            
+        case KEY_SANGHA_TALKHISTORY:
+            self.performSegue(withIdentifier: "DISPLAY_SANGHA_HISTORY", sender: self)
             
         case KEY_ALLSERIES:
             self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)

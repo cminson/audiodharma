@@ -73,6 +73,16 @@ class PlayTalkController: UIViewController {
         MPVolumeParentView.backgroundColor = UIColor.clear
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
         volumeView.showsRouteButton = true
+        
+        let iconBlack = UIImage(named: "routebuttonblack")
+        let iconGreen = UIImage(named: "routebuttongreen")
+        
+        volumeView.setRouteButtonImage(iconBlack, for: UIControlState.normal)
+        volumeView.setRouteButtonImage(iconBlack, for: UIControlState.disabled)
+        volumeView.setRouteButtonImage(iconGreen, for: UIControlState.highlighted)
+        volumeView.setRouteButtonImage(iconGreen, for: UIControlState.selected)
+        
+        
         //volumeView.backgroundColor = UIColor.gray
         //volumeView.sizeToFit()
         

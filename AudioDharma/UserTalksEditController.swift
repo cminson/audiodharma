@@ -164,7 +164,7 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         cell.title.text = talk.Title
         cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        cell.duration.text = talk.Duration
+        cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
 
         setSelectedState(talk: talk, cell: cell)

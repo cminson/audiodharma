@@ -1,16 +1,16 @@
 //
-//  TalkController.swift
+//  HistoryController.swift
 //  AudioDharma
 //
-//  Created by Christopher on 6/15/17.
+//  Created by Christopher on 8/19/17.
 //  Copyright © 2017 Christopher Minson. All rights reserved.
 //
 
 import UIKit
-import Social
 
-class TalkController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class HistoryController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
+ 
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
     
@@ -42,7 +42,9 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        /*
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+ */
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,14 +68,14 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         SearchController.isActive = false
     }
-
+    
     
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
         SearchController.view.removeFromSuperview()
     }
-
+    
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
@@ -88,10 +90,10 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_TALKPLAYER":
-
+            
             guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
                 else {
-                fatalError("Unexpected destination: \(segue.destination)")
+                    fatalError("Unexpected destination: \(segue.destination)")
             }
             
             playTalkController.CurrentTalkRow = SelectedRow
@@ -116,9 +118,9 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-
+            
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
         }
         
         // dismiss any searching - must do this prior to executing the segue
@@ -127,9 +129,9 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         SearchController.isActive = false
         
     }
-
+    
     @IBAction func unwindNotesEditToTalk(sender: UIStoryboardSegue) {   // called from NotesController
-
+        
         if let controller = sender.source as? NoteController {
             
             if controller.TextHasBeenChanged == true {
@@ -142,7 +144,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                     
                     tableView.reloadData()
                 }
-           }
+            }
         }
     }
     
@@ -186,7 +188,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         return FilteredSectionTalks.count
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return FilteredSectionTalks[section].count
@@ -206,10 +208,10 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
     
     
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
+        let cell = Bundle.main.loadNibNamed("HistoryCell", owner: self, options: nil)?.first as! HistoryCell
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
         if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
@@ -219,10 +221,9 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         }
         
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = talk.SpeakerPhoto
-        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        cell.duration.text = talk.DurationDisplay
-        cell.date.text = talk.Date
+        cell.date.text = talk.DatePlayed
+        cell.time.text = talk.TimePlayed
+        cell.location.text = talk.Location
         
         return cell
     }
@@ -242,12 +243,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         SelectedRow = indexPath.row
         performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
-
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
-
+        
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
         }
@@ -258,11 +259,11 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         noteTalk.backgroundColor = UIColor.blue
         shareTalk.backgroundColor = UIColor.green
-
+        
         return [shareTalk, noteTalk]
     }
-
-
+    
+    
     //MARK: Share
     private func viewEditNote() {
         
@@ -277,7 +278,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         // save off search state and then turn off search. otherwise the modal will conflict with it
         SearchText = SearchController.searchBar.text!
         SearchController.isActive = false
-
+        
         TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
         
         // restore search state

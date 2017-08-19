@@ -15,18 +15,26 @@ class TalkHistoryData: NSObject, NSCoding {
     // MARK: Persistance
     struct PropertyKey {
         static let FileName = "FileName"
+        static let DatePlayed = "DatePlayed"
+        static let TimePlayed = "TimePlayed"
+        static let Location = "Location"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("TalkHistoryData")
     
-    
     // MARK: Properties
     var FileName: String = ""
-    
+    var DatePlayed: String = ""
+    var TimePlayed: String = ""
+    var Location: String = ""
+  
     
     // MARK: Init
-    init(fileName: String) {
+    init(fileName: String, datePlayed: String, timePlayed: String, location: String) {
         FileName = fileName
+        DatePlayed = datePlayed
+        TimePlayed = timePlayed
+        Location = location
     }
     
     
@@ -34,7 +42,10 @@ class TalkHistoryData: NSObject, NSCoding {
     func encode(with aCoder: NSCoder) {
         
         aCoder.encode(FileName, forKey: PropertyKey.FileName)
-    }
+        aCoder.encode(DatePlayed, forKey: PropertyKey.DatePlayed)
+        aCoder.encode(TimePlayed, forKey: PropertyKey.TimePlayed)
+        aCoder.encode(Location, forKey: PropertyKey.Location)
+   }
     
     required convenience init?(coder aDecoder: NSCoder) {
         
@@ -42,6 +53,20 @@ class TalkHistoryData: NSObject, NSCoding {
             os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
-        self.init(fileName: fileName)
+        guard let datePlayed = aDecoder.decodeObject(forKey: PropertyKey.DatePlayed) as? String else {
+            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+        guard let timePlayed = aDecoder.decodeObject(forKey: PropertyKey.TimePlayed) as? String else {
+            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+        guard let location = aDecoder.decodeObject(forKey: PropertyKey.Location) as? String else {
+            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+        
+        
+        self.init(fileName: fileName, datePlayed: datePlayed, timePlayed: timePlayed, location: location)
     }
 }

@@ -47,6 +47,30 @@
             </objects>
             <point key="canvasLocation" x="-741" y="170"/>
         </scene>
+        <!--Recent Talks - Community-->
+        <scene sceneID="ocj-LE-xAX">
+            <objects>
+                <tableViewController id="rJV-21-hT2" userLabel="Recent Talks - Community" customClass="HistoryController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="rwp-gW-9Bm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="rJV-21-hT2" id="2q3-5x-pYU"/>
+                            <outlet property="delegate" destination="rJV-21-hT2" id="bjT-0Z-Rs8"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="buttonDonate" destination="ilt-Og-LiU" id="lOl-Ey-Sim"/>
+                        <outlet property="buttonHelp" destination="UPY-U4-RcF" id="900-ge-Nst"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MRA-6J-aoM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoheart" id="UPY-U4-RcF"/>
+                <barButtonItem image="icoqm" id="ilt-Og-LiU"/>
+            </objects>
+            <point key="canvasLocation" x="-2887" y="942"/>
+        </scene>
         <!--Talks by Speakers-->
         <scene sceneID="XFU-xf-pVT">
             <objects>
@@ -150,7 +174,7 @@
                 <barButtonItem image="icoqm" id="mqo-HD-URT">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
-                        <segue destination="Q6U-eh-IhZ" kind="presentation" identifier="DISPLAY_HELP2" id="iBj-yR-2Hw"/>
+                        <segue destination="9Sb-gH-reL" kind="presentation" identifier="DISPLAY_HELP2" id="xYq-99-lyG"/>
                     </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="9DH-Pr-5mk">
@@ -306,6 +330,7 @@
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
+                        <segue destination="rJV-21-hT2" kind="show" identifier="DISPLAY_SANGHA_HISTORY" id="0wi-9m-IIm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -322,7 +347,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-1436" y="170"/>
+            <point key="canvasLocation" x="-1425" y="98"/>
         </scene>
         <!--Play Talk Controller-->
         <scene sceneID="eic-Lc-ttk">
@@ -426,17 +451,10 @@
                                     <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OKU-JM-LdZ">
-                                <rect key="frame" x="16" y="526" width="378" height="60"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
+                                <rect key="frame" x="38" y="516" width="343" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
-                                        <rect key="frame" x="18" y="15" width="343" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -810,51 +828,6 @@
             </objects>
             <point key="canvasLocation" x="3832" y="1856"/>
         </scene>
-        <!--Audiodharma Tips-->
-        <scene sceneID="fko-EQ-yWt">
-            <objects>
-                <viewController id="rJ5-yh-J9s" userLabel="Audiodharma Tips" customClass="HelpController2" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RmE-5s-ixw"/>
-                        <viewControllerLayoutGuide type="bottom" id="8CI-xR-GP1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="JkC-p3-foq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-n2-z1J">
-                                <rect key="frame" x="10" y="64" width="406" height="938"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="useralbum01" translatesAutoresizingMaskIntoConstraints="NO" id="Jdg-rW-9MM">
-                                        <rect key="frame" x="6" y="226" width="380" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="14" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKQ-t4-cNg">
-                                        <rect key="frame" x="8" y="465" width="356" height="290"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Axh-pe-CdA">
-                        <barButtonItem key="leftBarButtonItem" title="Done" id="Moa-n0-fFh">
-                            <connections>
-                                <action selector="dismissHelp:" destination="rJ5-yh-J9s" id="QcJ-Lp-fEV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4sl-he-yye" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3831.884057971015" y="2498.6413043478265"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="mKy-ot-PZ1">
             <objects>
@@ -937,13 +910,94 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="rJ5-yh-J9s" kind="relationship" relationship="rootViewController" id="8zQ-Mo-Vws"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6jf-st-uyb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3152" y="2500"/>
+            <point key="canvasLocation" x="2152" y="2693"/>
+        </scene>
+        <!--Help Test-->
+        <scene sceneID="Sd7-Vb-861">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="rZW-Il-Yw9" customClass="HelpController2" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="g28-t7-9Th"/>
+                        <viewControllerLayoutGuide type="bottom" id="KS9-6Y-joI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="suR-Mc-Ubb">
+                        <rect key="frame" x="0.0" y="0.0" width="340" height="800"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCS-2b-diI">
+                                <rect key="frame" x="0.0" y="64" width="340" height="736"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fbh-Su-xLJ" userLabel="Container View">
+                                        <rect key="frame" x="0.0" y="0.0" width="340" height="1000"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="SeP-dl-baa">
+                                                <rect key="frame" x="0.0" y="8" width="340" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="sLI-qa-3jb"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="SeP-dl-baa" firstAttribute="top" secondItem="fbh-Su-xLJ" secondAttribute="top" constant="8" id="13F-b8-TKZ"/>
+                                            <constraint firstAttribute="height" constant="1000" id="5nU-RA-Ny2"/>
+                                            <constraint firstItem="SeP-dl-baa" firstAttribute="leading" secondItem="fbh-Su-xLJ" secondAttribute="leading" id="WaH-uC-ZxK"/>
+                                            <constraint firstAttribute="width" constant="340" id="ozj-Ek-fic"/>
+                                            <constraint firstAttribute="trailing" secondItem="SeP-dl-baa" secondAttribute="trailing" id="ses-GI-hOa"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fbh-Su-xLJ" secondAttribute="trailing" id="3dl-AQ-Lz4"/>
+                                    <constraint firstAttribute="bottom" secondItem="fbh-Su-xLJ" secondAttribute="bottom" id="LyE-Pn-SQv"/>
+                                    <constraint firstItem="fbh-Su-xLJ" firstAttribute="leading" secondItem="CCS-2b-diI" secondAttribute="leading" id="cQj-Lg-BxG"/>
+                                    <constraint firstItem="fbh-Su-xLJ" firstAttribute="top" secondItem="CCS-2b-diI" secondAttribute="top" id="uTI-FD-yN6"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="CCS-2b-diI" secondAttribute="trailing" id="3ZR-VS-ON2"/>
+                            <constraint firstItem="CCS-2b-diI" firstAttribute="top" secondItem="g28-t7-9Th" secondAttribute="bottom" id="4eR-oB-R1v"/>
+                            <constraint firstItem="KS9-6Y-joI" firstAttribute="top" secondItem="CCS-2b-diI" secondAttribute="bottom" id="6D1-ms-5GJ"/>
+                            <constraint firstItem="CCS-2b-diI" firstAttribute="leading" secondItem="suR-Mc-Ubb" secondAttribute="leading" id="CAr-i6-ghw"/>
+                            <constraint firstItem="fbh-Su-xLJ" firstAttribute="width" secondItem="suR-Mc-Ubb" secondAttribute="width" id="dlJ-Y3-6F1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Help Test" id="lC2-T0-O1J">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="XOi-01-pOf">
+                            <connections>
+                                <action selector="dismiss:" destination="rZW-Il-Yw9" id="C91-91-L9H"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="340" height="800"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8eD-q0-be0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4438" y="2567"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Nnp-m8-JC4">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9Sb-gH-reL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qO2-fM-QwF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rZW-Il-Yw9" kind="relationship" relationship="rootViewController" id="IDT-VX-Hyb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lRx-rf-XVa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3832" y="2541"/>
         </scene>
     </scenes>
     <resources>
@@ -959,14 +1013,13 @@
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
-        <image name="useralbum01" width="621" height="69"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ebq-8j-F1C"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="OFE-qN-xVe"/>
         <segue reference="30e-7l-0p1"/>
-        <segue reference="eYb-A4-FTX"/>
-        <segue reference="0NB-hD-hUX"/>
+        <segue reference="Ebq-8j-F1C"/>
+        <segue reference="B6o-GF-pY3"/>
+        <segue reference="Xv9-MG-xiH"/>
     </inferredMetricsTieBreakers>
 </document>
