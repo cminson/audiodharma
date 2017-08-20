@@ -47,29 +47,31 @@
             </objects>
             <point key="canvasLocation" x="-741" y="170"/>
         </scene>
-        <!--Recent Talks - Community-->
-        <scene sceneID="ocj-LE-xAX">
+        <!--History Controller-->
+        <scene sceneID="ge6-wI-QRH">
             <objects>
-                <tableViewController id="rJV-21-hT2" userLabel="Recent Talks - Community" customClass="HistoryController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="rwp-gW-9Bm">
+                <tableViewController id="WB9-Fy-Gld" customClass="HistoryController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NN3-Se-zHF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
-                            <outlet property="dataSource" destination="rJV-21-hT2" id="2q3-5x-pYU"/>
-                            <outlet property="delegate" destination="rJV-21-hT2" id="bjT-0Z-Rs8"/>
+                            <outlet property="dataSource" destination="WB9-Fy-Gld" id="iHR-kI-miR"/>
+                            <outlet property="delegate" destination="WB9-Fy-Gld" id="gTx-5i-zDZ"/>
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="buttonDonate" destination="ilt-Og-LiU" id="lOl-Ey-Sim"/>
-                        <outlet property="buttonHelp" destination="UPY-U4-RcF" id="900-ge-Nst"/>
+                        <outlet property="buttonDonate" destination="7bB-yU-koj" id="nLa-g1-2xQ"/>
+                        <outlet property="buttonHelp" destination="uZi-pc-z8Q" id="TlW-nZ-p31"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="yp4-U7-mwc"/>
+                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="EDi-iD-M6R"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MRA-6J-aoM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoheart" id="UPY-U4-RcF"/>
-                <barButtonItem image="icoqm" id="ilt-Og-LiU"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="igK-QC-Ojb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="uZi-pc-z8Q" userLabel="Button Help"/>
+                <barButtonItem image="icoheart" id="7bB-yU-koj" userLabel="Button Donate"/>
             </objects>
-            <point key="canvasLocation" x="-2887" y="942"/>
+            <point key="canvasLocation" x="-2746" y="941"/>
         </scene>
         <!--Talks by Speakers-->
         <scene sceneID="XFU-xf-pVT">
@@ -330,7 +332,7 @@
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
-                        <segue destination="rJV-21-hT2" kind="show" identifier="DISPLAY_SANGHA_HISTORY" id="0wi-9m-IIm"/>
+                        <segue destination="WB9-Fy-Gld" kind="show" identifier="DISPLAY_HISTORY" id="Fjl-cD-evB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -518,7 +520,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="20" y="294.66666666666669" width="374" height="147"/>
+                                <rect key="frame" x="20" y="295" width="374" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
                                 </constraints>
@@ -529,7 +531,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
-                                <rect key="frame" x="20" y="495.66666666666663" width="374" height="32.999999999999886"/>
+                                <rect key="frame" x="20" y="496" width="374" height="33"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <size key="titleShadowOffset" width="0.0" height="-1"/>
                                 <state key="normal" title="Make A Donation">
@@ -642,7 +644,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="831.88405797101461" y="940.76086956521749"/>
+            <point key="canvasLocation" x="1670" y="1194"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -880,7 +882,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cs3-tt-Lu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="165.21739130434784" y="940.76086956521749"/>
+            <point key="canvasLocation" x="943" y="1202"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6gP-rx-q0v">
@@ -1015,11 +1017,11 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="OFE-qN-xVe"/>
-        <segue reference="30e-7l-0p1"/>
         <segue reference="Ebq-8j-F1C"/>
-        <segue reference="B6o-GF-pY3"/>
-        <segue reference="Xv9-MG-xiH"/>
+        <segue reference="yp4-U7-mwc"/>
+        <segue reference="EDi-iD-M6R"/>
+        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="ie0-kf-o7Q"/>
+        <segue reference="loI-AD-EMM"/>
     </inferredMetricsTieBreakers>
 </document>

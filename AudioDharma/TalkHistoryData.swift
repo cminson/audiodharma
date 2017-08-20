@@ -20,7 +20,9 @@ class TalkHistoryData: NSObject, NSCoding {
         static let Location = "Location"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("TalkHistoryData")
+    static let ArchiveTalkHistoryURL = DocumentsDirectory.appendingPathComponent("ArchiveTalkHistory")
+    static let ArchiveShareHistoryURL = DocumentsDirectory.appendingPathComponent("ArchiveShareHistory")
+
     
     // MARK: Properties
     var FileName: String = ""

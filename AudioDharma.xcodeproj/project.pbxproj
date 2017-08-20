@@ -18,6 +18,7 @@
 		835B9F811EF2CA9B009AF991 /* TalkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B9F801EF2CA9B009AF991 /* TalkController.swift */; };
 		835F52391F099A9F00F8A4B9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835F52381F099A9F00F8A4B9 /* AVFoundation.framework */; };
 		8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */; };
+		83761F3B1F4A3F0600DA6B6A /* XXAlbumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83761F3A1F4A3F0600DA6B6A /* XXAlbumController.swift */; };
 		837C3DD31F2D0342005C9A0A /* HelpController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C3DD21F2D0342005C9A0A /* HelpController1.swift */; };
 		837C3DD81F2D34B7005C9A0A /* TalkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C3DD61F2D34B7005C9A0A /* TalkCell.swift */; };
 		837C3DD91F2D34B7005C9A0A /* TalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837C3DD71F2D34B7005C9A0A /* TalkCell.xib */; };
@@ -55,6 +56,7 @@
 		835B9F801EF2CA9B009AF991 /* TalkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkController.swift; sourceTree = "<group>"; };
 		835F52381F099A9F00F8A4B9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		83761F3A1F4A3F0600DA6B6A /* XXAlbumController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XXAlbumController.swift; sourceTree = "<group>"; };
 		837C3DD21F2D0342005C9A0A /* HelpController1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController1.swift; sourceTree = "<group>"; };
 		837C3DD61F2D34B7005C9A0A /* TalkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkCell.swift; sourceTree = "<group>"; };
 		837C3DD71F2D34B7005C9A0A /* TalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkCell.xib; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */,
 				83DC0D6C1EF17B390071CAD3 /* Info.plist */,
 				83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */,
+				83761F3A1F4A3F0600DA6B6A /* XXAlbumController.swift */,
 			);
 			path = AudioDharma;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				83432FC01F0AB373002926AC /* MP3Player.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserTalksEditController.swift in Sources */,
+				83761F3B1F4A3F0600DA6B6A /* XXAlbumController.swift in Sources */,
 				83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */,
 				83EF51AC1F042EF9000678B0 /* UserTalkController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,

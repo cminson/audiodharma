@@ -10,10 +10,10 @@ import UIKit
 
 class HistoryCell: UITableViewCell {
 
+    @IBOutlet weak var speakerPhoto: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var location: UILabel!
     @IBOutlet weak var noteImage: UIImageView!
     
     override func awakeFromNib() {

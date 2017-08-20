@@ -9,7 +9,7 @@
 import UIKit
 
 
-class AlbumController: UITableViewController {
+class XXAlbumController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
@@ -18,8 +18,10 @@ class AlbumController: UITableViewController {
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
     var AlbumSections: [[AlbumData]] = []
-    //var FilteredAlbumSections:  [[AlbumData]] = []
-
+    var FilteredAlbumSections:  [[AlbumData]] = []
+    let SearchController = UISearchController(searchResultsController: nil)
+    var SearchText: String = ""
+    
     
     // MARK: Init
     override func viewDidLoad() {
@@ -29,8 +31,16 @@ class AlbumController: UITableViewController {
         TheDataModel.RootController = self
         TheDataModel.loadData()
         super.viewDidLoad()
-
-        //FilteredAlbumSections = TheDataModel.AlbumSections
+        
+        FilteredAlbumSections = TheDataModel.AlbumSections
+        
+        SearchController.searchResultsUpdater = self
+        SearchController.searchBar.delegate = self
+        SearchController.delegate = self
+        
+        SearchController.hidesNavigationBarDuringPresentation = false
+        SearchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = SearchController.searchBar
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
@@ -39,28 +49,31 @@ class AlbumController: UITableViewController {
         
     }
     
-  
+    
     override func viewWillAppear(_ animated: Bool) {
-
+        
         super.viewWillAppear(animated)
-
+        
     }
-
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         
-        super.viewWillDisappear(animated)
+        SearchController.isActive = false
     }
-
+    
     deinit {
         
+        // this view tends to hang around in the parent.  this clears it
+        SearchController.view.removeFromSuperview()
     }
-
+    
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
     }
     
-
+    
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -72,7 +85,8 @@ class AlbumController: UITableViewController {
             guard let controller = segue.destination as? TalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let Album = TheDataModel.AlbumSections[SelectedSection][SelectedRow]
+            //let currentTitle = self.filteredAlbumSections[self.selectedSection][self.selectedRow]
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
             controller.Content = Album.Content
             controller.title = Album.Title
             
@@ -91,11 +105,20 @@ class AlbumController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-        case "DISPLAY_HISTORY":
+        case "DISPLAY_USER_HISTORY":
             guard let controller = segue.destination as? HistoryController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let Album = TheDataModel.AlbumSections[SelectedSection][SelectedRow]
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
+            controller.Content = Album.Content
+            controller.title = Album.Title
+            
+        case "DISPLAY_SANGHA_HISTORY":
+            guard let controller = segue.destination as? HistoryController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let Album = FilteredAlbumSections[SelectedSection][SelectedRow]
             controller.Content = Album.Content
             controller.title = Album.Title
             
@@ -107,46 +130,78 @@ class AlbumController: UITableViewController {
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-
+            
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
         
-     }
-
-
+        // dismiss any searching - must do this prior to executing the segue
+        SearchText = SearchController.searchBar.text!   //  save this off, so as to restore search state upon return
+        SearchController.isActive = false
+    }
+    
+    // MARK: UISearchResultsUpdating
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            
+            var sectionsPositionDict : [String: Int] = [:]
+            FilteredAlbumSections = []
+            for sections in TheDataModel.AlbumSections {
+                for AlbumData in sections {
+                    if AlbumData.Title.lowercased().contains(searchText.lowercased()) {
+                        
+                        if sectionsPositionDict[AlbumData.Section] == nil {
+                            // new section seen.  create new array of Albums for this section
+                            FilteredAlbumSections.append([AlbumData])
+                            sectionsPositionDict[AlbumData.Section] = FilteredAlbumSections.count - 1
+                        } else {
+                            // section already exists.  add Album to the existing array of talks
+                            let sectionPosition = sectionsPositionDict[AlbumData.Section]
+                            FilteredAlbumSections[sectionPosition!].append(AlbumData)
+                        }
+                    }
+                }
+            }
+        } else {
+            FilteredAlbumSections = TheDataModel.AlbumSections
+        }
+        tableView.reloadData()
+    }
+    
+    
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return TheDataModel.AlbumSections.count
+        return FilteredAlbumSections.count
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return TheDataModel.AlbumSections[section].count
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return FilteredAlbumSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return TheDataModel.AlbumSections[section][0].Section
+        return FilteredAlbumSections[section][0].Section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-
+        
         let header = view as! UITableViewHeaderFooterView
         
         view.tintColor = SECTION_BACKGROUND
         header.textLabel?.textColor = SECTION_TEXT
         header.textLabel?.textAlignment = NSTextAlignment.center
     }
-        
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
-
         
-        let Album = TheDataModel.AlbumSections[indexPath.section][indexPath.row]
-    
+        
+        let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
+        
         cell.title.text = Album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
         if Album.Image.characters.count > 0 {
@@ -156,7 +211,7 @@ class AlbumController: UITableViewController {
         }
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
-
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let formattedNumber = numberFormatter.string(from: NSNumber(value:AlbumStats.totalTalks))
@@ -164,7 +219,7 @@ class AlbumController: UITableViewController {
         
         
         cell.statTotalTime.text = AlbumStats.durationDisplay
- 
+        
         return cell
     }
     
@@ -173,7 +228,7 @@ class AlbumController: UITableViewController {
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         
-        let Album = TheDataModel.AlbumSections[indexPath.section][indexPath.row]
+        let Album = FilteredAlbumSections[indexPath.section][indexPath.row]
         
         switch Album.Content {
             
@@ -194,10 +249,10 @@ class AlbumController: UITableViewController {
             
         case KEY_SANGHA_SHAREHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_HISTORY", sender: self)
-
+            
         case KEY_ALLSERIES:
             self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)
-
+            
         default:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
         }

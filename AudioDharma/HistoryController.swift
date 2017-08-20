@@ -10,9 +10,9 @@ import UIKit
 
 class HistoryController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
- 
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
+
     
     //MARK: Properties
     var SectionTalks: [[TalkData]] = []
@@ -220,10 +220,11 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             cell.noteImage = nil
         }
         
+        cell.speakerPhoto.image = talk.SpeakerPhoto
+        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.title.text = talk.Title
         cell.date.text = talk.DatePlayed
         cell.time.text = talk.TimePlayed
-        cell.location.text = talk.Location
         
         return cell
     }
