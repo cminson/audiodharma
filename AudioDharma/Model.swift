@@ -19,6 +19,10 @@ struct AlbumStats {
     var totalSeconds: Int
     var durationDisplay: String
 }
+enum ALBUM_SERIES {                   // all possible states of series displays
+    case ALL
+    case RECOMMENDED
+}
 
 // MARK: App Global Constants
 let KEY_ALLTALKS = "KEY_ALLTALKS"
@@ -29,10 +33,11 @@ let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
 let KEY_SANGHA_TALKHISTORY = "KEY_SANGHA_TALKHISTORY"
 let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
-let KEY_ALLSERIES = "KEY_ALLSERIES"
+let KEY_ALL_SERIES = "KEY_ALL_SERIES"
+let KEY_RECOMMENDED_SERIES = "KEY_RECOMMENDED_SERIES"
 
 let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
-let URL_GETACTIVITY = "http://www.ezimba.com/AD/current.json"
+let URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"
 let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"
 
 let SECTION_BACKGROUND = UIColor.darkGray
@@ -56,6 +61,7 @@ class Model {
     var AlbumSections: [[AlbumData]] = []   // 2d array of sections x Albums
     var SpeakerAlbums: [AlbumData] = []     // array of Albums for all speakers
     var SeriesAlbums: [AlbumData] = []     // array of Albums for all series
+    var RecommendedAlbums: [AlbumData] = []     // array of recommended Albums
 
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
 
@@ -105,6 +111,7 @@ class Model {
         computeRootAlbumStats()
         computeSpeakerStats()
         computeSeriesStats()
+        computeRecommendedStats()
         UserAlbums = TheDataModel.loadUserAlbumData()
         computeUserAlbumStats()
         UserNotes = TheDataModel.loadUserNoteData()
@@ -231,7 +238,7 @@ class Model {
                 self.AllTalks.append(talkData)
             
                 // add talk to the list of talks for this speaker
-                // Note: there is only one talk section for speaker. talks for this spearker are stored in that section
+                // Note: there is only one talk section for speaker. talks for this speaker are stored in that section
                 if self.KeyToTalks[speaker] == nil {
                     self.KeyToTalks[speaker] = [[TalkData]] ()
                     self.KeyToTalks[speaker]?.append([talkData])
@@ -304,6 +311,7 @@ class Model {
                 for talk in talkList {
                 
                     var section = talk["section"] as? String ?? ""
+                    var series = talk["series"] as? String ?? ""
                     let titleTitle = talk["title"] as? String ?? ""
                     let URL = talk["url"] as? String ?? ""
                     let speaker = talk["speaker"] as? String ?? ""
@@ -321,6 +329,26 @@ class Model {
                     fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
                 
                     let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
+                    
+                    // if a series is specified, add to a series list
+                    if series.characters.count > 1 {
+                        
+                        let seriesKey = "RECOMMENDED" + series
+                        //print(seriesKey)
+                        if self.KeyToTalks[seriesKey] == nil {
+                            self.KeyToTalks[seriesKey] = [[TalkData]] ()
+                            self.KeyToTalks[seriesKey]?.append([talkData])
+                            
+                            // create a Album for this series and add to array of series Albums
+                            // this array will be referenced by SeriesController
+                            let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
+                            self.RecommendedAlbums.append(albumData)
+                        }
+                        else {
+                            self.KeyToTalks[seriesKey]?[0].append(talkData)
+                        }
+                    }
+
                 
                     // create the key -> talkData[] entry if it doesn't already exist
                     if self.KeyToTalks[content] == nil {
@@ -379,9 +407,12 @@ class Model {
                 return
             }
             
-            //parsing the response
+            //parse the response
             var talkCount = 0
             var totalSeconds = 0
+            var durationDisplay : String
+            var stats : AlbumStats
+            
             do {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
@@ -389,13 +420,17 @@ class Model {
                 for talkHistory in json["sangha_history"] as? [AnyObject] ?? [] {
                     
                     let fileName = talkHistory["filename"] as? String ?? ""
-                    let datePlayed = talkHistory["dateplayed"] as? String ?? ""
-                    let timePlayed = talkHistory["timeplayed"] as? String ?? ""
+                    let datePlayed = talkHistory["date"] as? String ?? ""
+                    let timePlayed = talkHistory["time"] as? String ?? ""
                     let location = talkHistory["location"] as? String ?? ""
                     
                     if let talk = self.NameToTalks[fileName] {
-                        let duration = talk.DurationDisplay
                         
+                        talk.DatePlayed = datePlayed
+                        talk.TimePlayed = timePlayed
+                        talk.Location = location
+                        
+                        let duration = talk.DurationDisplay
                         let seconds = self.convertDurationToSeconds(duration: duration)
                         totalSeconds += seconds
                         talkCount += 1
@@ -403,15 +438,45 @@ class Model {
                         self.SangaTalkHistoryAlbum.append(talk)
                     }
                 }
+                var durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+                var stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+                self.SanghaTalkHistoryStats = stats
+
+                talkCount = 0
+                totalSeconds = 0
+                for talkHistory in json["sangha_shares"] as? [AnyObject] ?? [] {
+                    
+                    let fileName = talkHistory["filename"] as? String ?? ""
+                    let dateShared = talkHistory["date"] as? String ?? ""
+                    let timeShared = talkHistory["time"] as? String ?? ""
+                    let location = talkHistory["location"] as? String ?? ""
+                    
+                    if let talk = self.NameToTalks[fileName] {
+                        
+                        talk.DatePlayed = dateShared
+                        talk.TimePlayed = timeShared
+                        talk.Location = location
+                        
+                        let duration = talk.DurationDisplay
+                        let seconds = self.convertDurationToSeconds(duration: duration)
+                        totalSeconds += seconds
+                        talkCount += 1
+                        
+                        self.SangaShareHistoryAlbum.append(talk)
+                    }
+                }
+                
+                durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+                stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+                self.SanghaShareHistoryStats = stats
+
             } catch {
                 ActivityIsUpdating = false
                 print(error)
             }
             
-            let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-            self.SanghaTalkHistoryStats = stats
             ActivityIsUpdating = false
+            self.refreshControllers()
 
         }
         task.resume()
@@ -494,9 +559,6 @@ class Model {
         KeyToAlbumStats[KEY_CUSTOMALBUMS] = stats
     }
     
-    //
-    // generate the stats for the speaker talk album.
-    //
     func computeSpeakerStats() {
         
         var totalSecondsAllLists = 0
@@ -526,9 +588,6 @@ class Model {
         KeyToAlbumStats[KEY_ALLSPEAKERS] = stats
     }
     
-    //
-    // generate the stats for the series talk album.
-    //
     func computeSeriesStats() {
         
         var totalSecondsAllLists = 0
@@ -555,7 +614,36 @@ class Model {
         let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalSecondsAllLists)
         
         let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
-        KeyToAlbumStats[KEY_ALLSERIES] = stats
+        KeyToAlbumStats[KEY_ALL_SERIES] = stats
+    }
+    
+    func computeRecommendedStats() {
+        
+        var totalSecondsAllLists = 0
+        var talkCountAllLists = 0
+        
+        for album in RecommendedAlbums {
+            
+            let content = album.Content
+            var totalSeconds = 0
+            var talkCount = 0
+            for talk in (KeyToTalks[content]?[0])! {
+                totalSeconds += talk.DurationInSeconds
+                talkCount += 1
+            }
+            
+            talkCountAllLists += talkCount
+            totalSecondsAllLists += totalSeconds
+            let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+            
+            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+            KeyToAlbumStats[content] = stats
+        }
+        
+        let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalSecondsAllLists)
+        
+        let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
+        KeyToAlbumStats[KEY_RECOMMENDED_SERIES] = stats
     }
     
     func computeNotesStats() {
@@ -689,9 +777,10 @@ class Model {
     }
 
     
-    
     // MARK: API
     func getTalks(content: String) -> [[TalkData]] {
+        
+        var talkList : [[TalkData]]
         
         switch content {
         case KEY_NOTES:
@@ -701,7 +790,7 @@ class Model {
                     talks.append(talk)
                 }
             }
-            return [talks]
+            talkList =  [talks]
             
         case KEY_USER_TALKHISTORY:
             var talks = [TalkData] ()
@@ -715,7 +804,7 @@ class Model {
                     talks.append(talk)
                 }
             }
-            return [talks.reversed()]
+            talkList =  [talks.reversed()]
             
         case KEY_USER_SHAREHISTORY:
             var talks = [TalkData] ()
@@ -729,9 +818,8 @@ class Model {
                     talks.append(talk)
                 }
             }
-            return [talks.reversed()]
+            talkList = [talks.reversed()]
 
-            
         case KEY_SANGHA_TALKHISTORY:
             
             var talks = [TalkData] ()
@@ -741,32 +829,54 @@ class Model {
                     talks.append(talk)
                 }
             }
-            return [talks.reversed()]
+            talkList = [talks]
             
-        case KEY_ALLSERIES:
-            return KeyToTalks[content] ?? [[TalkData]]()
+        case KEY_SANGHA_SHAREHISTORY:
+            
+            var talks = [TalkData] ()
+            for talkHistory in SangaShareHistoryAlbum {
+                let fileName = talkHistory.FileName
+                if let talk = NameToTalks[fileName] {
+                    talks.append(talk)
+                }
+            }
+            talkList = [talks]
+
+        case KEY_ALL_SERIES:
+            talkList = KeyToTalks[content] ?? [[TalkData]]()
  
         case KEY_ALLTALKS:
-            return [AllTalks]
+            talkList =  [AllTalks]
 
-            
         default:
-            return KeyToTalks[content] ?? [[TalkData]]()
+            talkList =  KeyToTalks[content] ?? [[TalkData]]()
         }
+        
+        return talkList
     }
     
     func getAlbumStats(content: String) -> AlbumStats {
         
+        
+        var stats: AlbumStats
+
         switch content {
-            
+        
         case KEY_ALLTALKS:
-            let stats = KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
-            return stats
+            stats = KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+        
+        case KEY_SANGHA_TALKHISTORY:
+            stats = SanghaTalkHistoryStats ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+            
+        case KEY_SANGHA_SHAREHISTORY:
+            stats = SanghaShareHistoryStats ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
             
         default:
-            return KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
+            stats =  KeyToAlbumStats[content] ?? AlbumStats(totalTalks: 0, totalSeconds: 0, durationDisplay: "0:0:0")
             
         }
+        
+        return stats
     }
     
     func getUserAlbums() -> [UserAlbumData] {
@@ -862,9 +972,10 @@ class Model {
         
 
         let date = Date()
-        var formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.mm.dd"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
         let datePlayed = formatter.string(from: date)
+        
         formatter.dateFormat = "HH:mm:ss"
         let timePlayed = formatter.string(from: date)
         
@@ -874,6 +985,7 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
         computeTalkHistoryStats()
+        refreshControllers()
     }
     
     func addToShareHistory(talk: TalkData) {
@@ -884,8 +996,8 @@ class Model {
         
         
         let date = Date()
-        var formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.mm.dd"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
         let datePlayed = formatter.string(from: date)
         formatter.dateFormat = "HH:mm:ss"
         let timePlayed = formatter.string(from: date)
@@ -953,8 +1065,6 @@ class Model {
         controller.present(activityViewController, animated: true, completion: nil)
     }
     
-
-    
     func secondsToDurationDisplay(seconds: Int) -> String {
         
         let hours = seconds / 3600
@@ -971,7 +1081,6 @@ class Model {
         
         return hoursStr + ":" + minutesStr + ":" + secondsStr
     }
-
     
     func convertDurationToSeconds(duration: String) -> Int {
         

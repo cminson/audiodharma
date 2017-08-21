@@ -87,11 +87,20 @@ class AlbumController: UITableViewController {
             }
             
         case "DISPLAY_SERIES_ALBUMS":
-            guard let _ = segue.destination as? SeriesController else {
+            guard let controller = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            controller.SeriesType = .ALL
+            controller.title = "Series Talks"
             
-        case "DISPLAY_HISTORY":
+        case "DISPLAY_RECOMMENDED_ALBUMS":
+            guard let controller = segue.destination as? SeriesController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            controller.SeriesType = .RECOMMENDED
+            controller.title = "Recommended Talks"
+            
+       case "DISPLAY_HISTORY":
             guard let controller = segue.destination as? HistoryController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -195,8 +204,11 @@ class AlbumController: UITableViewController {
         case KEY_SANGHA_SHAREHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_HISTORY", sender: self)
 
-        case KEY_ALLSERIES:
+        case KEY_ALL_SERIES:
             self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)
+            
+        case KEY_RECOMMENDED_SERIES:
+            self.performSegue(withIdentifier: "DISPLAY_RECOMMENDED_ALBUMS", sender: self)
 
         default:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)

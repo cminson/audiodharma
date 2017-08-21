@@ -333,6 +333,7 @@
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
                         <segue destination="WB9-Fy-Gld" kind="show" identifier="DISPLAY_HISTORY" id="Fjl-cD-evB"/>
+                        <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_RECOMMENDED_ALBUMS" id="RPR-ii-jHG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1017,11 +1018,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ebq-8j-F1C"/>
+        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="RPR-ii-jHG"/>
+        <segue reference="ZR1-MZ-juM"/>
         <segue reference="yp4-U7-mwc"/>
         <segue reference="EDi-iD-M6R"/>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="ie0-kf-o7Q"/>
-        <segue reference="loI-AD-EMM"/>
+        <segue reference="eae-sD-01f"/>
+        <segue reference="ffI-Hi-abN"/>
     </inferredMetricsTieBreakers>
 </document>

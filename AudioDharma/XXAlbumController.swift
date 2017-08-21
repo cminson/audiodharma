@@ -250,7 +250,7 @@ class XXAlbumController: UITableViewController, UISearchBarDelegate, UISearchCon
         case KEY_SANGHA_SHAREHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_HISTORY", sender: self)
             
-        case KEY_ALLSERIES:
+        case KEY_ALL_SERIES:
             self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)
             
         default:

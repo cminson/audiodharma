@@ -18,8 +18,7 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
     var FilteredAlbums:  [AlbumData] = []
     let SearchController = UISearchController(searchResultsController: nil)
     var SearchText: String = ""
-    var Test: Int = 0
-    
+    var SeriesType : ALBUM_SERIES = .ALL
     
     // MARK: Init
     override func viewDidLoad() {
@@ -28,7 +27,14 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         
         super.viewDidLoad()
         
-        FilteredAlbums = TheDataModel.SeriesAlbums
+        switch SeriesType {
+        case .ALL:
+            FilteredAlbums = TheDataModel.SeriesAlbums
+            
+        case .RECOMMENDED:
+            FilteredAlbums = TheDataModel.RecommendedAlbums
+           
+        }
         
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
