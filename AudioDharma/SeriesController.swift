@@ -32,8 +32,7 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
             FilteredAlbums = TheDataModel.SeriesAlbums
             
         case .RECOMMENDED:
-            FilteredAlbums = TheDataModel.RecommendedAlbums
-           
+            FilteredAlbums = TheDataModel.RecommendedAlbums           
         }
         
         SearchController.searchResultsUpdater = self

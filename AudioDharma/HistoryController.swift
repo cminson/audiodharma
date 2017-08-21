@@ -29,6 +29,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         super.viewDidLoad()
         
+        TheDataModel.CommunityController = self
+
         SectionTalks = TheDataModel.getTalks(content: Content)
         FilteredSectionTalks = SectionTalks
         
@@ -81,6 +83,11 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         super.didReceiveMemoryWarning()
     }
     
+    func reloadModel() {
+        
+        SectionTalks = TheDataModel.getTalks(content: Content)
+        FilteredSectionTalks = SectionTalks
+    }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -80,7 +80,8 @@ class Model {
     
     var AllTalks: [TalkData] = []
 
-    var RootController: UITableViewController!
+    var RootController: UITableViewController?
+    var CommunityController: HistoryController?
     
     var UpdatedTalksReady: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
@@ -122,9 +123,7 @@ class Model {
         computeShareHistoryStats()
 
 
-#if FORLATER
-        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(getTalksCurrentlyBeingPlayed), userInfo: nil, repeats: true)
-#endif
+        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateSanghaInfo), userInfo: nil, repeats: true)
 
     }
     
@@ -310,25 +309,35 @@ class Model {
                 var talkSectionPositionDict : [String: Int] = [:]
                 for talk in talkList {
                 
-                    var section = talk["section"] as? String ?? ""
-                    var series = talk["series"] as? String ?? ""
-                    let titleTitle = talk["title"] as? String ?? ""
-                    let URL = talk["url"] as? String ?? ""
-                    let speaker = talk["speaker"] as? String ?? ""
-                    let date = talk["date"] as? String ?? ""
-                    let duration = talk["duration"] as? String ?? ""
-                
-                    if section.range(of:"_") != nil {
-                        section = ""
-                    }
-                
-                    let totalSeconds = self.convertDurationToSeconds(duration: duration)
-                
+                    var URL = talk["url"] as? String ?? ""
+
                     let urlPhrases = URL.components(separatedBy: "/")
                     var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
                     fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    var section = talk["section"] as? String ?? ""
+                    var series = talk["series"] as? String ?? ""
+                    let titleTitle = talk["title"] as? String ?? ""
+                    var speaker = ""
+                    var date = ""
+                    var durationDisplay = ""
+                    
+                    // fill in these fields from talk data.  must do this as these fields are not stored in config.json (to make things 
+                    // easier for config reading)
+                    if let talkData = NameToTalks[fileName] {
+                        URL = talkData.URL
+                        speaker = talkData.Speaker
+                        date = talkData.DatePlayed
+                        durationDisplay = talkData.DurationDisplay
+                    }
+                 
+                    if section.range(of:"_") != nil {
+                        section = ""
+                    }
+                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
+                    
                 
-                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
+                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
                     
                     // if a series is specified, add to a series list
                     if series.characters.count > 1 {
@@ -482,6 +491,20 @@ class Model {
         task.resume()
     }
     
+    @objc func updateSanghaInfo() {
+    
+        print("updateShanghaInfo")
+        
+        ActivityIsUpdating = true
+        
+        SangaTalkHistoryAlbum = []
+        SangaShareHistoryAlbum = []
+        downloadSanghaActivity()
+        
+        ActivityIsUpdating = false
+        
+    }
+    
     
     // MARK: Support Functions
     func loadTalksFromFile(jsonLocation: String) {
@@ -500,7 +523,15 @@ class Model {
         DispatchQueue.main.async(execute: {
             print("executing refreshControllers")
 
-            self.RootController.tableView.reloadData()
+            if let controller = self.RootController {
+                controller.tableView.reloadData()
+            }
+            
+            print(self.CommunityController)
+            if let controller = self.CommunityController {
+                controller.reloadModel()
+                controller.tableView.reloadData()
+            }
             return
         })
     }
@@ -634,6 +665,7 @@ class Model {
             
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
+            print(talkCountAllLists, totalSecondsAllLists, totalSeconds)
             let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
@@ -1113,301 +1145,6 @@ class Model {
         return totalSeconds
     }
     
-    /*
-    func testload(fileLocation: String) {
-        
-        let config = URLSessionConfiguration.default
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        config.urlCache = nil
-        let session = URLSession.init(configuration: config)
-        
-        let requestURL : URL? = URL(string: fileLocation)
-        let urlRequest = URLRequest(url : requestURL!)
-        
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            print(statusCode)
-            
-            if (statusCode == 200) {
-                print("Download: success")
-            }
-            
-            // make sure we got data
-            guard let responseData = data else {
-                print("Download: error")
-                return
-            }
-            
-            print("Response Data Size: ", responseData.count)
-            
-            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let filePath = documentPath + "/" + "config02.zip"
-            let configPath = documentPath + "/" + "config"
-            let fileURL = URL(fileURLWithPath: filePath)
-            
-            do {
-                try responseData.write(to: fileURL)
-            }
-            catch let error as NSError {
-                print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
-            }
-            
-            let time1 = Date.timeIntervalSinceReferenceDate
-            SSZipArchive.unzipFile(atPath: filePath, toDestination: configPath)
-            let time2 = Date.timeIntervalSinceReferenceDate
-            print("Zip time: ", time2 - time1)
-            
-        }
-        
-        task.resume()
-    }
- */
     
-    
-    
-    /*
-     func generateTalkKey(name: String, date: String, duration: String) -> String {
-     
-     let key = name + "+!+" + date + "+!+" + duration
-     return key
-     }
-     
-     func unpackTalkKey(key: String) -> (name: String, date: String, duration: String) {
-     
-     let keyPartsArray = key.components(separatedBy: "+!+")
-     
-     let name = keyPartsArray[0]
-     let date = keyPartsArray[1]
-     let duration = keyPartsArray[2]
-     
-     return(name, date, duration)
-     }
-     */
-    
-    #if DEV
-    func loadConfigFromWeb(jsonLocation: String) {
-    
-    let config = URLSessionConfiguration.default
-    config.requestCachePolicy = .reloadIgnoringLocalCacheData
-    config.urlCache = nil
-    let session = URLSession.init(configuration: config)
-    
-    let requestURL : URL? = URL(string: jsonLocation)
-    let urlRequest = URLRequest(url : requestURL!)
-    
-    
-    let task = session.dataTask(with: urlRequest) {
-    (data, response, error) -> Void in
-    
-    let httpResponse = response as! HTTPURLResponse
-    let statusCode = httpResponse.statusCode
-    print(statusCode)
-    
-    if (statusCode == 200) {
-    print("Download: success")
-    }
-    
-    // make sure we got data
-    guard let responseData = data else {
-    print("Download: error")
-    return
-    }
-    
-    // store the config data off
-    let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-    let filePath = documentPath + "/" + "config02.zip"
-    let configPath = documentPath + "/" + "config"
-    let fileURL = URL(fileURLWithPath: filePath)
-    print("Document Path: ", documentPath)
-    
-    
-    do {
-    try responseData.write(to: fileURL)
-    }
-    catch let error as NSError {
-    print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
-    }
-    
-    // unzip it back into json
-    let time1 = Date.timeIntervalSinceReferenceDate
-    SSZipArchive.unzipFile(atPath: filePath, toDestination: configPath)
-    let time2 = Date.timeIntervalSinceReferenceDate
-    print("Zip time: ", time2 - time1)
-    
-    let configURL = URL(fileURLWithPath: documentPath + "/config/config02.json")
-    var jsonData: Data!
-    do {
-    jsonData = try Data(contentsOf: configURL)
-    }
-    catch let error as NSError {
-    print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
-    }
-    
-    
-    
-    do {
-    //let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
-    //let json = jsonData as! [String: AnyObject]
-    let json =  try JSONSerialization.jsonObject(with: jsonData) as! [String: AnyObject]
-    var talkCount = 0
-    var totalSeconds = 0
-    
-    for talk in json["talks"] as? [AnyObject] ?? [] {
-    
-    let series = talk["series"] as? String ?? ""
-    let title = talk["title"] as? String ?? ""
-    let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-    let speaker = talk["speaker"] as? String ?? ""
-    let date = talk["date"] as? String ?? ""
-    let duration = talk["duration"] as? String ?? ""
-    
-    let section = ""
-    
-    let terms = URL.components(separatedBy: "/")
-    let fileName = terms.last ?? ""
-    
-    let seconds = self.convertDurationToSeconds(duration: duration)
-    totalSeconds += seconds
-    
-    
-    let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, duration: duration,  speaker: speaker, section: section, time: seconds)
-    
-    //print(talkData)
-    
-    
-    self.NameToTalks[fileName] = talkData
-    
-    // add this talk to  list of all talks
-    // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section
-    self.AllTalks.append(talkData)
-    
-    // add talk to the list of talks for this speaker
-    // Note: there is only one talk section for speaker. talks for this spearker are stored in that section
-    if self.KeyToTalks[speaker] == nil {
-    self.KeyToTalks[speaker] = [[TalkData]] ()
-    self.KeyToTalks[speaker]?.append([talkData])
-    
-    // create a Album for this speaker and add to array of speaker Albums
-    // this array will be referenced by SpeakersController
-    let albumData =  AlbumData(title: speaker, content: speaker, section: "", image: speaker, date: date)
-    self.SpeakerAlbums.append(albumData)
-    }
-    else {
-    self.KeyToTalks[speaker]?[0].append(talkData)
-    }
-    
-    // if a series is specified, add to a series list
-    if series.characters.count > 1 {
-    
-    let seriesKey = "SERIES" + series
-    //print(seriesKey)
-    if self.KeyToTalks[seriesKey] == nil {
-    self.KeyToTalks[seriesKey] = [[TalkData]] ()
-    self.KeyToTalks[seriesKey]?.append([talkData])
-    
-    // create a Album for this series and add to array of series Albums
-    // this array will be referenced by SeriesController
-    let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
-    self.SeriesAlbums.append(albumData)
-    }
-    else {
-    self.KeyToTalks[seriesKey]?[0].append(talkData)
-    }
-    }
-    
-    talkCount += 1
-    }
-    
-    let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-    self.KeyToAlbumStats[KEY_ALLTALKS] = stats
-    
-    self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
-    self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
-    
-    
-    var albumSectionPositionDict : [String: Int] = [:]
-    
-    for Album in json["albums"] as? [AnyObject] ?? [] {
-    
-    var section = Album["section"] as? String ?? ""
-    let title = Album["title"] as? String ?? ""
-    let content = Album["content"] as? String ?? ""
-    let image = Album["image4"] as? String ?? ""
-    let talkList = Album["talks"] as? [AnyObject] ?? []
-    let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
-    
-    //print(albumData)
-    // store Album in the 2D AlbumSection array (section x Album)
-    if albumSectionPositionDict[section] == nil {
-    // new section seen.  create new array of Albums for this section
-    self.AlbumSections.append([albumData])
-    albumSectionPositionDict[section] = self.AlbumSections.count - 1
-    } else {
-    // section already exists.  add Album to the existing array of Albums
-    let sectionPosition = albumSectionPositionDict[section]!
-    self.AlbumSections[sectionPosition].append(albumData)
-    }
-    
-    // get the optional talk array for this Album
-    // if exists, store off all the talks in keyToTalks keyed by 'content' id
-    // the value for this key is a 2d array (section x talks)
-    var talkSectionPositionDict : [String: Int] = [:]
-    for talk in talkList {
-    
-    var section = talk["section"] as? String ?? ""
-    let titleTitle = talk["title"] as? String ?? ""
-    let URL = talk["url"] as? String ?? ""
-    var speaker = talk["speaker"] as? String ?? ""
-    let date = talk["date"] as? String ?? ""
-    let duration = talk["duration"] as? String ?? ""
-    
-    if section.range(of:"_") != nil {
-    section = ""
-    }
-    
-    let totalSeconds = self.convertDurationToSeconds(duration: duration)
-    
-    let urlPhrases = URL.components(separatedBy: "/")
-    var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
-    fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
-    
-    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, duration: duration,  speaker: speaker, section: section, time: totalSeconds)
-    
-    // create the key -> talkData[] entry if it doesn't already exist
-    if self.KeyToTalks[content] == nil {
-    //print("Album talks creating key for: \(content)")
-    self.KeyToTalks[content]  = []
-    }
-    
-    // now add the talk data to this key
-    if talkSectionPositionDict[section] == nil {
-    // new section seen.  create new array of talks for this section
-    //print("new section seen. creating array for: \(content)")
-    self.KeyToTalks[content]!.append([talkData])
-    talkSectionPositionDict[section] = self.KeyToTalks[content]!.count - 1
-    } else {
-    // section already exists.  add talk to the existing array of talks
-    let sectionPosition = talkSectionPositionDict[section]!
-    self.KeyToTalks[content]![sectionPosition].append(talkData)
-    
-    }
-    }
-    }
-    self.UpdatedTalksReady = true
-    
-    } catch {
-    print(error)
-    }
-    
-    
-    }
-    task.resume()
-    }
-    #endif
-
     
 }
