@@ -23,6 +23,11 @@ enum ALBUM_SERIES {                   // all possible states of series displays
     case ALL
     case RECOMMENDED
 }
+enum ACTIVITIES {          // all possible activities that are reported back to cloud
+    case SHARE_TALK
+    case PLAY_TALK
+}
+
 
 // MARK: App Global Constants
 let KEY_ALLTALKS = "KEY_ALLTALKS"
@@ -36,8 +41,6 @@ let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
 let KEY_ALL_SERIES = "KEY_ALL_SERIES"
 let KEY_RECOMMENDED_SERIES = "KEY_RECOMMENDED_SERIES"
 
-let URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"
-let URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"
 let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"
 
 let SECTION_BACKGROUND = UIColor.darkGray
@@ -50,6 +53,9 @@ let MAX_SHAREHISTORY_COUNT = 100     // maximum number of shared talks showed in
 var MP3_ROOT = "http://www.audiodharma.org" // where to find MP3s on web.  reset by config json
 var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (history, shares) on web. reset by config json
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
+var URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"  // where to report our shares and plays of talks
+var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to get sangha's shares and plays of talks
+
 
 // MARK: Global Variables
 var ActivityIsUpdating = false              // flags if an activity update is running or not
@@ -123,7 +129,7 @@ class Model {
         computeShareHistoryStats()
 
 
-        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateSanghaInfo), userInfo: nil, repeats: true)
+        //Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
 
     }
     
@@ -491,9 +497,9 @@ class Model {
         task.resume()
     }
     
-    @objc func updateSanghaInfo() {
+    @objc func getSanghaActivity() {
     
-        print("updateShanghaInfo")
+        print("getShanghaInfo")
         
         ActivityIsUpdating = true
         
@@ -505,6 +511,57 @@ class Model {
         
     }
     
+    func reportTalkActivity(type: ACTIVITIES, talk: TalkData) {
+        
+        var cmd : String
+        switch (type) {
+        
+        case ACTIVITIES.SHARE_TALK:
+            cmd = "SHARETALK"
+            
+        case ACTIVITIES.PLAY_TALK:
+            cmd = "PLAYTALK"
+            
+        }
+        
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
+        let datePlayed = formatter.string(from: date)
+        formatter.dateFormat = "HH:mm:ss"
+        let timePlayed = formatter.string(from: date)
+        let location = "Ashland, Oregon"
+        
+        let urlPhrases = talk.URL.components(separatedBy: "/")
+        var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
+        fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let parameters = "TYPE=\(cmd)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&LOCATION=\(location)"
+        print(parameters)
+
+        //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+//print(escapedString!)
+
+        let url = URL(string: URL_REPORTACTIVITY)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = parameters.data(using: String.Encoding.utf8);
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                print(responseJSON)
+            }
+            
+        }
+        task.resume()
+    }
+
+ 
     
     // MARK: Support Functions
     func loadTalksFromFile(jsonLocation: String) {
@@ -1080,9 +1137,6 @@ class Model {
     
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
-        //let titleText = "\(sharedTalk.Title) by \(sharedTalk.Speaker)\n"
-        //let bylineText = "This talk was shared from the iPhone AudioDharma app"
-        
         addToShareHistory(talk: sharedTalk)
         
         let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
@@ -1093,6 +1147,17 @@ class Model {
         
         let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = controller.view // so that iPads won't crash
+        
+        // if something was actually shared, report that activity to cloud
+        activityViewController.completionWithItemsHandler = {
+            (activity, completed, items, error) in
+            
+            //print("completion handler seen")
+            if completed == true {
+                self.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: sharedTalk)
+                
+            }
+        }
         
         controller.present(activityViewController, animated: true, completion: nil)
     }

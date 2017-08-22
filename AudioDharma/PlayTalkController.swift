@@ -172,6 +172,7 @@ class PlayTalkController: UIViewController {
         
         switch TalkPlayerStatus {
         case .INITIAL, .STOPPED, .FINISHED, .ALBUMFINISHED:
+ 
             startTalk()
         case .PAUSED:
             restartTalk()
@@ -196,7 +197,8 @@ class PlayTalkController: UIViewController {
         updateTitleDisplay()
         
         TheDataModel.addToTalkHistory(talk: CurrentTalk)
-            }
+        TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
+    }
     
     func restartTalk() {
         
