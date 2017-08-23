@@ -10,14 +10,26 @@ import UIKit
 import os.log
 import ZipArchive
 
-// MARK: App Global Vars
+// MARK: Global State Vars
 let TheDataModel = Model()
+var TheUserLocation = UserLocation()
 let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
-//let DEVICE_ID:UInt32 = arc4random_uniform(100000000)
-struct AlbumStats {
+var ActivityIsUpdating = false              // flags if an activity update is running or not
+
+
+// MARK: Global Structs and Enums
+struct AlbumStats {         // where stats on each album is kept
     var totalTalks: Int
     var totalSeconds: Int
     var durationDisplay: String
+}
+struct UserLocation {       // where user geo info is kept
+    var city: String = "NA"
+    var country: String = "NA"
+    var zip: String = "NA"
+    var altitude: Double = 0
+    var latitude: Double = 0
+    var longitude: Double = 0
 }
 enum ALBUM_SERIES {                   // all possible states of series displays
     case ALL
@@ -40,14 +52,10 @@ let KEY_SANGHA_TALKHISTORY = "KEY_SANGHA_TALKHISTORY"
 let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
 let KEY_ALL_SERIES = "KEY_ALL_SERIES"
 let KEY_RECOMMENDED_SERIES = "KEY_RECOMMENDED_SERIES"
-
 let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"
-
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
 
-let MAX_TALKHISTORY_COUNT = 100     // maximum number of played talks showed in user or sangha history
-let MAX_SHAREHISTORY_COUNT = 100     // maximum number of shared talks showed in user of sangha history
 
 // MARK: Global Config Variables
 var MP3_ROOT = "http://www.audiodharma.org" // where to find MP3s on web.  reset by config json
@@ -55,10 +63,9 @@ var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (histor
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
 var URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"  // where to report our shares and plays of talks
 var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to get sangha's shares and plays of talks
-
-
-// MARK: Global Variables
-var ActivityIsUpdating = false              // flags if an activity update is running or not
+var MAX_TALKHISTORY_COUNT = 10     // maximum number of played talks showed in user or sangha history
+var MAX_SHAREHISTORY_COUNT = 10     // maximum number of shared talks showed in user of sangha history
+var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
 class Model {
@@ -92,7 +99,6 @@ class Model {
     var UpdatedTalksReady: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
-    
     
     // MARK: Persistant Data
     var UserAlbums: [UserAlbumData] = []      // all the custom user albums defined by this user.
@@ -129,7 +135,7 @@ class Model {
         computeShareHistoryStats()
 
 
-        //Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
 
     }
     
@@ -425,8 +431,6 @@ class Model {
             //parse the response
             var talkCount = 0
             var totalSeconds = 0
-            var durationDisplay : String
-            var stats : AlbumStats
             
             do {
                 
@@ -437,13 +441,15 @@ class Model {
                     let fileName = talkHistory["filename"] as? String ?? ""
                     let datePlayed = talkHistory["date"] as? String ?? ""
                     let timePlayed = talkHistory["time"] as? String ?? ""
-                    let location = talkHistory["location"] as? String ?? ""
-                    
+                    let city = talkHistory["city"] as? String ?? ""
+                    let country = talkHistory["country"] as? String ?? ""
+                   
                     if let talk = self.NameToTalks[fileName] {
                         
                         talk.DatePlayed = datePlayed
                         talk.TimePlayed = timePlayed
-                        talk.Location = location
+                        talk.CityPlayed = city
+                        talk.CountryPlayed = country
                         
                         let duration = talk.DurationDisplay
                         let seconds = self.convertDurationToSeconds(duration: duration)
@@ -451,6 +457,10 @@ class Model {
                         talkCount += 1
                         
                         self.SangaTalkHistoryAlbum.append(talk)
+                        
+                        if talkCount >= MAX_TALKHISTORY_COUNT {
+                            break
+                        }
                     }
                 }
                 var durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
@@ -464,13 +474,15 @@ class Model {
                     let fileName = talkHistory["filename"] as? String ?? ""
                     let dateShared = talkHistory["date"] as? String ?? ""
                     let timeShared = talkHistory["time"] as? String ?? ""
-                    let location = talkHistory["location"] as? String ?? ""
+                    let city = talkHistory["city"] as? String ?? ""
+                    let country = talkHistory["country"] as? String ?? ""
                     
                     if let talk = self.NameToTalks[fileName] {
                         
                         talk.DatePlayed = dateShared
                         talk.TimePlayed = timeShared
-                        talk.Location = location
+                        talk.CityPlayed = city
+                        talk.CountryPlayed = country
                         
                         let duration = talk.DurationDisplay
                         let seconds = self.convertDurationToSeconds(duration: duration)
@@ -478,6 +490,10 @@ class Model {
                         talkCount += 1
                         
                         self.SangaShareHistoryAlbum.append(talk)
+                        
+                        if talkCount >= MAX_SHAREHISTORY_COUNT {
+                            break
+                        }
                     }
                 }
                 
@@ -499,8 +515,6 @@ class Model {
     
     @objc func getSanghaActivity() {
     
-        print("getShanghaInfo")
-        
         ActivityIsUpdating = true
         
         SangaTalkHistoryAlbum = []
@@ -513,14 +527,14 @@ class Model {
     
     func reportTalkActivity(type: ACTIVITIES, talk: TalkData) {
         
-        var cmd : String
+        var operation : String
         switch (type) {
         
         case ACTIVITIES.SHARE_TALK:
-            cmd = "SHARETALK"
+            operation = "SHARETALK"
             
         case ACTIVITIES.PLAY_TALK:
-            cmd = "PLAYTALK"
+            operation = "PLAYTALK"
             
         }
         
@@ -530,14 +544,20 @@ class Model {
         let datePlayed = formatter.string(from: date)
         formatter.dateFormat = "HH:mm:ss"
         let timePlayed = formatter.string(from: date)
-        let location = "Ashland, Oregon"
         
+        let city = TheUserLocation.city
+        let country = TheUserLocation.country
+        let zip = TheUserLocation.zip
+        let altitude = TheUserLocation.altitude
+        let latitude = TheUserLocation.latitude
+        let longitude = TheUserLocation.longitude
+        let shareType = "NA"    // TBD
+
         let urlPhrases = talk.URL.components(separatedBy: "/")
         var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let parameters = "TYPE=\(cmd)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&LOCATION=\(location)"
-        print(parameters)
+        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&latitude=\(latitude)&LONGITUDE=\(longitude)"
 
         //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
 //print(escapedString!)
@@ -552,10 +572,12 @@ class Model {
                 print(error?.localizedDescription ?? "No data")
                 return
             }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            let _ = try? JSONSerialization.jsonObject(with: data, options: [])
+            /*
             if let responseJSON = responseJSON as? [String: Any] {
                 print(responseJSON)
             }
+             */
             
         }
         task.resume()
@@ -578,13 +600,12 @@ class Model {
     func refreshControllers() {
         
         DispatchQueue.main.async(execute: {
-            print("executing refreshControllers")
+            //print("executing refreshControllers")
 
             if let controller = self.RootController {
                 controller.tableView.reloadData()
             }
             
-            print(self.CommunityController)
             if let controller = self.CommunityController {
                 controller.reloadModel()
                 controller.tableView.reloadData()
@@ -889,7 +910,9 @@ class Model {
                     
                     talk.DatePlayed = talkHistory.DatePlayed
                     talk.TimePlayed = talkHistory.TimePlayed
-                    talk.Location = talkHistory.Location
+                    talk.CityPlayed = talkHistory.CityPlayed
+                    talk.CountryPlayed = talkHistory.CountryPlayed
+
                     talks.append(talk)
                 }
             }
@@ -903,7 +926,8 @@ class Model {
                     
                     talk.DatePlayed = talkHistory.DatePlayed
                     talk.TimePlayed = talkHistory.TimePlayed
-                    talk.Location = talkHistory.Location
+                    talk.CityPlayed = talkHistory.CityPlayed
+                    talk.CountryPlayed = talkHistory.CountryPlayed
                     talks.append(talk)
                 }
             }
@@ -1068,7 +1092,15 @@ class Model {
         formatter.dateFormat = "HH:mm:ss"
         let timePlayed = formatter.string(from: date)
         
-        let talkHistory = TalkHistoryData(fileName: talk.FileName, datePlayed: datePlayed, timePlayed: timePlayed, location: "" )
+        let cityPlayed = TheUserLocation.city
+        let countryPlayed = TheUserLocation.country
+
+        let talkHistory = TalkHistoryData(fileName: talk.FileName,
+                                          datePlayed: datePlayed,
+                                          timePlayed: timePlayed,
+                                          cityPlayed: cityPlayed,
+                                          countryPlayed: countryPlayed )
+        
         UserTalkHistoryAlbum.append(talkHistory)
         
         // save the data, recompute stats, reload root view to display updated stats
@@ -1083,7 +1115,6 @@ class Model {
             UserShareHistoryAlbum.remove(at: 0)
         }
         
-        
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd"
@@ -1091,7 +1122,15 @@ class Model {
         formatter.dateFormat = "HH:mm:ss"
         let timePlayed = formatter.string(from: date)
         
-        let talkHistory = TalkHistoryData(fileName: talk.FileName, datePlayed: datePlayed, timePlayed: timePlayed, location: "" )
+        let cityPlayed = TheUserLocation.city
+        let countryPlayed = TheUserLocation.country
+        
+        let talkHistory = TalkHistoryData(fileName: talk.FileName,
+                                          datePlayed: datePlayed,
+                                          timePlayed: timePlayed,
+                                          cityPlayed: cityPlayed,
+                                          countryPlayed: countryPlayed )
+
         UserShareHistoryAlbum.append(talkHistory)
         
         // save the data, recompute stats, reload root view to display updated stats

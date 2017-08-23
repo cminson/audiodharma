@@ -12,7 +12,6 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
-
     
     //MARK: Properties
     var SectionTalks: [[TalkData]] = []
@@ -26,7 +25,6 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     // MARK: Init
     override func viewDidLoad() {
         
-        //self.tableView.style = UITableViewStyle.UITableViewStylePlain
         super.viewDidLoad()
         
         TheDataModel.CommunityController = self
@@ -44,9 +42,12 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        /*
+        
+        //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "icoqm")?.withRenderingMode(.alwaysOriginal)
+        //self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "icoqm")?.withRenderingMode(.alwaysOriginal)
+        
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
- */
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,6 +233,9 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         cell.title.text = talk.Title
         cell.date.text = talk.DatePlayed
         cell.time.text = talk.TimePlayed
+        
+        cell.city.text = TheUserLocation.city
+        cell.country.text = TheUserLocation.country
         
         return cell
     }

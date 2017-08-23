@@ -61,15 +61,19 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="buttonDonate" destination="7bB-yU-koj" id="nLa-g1-2xQ"/>
-                        <outlet property="buttonHelp" destination="uZi-pc-z8Q" id="TlW-nZ-p31"/>
+                        <outlet property="buttonDonate" destination="epU-lh-Z3n" id="Gzg-T8-bbH"/>
+                        <outlet property="buttonHelp" destination="EBW-Fm-pKz" id="Jq6-db-wEC"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="yp4-U7-mwc"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="EDi-iD-M6R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="igK-QC-Ojb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="uZi-pc-z8Q" userLabel="Button Help"/>
-                <barButtonItem image="icoheart" id="7bB-yU-koj" userLabel="Button Donate"/>
+                <barButtonItem image="icoqm" id="EBW-Fm-pKz" userLabel="Button Help"/>
+                <barButtonItem image="icoheart" id="epU-lh-Z3n" userLabel="Button Donate">
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="Puv-kY-qH3"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="-2746" y="941"/>
         </scene>
@@ -931,7 +935,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCS-2b-diI">
-                                <rect key="frame" x="0.0" y="64" width="340" height="736"/>
+                                <rect key="frame" x="0.0" y="20" width="340" height="780"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fbh-Su-xLJ" userLabel="Container View">
                                         <rect key="frame" x="0.0" y="0.0" width="340" height="1000"/>
@@ -1018,12 +1022,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Jkk-Sj-9ca"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="Ebq-8j-F1C"/>
         <segue reference="yp4-U7-mwc"/>
         <segue reference="EDi-iD-M6R"/>
-        <segue reference="eae-sD-01f"/>
-        <segue reference="ffI-Hi-abN"/>
+        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="Puv-kY-qH3"/>
+        <segue reference="Xv9-MG-xiH"/>
     </inferredMetricsTieBreakers>
 </document>

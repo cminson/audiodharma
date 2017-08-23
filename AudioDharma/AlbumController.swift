@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreLocation
 
 
-class AlbumController: UITableViewController {
+
+class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
@@ -20,15 +22,22 @@ class AlbumController: UITableViewController {
     var AlbumSections: [[AlbumData]] = []
     //var FilteredAlbumSections:  [[AlbumData]] = []
 
+    var locationManager: CLLocationManager = CLLocationManager()
+    var startLocation: CLLocation!
+
     
     // MARK: Init
     override func viewDidLoad() {
         
         self.tableView.delegate = self
         
+
+        
         TheDataModel.RootController = self
         TheDataModel.loadData()
         super.viewDidLoad()
+        
+
 
         //FilteredAlbumSections = TheDataModel.AlbumSections
         
@@ -36,6 +45,13 @@ class AlbumController: UITableViewController {
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        startLocation = nil
+
         
     }
     
@@ -213,6 +229,44 @@ class AlbumController: UITableViewController {
         default:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
         }
+    }
+    
+    
+    // MARK: Location Services
+    func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation])
+    {
+        let latestLocation: CLLocation = locations[locations.count - 1]
+        let longitude = latestLocation.coordinate.longitude
+        let latitude = latestLocation.coordinate.latitude
+        let altitude =  latestLocation.altitude
+        
+        TheUserLocation.longitude = longitude
+        TheUserLocation.latitude = latitude
+        TheUserLocation.altitude = altitude
+        // latitude.text = String(format: "%.4f", latestLocation.coordinate.latitude)
+
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+            
+            // Place details
+            var placeMark: CLPlacemark!
+            placeMark = placemarks?[0]
+            
+            // Address dictionary
+            // City
+            if let city = placeMark.addressDictionary!["City"] as? String {
+                TheUserLocation.city = city
+            }
+            // Zip code
+            if let zip = placeMark.addressDictionary!["ZIP"] as? String {
+                TheUserLocation.zip = zip
+            }
+            // Country
+            if let country = placeMark.addressDictionary!["Country"] as? String {
+                TheUserLocation.country = country
+            }
+        })
     }
     
 }

@@ -15,6 +15,8 @@ class HistoryCell: UITableViewCell {
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var noteImage: UIImageView!
+    @IBOutlet weak var country: UILabel!
+    @IBOutlet weak var city: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -25,7 +25,8 @@ class TalkData: NSObject {
     
     var DatePlayed: String!
     var TimePlayed: String!
-    var Location: String!
+    var CityPlayed: String!
+    var CountryPlayed: String!
     
     // MARK: Init
     init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String, durationInSeconds: Int) {
@@ -42,7 +43,8 @@ class TalkData: NSObject {
         
         DatePlayed = ""
         TimePlayed = ""
-        Location = ""
+        CityPlayed = ""
+        CountryPlayed = ""
     }
 
 }
