@@ -12,7 +12,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
-    
+
+    //
     //MARK: Properties
     var SectionTalks: [[TalkData]] = []
     var FilteredSectionTalks:  [[TalkData]] = []
@@ -117,10 +118,22 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             controller.title = talk.Title
             //print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
             
-        case "DISPLAY_HELP1":
-            guard let _ = segue.destination as? UINavigationController else {
+        case "DISPLAY_HELP_PAGE":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            
+            let asset = NSDataAsset(name: "AlbumRootPage", bundle: Bundle.main)
+            do {
+                let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
+                if let text = json["text1"] as? String {
+                    controller.HelpText = text
+                }
+
+            } catch {
+                print(error)
+            }
+
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {

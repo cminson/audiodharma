@@ -11,6 +11,7 @@
 		831CC5961F48AD0800550BD4 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC5941F48AD0800550BD4 /* HistoryCell.swift */; };
 		831CC5971F48AD0800550BD4 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831CC5951F48AD0800550BD4 /* HistoryCell.xib */; };
 		83369BFD1F44BF9500B45F81 /* HelpController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83369BFC1F44BF9500B45F81 /* HelpController2.swift */; };
+		834087C21F4F6AAD008E8F2D /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834087C11F4F6AAD008E8F2D /* HelpController.swift */; };
 		83432FC01F0AB373002926AC /* MP3Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83432FBF1F0AB373002926AC /* MP3Player.swift */; };
 		834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834BEC641EFC90D400CBC0C2 /* Model.swift */; };
 		834C4CCD1F0570CE00512E7C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C4CCC1F0570CE00512E7C /* Social.framework */; };
@@ -49,6 +50,7 @@
 		831CC5941F48AD0800550BD4 /* HistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		831CC5951F48AD0800550BD4 /* HistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryCell.xib; sourceTree = "<group>"; };
 		83369BFC1F44BF9500B45F81 /* HelpController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController2.swift; sourceTree = "<group>"; };
+		834087C11F4F6AAD008E8F2D /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
 		83432FBF1F0AB373002926AC /* MP3Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MP3Player.swift; sourceTree = "<group>"; };
 		834BEC641EFC90D400CBC0C2 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		834C4CCC1F0570CE00512E7C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -140,6 +142,7 @@
 				83DC0D601EF17B390071CAD3 /* AppDelegate.swift */,
 				8387D63F1EFC07AD0025006B /* AlbumController.swift */,
 				831CC5921F488AA800550BD4 /* HistoryController.swift */,
+				834087C11F4F6AAD008E8F2D /* HelpController.swift */,
 				83DBF7181F3CDA26005A13F7 /* SeriesController.swift */,
 				83BF9D071F33B19F006367CF /* SpeakerController.swift */,
 				835B9F801EF2CA9B009AF991 /* TalkController.swift */,
@@ -278,6 +281,7 @@
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserTalksEditController.swift in Sources */,
 				83761F3B1F4A3F0600DA6B6A /* XXAlbumController.swift in Sources */,
+				834087C21F4F6AAD008E8F2D /* HelpController.swift in Sources */,
 				83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */,
 				83EF51AC1F042EF9000678B0 /* UserTalkController.swift in Sources */,
 				83DC0D611EF17B390071CAD3 /* AppDelegate.swift in Sources */,

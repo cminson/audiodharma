@@ -55,17 +55,18 @@ let KEY_RECOMMENDED_SERIES = "KEY_RECOMMENDED_SERIES"
 let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
+let MAX_TALKHISTORY_COUNT = 3     // maximum number of played talks showed in user or sangha history
+let MAX_SHAREHISTORY_COUNT = 3     // maximum number of shared talks showed in user of sangha history
+let UPDATE_SANGHA_INTERVAL = 10     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
-// MARK: Global Config Variables
-var MP3_ROOT = "http://www.audiodharma.org" // where to find MP3s on web.  reset by config json
-var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (history, shares) on web. reset by config json
+
+// MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
+var MP3_ROOT = "http://www.audiodharma.org" // where to find MP3s on web.
+var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (history, shares) on web.
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
 var URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"  // where to report our shares and plays of talks
 var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to get sangha's shares and plays of talks
-var MAX_TALKHISTORY_COUNT = 10     // maximum number of played talks showed in user or sangha history
-var MAX_SHAREHISTORY_COUNT = 10     // maximum number of shared talks showed in user of sangha history
-var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
 class Model {
@@ -217,9 +218,14 @@ class Model {
             var talkCount = 0
             var totalSeconds = 0
             
-            // get global config information
+            // update global config information
             let config = json["config"]
             MP3_ROOT = config?["MP3_ROOT"] as? String ?? MP3_ROOT
+            ACTIVITY_ROOT = config?["ACTIVITY_ROOT"] as? String ?? ACTIVITY_ROOT
+            ACTIVITY_UPDATE_INTERVAL = config?["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
+            URL_REPORTACTIVITY = config?["URL_REPORTACTIVITY"] as? String ?? URL_REPORTACTIVITY
+            URL_GETACTIVITY = config?["URL_GETACTIVITY"] as? String ?? URL_GETACTIVITY
+            
         
             // get all talks
             for talk in json["talks"] as? [AnyObject] ?? [] {
@@ -418,7 +424,7 @@ class Model {
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
-                print("Download: success")
+                //print("Download: success")
             }
             
             // make sure we got data
@@ -495,6 +501,9 @@ class Model {
                             break
                         }
                     }
+                    else {
+                        print(fileName)
+                    }
                 }
                 
                 durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
@@ -513,8 +522,10 @@ class Model {
         task.resume()
     }
     
+    // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
+        print("getSanghaActivity")
         ActivityIsUpdating = true
         
         SangaTalkHistoryAlbum = []
@@ -871,6 +882,7 @@ class Model {
             
             return [TalkHistoryData] ()
         }
+        
     }
     
     func loadShareHistoryData() -> [TalkHistoryData]  {
@@ -914,13 +926,15 @@ class Model {
                     talk.CountryPlayed = talkHistory.CountryPlayed
 
                     talks.append(talk)
-                }
+                    }
+
             }
             talkList =  [talks.reversed()]
             
         case KEY_USER_SHAREHISTORY:
+
             var talks = [TalkData] ()
-            for talkHistory in UserShareHistoryAlbum {
+            for talkHistory in UserShareHistoryAlbum.reversed() {
                 let fileName = talkHistory.FileName
                 if let talk = NameToTalks[fileName] {
                     
@@ -931,8 +945,9 @@ class Model {
                     talks.append(talk)
                 }
             }
-            talkList = [talks.reversed()]
-
+            
+            talkList =  [talks.reversed()]
+            
         case KEY_SANGHA_TALKHISTORY:
             
             var talks = [TalkData] ()
@@ -940,6 +955,7 @@ class Model {
                 let fileName = talkHistory.FileName
                 if let talk = NameToTalks[fileName] {
                     talks.append(talk)
+                    
                 }
             }
             talkList = [talks]
@@ -1079,11 +1095,6 @@ class Model {
     
     func addToTalkHistory(talk: TalkData) {
         
-        if UserTalkHistoryAlbum.count >= MAX_TALKHISTORY_COUNT {
-            UserTalkHistoryAlbum.remove(at: 0)
-        }
-        
-
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd"
@@ -1103,6 +1114,13 @@ class Model {
         
         UserTalkHistoryAlbum.append(talkHistory)
         
+        let excessTalkCount = UserTalkHistoryAlbum.count - MAX_TALKHISTORY_COUNT
+        if excessTalkCount > 0 {
+            for _ in 0 ... excessTalkCount {
+                UserTalkHistoryAlbum.remove(at: 0)
+            }
+        }
+        
         // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
         computeTalkHistoryStats()
@@ -1111,9 +1129,6 @@ class Model {
     
     func addToShareHistory(talk: TalkData) {
         
-        if UserShareHistoryAlbum.count >= MAX_SHAREHISTORY_COUNT {
-            UserShareHistoryAlbum.remove(at: 0)
-        }
         
         let date = Date()
         let formatter = DateFormatter()
@@ -1133,9 +1148,17 @@ class Model {
 
         UserShareHistoryAlbum.append(talkHistory)
         
+        let excessTalkCount = UserShareHistoryAlbum.count - MAX_SHAREHISTORY_COUNT
+        if excessTalkCount > 0 {
+            for _ in 0 ... excessTalkCount {
+                UserShareHistoryAlbum.remove(at: 0)
+            }
+        }
+        
         // save the data, recompute stats, reload root view to display updated stats
         saveShareHistoryData()
         computeShareHistoryStats()
+        refreshControllers()
     }
 
     

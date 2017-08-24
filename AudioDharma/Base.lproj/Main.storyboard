@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -35,7 +34,7 @@
                 <barButtonItem image="icoqm" id="nad-WU-age">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="R8F-Mg-qzM"/>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="F80-bT-CWz"/>
                     </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="bKF-AN-BVr">
@@ -45,37 +44,42 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-741" y="170"/>
+            <point key="canvasLocation" x="-496" y="-104"/>
         </scene>
-        <!--History Controller-->
-        <scene sceneID="ge6-wI-QRH">
+        <!--Talk History-->
+        <scene sceneID="SJp-BG-CqD">
             <objects>
-                <tableViewController id="WB9-Fy-Gld" customClass="HistoryController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NN3-Se-zHF">
+                <tableViewController id="A3t-eP-1BJ" customClass="HistoryController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="WA4-0G-YwY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
-                            <outlet property="dataSource" destination="WB9-Fy-Gld" id="iHR-kI-miR"/>
-                            <outlet property="delegate" destination="WB9-Fy-Gld" id="gTx-5i-zDZ"/>
+                            <outlet property="dataSource" destination="A3t-eP-1BJ" id="euF-jc-ZzQ"/>
+                            <outlet property="delegate" destination="A3t-eP-1BJ" id="jJ9-rC-eHU"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Talk History" id="se5-ov-J1e"/>
                     <connections>
-                        <outlet property="buttonDonate" destination="epU-lh-Z3n" id="Gzg-T8-bbH"/>
-                        <outlet property="buttonHelp" destination="EBW-Fm-pKz" id="Jq6-db-wEC"/>
-                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="yp4-U7-mwc"/>
-                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="EDi-iD-M6R"/>
+                        <outlet property="buttonDonate" destination="1gk-gX-DJo" id="ojR-cx-QP3"/>
+                        <outlet property="buttonHelp" destination="Q3v-2y-My4" id="aFc-qM-z84"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="igK-QC-Ojb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="EBW-Fm-pKz" userLabel="Button Help"/>
-                <barButtonItem image="icoheart" id="epU-lh-Z3n" userLabel="Button Donate">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icoqm" id="Q3v-2y-My4" userLabel="Button Help">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
-                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="Puv-kY-qH3"/>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="KBQ-RR-xwo"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoheart" id="1gk-gX-DJo" userLabel="Button Donate">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="GvC-Wn-d9N"/>
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-2746" y="941"/>
+            <point key="canvasLocation" x="-361" y="961"/>
         </scene>
         <!--Talks by Speakers-->
         <scene sceneID="XFU-xf-pVT">
@@ -100,9 +104,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="HVo-Tk-Ya2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="Xv9-MG-xiH"/>
-                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="biB-pZ-N7G">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -111,7 +112,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-2068" y="941"/>
+            <point key="canvasLocation" x="656.52173913043487" y="941.57608695652186"/>
         </scene>
         <!--Talks by Series-->
         <scene sceneID="Iig-hh-eKf">
@@ -136,9 +137,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="lMB-mN-zSG">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="ffI-Hi-abN"/>
-                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="jsq-4Z-1Sp">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -147,7 +145,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-1106" y="942"/>
+            <point key="canvasLocation" x="1614.4927536231885" y="941.57608695652186"/>
         </scene>
         <!--Personal Albums-->
         <scene sceneID="wMU-4h-6ek">
@@ -179,9 +177,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="mqo-HD-URT">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <segue destination="9Sb-gH-reL" kind="presentation" identifier="DISPLAY_HELP2" id="xYq-99-lyG"/>
-                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="9DH-Pr-5mk">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -190,7 +185,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-1497" y="1613"/>
+            <point key="canvasLocation" x="317.39130434782612" y="1612.5000000000002"/>
         </scene>
         <!--Your Talks-->
         <scene sceneID="bNN-8u-svm">
@@ -222,12 +217,15 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="aCi-ID-H8Q">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="S5k-ox-Qxt"/>
+                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="fg5-mf-bdZ">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-742" y="1662"/>
+            <point key="canvasLocation" x="1072.463768115942" y="1661.413043478261"/>
         </scene>
         <!--Add Album-->
         <scene sceneID="eof-dd-Xtj">
@@ -313,7 +311,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="807" y="1892"/>
+            <point key="canvasLocation" x="2620.289855072464" y="1891.304347826087"/>
         </scene>
         <!--Albums-->
         <scene sceneID="Tyx-hu-Q4G">
@@ -336,8 +334,8 @@
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
-                        <segue destination="WB9-Fy-Gld" kind="show" identifier="DISPLAY_HISTORY" id="Fjl-cD-evB"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_RECOMMENDED_ALBUMS" id="RPR-ii-jHG"/>
+                        <segue destination="A3t-eP-1BJ" kind="show" identifier="DISPLAY_HISTORY" id="k0m-4n-iGr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -350,11 +348,11 @@
                 <barButtonItem image="icoqm" id="AWh-vc-YZs">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="loI-AD-EMM"/>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="eFV-Q2-tuz"/>
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-1425" y="98"/>
+            <point key="canvasLocation" x="-1441" y="139"/>
         </scene>
         <!--Play Talk Controller-->
         <scene sceneID="eic-Lc-ttk">
@@ -493,9 +491,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="0dS-lE-bLz">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <segue destination="zHd-f9-W9d" kind="presentation" identifier="DISPLAY_HELP1" id="0NB-hD-hUX"/>
-                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="JbA-wx-my2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -510,7 +505,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="2423.1884057971015" y="525"/>
+            <point key="canvasLocation" x="3330.434782608696" y="525"/>
         </scene>
         <!--Dana-->
         <scene sceneID="ONQ-Br-3u5">
@@ -572,7 +567,73 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5494" y="1242"/>
+            <point key="canvasLocation" x="8214.4927536231899" y="1241.5760869565217"/>
+        </scene>
+        <!--Audiodharma Help-->
+        <scene sceneID="tub-99-E3a">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="w6J-RG-PtL" customClass="HelpController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CZ0-wa-dl4"/>
+                        <viewControllerLayoutGuide type="bottom" id="mvU-GL-r81"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="a4i-Xy-pmb">
+                        <rect key="frame" x="0.0" y="0.0" width="340" height="800"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y8H-kW-w9c">
+                                <rect key="frame" x="0.0" y="64" width="340" height="736"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbd-QU-XQk" userLabel="Container View">
+                                        <rect key="frame" x="0.0" y="0.0" width="340" height="500"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCM-ef-83Y" userLabel="Help Content View">
+                                                <rect key="frame" x="8" y="0.0" width="324" height="500"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="500" id="efP-sQ-6Fm"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Dbd-QU-XQk" secondAttribute="bottom" id="8V3-DY-GJl"/>
+                                    <constraint firstAttribute="trailing" secondItem="Dbd-QU-XQk" secondAttribute="trailing" id="8zd-TZ-lUz"/>
+                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="leading" secondItem="Y8H-kW-w9c" secondAttribute="leading" id="Qjc-xv-wqE"/>
+                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="top" secondItem="Y8H-kW-w9c" secondAttribute="top" id="jTb-bb-her"/>
+                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="centerX" secondItem="Y8H-kW-w9c" secondAttribute="centerX" id="u9W-hy-SjS"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mvU-GL-r81" firstAttribute="top" secondItem="Y8H-kW-w9c" secondAttribute="bottom" id="6PE-K6-NtR"/>
+                            <constraint firstItem="Y8H-kW-w9c" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" id="OAh-TM-ijr"/>
+                            <constraint firstItem="Y8H-kW-w9c" firstAttribute="leading" secondItem="a4i-Xy-pmb" secondAttribute="leading" id="pCj-9F-mgo"/>
+                            <constraint firstAttribute="trailing" secondItem="Y8H-kW-w9c" secondAttribute="trailing" id="u5g-Vc-NYx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Audiodharma Help" id="ocm-0n-svo">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="JcY-xK-5Nd">
+                            <connections>
+                                <action selector="dismissDialog:" destination="w6J-RG-PtL" id="71I-dv-Tcm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="340" height="800"/>
+                    <connections>
+                        <outlet property="helpContentView" destination="CCM-ef-83Y" id="go2-0q-XQ5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HgN-rQ-45S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1584" y="1339"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
@@ -649,7 +710,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSw-xz-3j8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RbE-Yd-DLP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1670" y="1194"/>
+            <point key="canvasLocation" x="4391.304347826087" y="1193.4782608695652"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLh-B0-MDR">
@@ -671,7 +732,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ig3-ci-zdE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1791.304347826087" y="527.44565217391312"/>
+            <point key="canvasLocation" x="2698.5507246376815" y="527.44565217391312"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RVu-SL-aJf">
@@ -695,146 +756,6 @@
             </objects>
             <point key="canvasLocation" x="-2139" y="170"/>
         </scene>
-        <!--Audiodharma Tips-->
-        <scene sceneID="3HU-nD-q64">
-            <objects>
-                <viewController id="V2n-zP-nAh" customClass="HelpController1" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="GVr-ag-kSG"/>
-                        <viewControllerLayoutGuide type="bottom" id="mD5-vw-7e5"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ZFO-1i-Yyq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKR-nL-VCl">
-                                <rect key="frame" x="12" y="92" width="382" height="80"/>
-                                <string key="text">Talks are organized by Albums. For each album, The top right field is the number of talks in this album. Below it is the total time for these talks.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Within albums are talks. The top right field is the date the talk was published. Below it is the duration of this talk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-Jb-KSm">
-                                <rect key="frame" x="12" y="244" width="382" height="80"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album01" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-yd-cYr">
-                                <rect key="frame" x="12" y="38" width="382" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="eRH-u6-ED3"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talk01" translatesAutoresizingMaskIntoConstraints="NO" id="DJK-6o-Nog">
-                                <rect key="frame" x="12" y="189" width="382" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="W00-Ly-CvI"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkbeingswiped" translatesAutoresizingMaskIntoConstraints="NO" id="3mn-Qx-7h8">
-                                <rect key="frame" x="12" y="343" width="382" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="dku-Ta-siX"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="talkshowingmenu" translatesAutoresizingMaskIntoConstraints="NO" id="w4O-yu-uJv">
-                                <rect key="frame" x="12" y="474" width="382" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="IZp-ku-DmB"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To see the menu of actions for a particular talk. Swipe the talk right to left" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-NP-Nyf">
-                                <rect key="frame" x="12" y="393" width="382" height="69"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFN-ET-z5v">
-                                <rect key="frame" x="12" y="538" width="382" height="113"/>
-                                <string key="text">This will bring up a menu of choices for that talk.  In this example, you can now add a Note to this talk or Share it with others.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="T4E-rp-qwb">
-                                <rect key="frame" x="12" y="173" width="382" height="5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="5" id="0fY-72-gEp"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-nY-rAD">
-                                <rect key="frame" x="12" y="324" width="382" height="5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="5" id="5u9-qU-yFG"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blackline" translatesAutoresizingMaskIntoConstraints="NO" id="XTI-ey-ROK">
-                                <rect key="frame" x="12" y="458" width="382" height="5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="5" id="hdI-AC-Yos"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="mD5-vw-7e5" firstAttribute="top" secondItem="TFN-ET-z5v" secondAttribute="bottom" constant="85" id="13c-u1-jsL"/>
-                            <constraint firstItem="XTI-ey-ROK" firstAttribute="top" secondItem="3mn-Qx-7h8" secondAttribute="bottom" constant="55" id="39y-WK-hh3"/>
-                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="top" secondItem="mL9-nY-rAD" secondAttribute="bottom" constant="14" id="3i5-jt-D0E"/>
-                            <constraint firstItem="mL9-nY-rAD" firstAttribute="top" secondItem="Y4M-Jb-KSm" secondAttribute="bottom" id="3mU-XG-ufx"/>
-                            <constraint firstItem="XTI-ey-ROK" firstAttribute="leading" secondItem="w4O-yu-uJv" secondAttribute="leading" id="511-jB-Wj7"/>
-                            <constraint firstItem="T4E-rp-qwb" firstAttribute="top" secondItem="hsT-yd-cYr" secondAttribute="bottom" constant="75" id="67W-CN-7jY"/>
-                            <constraint firstItem="hsT-yd-cYr" firstAttribute="trailing" secondItem="oKR-nL-VCl" secondAttribute="trailing" id="8xp-vM-x1I"/>
-                            <constraint firstItem="DJK-6o-Nog" firstAttribute="top" secondItem="T4E-rp-qwb" secondAttribute="bottom" constant="11" id="8zg-Vi-0b7"/>
-                            <constraint firstItem="hsT-yd-cYr" firstAttribute="leading" secondItem="oKR-nL-VCl" secondAttribute="leading" id="BBf-vW-Yqp"/>
-                            <constraint firstItem="TFN-ET-z5v" firstAttribute="top" secondItem="w4O-yu-uJv" secondAttribute="bottom" constant="4" id="Dxv-ae-CU9"/>
-                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="leading" secondItem="XTI-ey-ROK" secondAttribute="leading" id="EMa-bU-97f"/>
-                            <constraint firstItem="w4O-yu-uJv" firstAttribute="trailing" secondItem="TFN-ET-z5v" secondAttribute="trailing" id="EiT-vm-JRP"/>
-                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="trailing" secondItem="3eC-NP-Nyf" secondAttribute="trailing" id="F9Q-6d-kbJ"/>
-                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="trailing" secondItem="XTI-ey-ROK" secondAttribute="trailing" id="MoA-OX-M4i"/>
-                            <constraint firstItem="mL9-nY-rAD" firstAttribute="leading" secondItem="3mn-Qx-7h8" secondAttribute="leading" id="Ouv-fP-GSe"/>
-                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="trailing" secondItem="mL9-nY-rAD" secondAttribute="trailing" id="PdX-XB-SL5"/>
-                            <constraint firstItem="w4O-yu-uJv" firstAttribute="top" secondItem="3eC-NP-Nyf" secondAttribute="bottom" constant="12" id="QeQ-hZ-agw"/>
-                            <constraint firstItem="DJK-6o-Nog" firstAttribute="trailing" secondItem="Y4M-Jb-KSm" secondAttribute="trailing" id="Rmn-w4-9Ql"/>
-                            <constraint firstItem="3eC-NP-Nyf" firstAttribute="top" secondItem="mL9-nY-rAD" secondAttribute="bottom" constant="64" id="Ru7-cx-RDw"/>
-                            <constraint firstItem="T4E-rp-qwb" firstAttribute="leading" secondItem="DJK-6o-Nog" secondAttribute="leading" id="SGI-55-qq5"/>
-                            <constraint firstItem="mL9-nY-rAD" firstAttribute="trailing" secondItem="3mn-Qx-7h8" secondAttribute="trailing" id="Xvd-jq-a8G"/>
-                            <constraint firstItem="T4E-rp-qwb" firstAttribute="trailing" secondItem="DJK-6o-Nog" secondAttribute="trailing" id="bCJ-4d-h53"/>
-                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="leading" secondItem="mL9-nY-rAD" secondAttribute="leading" id="gIm-Pe-8sR"/>
-                            <constraint firstItem="hsT-yd-cYr" firstAttribute="leading" secondItem="ZFO-1i-Yyq" secondAttribute="leadingMargin" constant="-8" id="h2y-RA-swV"/>
-                            <constraint firstItem="mL9-nY-rAD" firstAttribute="top" secondItem="DJK-6o-Nog" secondAttribute="bottom" constant="75" id="hXA-jy-XS2"/>
-                            <constraint firstItem="Y4M-Jb-KSm" firstAttribute="top" secondItem="T4E-rp-qwb" secondAttribute="bottom" constant="66" id="j98-a5-ijQ"/>
-                            <constraint firstItem="3mn-Qx-7h8" firstAttribute="leading" secondItem="3eC-NP-Nyf" secondAttribute="leading" id="k2L-4W-N7k"/>
-                            <constraint firstItem="T4E-rp-qwb" firstAttribute="top" secondItem="oKR-nL-VCl" secondAttribute="bottom" constant="1" id="lCo-qc-RFM"/>
-                            <constraint firstItem="oKR-nL-VCl" firstAttribute="leading" secondItem="T4E-rp-qwb" secondAttribute="leading" id="rRW-AW-GoM"/>
-                            <constraint firstItem="XTI-ey-ROK" firstAttribute="trailing" secondItem="w4O-yu-uJv" secondAttribute="trailing" id="sh5-Dm-UwQ"/>
-                            <constraint firstItem="hsT-yd-cYr" firstAttribute="trailing" secondItem="ZFO-1i-Yyq" secondAttribute="trailingMargin" id="tTe-0d-7qE"/>
-                            <constraint firstItem="hsT-yd-cYr" firstAttribute="top" secondItem="GVr-ag-kSG" secondAttribute="bottom" constant="18" id="uW8-Vz-Dyd"/>
-                            <constraint firstItem="oKR-nL-VCl" firstAttribute="trailing" secondItem="T4E-rp-qwb" secondAttribute="trailing" id="v6Y-Pl-S3C"/>
-                            <constraint firstItem="oKR-nL-VCl" firstAttribute="top" secondItem="GVr-ag-kSG" secondAttribute="bottom" constant="72" id="wrT-S1-XSc"/>
-                            <constraint firstItem="DJK-6o-Nog" firstAttribute="leading" secondItem="Y4M-Jb-KSm" secondAttribute="leading" id="xNv-4V-JNO"/>
-                            <constraint firstItem="w4O-yu-uJv" firstAttribute="top" secondItem="XTI-ey-ROK" secondAttribute="bottom" constant="11" id="xfQ-Fw-Jv1"/>
-                            <constraint firstItem="w4O-yu-uJv" firstAttribute="leading" secondItem="TFN-ET-z5v" secondAttribute="leading" id="zcl-bd-UsH"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Audiodharma Tips" id="ntc-At-Bez">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="bYb-z8-9uP">
-                            <connections>
-                                <action selector="cancel:" destination="V2n-zP-nAh" id="VJO-DI-AZ3"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="helpImage01" destination="hsT-yd-cYr" id="dRZ-aB-JJG"/>
-                        <outlet property="helpImage02" destination="DJK-6o-Nog" id="1Rd-bU-lJ3"/>
-                        <outlet property="helpImage03" destination="3mn-Qx-7h8" id="SIL-YW-ecs"/>
-                        <outlet property="helpImage04" destination="w4O-yu-uJv" id="BRy-rt-F6j"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mu5-QY-ZHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3832" y="1856"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="mKy-ot-PZ1">
             <objects>
@@ -851,25 +772,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fb-mf-Bnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4801" y="1245"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="MWX-gm-l4W">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zHd-f9-W9d" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1pp-Jo-BwM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="V2n-zP-nAh" kind="relationship" relationship="rootViewController" id="Luh-ac-IpM"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ibt-qa-SsQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3161" y="1856"/>
+            <point key="canvasLocation" x="7521.739130434783" y="1244.8369565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QLM-gG-pH8">
@@ -887,7 +790,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cs3-tt-Lu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="943" y="1202"/>
+            <point key="canvasLocation" x="3663.7681159420295" y="1201.6304347826087"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6gP-rx-q0v">
@@ -905,26 +808,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PSX-GA-GNu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140.57971014492756" y="1877.4456521739132"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="1dR-ms-uHN">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q6U-eh-IhZ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Cl6-aa-Ac0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6jf-st-uyb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2152" y="2693"/>
+            <point key="canvasLocation" x="1955.072463768116" y="1877.4456521739132"/>
         </scene>
         <!--Help Test-->
         <scene sceneID="Sd7-Vb-861">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8eD-q0-be0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="rZW-Il-Yw9" customClass="HelpController2" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g28-t7-9Th"/>
@@ -984,50 +873,45 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="340" height="800"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8eD-q0-be0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4438" y="2567"/>
+            <point key="canvasLocation" x="-3152" y="2136"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Nnp-m8-JC4">
+        <scene sceneID="xfQ-rd-AnQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9Sb-gH-reL" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9Ds-bU-uVR" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qO2-fM-QwF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bJo-0d-Xmg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rZW-Il-Yw9" kind="relationship" relationship="rootViewController" id="IDT-VX-Hyb"/>
+                        <segue destination="w6J-RG-PtL" kind="relationship" relationship="rootViewController" id="Ms2-Uh-azf"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lRx-rf-XVa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tbq-pZ-WER" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3832" y="2541"/>
+            <point key="canvasLocation" x="-2546" y="1352"/>
         </scene>
     </scenes>
     <resources>
         <image name="album01" width="622" height="76"/>
-        <image name="blackline" width="200" height="6"/>
         <image name="checkboxoff" width="112" height="112"/>
         <image name="icoheart" width="25" height="25"/>
         <image name="icoqm" width="25" height="25"/>
         <image name="icoshare" width="25" height="25"/>
-        <image name="talk01" width="623" height="74"/>
-        <image name="talkbeingswiped" width="622" height="74"/>
-        <image name="talkshowingmenu" width="623" height="80"/>
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Jkk-Sj-9ca"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="Ebq-8j-F1C"/>
-        <segue reference="yp4-U7-mwc"/>
-        <segue reference="EDi-iD-M6R"/>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="Puv-kY-qH3"/>
-        <segue reference="Xv9-MG-xiH"/>
+        <segue reference="C6A-Dz-FfT"/>
+        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="F80-bT-CWz"/>
+        <segue reference="ie0-kf-o7Q"/>
     </inferredMetricsTieBreakers>
 </document>

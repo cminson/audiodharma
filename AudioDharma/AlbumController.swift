@@ -24,6 +24,8 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
 
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
+    
+    var HelpPageText = ""
 
     
     // MARK: Init
@@ -124,10 +126,22 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             controller.Content = Album.Content
             controller.title = Album.Title
             
-        case "DISPLAY_HELP1":
-            guard let _ = segue.destination as? UINavigationController else {
+        case "DISPLAY_HELP_PAGE":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            
+            let asset = NSDataAsset(name: "AlbumRootPage", bundle: Bundle.main)
+            do {
+                let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
+                if let text = json["text1"] as? String {
+                    controller.HelpText = text
+                }
+                
+            } catch {
+                print(error)
+            }
+            
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -251,7 +265,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             
             // Place details
             var placeMark: CLPlacemark!
-            placeMark = placemarks?[0]
+            if let placeMark = placemarks?[0] {
             
             // Address dictionary
             // City
@@ -265,6 +279,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             // Country
             if let country = placeMark.addressDictionary!["Country"] as? String {
                 TheUserLocation.country = country
+            }
             }
         })
     }
