@@ -118,7 +118,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: "UserTalksPage")
+            controller.setHelpPage(helpPage: KEY_USER_TALKS)
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")

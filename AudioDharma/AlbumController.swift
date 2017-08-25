@@ -111,7 +111,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             controller.SeriesType = .ALL
             controller.title = "Series Talks"
             
-        case "DISPLAY_RECOMMENDED_ALBUMS":
+        case "DISPLAY_RECOMMENDED_TALKS":
             guard let controller = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -130,7 +130,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: "AlbumRootPage")
+            controller.setHelpPage(helpPage: KEY_ALBUMROOT)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
@@ -227,8 +227,8 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         case KEY_ALL_SERIES:
             self.performSegue(withIdentifier: "DISPLAY_SERIES_ALBUMS", sender: self)
             
-        case KEY_RECOMMENDED_SERIES:
-            self.performSegue(withIdentifier: "DISPLAY_RECOMMENDED_ALBUMS", sender: self)
+        case KEY_RECOMMENDED_TALKS:
+            self.performSegue(withIdentifier: "DISPLAY_RECOMMENDED_TALKS", sender: self)
 
         default:
             self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)

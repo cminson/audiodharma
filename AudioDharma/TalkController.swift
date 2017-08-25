@@ -112,7 +112,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            controller.setHelpPage(helpPage: "TalkPage")
+            controller.setHelpPage(helpPage: Content)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {

@@ -42,23 +42,31 @@ enum ACTIVITIES {          // all possible activities that are reported back to 
 
 
 // MARK: App Global Constants
+// talk and album display states.  these are used throughout the app to key on state
+let KEY_ALBUMROOT = "KEY_ALBUMROOT"
+let KEY_TALKS = "KEY_TALKS"
 let KEY_ALLTALKS = "KEY_ALLTALKS"
+let KEY_GIL_FRONSDAL = "Gil Fronsdal"
+let KEY_ANDREA_FELLA = "Andrea Fella"
 let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
+let KEY_ALL_SERIES = "KEY_ALL_SERIES"
+let KEY_RECOMMENDED_TALKS = "KEY_RECOMMENDED_TALKS"
 let KEY_CUSTOMALBUMS = "KEY_CUSTOMALBUMS"
 let KEY_NOTES = "KEY_NOTES"
-let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
+let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
 let KEY_SANGHA_TALKHISTORY = "KEY_SANGHA_TALKHISTORY"
 let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
-let KEY_ALL_SERIES = "KEY_ALL_SERIES"
-let KEY_RECOMMENDED_SERIES = "KEY_RECOMMENDED_SERIES"
-let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"
+let KEY_USER_ALBUMS = "KEY_USER_ALBUMS"
+let KEY_USEREDIT_ALBUMS = "KEY_USEREDIT_ALBUMS"
+let KEY_USER_TALKS = "KEY_USER_TALKS"
+let KEY_USEREDIT_TALKS = "KEY_USEREDIT_TALKS"
+let KEY_PLAY_TALK = "KEY_PLAY_TALK"
+
+let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"   // where to get our starting config file
+
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
-let MAX_TALKHISTORY_COUNT = 3     // maximum number of played talks showed in user or sangha history
-let MAX_SHAREHISTORY_COUNT = 3     // maximum number of shared talks showed in user of sangha history
-let UPDATE_SANGHA_INTERVAL = 10     // amount of time (in seconds) between each poll of the cloud for updated sangha info
-
 
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
@@ -67,6 +75,12 @@ var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (histor
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
 var URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"  // where to report our shares and plays of talks
 var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to get sangha's shares and plays of talks
+var DONATIONS_PAGE = "http://audiodharma.org/donate/"   // where to direct users to donate
+var TUTORIAL_PAGE = "http://www.cnn.com"        // where to go for a cool tutorial
+
+var MAX_TALKHISTORY_COUNT = 3     // maximum number of played talks showed in user or sangha history
+var MAX_SHAREHISTORY_COUNT = 3     // maximum number of shared talks showed in user of sangha history
+var UPDATE_SANGHA_INTERVAL = 10     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
 class Model {
@@ -135,9 +149,7 @@ class Model {
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
 
-
         Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
-
     }
     
     
@@ -209,7 +221,6 @@ class Model {
         task.resume()
     }
     
-    
     func parseConfiguration(jsonData: Data) {
         
         do {
@@ -218,14 +229,20 @@ class Model {
             var talkCount = 0
             var totalSeconds = 0
             
-            // update global config information
+            // optionally update global config information
             let config = json["config"]
             MP3_ROOT = config?["MP3_ROOT"] as? String ?? MP3_ROOT
             ACTIVITY_ROOT = config?["ACTIVITY_ROOT"] as? String ?? ACTIVITY_ROOT
             ACTIVITY_UPDATE_INTERVAL = config?["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
             URL_REPORTACTIVITY = config?["URL_REPORTACTIVITY"] as? String ?? URL_REPORTACTIVITY
             URL_GETACTIVITY = config?["URL_GETACTIVITY"] as? String ?? URL_GETACTIVITY
+            DONATIONS_PAGE = config?["DONATIONS_PAGE"] as? String ?? DONATIONS_PAGE
+            TUTORIAL_PAGE = config?["TUTORIAL_PAGE"] as? String ?? TUTORIAL_PAGE
             
+            MAX_TALKHISTORY_COUNT = config?["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
+            MAX_SHAREHISTORY_COUNT = config?["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
+            UPDATE_SANGHA_INTERVAL = config?["UPDATE_SANGHA_INTERVAL"] as? Int ?? UPDATE_SANGHA_INTERVAL
+            print("Update Interval: ", UPDATE_SANGHA_INTERVAL)
         
             // get all talks
             for talk in json["talks"] as? [AnyObject] ?? [] {
@@ -764,7 +781,7 @@ class Model {
         let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalSecondsAllLists)
         
         let stats = AlbumStats(totalTalks: talkCountAllLists, totalSeconds: totalSecondsAllLists, durationDisplay: durationDisplayAllLists)
-        KeyToAlbumStats[KEY_RECOMMENDED_SERIES] = stats
+        KeyToAlbumStats[KEY_RECOMMENDED_TALKS] = stats
     }
     
     func computeNotesStats() {

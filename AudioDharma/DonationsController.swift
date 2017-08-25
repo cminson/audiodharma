@@ -10,14 +10,20 @@ import UIKit
 
 class DonationsController: UIViewController {
     
-    let DONATIONS_PAGE = "http://audiodharma.org/donate/"
-    
+    @IBOutlet weak var donationContentView: UILabel!
     @IBOutlet weak var cancel: UIBarButtonItem!
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
     }
+    
+    override func viewDidLayoutSubviews() {
+        
+        super.viewDidLayoutSubviews()
+        donationContentView.sizeToFit()
+    }
+
 
     override func didReceiveMemoryWarning() {
         

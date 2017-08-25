@@ -123,18 +123,9 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let asset = NSDataAsset(name: "AlbumRootPage", bundle: Bundle.main)
-            do {
-                let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-                if let text = json["text1"] as? String {
-                    controller.HelpText = text
-                }
-
-            } catch {
-                print(error)
-            }
-
-            
+            // display different help text depending on the kind of content we're showing.
+            controller.setHelpPage(helpPage: Content)
+        
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")

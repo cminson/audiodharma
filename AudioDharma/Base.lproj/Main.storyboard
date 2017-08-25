@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -63,6 +64,7 @@
                     <connections>
                         <outlet property="buttonDonate" destination="1gk-gX-DJo" id="ojR-cx-QP3"/>
                         <outlet property="buttonHelp" destination="Q3v-2y-My4" id="aFc-qM-z84"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="tIo-wz-Vjo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -343,7 +345,7 @@
                         <segue destination="1IO-y8-7fd" kind="show" identifier="DISPLAY_USER_ALBUMS" id="QLr-Lj-k1Y"/>
                         <segue destination="3TL-of-6t5" kind="show" identifier="DISLAY_SPEAKER_ALBUMS" id="DdA-ae-LVe"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
-                        <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_RECOMMENDED_ALBUMS" id="RPR-ii-jHG"/>
+                        <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_RECOMMENDED_TALKS" id="RPR-ii-jHG"/>
                         <segue destination="A3t-eP-1BJ" kind="show" identifier="DISPLAY_HISTORY" id="k0m-4n-iGr"/>
                     </connections>
                 </tableViewController>
@@ -500,6 +502,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="0dS-lE-bLz">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="7DY-Wt-lPH"/>
+                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="JbA-wx-my2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -529,7 +534,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="20" y="295" width="374" height="147"/>
+                                <rect key="frame" x="28" y="55" width="374" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
                                 </constraints>
@@ -539,28 +544,35 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdm-IH-cag">
-                                <rect key="frame" x="20" y="496" width="374" height="33"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                <size key="titleShadowOffset" width="0.0" height="-1"/>
-                                <state key="normal" title="Make A Donation">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Dq-d8-j3R">
+                                <rect key="frame" x="107" y="676" width="200" height="30"/>
+                                <color key="backgroundColor" red="0.10910908129999999" green="0.34232425690000001" blue="0.069242462520000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="ISC-yk-NqD"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Make A Donation">
+                                            <attributes>
+                                                <font key="NSFont" size="15" name="HelveticaNeue-Bold"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                 </state>
                                 <connections>
-                                    <action selector="gotoDonationPage:" destination="2bZ-Wd-tyk" eventType="touchUpInside" id="FuR-MG-Hx6"/>
+                                    <action selector="launchTutorial:" destination="w6J-RG-PtL" eventType="touchUpInside" id="lbA-Mp-0fe"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="centerY" secondItem="1jb-ng-HGP" secondAttribute="centerY" id="1fl-1s-uUR"/>
-                            <constraint firstItem="pdm-IH-cag" firstAttribute="top" secondItem="xhQ-bs-KAh" secondAttribute="bottom" constant="54" id="3Wy-fl-ZVm"/>
-                            <constraint firstItem="pdm-IH-cag" firstAttribute="leading" secondItem="xhQ-bs-KAh" secondAttribute="leading" id="U0V-Cg-R1s"/>
-                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="leading" secondItem="1jb-ng-HGP" secondAttribute="leading" constant="20" id="i18-7r-AGC"/>
-                            <constraint firstItem="pdm-IH-cag" firstAttribute="trailing" secondItem="xhQ-bs-KAh" secondAttribute="trailing" id="joV-6e-9qv"/>
-                            <constraint firstAttribute="trailing" secondItem="xhQ-bs-KAh" secondAttribute="trailing" constant="20" id="o7B-Se-vPG"/>
-                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="centerX" secondItem="1jb-ng-HGP" secondAttribute="centerX" id="r3W-ZB-jBM"/>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="trailing" secondItem="1jb-ng-HGP" secondAttribute="trailingMargin" constant="8" id="69s-g8-pAg"/>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="leading" secondItem="1jb-ng-HGP" secondAttribute="leadingMargin" constant="8" id="9PE-1x-G0Y"/>
+                            <constraint firstItem="xhQ-bs-KAh" firstAttribute="top" secondItem="TIz-cX-6W6" secondAttribute="bottom" constant="35" id="YUU-Ef-EFM"/>
+                            <constraint firstItem="eWU-0Z-WDo" firstAttribute="top" secondItem="6Dq-d8-j3R" secondAttribute="bottom" constant="30" id="Yj2-GJ-VTE"/>
+                            <constraint firstItem="6Dq-d8-j3R" firstAttribute="centerX" secondItem="1jb-ng-HGP" secondAttribute="centerX" id="fuQ-v3-lcR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Dana" id="prv-pp-wyR">
@@ -572,6 +584,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancel" destination="j2Y-JE-WS4" id="Q52-QP-ZVZ"/>
+                        <outlet property="donationContentView" destination="xhQ-bs-KAh" id="CCQ-Dh-RIZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9A-5j-ES6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -591,7 +604,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCM-ef-83Y" userLabel="Help Content View">
-                                <rect key="frame" x="5" y="134" width="330" height="420"/>
+                                <rect key="frame" x="5" y="94" width="330" height="420"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="420" id="8sG-bK-ykv"/>
@@ -601,7 +614,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f1B-uF-ns3">
-                                <rect key="frame" x="70" y="89" width="200" height="30"/>
+                                <rect key="frame" x="70" y="750" width="200" height="30"/>
                                 <color key="backgroundColor" red="0.10910908132791519" green="0.34232425689697266" blue="0.069242462515830994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="dp5-l7-Fll"/>
@@ -624,11 +637,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="CCM-ef-83Y" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" constant="70" id="Iwz-gB-zoR"/>
-                            <constraint firstItem="f1B-uF-ns3" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" constant="25" id="lI0-UX-sjA"/>
-                            <constraint firstAttribute="trailing" secondItem="CCM-ef-83Y" secondAttribute="trailing" constant="5" id="mse-sg-oZg"/>
-                            <constraint firstItem="f1B-uF-ns3" firstAttribute="centerX" secondItem="a4i-Xy-pmb" secondAttribute="centerX" id="nfj-kA-04q"/>
-                            <constraint firstItem="CCM-ef-83Y" firstAttribute="leading" secondItem="a4i-Xy-pmb" secondAttribute="leading" constant="5" id="ucU-JU-LJ2"/>
+                            <constraint firstItem="CCM-ef-83Y" firstAttribute="leading" secondItem="a4i-Xy-pmb" secondAttribute="leading" constant="5" id="YJs-oe-11h"/>
+                            <constraint firstItem="mvU-GL-r81" firstAttribute="top" secondItem="f1B-uF-ns3" secondAttribute="bottom" constant="20" id="e9W-5s-cJB"/>
+                            <constraint firstItem="CCM-ef-83Y" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" constant="30" id="fVn-rx-GyX"/>
+                            <constraint firstItem="f1B-uF-ns3" firstAttribute="centerX" secondItem="a4i-Xy-pmb" secondAttribute="centerX" id="hmI-7d-seB"/>
+                            <constraint firstAttribute="trailing" secondItem="CCM-ef-83Y" secondAttribute="trailing" constant="5" id="zOs-vW-RfJ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Audiodharma Help" id="ocm-0n-svo">
@@ -919,12 +932,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RPR-ii-jHG"/>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="30e-7l-0p1"/>
+        <segue reference="RPR-ii-jHG"/>
+        <segue reference="hEa-61-IsL"/>
+        <segue reference="tIo-wz-Vjo"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="59T-E6-dZ1"/>
         <segue reference="OXf-AC-97C"/>
-        <segue reference="nEg-7s-RUw"/>
     </inferredMetricsTieBreakers>
 </document>

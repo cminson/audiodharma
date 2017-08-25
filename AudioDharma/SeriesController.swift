@@ -88,7 +88,13 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: "SeriesPage")
+            // display different help text depending on the kind of content we're showing.
+            switch (SeriesType) {
+            case .ALL:
+                controller.setHelpPage(helpPage: KEY_ALL_SERIES)
+            case .RECOMMENDED:
+                controller.setHelpPage(helpPage: KEY_RECOMMENDED_TALKS)
+            }
             
             
         case "DISPLAY_DONATIONS":

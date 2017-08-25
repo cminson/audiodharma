@@ -105,6 +105,32 @@ class PlayTalkController: UIViewController {
         
         super.didReceiveMemoryWarning()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+            
+        case "DISPLAY_HELP_PAGE":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            // display different help text depending on the kind of content we're showing.
+            controller.setHelpPage(helpPage: KEY_PLAY_TALK)
+            
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
+        }
+        
+    }
+
 
     
     // MARK: Actions

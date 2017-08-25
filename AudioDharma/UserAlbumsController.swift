@@ -123,7 +123,12 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: "UserAlbumsPage")
+            controller.setHelpPage(helpPage: KEY_USER_ALBUMS)
+            
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
 
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")

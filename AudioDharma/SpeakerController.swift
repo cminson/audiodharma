@@ -83,7 +83,7 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: "SpeakersPage")
+            controller.setHelpPage(helpPage: KEY_ALLSPEAKERS)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
