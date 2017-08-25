@@ -8,6 +8,8 @@
 
 import UIKit
 
+let TUTORIAL_PAGE = "http://www.cnn.com"
+
 class HelpController: UIViewController {
     
     @IBOutlet weak var helpContentView: UILabel!
@@ -18,9 +20,40 @@ class HelpController: UIViewController {
         super.viewDidLoad()
         
         helpContentView.text = HelpText
+        helpContentView.sizeToFit()
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        super.viewDidLayoutSubviews()
+        helpContentView.sizeToFit()
 
     }
 
+    @IBAction func launchTutorial(_ sender: UIButton) {
+        
+        if let url = URL(string: TUTORIAL_PAGE) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+    }
+    
+    func setHelpPage(helpPage: String) {
+    
+        let asset = NSDataAsset(name: helpPage, bundle: Bundle.main)
+        do {
+            let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
+            if let helpText = json["text"] as? String {
+                HelpText = helpText
+            }
+    
+        } catch {
+            print(error)
+        }
+    }
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

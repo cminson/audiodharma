@@ -130,17 +130,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            
-            let asset = NSDataAsset(name: "AlbumRootPage", bundle: Bundle.main)
-            do {
-                let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-                if let text = json["text1"] as? String {
-                    controller.HelpText = text
-                }
-                
-            } catch {
-                print(error)
-            }
+            controller.setHelpPage(helpPage: "AlbumRootPage")
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {

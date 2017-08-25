@@ -104,6 +104,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="HVo-Tk-Ya2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="HMR-Ex-Pps"/>
+                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="biB-pZ-N7G">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -137,6 +140,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="lMB-mN-zSG">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="dMi-aa-5U7"/>
+                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="jsq-4Z-1Sp">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -177,6 +183,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem image="icoqm" id="mqo-HD-URT">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="59T-E6-dZ1"/>
+                    </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="9DH-Pr-5mk">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -218,7 +227,7 @@
                 <barButtonItem image="icoqm" id="aCi-ID-H8Q">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
-                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="S5k-ox-Qxt"/>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="nEg-7s-RUw"/>
                     </connections>
                 </barButtonItem>
                 <barButtonItem image="icoheart" id="fg5-mf-bdZ">
@@ -581,41 +590,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="340" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y8H-kW-w9c">
-                                <rect key="frame" x="0.0" y="64" width="340" height="736"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbd-QU-XQk" userLabel="Container View">
-                                        <rect key="frame" x="0.0" y="0.0" width="340" height="500"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCM-ef-83Y" userLabel="Help Content View">
-                                                <rect key="frame" x="8" y="0.0" width="324" height="500"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="500" id="efP-sQ-6Fm"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCM-ef-83Y" userLabel="Help Content View">
+                                <rect key="frame" x="5" y="134" width="330" height="420"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Dbd-QU-XQk" secondAttribute="bottom" id="8V3-DY-GJl"/>
-                                    <constraint firstAttribute="trailing" secondItem="Dbd-QU-XQk" secondAttribute="trailing" id="8zd-TZ-lUz"/>
-                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="leading" secondItem="Y8H-kW-w9c" secondAttribute="leading" id="Qjc-xv-wqE"/>
-                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="top" secondItem="Y8H-kW-w9c" secondAttribute="top" id="jTb-bb-her"/>
-                                    <constraint firstItem="Dbd-QU-XQk" firstAttribute="centerX" secondItem="Y8H-kW-w9c" secondAttribute="centerX" id="u9W-hy-SjS"/>
+                                    <constraint firstAttribute="height" constant="420" id="8sG-bK-ykv"/>
                                 </constraints>
-                            </scrollView>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f1B-uF-ns3">
+                                <rect key="frame" x="70" y="89" width="200" height="30"/>
+                                <color key="backgroundColor" red="0.10910908132791519" green="0.34232425689697266" blue="0.069242462515830994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="dp5-l7-Fll"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="View YouTube Tutorial">
+                                            <attributes>
+                                                <font key="NSFont" size="15" name="HelveticaNeue-Bold"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <action selector="launchTutorial:" destination="w6J-RG-PtL" eventType="touchUpInside" id="scH-3U-5B9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mvU-GL-r81" firstAttribute="top" secondItem="Y8H-kW-w9c" secondAttribute="bottom" id="6PE-K6-NtR"/>
-                            <constraint firstItem="Y8H-kW-w9c" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" id="OAh-TM-ijr"/>
-                            <constraint firstItem="Y8H-kW-w9c" firstAttribute="leading" secondItem="a4i-Xy-pmb" secondAttribute="leading" id="pCj-9F-mgo"/>
-                            <constraint firstAttribute="trailing" secondItem="Y8H-kW-w9c" secondAttribute="trailing" id="u5g-Vc-NYx"/>
+                            <constraint firstItem="CCM-ef-83Y" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" constant="70" id="Iwz-gB-zoR"/>
+                            <constraint firstItem="f1B-uF-ns3" firstAttribute="top" secondItem="CZ0-wa-dl4" secondAttribute="bottom" constant="25" id="lI0-UX-sjA"/>
+                            <constraint firstAttribute="trailing" secondItem="CCM-ef-83Y" secondAttribute="trailing" constant="5" id="mse-sg-oZg"/>
+                            <constraint firstItem="f1B-uF-ns3" firstAttribute="centerX" secondItem="a4i-Xy-pmb" secondAttribute="centerX" id="nfj-kA-04q"/>
+                            <constraint firstItem="CCM-ef-83Y" firstAttribute="leading" secondItem="a4i-Xy-pmb" secondAttribute="leading" constant="5" id="ucU-JU-LJ2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Audiodharma Help" id="ocm-0n-svo">
@@ -633,7 +646,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HgN-rQ-45S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1584" y="1339"/>
+            <point key="canvasLocation" x="-1584.057971014493" y="1338.5869565217392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BwM-dr-asB">
@@ -813,7 +826,6 @@
         <!--Help Test-->
         <scene sceneID="Sd7-Vb-861">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8eD-q0-be0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="rZW-Il-Yw9" customClass="HelpController2" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g28-t7-9Th"/>
@@ -873,6 +885,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="340" height="800"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8eD-q0-be0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3152" y="2136"/>
         </scene>
@@ -906,12 +919,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Jkk-Sj-9ca"/>
         <segue reference="RPR-ii-jHG"/>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="C6A-Dz-FfT"/>
-        <segue reference="4Sx-D1-YLI"/>
-        <segue reference="F80-bT-CWz"/>
-        <segue reference="ie0-kf-o7Q"/>
+        <segue reference="30e-7l-0p1"/>
+        <segue reference="OFE-qN-xVe"/>
+        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="OXf-AC-97C"/>
+        <segue reference="nEg-7s-RUw"/>
     </inferredMetricsTieBreakers>
 </document>

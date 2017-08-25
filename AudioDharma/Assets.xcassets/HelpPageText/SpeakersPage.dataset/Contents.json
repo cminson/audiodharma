@@ -6,7 +6,7 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "talks.json",
+      "filename" : "speakers.json",
       "universal-type-identifier" : "public.json"
     }
   ]

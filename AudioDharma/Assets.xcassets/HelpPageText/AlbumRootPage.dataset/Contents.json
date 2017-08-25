@@ -6,7 +6,7 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "help.json",
+      "filename" : "rootalbum.json",
       "universal-type-identifier" : "public.json"
     }
   ]
