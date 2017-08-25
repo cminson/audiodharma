@@ -24,7 +24,7 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
     // MARK: Init
     override func viewDidLoad() {
         
-        print("UserAlbumsController viewDidLoad")
+        print("UserAlbumsController: viewDidLoad")
 
         super.viewDidLoad()
         

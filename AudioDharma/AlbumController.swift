@@ -206,7 +206,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         
         switch Album.Content {
             
-        case KEY_CUSTOMALBUMS:
+        case KEY_USER_ALBUMS:
             self.performSegue(withIdentifier: "DISPLAY_USER_ALBUMS", sender: self)
             
         case KEY_ALLSPEAKERS:

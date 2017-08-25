@@ -28,7 +28,7 @@
                         <outlet property="buttonDonate" destination="bKF-AN-BVr" id="eTs-Gs-lg0"/>
                         <outlet property="buttonHelp" destination="nad-WU-age" id="a18-RM-Pv2"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
-                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTES" id="4Sx-D1-YLI"/>
+                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="4Sx-D1-YLI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -65,6 +65,7 @@
                         <outlet property="buttonDonate" destination="1gk-gX-DJo" id="ojR-cx-QP3"/>
                         <outlet property="buttonHelp" destination="Q3v-2y-My4" id="aFc-qM-z84"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="tIo-wz-Vjo"/>
+                        <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="ftG-BF-g5H"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -816,7 +817,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cs3-tt-Lu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3663.7681159420295" y="1201.6304347826087"/>
+            <point key="canvasLocation" x="3429" y="1313"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6gP-rx-q0v">
@@ -932,12 +933,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZR1-MZ-juM"/>
-        <segue reference="RPR-ii-jHG"/>
+        <segue reference="C6A-Dz-FfT"/>
         <segue reference="hEa-61-IsL"/>
-        <segue reference="tIo-wz-Vjo"/>
-        <segue reference="OFE-qN-xVe"/>
-        <segue reference="59T-E6-dZ1"/>
-        <segue reference="OXf-AC-97C"/>
+        <segue reference="RPR-ii-jHG"/>
+        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="ie0-kf-o7Q"/>
+        <segue reference="F80-bT-CWz"/>
     </inferredMetricsTieBreakers>
 </document>

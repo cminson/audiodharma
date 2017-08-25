@@ -107,7 +107,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             
             playTalkController.CurrentTalkRow = SelectedRow
             playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
-        case "DISPLAY_NOTES":
+        case "DISPLAY_NOTE":
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? NoteController
                 else {
                     fatalError("Unexpected destination: \(segue.destination)")
@@ -283,7 +283,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     //MARK: Share
     private func viewEditNote() {
         
-        performSegue(withIdentifier: "DISPLAY_NOTES", sender: self)
+        performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
     

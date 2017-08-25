@@ -82,14 +82,12 @@ class PlayTalkController: UIViewController {
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.highlighted)
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.selected)
         
-        
         //volumeView.backgroundColor = UIColor.gray
         //volumeView.sizeToFit()
         
         let point = CGPoint(x: MPVolumeParentView.frame.size.width  / 2,y : (MPVolumeParentView.frame.size.height / 2) + 5)
         volumeView.center = point
         MPVolumeParentView.addSubview(volumeView)
-
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque

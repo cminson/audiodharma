@@ -51,7 +51,6 @@ let KEY_ANDREA_FELLA = "Andrea Fella"
 let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
 let KEY_ALL_SERIES = "KEY_ALL_SERIES"
 let KEY_RECOMMENDED_TALKS = "KEY_RECOMMENDED_TALKS"
-let KEY_CUSTOMALBUMS = "KEY_CUSTOMALBUMS"
 let KEY_NOTES = "KEY_NOTES"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
 let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
@@ -78,9 +77,9 @@ var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to
 var DONATIONS_PAGE = "http://audiodharma.org/donate/"   // where to direct users to donate
 var TUTORIAL_PAGE = "http://www.cnn.com"        // where to go for a cool tutorial
 
-var MAX_TALKHISTORY_COUNT = 3     // maximum number of played talks showed in user or sangha history
-var MAX_SHAREHISTORY_COUNT = 3     // maximum number of shared talks showed in user of sangha history
-var UPDATE_SANGHA_INTERVAL = 10     // amount of time (in seconds) between each poll of the cloud for updated sangha info
+var MAX_TALKHISTORY_COUNT = 50     // maximum number of played talks showed in user or sangha history
+var MAX_SHAREHISTORY_COUNT = 50     // maximum number of shared talks showed in user of sangha history
+var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
 class Model {
@@ -693,7 +692,7 @@ class Model {
         let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
         let stats = AlbumStats(totalTalks: totalUserListCount, totalSeconds: totalUserTalkSecondsCount, durationDisplay: durationDisplayAllLists)
         
-        KeyToAlbumStats[KEY_CUSTOMALBUMS] = stats
+        KeyToAlbumStats[KEY_USER_ALBUMS] = stats
     }
     
     func computeSpeakerStats() {
@@ -951,7 +950,7 @@ class Model {
         case KEY_USER_SHAREHISTORY:
 
             var talks = [TalkData] ()
-            for talkHistory in UserShareHistoryAlbum.reversed() {
+            for talkHistory in UserShareHistoryAlbum {
                 let fileName = talkHistory.FileName
                 if let talk = NameToTalks[fileName] {
                     
@@ -1005,7 +1004,7 @@ class Model {
         
         
         var stats: AlbumStats
-
+        
         switch content {
         
         case KEY_ALLTALKS:
@@ -1045,11 +1044,19 @@ class Model {
     func addUserAlbum(album: UserAlbumData) {
         
         UserAlbums.append(album)
+        
+        saveUserAlbumData()
+        computeUserAlbumStats()
+        refreshControllers()
     }
     
     func removeUserAlbum(at: Int) {
         
         UserAlbums.remove(at: at)
+        
+        saveUserAlbumData()
+        computeUserAlbumStats()
+        refreshControllers()
     }
     
     func removeUserAlbum(userAlbum: UserAlbumData) {
