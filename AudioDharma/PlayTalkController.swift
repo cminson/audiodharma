@@ -71,6 +71,8 @@ class PlayTalkController: UIViewController {
         resetTalkDisplay()
  
         MPVolumeParentView.backgroundColor = UIColor.clear
+        //MPVolumeParentView.backgroundColor = UIColor.green
+
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
         volumeView.showsRouteButton = true
         

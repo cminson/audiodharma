@@ -51,6 +51,19 @@ class HelpController: UIViewController {
             } catch {
                 print(error)
             }
+        } else {
+            // catch-all for screens that don't have a valid key
+            if let asset = NSDataAsset(name: KEY_TALKS, bundle: Bundle.main) {
+                do {
+                    let json =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]
+                    if let helpText = json["text"] as? String {
+                        HelpText = helpText
+                    }
+                    
+                } catch {
+                    print(error)
+                }
+            }            
         }
     }
 

@@ -177,4 +177,5 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
     }
     
+    
 }

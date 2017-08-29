@@ -255,7 +255,6 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        print("EditForAction")
         SelectedRow = indexPath.row
         
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
@@ -265,6 +264,10 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.shareTalk()
         }
+        
+        noteTalk.backgroundColor = BUTTON_NOTE_COLOR
+        shareTalk.backgroundColor = BUTTON_SHARE_COLOR
+        
         return [shareTalk, noteTalk]
     }
     

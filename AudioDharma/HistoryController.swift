@@ -273,8 +273,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             self.shareTalk()
         }
         
-        noteTalk.backgroundColor = UIColor.blue
-        shareTalk.backgroundColor = UIColor.green
+        noteTalk.backgroundColor = BUTTON_NOTE_COLOR
+        shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         
         return [shareTalk, noteTalk]
     }

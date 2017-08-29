@@ -9,6 +9,8 @@
 import UIKit
 
 class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+    @IBOutlet var buttonDonate: UIBarButtonItem!
+    @IBOutlet var buttonHelp: UIBarButtonItem!
     
     //MARK: Properties
     var DisplayTalks: [TalkData] = []
@@ -62,6 +64,11 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
         
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+        
         //self.tableView.allowsMultipleSelection = true
     }
     
@@ -79,7 +86,28 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
         SearchController.isActive = false
     }
-    
+
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+            
+        case "DISPLAY_HELP_PAGE":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            controller.setHelpPage(helpPage: KEY_USEREDIT_TALKS)
+            
+        default:
+            //fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
+           
+            print("Unexpected Segue Identifier: \(segue.identifier ?? "NONE")")
+
+        }
+    }
+
     
     //MARK: Actions
     @IBAction func dismiss(_ sender: UIBarButtonItem) {   // cancel button clicked

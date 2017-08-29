@@ -64,6 +64,9 @@ let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
 let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"   // where to get our starting config file
 
+let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
+let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
+
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
 
