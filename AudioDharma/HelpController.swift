@@ -31,7 +31,7 @@ class HelpController: UIViewController {
 
     @IBAction func launchTutorial(_ sender: UIButton) {
         
-        if let url = URL(string: TUTORIAL_PAGE) {
+        if let url = URL(string: URL_TUTORIAL) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
         

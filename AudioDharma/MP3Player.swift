@@ -31,8 +31,7 @@ class MP3Player : NSObject {
     // MARK: Functions
     func startTalk(talk: TalkData){
         
-        //let url = URL(string: "http://www.ezimba.com/ad/test01.mp3")!
-        let url : URL = URL(string: MP3_ROOT + talk.URL)!
+        let url : URL = URL(string: URL_MP3_HOST + talk.URL)!
         print(url)
         
         PlayerItem  = AVPlayerItem(url: url)

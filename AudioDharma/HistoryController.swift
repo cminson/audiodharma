@@ -219,17 +219,16 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         return sectionTitle
     }
     
-    
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("HistoryCell", owner: self, options: nil)?.first as! HistoryCell
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
+        // display a note icon if a note exists
         if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
-            cell.noteImage.image = UIImage(named: "noteicon")!
+            cell.noteImage.isHidden = false
         } else {
-            cell.noteImage = nil
+            cell.noteImage.isHidden = true
         }
         
         cell.speakerPhoto.image = talk.SpeakerPhoto
@@ -238,8 +237,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         cell.date.text = talk.DatePlayed
         cell.time.text = talk.TimePlayed
         
-        cell.city.text = TheUserLocation.city
-        cell.country.text = TheUserLocation.country
+        cell.city.text = talk.CityPlayed
+        cell.country.text = talk.CountryPlayed
         
         return cell
     }

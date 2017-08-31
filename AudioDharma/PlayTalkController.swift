@@ -99,6 +99,7 @@ class PlayTalkController: UIViewController {
         // start the background report thread (reporting status to web)
         Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
 
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,9 +129,7 @@ class PlayTalkController: UIViewController {
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
         }
-        
     }
-
 
     
     // MARK: Actions
@@ -184,13 +183,6 @@ class PlayTalkController: UIViewController {
 
     }
     
-    /*
-    @IBAction func shareTalk(_ sender: UIBarButtonItem) {
-        
-        let sharedTalk = CurrentTalk!
-        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
-    }
- */
 
     @IBAction func playOrPauseTalk(_ sender: UIButton) {
         
@@ -212,18 +204,27 @@ class PlayTalkController: UIViewController {
     // MARK: Functions
     func startTalk() {
         
-        TalkPlayerStatus = .LOADING
+        if TheDataModel.isInternetAvailable() == true
+        {
+            TalkPlayerStatus = .LOADING
         
-        talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
-        enableActivityIcons()
+            talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
+            enableActivityIcons()
         
-        MP3TalkPlayer.startTalk(talk: CurrentTalk)
-        startTalkTimer()
+            MP3TalkPlayer.startTalk(talk: CurrentTalk)
+            startTalkTimer()
         
-        updateTitleDisplay()
+            updateTitleDisplay()
         
-        TheDataModel.addToTalkHistory(talk: CurrentTalk)
-        TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
+            TheDataModel.addToTalkHistory(talk: CurrentTalk)
+            TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
+        } else {
+            let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     func restartTalk() {
@@ -390,6 +391,7 @@ class PlayTalkController: UIViewController {
         
         // start a new timer.  this calls a method to update the views once each second
         TalkTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayTalkController.updateViewsWithTimer), userInfo: nil, repeats: true)
+
     }
     
     func stopTalkTimer(){

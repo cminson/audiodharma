@@ -200,11 +200,11 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredTalks[indexPath.row]
 
-        // if there is a Note entry for this talk, then show the note icon in cell
+        // display a note icon if a note exists
         if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
-            cell.noteImage.image = UIImage(named: "noteicon")!
+            cell.noteImage.isHidden = false
         } else {
-            cell.noteImage = nil
+            cell.noteImage.isHidden = true
         }
 
         cell.title.text = talk.Title

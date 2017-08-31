@@ -37,7 +37,7 @@ class DonationsController: UIViewController {
     
     @IBAction func gotoDonationPage(_ sender: UIButton) {
         
-        if let url = URL(string: DONATIONS_PAGE) {
+        if let url = URL(string: URL_DONATE) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }

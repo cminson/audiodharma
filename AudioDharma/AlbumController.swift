@@ -31,17 +31,11 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     // MARK: Init
     override func viewDidLoad() {
         
+        super.viewDidLoad()
         self.tableView.delegate = self
-        
-
         
         TheDataModel.RootController = self
         TheDataModel.loadData()
-        super.viewDidLoad()
-        
-
-
-        //FilteredAlbumSections = TheDataModel.AlbumSections
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
@@ -53,11 +47,9 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         startLocation = nil
-
         
     }
     
-  
     override func viewWillAppear(_ animated: Bool) {
 
         super.viewWillAppear(animated)
@@ -151,7 +143,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
+        
         return TheDataModel.AlbumSections[section].count
     }
     
@@ -172,7 +164,6 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
-
         
         let Album = TheDataModel.AlbumSections[indexPath.section][indexPath.row]
     
@@ -239,6 +230,10 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     // MARK: Location Services
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation])
     {
+        if TheDataModel.isInternetAvailable() == false {
+            return
+        }
+        
         let latestLocation: CLLocation = locations[locations.count - 1]
         let longitude = latestLocation.coordinate.longitude
         let latitude = latestLocation.coordinate.latitude
@@ -254,7 +249,6 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
             
             // Place details
-            var placeMark: CLPlacemark!
             if let placeMark = placemarks?[0] {
             
             // Address dictionary

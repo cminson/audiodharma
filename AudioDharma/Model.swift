@@ -7,17 +7,50 @@
 //
 
 import UIKit
+import Foundation
+import SystemConfiguration
 import os.log
 import ZipArchive
 
-// MARK: Global State Vars
+
+// MARK: Global Constants and Vars
 let TheDataModel = Model()
 var TheUserLocation = UserLocation()
 let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
 var ActivityIsUpdating = false              // flags if an activity update is running or not
 
+// all possible web config points
+let HostAccessPoints: [String] = [
+    "http://www.virtualdharma.org",
+    "http://www.ezimba.com",
+    "http://www.audiodharma.org"
+]
+var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
-// MARK: Global Structs and Enums
+// paths for services
+let CONFIG_ACCESS_PATH = "/AudioDharmaApp/Config/config.zip"    // where to get the start config
+let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaApp/Access/reportactivity.py"     // where to report user activity (shares, listens)
+let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaApp/Access/activity.json"           // where to get sangha activity (shares, listens)
+let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
+let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
+let DEFAULT_TUTORIAL_PATH = "http://www.cnn.com"        // where to get tutorial (DEV TBD)
+
+var HTTPResultCode: Int = 0     // global status of web access
+let MIN_EXPECTED_RESPONSE_SIZE = 1000   // to filter for bogus redirect page responses
+
+enum INIT_CODES {          // all possible startup results
+    case SUCCESS
+    case NO_CONNECTION
+}
+
+// set default web access points
+var URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
+var URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
+var URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
+var URL_MP3_HOST = DEFAULT_MP3_PATH
+var URL_DONATE = DEFAULT_DONATE_PATH
+var URL_TUTORIAL = DEFAULT_TUTORIAL_PATH
+
 struct AlbumStats {         // where stats on each album is kept
     var totalTalks: Int
     var totalSeconds: Int
@@ -40,8 +73,7 @@ enum ACTIVITIES {          // all possible activities that are reported back to 
     case PLAY_TALK
 }
 
-
-// MARK: App Global Constants
+// App Global Constants
 // talk and album display states.  these are used throughout the app to key on state
 let KEY_ALBUMROOT = "KEY_ALBUMROOT"
 let KEY_TALKS = "KEY_TALKS"
@@ -62,23 +94,15 @@ let KEY_USER_TALKS = "KEY_USER_TALKS"
 let KEY_USEREDIT_TALKS = "KEY_USEREDIT_TALKS"
 let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
-let URL_CONFIGURATION = "http://www.ezimba.com/AD/config.zip"   // where to get our starting config file
-
-let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
-let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
+let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
+let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
 
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
 
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
-var MP3_ROOT = "http://www.audiodharma.org" // where to find MP3s on web.
-var ACTIVITY_ROOT = "http://www.ezimba.com" // where to report acitivity (history, shares) on web.
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
-var URL_REPORTACTIVITY = "http://www.ezimba.com/AD/reportactivity.py"  // where to report our shares and plays of talks
-var URL_GETACTIVITY = "http://www.ezimba.com/AD/activity.json"       // where to get sangha's shares and plays of talks
-var DONATIONS_PAGE = "http://audiodharma.org/donate/"   // where to direct users to donate
-var TUTORIAL_PAGE = "http://www.cnn.com"        // where to go for a cool tutorial
 
 var MAX_TALKHISTORY_COUNT = 50     // maximum number of played talks showed in user or sangha history
 var MAX_SHAREHISTORY_COUNT = 50     // maximum number of shared talks showed in user of sangha history
@@ -113,7 +137,7 @@ class Model {
     var RootController: UITableViewController?
     var CommunityController: HistoryController?
     
-    var UpdatedTalksReady: Bool = false
+    var HTTPCallCompleted: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
     
@@ -125,18 +149,55 @@ class Model {
     // MARK: Init
     func loadData() {
         
-        // download and install json files.  synchronously wait until complete
-        downloadConfiguration(jsonLocation: URL_CONFIGURATION)
-        var waitCount = 0
-        while UpdatedTalksReady == false {
-            sleep(1)
-            waitCount += 1
-            print(waitCount)
-            if waitCount > 20 {
+        // connect to a host and install remote config files.  synchronously wait until complete
+        for HostAccessPoint in HostAccessPoints {
+            
+            HTTPResultCode = 0
+            URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
+            URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
+            URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
+            
+            downloadConfiguration(jsonLocation: URL_CONFIGURATION)
+            
+            var waitCount = 0
+            while HTTPCallCompleted == false {
+                sleep(1)
+                waitCount += 1
+                print(waitCount)
+                if waitCount > 20 {
+                    break
+                }
+            }
+            
+            print(URL_CONFIGURATION, HTTPResultCode)
+            // if success code, then we're done.  otherwise try another host
+            if HTTPResultCode == 200 {
                 break
+            } else {
+                HTTPCallCompleted = false   // reset and try another Host URL
+                continue
             }
         }
         
+        // if failure to connect for hosts, flag that fact and use our local configs instead
+        if HTTPResultCode != 200 {
+            
+            print("using local config")
+            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let configURL = URL(fileURLWithPath: documentPath + "/config/config.json")
+            var jsonData: Data!
+            do {
+                jsonData = try Data(contentsOf: configURL)
+            }
+            catch let error as NSError {
+                print("Failed getting URL: \(configURL), Error: " + error.localizedDescription)
+            }
+            
+            self.parseConfiguration(jsonData: jsonData)
+            self.downloadSanghaActivity()
+        }
+        
+        print("start of compute in load data")
         // compute stats and get all user data from storage
         computeRootAlbumStats()
         computeSpeakerStats()
@@ -152,6 +213,7 @@ class Model {
         computeShareHistoryStats()
 
         Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+        
     }
     
     
@@ -170,27 +232,36 @@ class Model {
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            print(statusCode)
-            
-            if (statusCode != 200) {
-                print("Download Fail: ", statusCode)
-                return
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
             } else {
-                print("Download: Success")
+                HTTPResultCode = 404
+            }
+
+            // return if no connection
+            if (HTTPResultCode != 200) {
+                self.HTTPCallCompleted = true
+                return
             }
             
-            // make sure we got data
+            // return if no or insufficient data
             guard let responseData = data else {
-                print("Download: error")
+                
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
+            guard responseData.count > MIN_EXPECTED_RESPONSE_SIZE else {
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
                 return
             }
             
             // store the config data off
             let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
             let filePath = documentPath + "/" + "config.zip"
-            let configPath = documentPath + "/" + "config"
             let fileURL = URL(fileURLWithPath: filePath)
             
             do {
@@ -198,11 +269,22 @@ class Model {
             }
             catch let error as NSError {
                 print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
             }
 
             // unzip it back into json
+            let configPath = documentPath + "/" + "config"
+            print("Unzipping: ", filePath)
             let time1 = Date.timeIntervalSinceReferenceDate
-            SSZipArchive.unzipFile(atPath: filePath, toDestination: configPath)
+            
+            // unzip the config. report error if any issue
+            if SSZipArchive.unzipFile(atPath: filePath, toDestination: configPath) != true {
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
             let time2 = Date.timeIntervalSinceReferenceDate
             print("Zip time: ", time2 - time1)
             
@@ -212,7 +294,10 @@ class Model {
                 jsonData = try Data(contentsOf: configURL)
             }
             catch let error as NSError {
-                print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+                print("Failed getting URL: \(fileURL), Error: " + error.localizedDescription)
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
             }
 
             self.parseConfiguration(jsonData: jsonData)
@@ -230,16 +315,21 @@ class Model {
 
             var talkCount = 0
             var totalSeconds = 0
+            var isAudioDharmaMP3Site = true
             
             // optionally update global config information
             let config = json["config"]
-            MP3_ROOT = config?["MP3_ROOT"] as? String ?? MP3_ROOT
-            ACTIVITY_ROOT = config?["ACTIVITY_ROOT"] as? String ?? ACTIVITY_ROOT
+            URL_MP3_HOST = config?["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
+            
+            // flag if MP3s are not hosted on audiodharma.
+            if URL_MP3_HOST.lowercased().range(of:"audiodharma") == nil {
+                isAudioDharmaMP3Site = false
+            }
             ACTIVITY_UPDATE_INTERVAL = config?["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
-            URL_REPORTACTIVITY = config?["URL_REPORTACTIVITY"] as? String ?? URL_REPORTACTIVITY
-            URL_GETACTIVITY = config?["URL_GETACTIVITY"] as? String ?? URL_GETACTIVITY
-            DONATIONS_PAGE = config?["DONATIONS_PAGE"] as? String ?? DONATIONS_PAGE
-            TUTORIAL_PAGE = config?["TUTORIAL_PAGE"] as? String ?? TUTORIAL_PAGE
+            URL_REPORT_ACTIVITY = config?["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
+            URL_GET_ACTIVITY = config?["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
+            URL_DONATE = config?["URL_DONATE"] as? String ?? URL_DONATE
+            URL_TUTORIAL = config?["URL_TUTORIAL"] as? String ?? URL_TUTORIAL
             
             MAX_TALKHISTORY_COUNT = config?["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
             MAX_SHAREHISTORY_COUNT = config?["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
@@ -251,7 +341,7 @@ class Model {
             
                 let series = talk["series"] as? String ?? ""
                 let title = talk["title"] as? String ?? ""
-                let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                var URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let speaker = talk["speaker"] as? String ?? ""
                 let date = talk["date"] as? String ?? ""
                 let duration = talk["duration"] as? String ?? ""
@@ -264,6 +354,10 @@ class Model {
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
             
+                // if mp3s not on audiodharma, then they will be accessed via filename rather than URL
+                if isAudioDharmaMP3Site == false {
+                    URL = "/" + fileName
+                }
             
                 let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: seconds)
                 
@@ -394,8 +488,7 @@ class Model {
                             self.KeyToTalks[seriesKey]?[0].append(talkData)
                         }
                     }
-
-                
+            
                     // create the key -> talkData[] entry if it doesn't already exist
                     if self.KeyToTalks[content] == nil {
                         //print("Album talks creating key for: \(content)")
@@ -420,7 +513,7 @@ class Model {
             print(error)
         }
         
-        self.UpdatedTalksReady = true
+        self.HTTPCallCompleted = true
     }
     
     func downloadSanghaActivity() {
@@ -433,13 +526,22 @@ class Model {
         let session = URLSession.init(configuration: config)
         
         
-        let requestURL : URL? = URL(string: URL_GETACTIVITY)
+        let requestURL : URL? = URL(string: URL_GET_ACTIVITY)
         let urlRequest = URLRequest(url : requestURL!)
         
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! HTTPURLResponse
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
+            } else {
+                ActivityIsUpdating = false
+                return
+            }
+            //let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode == 200) {
@@ -448,7 +550,6 @@ class Model {
             
             // make sure we got data
             guard let responseData = data else {
-                print("Download: error")
                 ActivityIsUpdating = false
                 return
             }
@@ -531,7 +632,6 @@ class Model {
 
             } catch {
                 ActivityIsUpdating = false
-                print(error)
             }
             
             ActivityIsUpdating = false
@@ -544,6 +644,10 @@ class Model {
     // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
+        if isInternetAvailable() == false {
+            return
+        }
+
         print("getSanghaActivity")
         ActivityIsUpdating = true
         
@@ -592,7 +696,7 @@ class Model {
         //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
 //print(escapedString!)
 
-        let url = URL(string: URL_REPORTACTIVITY)!
+        let url = URL(string: URL_REPORT_ACTIVITY)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = parameters.data(using: String.Encoding.utf8);
@@ -603,34 +707,38 @@ class Model {
                 return
             }
             let _ = try? JSONSerialization.jsonObject(with: data, options: [])
-            /*
-            if let responseJSON = responseJSON as? [String: Any] {
-                print(responseJSON)
-            }
-             */
             
         }
         task.resume()
     }
 
- 
     
     // MARK: Support Functions
-    func loadTalksFromFile(jsonLocation: String) {
+    func isInternetAvailable() -> Bool
+    {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        let asset = NSDataAsset(name: jsonLocation, bundle: Bundle.main)
-        do {
-            let json =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-            //parseTalks(json: json)
-         } catch {
-            print(error)
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
         }
+        
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        return (isReachable && !needsConnection)
     }
+    
     
     func refreshControllers() {
         
         DispatchQueue.main.async(execute: {
-            //print("executing refreshControllers")
 
             if let controller = self.RootController {
                 controller.tableView.reloadData()
@@ -689,7 +797,6 @@ class Model {
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
             KeyToAlbumStats[userAlbum.Content] = stats
-            //print("computerUserAlbumStats: ", userAlbum.Title)
         }
         
         let durationDisplayAllLists = secondsToDurationDisplay(seconds: totalUserTalkSecondsCount)
@@ -773,7 +880,6 @@ class Model {
             
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
-            print(talkCountAllLists, totalSecondsAllLists, totalSeconds)
             let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
             
             let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
@@ -931,6 +1037,7 @@ class Model {
                     talks.append(talk)
                 }
             }
+            talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
             talkList =  [talks]
             
         case KEY_USER_TALKHISTORY:
@@ -1204,6 +1311,7 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveUserNoteData()
         computeNotesStats()
+        refreshControllers()
     }
     
     func getNoteForTalk(talkFileName: String) -> String {
@@ -1229,7 +1337,7 @@ class Model {
         addToShareHistory(talk: sharedTalk)
         
         let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
-        let objectsToShare: URL = URL(string: MP3_ROOT + sharedTalk.URL)!
+        let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
         
         let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
         //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
