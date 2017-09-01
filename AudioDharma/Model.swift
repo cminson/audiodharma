@@ -120,16 +120,16 @@ class Model {
     var KeyToTalks : [String: [[TalkData]]] = [:]  // dictionary keyed by content, value is 2d array of sections x talks
 
     var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
-    var NameToTalks: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
+    var FileNameToTalk: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
     
     var UserTalkHistoryAlbum: [TalkHistoryData] = []    // history of talks for user
     var UserTalkHistoryStats: AlbumStats!
     var UserShareHistoryAlbum: [TalkHistoryData] = []   // history of shared talks for user
     
-    var SangaTalkHistoryAlbum: [TalkData] = []          // history of talks for sangha
+    var SangaTalkHistoryAlbum: [TalkHistoryData] = []          // history of talks for sangha
     var SanghaTalkHistoryStats: AlbumStats!
     
-    var SangaShareHistoryAlbum: [TalkData] = []          // history of shares for sangha
+    var SangaShareHistoryAlbum: [TalkHistoryData] = []          // history of shares for sangha
     var SanghaShareHistoryStats: AlbumStats!
     
     var AllTalks: [TalkData] = []
@@ -148,6 +148,19 @@ class Model {
     
     // MARK: Init
     func loadData() {
+        
+        AlbumSections = []
+        SpeakerAlbums = []
+        SeriesAlbums = []
+        RecommendedAlbums = []
+        KeyToTalks  = [:]
+        KeyToAlbumStats = [:]
+        FileNameToTalk = [String: TalkData] ()
+        UserTalkHistoryAlbum = []
+        UserShareHistoryAlbum = []
+        SangaTalkHistoryAlbum  = []
+        SangaShareHistoryAlbum = []
+        AllTalks = []
         
         // connect to a host and install remote config files.  synchronously wait until complete
         for HostAccessPoint in HostAccessPoints {
@@ -212,7 +225,7 @@ class Model {
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
 
-        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+        //Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
         
     }
     
@@ -361,7 +374,7 @@ class Model {
             
                 let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: seconds)
                 
-                self.NameToTalks[fileName] = talkData
+                self.FileNameToTalk[fileName] = talkData
             
                 // add this talk to  list of all talks
                 // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section
@@ -455,10 +468,10 @@ class Model {
                     
                     // fill in these fields from talk data.  must do this as these fields are not stored in config.json (to make things 
                     // easier for config reading)
-                    if let talkData = NameToTalks[fileName] {
+                    if let talkData = FileNameToTalk[fileName] {
                         URL = talkData.URL
                         speaker = talkData.Speaker
-                        date = talkData.DatePlayed
+                        date = talkData.Date
                         durationDisplay = talkData.DurationDisplay
                     }
                  
@@ -562,27 +575,19 @@ class Model {
                 
                 let json =  try JSONSerialization.jsonObject(with: responseData) as! [String: AnyObject]
                 
-                for talkHistory in json["sangha_history"] as? [AnyObject] ?? [] {
+                for talkJSON in json["sangha_history"] as? [AnyObject] ?? [] {
                     
-                    let fileName = talkHistory["filename"] as? String ?? ""
-                    let datePlayed = talkHistory["date"] as? String ?? ""
-                    let timePlayed = talkHistory["time"] as? String ?? ""
-                    let city = talkHistory["city"] as? String ?? ""
-                    let country = talkHistory["country"] as? String ?? ""
+                    let fileName = talkJSON["filename"] as? String ?? ""
+                    let datePlayed = talkJSON["date"] as? String ?? ""
+                    let timePlayed = talkJSON["time"] as? String ?? ""
+                    let city = talkJSON["city"] as? String ?? ""
+                    let country = talkJSON["country"] as? String ?? ""
                    
-                    if let talk = self.NameToTalks[fileName] {
+                    if let _ = self.FileNameToTalk[fileName] {
                         
-                        talk.DatePlayed = datePlayed
-                        talk.TimePlayed = timePlayed
-                        talk.CityPlayed = city
-                        talk.CountryPlayed = country
-                        
-                        let duration = talk.DurationDisplay
-                        let seconds = self.convertDurationToSeconds(duration: duration)
-                        totalSeconds += seconds
+                        let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: datePlayed, timePlayed: timePlayed, cityPlayed: city, countryPlayed: country)
                         talkCount += 1
-                        
-                        self.SangaTalkHistoryAlbum.append(talk)
+                        self.SangaTalkHistoryAlbum.append(talkHistory)
                         
                         if talkCount >= MAX_TALKHISTORY_COUNT {
                             break
@@ -595,28 +600,20 @@ class Model {
 
                 talkCount = 0
                 totalSeconds = 0
-                for talkHistory in json["sangha_shares"] as? [AnyObject] ?? [] {
+                for talkJSON in json["sangha_shares"] as? [AnyObject] ?? [] {
                     
-                    let fileName = talkHistory["filename"] as? String ?? ""
-                    let dateShared = talkHistory["date"] as? String ?? ""
-                    let timeShared = talkHistory["time"] as? String ?? ""
-                    let city = talkHistory["city"] as? String ?? ""
-                    let country = talkHistory["country"] as? String ?? ""
+                    let fileName = talkJSON["filename"] as? String ?? ""
+                    let dateShared = talkJSON["date"] as? String ?? ""
+                    let timeShared = talkJSON["time"] as? String ?? ""
+                    let city = talkJSON["city"] as? String ?? ""
+                    let country = talkJSON["country"] as? String ?? ""
                     
-                    if let talk = self.NameToTalks[fileName] {
+                    if let _ = self.FileNameToTalk[fileName] {
                         
-                        talk.DatePlayed = dateShared
-                        talk.TimePlayed = timeShared
-                        talk.CityPlayed = city
-                        talk.CountryPlayed = country
+                        let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: dateShared, timePlayed: timeShared, cityPlayed: city, countryPlayed: country)
+                        self.SangaShareHistoryAlbum.append(talkHistory)
                         
-                        let duration = talk.DurationDisplay
-                        let seconds = self.convertDurationToSeconds(duration: duration)
-                        totalSeconds += seconds
                         talkCount += 1
-                        
-                        self.SangaShareHistoryAlbum.append(talk)
-                        
                         if talkCount >= MAX_SHAREHISTORY_COUNT {
                             break
                         }
@@ -624,6 +621,10 @@ class Model {
                     else {
                         print(fileName)
                     }
+                }
+                
+                for talk in self.SangaShareHistoryAlbum {
+                    print(talk.FileName, talk.DatePlayed, talk.TimePlayed)
                 }
                 
                 durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
@@ -702,11 +703,13 @@ class Model {
         request.httpBody = parameters.data(using: String.Encoding.utf8);
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+/*
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
                 return
             }
             let _ = try? JSONSerialization.jsonObject(with: data, options: [])
+ */
             
         }
         task.resume()
@@ -785,7 +788,7 @@ class Model {
             var talkCount = 0
             var totalSeconds = 0
             for talkName in userAlbum.TalkFileNames {
-                if let talk = NameToTalks[talkName] {
+                if let talk = FileNameToTalk[talkName] {
                     totalSeconds += talk.DurationInSeconds
                     talkCount += 1
                 }
@@ -899,7 +902,7 @@ class Model {
         
         for (fileName, _) in UserNotes {
             
-            if let talk = NameToTalks[fileName] {
+            if let talk = FileNameToTalk[fileName] {
                 totalSeconds += talk.DurationInSeconds
                 talkCount += 1
             }
@@ -917,7 +920,7 @@ class Model {
         
         for talkHistory in UserTalkHistoryAlbum {
             let fileName = talkHistory.FileName
-            if let talk = NameToTalks[fileName] {
+            if let talk = FileNameToTalk[fileName] {
                 totalSeconds += talk.DurationInSeconds
                 talkCount += 1
             }
@@ -935,7 +938,7 @@ class Model {
     
         for talkHistory in UserShareHistoryAlbum {
             let fileName = talkHistory.FileName
-            if let talk = NameToTalks[fileName] {
+            if let talk = FileNameToTalk[fileName] {
                 totalSeconds += talk.DurationInSeconds
                 talkCount += 1
             }
@@ -1033,70 +1036,13 @@ class Model {
         case KEY_NOTES:
             var talks = [TalkData] ()
             for (fileName, _) in UserNotes {
-                if let talk = NameToTalks[fileName] {
+                if let talk = FileNameToTalk[fileName] {
                     talks.append(talk)
                 }
             }
             talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
             talkList =  [talks]
             
-        case KEY_USER_TALKHISTORY:
-            var talks = [TalkData] ()
-            for talkHistory in UserTalkHistoryAlbum {
-                let fileName = talkHistory.FileName
-                if let talk = NameToTalks[fileName] {
-                    
-                    talk.DatePlayed = talkHistory.DatePlayed
-                    talk.TimePlayed = talkHistory.TimePlayed
-                    talk.CityPlayed = talkHistory.CityPlayed
-                    talk.CountryPlayed = talkHistory.CountryPlayed
-
-                    talks.append(talk)
-                    }
-
-            }
-            talkList =  [talks.reversed()]
-            
-        case KEY_USER_SHAREHISTORY:
-
-            var talks = [TalkData] ()
-            for talkHistory in UserShareHistoryAlbum {
-                let fileName = talkHistory.FileName
-                if let talk = NameToTalks[fileName] {
-                    
-                    talk.DatePlayed = talkHistory.DatePlayed
-                    talk.TimePlayed = talkHistory.TimePlayed
-                    talk.CityPlayed = talkHistory.CityPlayed
-                    talk.CountryPlayed = talkHistory.CountryPlayed
-                    talks.append(talk)
-                }
-            }
-            
-            talkList =  [talks.reversed()]
-            
-        case KEY_SANGHA_TALKHISTORY:
-            
-            var talks = [TalkData] ()
-            for talkHistory in SangaTalkHistoryAlbum {
-                let fileName = talkHistory.FileName
-                if let talk = NameToTalks[fileName] {
-                    talks.append(talk)
-                    
-                }
-            }
-            talkList = [talks]
-            
-        case KEY_SANGHA_SHAREHISTORY:
-            
-            var talks = [TalkData] ()
-            for talkHistory in SangaShareHistoryAlbum {
-                let fileName = talkHistory.FileName
-                if let talk = NameToTalks[fileName] {
-                    talks.append(talk)
-                }
-            }
-            talkList = [talks]
-
         case KEY_ALL_SERIES:
             talkList = KeyToTalks[content] ?? [[TalkData]]()
  
@@ -1109,6 +1055,56 @@ class Model {
         
         return talkList
     }
+    
+    func getTalkHistory(content: String) -> [TalkHistoryData] {
+        
+        var talkHistoryList : [TalkHistoryData]
+        
+        switch content {
+            
+        case KEY_USER_TALKHISTORY:
+            var talkHistories = [TalkHistoryData] ()
+            for talkHistory in UserTalkHistoryAlbum {
+                if let _ = FileNameToTalk[talkHistory.FileName] {
+                    talkHistories.append(talkHistory)
+                }
+            }
+            talkHistoryList =  talkHistories.reversed()
+            
+        case KEY_USER_SHAREHISTORY:
+            var talkHistories = [TalkHistoryData] ()
+            for talkHistory in UserShareHistoryAlbum {
+                if let _ = FileNameToTalk[talkHistory.FileName] {
+                    talkHistories.append(talkHistory)
+                }
+            }
+            talkHistoryList =  talkHistories.reversed()
+            
+        case KEY_SANGHA_TALKHISTORY:
+            var talkHistories = [TalkHistoryData] ()
+            for talkHistory in SangaTalkHistoryAlbum {
+                if let _ = FileNameToTalk[talkHistory.FileName] {
+                    talkHistories.append(talkHistory)
+                }
+            }
+            talkHistoryList =  talkHistories
+            
+        case KEY_SANGHA_SHAREHISTORY:
+            var talkHistories = [TalkHistoryData] ()
+            for talkHistory in SangaShareHistoryAlbum {
+                if let _ = FileNameToTalk[talkHistory.FileName] {
+                    talkHistories.append(talkHistory)
+                }
+            }
+            talkHistoryList =  talkHistories
+            
+        default:
+            fatalError("No such key")
+        }
+        
+        return talkHistoryList
+    }
+
     
     func getAlbumStats(content: String) -> AlbumStats {
         
@@ -1224,7 +1220,7 @@ class Model {
     
     func getTalkForName(name: String) -> TalkData? {
         
-        return NameToTalks[name]
+        return FileNameToTalk[name]
     }
     
     func addToTalkHistory(talk: TalkData) {

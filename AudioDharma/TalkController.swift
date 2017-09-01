@@ -138,7 +138,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 
                 controller.TextHasBeenChanged = false   // just to make sure ...
                 
-                if let talk = TheDataModel.NameToTalks[controller.TalkFileName] {
+                if let talk = TheDataModel.FileNameToTalk[controller.TalkFileName] {
                     let noteText  = controller.noteTextView.text!
                     TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
                     

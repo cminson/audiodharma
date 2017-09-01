@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("applicationDidBecomeActive")
 
+
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

@@ -15,10 +15,9 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
 
     //
     //MARK: Properties
-    var SectionTalks: [[TalkData]] = []
-    var FilteredSectionTalks:  [[TalkData]] = []
+    var TalkHistory: [TalkHistoryData] = []
+    var FilteredTalkHistory:  [TalkHistoryData] = []
     var Content: String = ""
-    var SelectedSection: Int = 0
     var SelectedRow: Int = 0
     let SearchController = UISearchController(searchResultsController: nil)
     var SearchText = ""
@@ -30,8 +29,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         TheDataModel.CommunityController = self
 
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
+        TalkHistory = TheDataModel.getTalkHistory(content: Content)
+        FilteredTalkHistory = TalkHistory
         
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
@@ -55,8 +54,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         super.viewWillAppear(animated)
         
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
+        TalkHistory = TheDataModel.getTalkHistory(content: Content)
+        FilteredTalkHistory = TalkHistory
         
         // restore the search state, if any
         if SearchText.characters.count > 0 {
@@ -87,8 +86,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     func reloadModel() {
         
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
+        TalkHistory = TheDataModel.getTalkHistory(content: Content)
+        FilteredTalkHistory = TalkHistory
     }
     
     // MARK: - Navigation
@@ -106,19 +105,24 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             }
             
             playTalkController.CurrentTalkRow = SelectedRow
-            playTalkController.TalkList = FilteredSectionTalks[SelectedSection]
+            //playTalkController.TalkList = FilteredTalkHistory[SelectedRow]
         case "DISPLAY_NOTE":
+            
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? NoteController
                 else {
                     fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
-            controller.TalkFileName = talk.FileName
-            controller.title = talk.Title
-            //print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
+            let talkHistory = FilteredTalkHistory[SelectedRow]
+            if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+                
+                controller.TalkFileName = talk.FileName
+                controller.title = talk.Title
+                print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
+            }
             
         case "DISPLAY_HELP_PAGE":
+            
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -127,11 +131,13 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             controller.setHelpPage(helpPage: Content)
         
         case "DISPLAY_DONATIONS":
+            
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
         default:
+            
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
         }
         
@@ -150,7 +156,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
                 
                 controller.TextHasBeenChanged = false   // just to make sure ...
                 
-                if let talk = TheDataModel.NameToTalks[controller.TalkFileName] {
+                if let talk = TheDataModel.FileNameToTalk[controller.TalkFileName] {
                     let noteText  = controller.noteTextView.text!
                     TheDataModel.addNoteToTalk(noteText: noteText, talkFileName: talk.FileName)
                     
@@ -163,33 +169,24 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
-        
+ 
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
-            var sectionsPositionDict : [String: Int] = [:]
-            FilteredSectionTalks = []
-            for sections in SectionTalks {
-                for talkData in sections {
-                    let notes = TheDataModel.getNoteForTalk(talkFileName: talkData.FileName).lowercased()
-                    
-                    let searchedData = talkData.Title.lowercased() + talkData.Speaker.lowercased() + talkData.Date + notes
+            FilteredTalkHistory = []
+            for talkHistory in TalkHistory {
+                
+                if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+                    let searchedData = talk.Title.lowercased() + talk.Speaker.lowercased() + talk.Date
                     
                     if searchedData.contains(searchText.lowercased()) {
                         
-                        if sectionsPositionDict[talkData.Section] == nil {
-                            // new section seen.  create new array of talks for this section
-                            FilteredSectionTalks.append([talkData])
-                            sectionsPositionDict[talkData.Section] = FilteredSectionTalks.count - 1
-                        } else {
-                            // section already exists.  add talk to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[talkData.Section]
-                            FilteredSectionTalks[sectionPosition!].append(talkData)
-                        }
+                        FilteredTalkHistory.append(talkHistory)
+                        
                     }
                 }
             }
         } else {
-            FilteredSectionTalks = SectionTalks
+            FilteredTalkHistory = TalkHistory
         }
         tableView.reloadData()
     }
@@ -198,50 +195,48 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return FilteredSectionTalks.count
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return FilteredSectionTalks[section].count
+        return FilteredTalkHistory.count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        var sectionTitle = ""
-        
-        if FilteredSectionTalks.count >= section {
-            let talksInSection = FilteredSectionTalks[section]
-            if talksInSection.count > 0 {
-                sectionTitle = talksInSection[0].Section
-            }
-        }
-        return sectionTitle
-    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("HistoryCell", owner: self, options: nil)?.first as! HistoryCell
-        let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
-        
-        // display a note icon if a note exists
-        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
-            cell.noteImage.isHidden = false
-        } else {
-            cell.noteImage.isHidden = true
+        let talkHistory = FilteredTalkHistory[indexPath.row]
+        if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+            
+            // display a note icon if a note exists
+            if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+                cell.noteImage.isHidden = false
+            } else {
+                cell.noteImage.isHidden = true
+            }
+            
+            cell.speakerPhoto.image = talk.SpeakerPhoto
+            cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+            cell.title.text = talk.Title
+            cell.date.text = talkHistory.DatePlayed
+            //cell.time.text = talkHistory.TimePlayed
+            
+            cell.city.text = talkHistory.CityPlayed
+            cell.country.text = talkHistory.CountryPlayed
+            
         }
-        
-        cell.speakerPhoto.image = talk.SpeakerPhoto
-        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-        cell.title.text = talk.Title
-        cell.date.text = talk.DatePlayed
-        cell.time.text = talk.TimePlayed
-        
-        cell.city.text = talk.CityPlayed
-        cell.country.text = talk.CountryPlayed
         
         return cell
     }
+    
+/*
+    override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 60
+    }
+ */
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
@@ -254,14 +249,12 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
@@ -277,28 +270,30 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         return [shareTalk, noteTalk]
     }
-    
-    
-    //MARK: Share
+        
     private func viewEditNote() {
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
     
+    //MARK: Share
     private func shareTalk() {
         
-        let sharedTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        let talkHistory = FilteredTalkHistory[SelectedRow]
         
         // save off search state and then turn off search. otherwise the modal will conflict with it
         SearchText = SearchController.searchBar.text!
         SearchController.isActive = false
         
-        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
-        
-        // restore search state
-        SearchController.isActive = true
-        SearchController.searchBar.text = SearchText
+        if let sharedTalk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+            TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
+            
+            // restore search state
+            SearchController.isActive = true
+            SearchController.searchBar.text = SearchText
+            
+        }
     }
     
 }

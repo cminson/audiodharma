@@ -17,6 +17,7 @@ class TalkCell: UITableViewCell {
     @IBOutlet weak var duration: UILabel!
     @IBOutlet weak var noteImage: UIImageView!
  
+ 
     
     // MARK: Properties
     var isUserSelected: Bool! = false

@@ -19,35 +19,34 @@
                 <rect key="frame" x="0.0" y="0.0" width="418" height="48"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notebar" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
-                        <rect key="frame" x="402" y="22" width="10" height="6"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notebar" highlightedImage="notebar" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
+                        <rect key="frame" x="410" y="15" width="4" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="10" id="QkI-Im-wPj"/>
+                            <constraint firstAttribute="width" constant="4" id="s0C-Qk-VEW"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-HT-Bye">
                         <rect key="frame" x="3" y="4" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="8W3-jf-YFU"/>
+                            <constraint firstAttribute="width" constant="40" id="zil-cr-8vd"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="04:20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pd-06-Ypg">
-                        <rect key="frame" x="344" y="26" width="72" height="18"/>
+                        <rect key="frame" x="341" y="26" width="70" height="15"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-ia-l6x">
-                        <rect key="frame" x="45" y="3" width="300" height="42"/>
+                        <rect key="frame" x="45" y="3" width="295" height="42"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017.08.27" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZG-DA-B6i">
-                        <rect key="frame" x="344" y="5" width="72" height="18"/>
+                        <rect key="frame" x="341" y="7" width="70" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="72" id="AKN-5Q-7c9"/>
-                            <constraint firstAttribute="height" constant="18" id="vFW-OG-GBI"/>
+                            <constraint firstAttribute="height" constant="15" id="e00-qM-fJy"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -55,28 +54,29 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="bottom" secondItem="8pd-06-Ypg" secondAttribute="bottom" id="1Yu-Tb-Dy9"/>
-                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="14" id="1mL-gW-l9k"/>
-                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="57" id="37f-RC-oSJ"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="Xpy-ia-l6x" secondAttribute="centerY" id="Dlm-LQ-TnJ"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="trailing" secondItem="8pd-06-Ypg" secondAttribute="trailing" id="Egx-8G-U4c"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="leading" secondItem="8pd-06-Ypg" secondAttribute="leading" id="KWy-gG-3wU"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="eJ9-2D-Cve" secondAttribute="bottom" constant="11.666666666666664" id="UcE-As-kGg"/>
-                    <constraint firstItem="dZG-DA-B6i" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="WHv-BK-CkQ"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="Xyc-Fk-BgW"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="fYv-VE-4dL"/>
-                    <constraint firstItem="yVe-HT-Bye" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-4" id="gjM-Yc-9LG"/>
-                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="leading" secondItem="yVe-HT-Bye" secondAttribute="trailing" constant="2" id="jZW-9Q-kJr"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dZG-DA-B6i" secondAttribute="trailing" constant="-6" id="onG-t4-3vL"/>
-                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-5" id="oy9-pa-oaO"/>
-                    <constraint firstItem="8pd-06-Ypg" firstAttribute="top" secondItem="dZG-DA-B6i" secondAttribute="bottom" constant="3" id="waC-eh-kJl"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="eJ9-2D-Cve" secondAttribute="trailing" constant="-2" id="xKR-he-RST"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="eJ9-2D-Cve" secondAttribute="trailing" constant="-4" id="0GM-XL-qWu"/>
+                    <constraint firstItem="yVe-HT-Bye" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="8qL-Tz-Agg"/>
+                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-5" id="DTO-f8-ggg"/>
+                    <constraint firstItem="Xpy-ia-l6x" firstAttribute="leading" secondItem="yVe-HT-Bye" secondAttribute="trailing" constant="2" id="J6B-ci-gyt"/>
+                    <constraint firstItem="dZG-DA-B6i" firstAttribute="trailing" secondItem="8pd-06-Ypg" secondAttribute="trailing" id="NvA-OA-X6z"/>
+                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="70" id="WHs-MW-fTm"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="8pd-06-Ypg" secondAttribute="bottom" constant="-1.3333333333333357" id="Z2O-jp-IUB"/>
+                    <constraint firstItem="dZG-DA-B6i" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-1" id="ZyL-k6-WXe"/>
+                    <constraint firstItem="dZG-DA-B6i" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="1" id="ezd-oD-x71"/>
+                    <constraint firstItem="yVe-HT-Bye" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-4" id="l5g-3Z-3fa"/>
+                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="7" id="lcE-mz-fXh"/>
+                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="Xpy-ia-l6x" secondAttribute="centerY" id="pPV-BF-55I"/>
+                    <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="sOO-Ib-hRd"/>
+                    <constraint firstItem="dZG-DA-B6i" firstAttribute="leading" secondItem="8pd-06-Ypg" secondAttribute="leading" id="stj-w0-tkQ"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dZG-DA-B6i" secondAttribute="trailing" constant="-1" id="txU-8W-rSk"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="eJ9-2D-Cve" secondAttribute="bottom" constant="4.6666666666666643" id="ulW-kK-6Q4"/>
+                    <constraint firstItem="8pd-06-Ypg" firstAttribute="top" secondItem="dZG-DA-B6i" secondAttribute="bottom" constant="4" id="wRN-YW-Lof"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="date" destination="dZG-DA-B6i" id="S2O-OL-H3a"/>
                 <outlet property="duration" destination="8pd-06-Ypg" id="0Fm-rQ-alu"/>
-                <outlet property="noteImage" destination="eJ9-2D-Cve" id="tGu-eD-e5r"/>
+                <outlet property="noteImage" destination="eJ9-2D-Cve" id="7uN-K4-49W"/>
                 <outlet property="speakerPhoto" destination="yVe-HT-Bye" id="hw5-3W-y0Z"/>
                 <outlet property="title" destination="Xpy-ia-l6x" id="lSq-9e-OUj"/>
             </connections>
@@ -85,6 +85,6 @@
     </objects>
     <resources>
         <image name="Earth" width="250" height="250"/>
-        <image name="notebar" width="7" height="2"/>
+        <image name="notebar" width="2" height="10"/>
     </resources>
 </document>

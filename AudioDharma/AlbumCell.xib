@@ -16,52 +16,51 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="48"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="418" height="48"/>
+                <rect key="frame" x="0.0" y="0.0" width="418" height="47"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8uD-wn-9oT">
-                        <rect key="frame" x="1" y="4" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="40" id="YjR-2e-gWT"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yIv-NS-atZ">
-                        <rect key="frame" x="43" y="2" width="300" height="46"/>
+                        <rect key="frame" x="41" y="2" width="310" height="46"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,999:99:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n0c-k7-9wp">
-                        <rect key="frame" x="343" y="23" width="80" height="24"/>
+                        <rect key="frame" x="350" y="23" width="70" height="24"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13,626:15;15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bb-DT-FYr">
-                        <rect key="frame" x="343" y="2" width="75" height="20"/>
+                        <rect key="frame" x="350" y="2" width="65" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="75" id="0AV-hF-ZsE"/>
-                            <constraint firstAttribute="height" constant="20" id="1rv-rH-3yP"/>
+                            <constraint firstAttribute="height" constant="20" id="4Ac-1h-z7w"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8uD-wn-9oT">
+                        <rect key="frame" x="0.0" y="3" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="KWK-bT-cH3"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="yIv-NS-atZ" firstAttribute="leading" secondItem="8uD-wn-9oT" secondAttribute="trailing" constant="2" id="2be-ok-zGh"/>
-                    <constraint firstAttribute="trailing" secondItem="4Bb-DT-FYr" secondAttribute="trailing" id="3DS-iF-7bm"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="n0c-k7-9wp" secondAttribute="trailing" constant="-13" id="HiT-lE-Iu0"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="yIv-NS-atZ" secondAttribute="bottom" constant="-8.5" id="SWY-xe-And"/>
-                    <constraint firstItem="4Bb-DT-FYr" firstAttribute="leading" secondItem="yIv-NS-atZ" secondAttribute="trailing" id="W0C-wV-ER1"/>
-                    <constraint firstItem="yIv-NS-atZ" firstAttribute="top" secondItem="4Bb-DT-FYr" secondAttribute="top" id="fXA-nO-4dD"/>
-                    <constraint firstItem="8uD-wn-9oT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-4" id="hxt-Ns-Ibt"/>
-                    <constraint firstItem="n0c-k7-9wp" firstAttribute="top" secondItem="4Bb-DT-FYr" secondAttribute="bottom" constant="1" id="oqe-Vb-kWw"/>
-                    <constraint firstItem="4Bb-DT-FYr" firstAttribute="leading" secondItem="n0c-k7-9wp" secondAttribute="leading" id="wGO-zQ-8f8"/>
-                    <constraint firstItem="8uD-wn-9oT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-7" id="wsj-rY-CVa"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="n0c-k7-9wp" secondAttribute="bottom" constant="-7.5" id="yDl-VA-fic"/>
-                    <constraint firstItem="8uD-wn-9oT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ygE-k1-FI1"/>
-                    <constraint firstItem="yIv-NS-atZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-6" id="zWK-Bf-pHy"/>
+                    <constraint firstItem="8uD-wn-9oT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="2ps-d1-5vz"/>
+                    <constraint firstItem="yIv-NS-atZ" firstAttribute="baseline" secondItem="n0c-k7-9wp" secondAttribute="baseline" id="85j-yB-Rw2"/>
+                    <constraint firstItem="8uD-wn-9oT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-5" id="Hxa-wm-O2i"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="4Bb-DT-FYr" secondAttribute="trailing" constant="-5" id="XZF-A7-UwU"/>
+                    <constraint firstItem="8uD-wn-9oT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dK8-9E-Nty"/>
+                    <constraint firstItem="yIv-NS-atZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-6" id="dyI-JO-JS6"/>
+                    <constraint firstItem="n0c-k7-9wp" firstAttribute="top" secondItem="4Bb-DT-FYr" secondAttribute="bottom" constant="1" id="gId-Rn-vOO"/>
+                    <constraint firstItem="yIv-NS-atZ" firstAttribute="top" secondItem="4Bb-DT-FYr" secondAttribute="top" id="hUH-HJ-pza"/>
+                    <constraint firstItem="4Bb-DT-FYr" firstAttribute="leading" secondItem="n0c-k7-9wp" secondAttribute="leading" id="hwC-LU-REY"/>
+                    <constraint firstAttribute="bottom" secondItem="n0c-k7-9wp" secondAttribute="bottom" id="svs-2N-tWA"/>
+                    <constraint firstItem="yIv-NS-atZ" firstAttribute="leading" secondItem="8uD-wn-9oT" secondAttribute="trailing" constant="1" id="t2k-We-O3p"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="n0c-k7-9wp" secondAttribute="trailing" constant="-10" id="tby-PP-s05"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="yIv-NS-atZ" secondAttribute="trailing" constant="59" id="wm5-bI-wAW"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
