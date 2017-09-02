@@ -56,23 +56,18 @@ class TalkHistoryData: NSObject, NSCoding {
     required convenience init?(coder aDecoder: NSCoder) {
         
         guard let fileName = aDecoder.decodeObject(forKey: PropertyKey.FileName) as? String else {
-            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
         guard let datePlayed = aDecoder.decodeObject(forKey: PropertyKey.DatePlayed) as? String else {
-            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
         guard let timePlayed = aDecoder.decodeObject(forKey: PropertyKey.TimePlayed) as? String else {
-            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
         guard let cityPlayed = aDecoder.decodeObject(forKey: PropertyKey.CityPlayed) as? String else {
-            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
         guard let countryPlayed = aDecoder.decodeObject(forKey: PropertyKey.CountryPlayed) as? String else {
-            os_log("Unable to decode TalkHistoryData object.", log: OSLog.default, type: .debug)
             return nil
         }
        

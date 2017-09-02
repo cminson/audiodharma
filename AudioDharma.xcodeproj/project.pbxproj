@@ -26,8 +26,6 @@
 		8387D6401EFC07AD0025006B /* AlbumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* AlbumController.swift */; };
 		839E53861F324CFC00D0A102 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E53841F324CFC00D0A102 /* AlbumCell.swift */; };
 		839E53871F324CFC00D0A102 /* AlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839E53851F324CFC00D0A102 /* AlbumCell.xib */; };
-		83A08C4D1F59D5D200BF12A5 /* Test01TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A08C4B1F59D5D200BF12A5 /* Test01TableViewCell.swift */; };
-		83A08C4E1F59D5D200BF12A5 /* Test01TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A08C4C1F59D5D200BF12A5 /* Test01TableViewCell.xib */; };
 		83ADC90F1F40DB4F00D4D9C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */; };
 		83BBD9CB1F45E8DA001CEF09 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */; };
 		83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakerController.swift */; };
@@ -64,8 +62,6 @@
 		8387D63F1EFC07AD0025006B /* AlbumController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumController.swift; sourceTree = "<group>"; };
 		839E53841F324CFC00D0A102 /* AlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		839E53851F324CFC00D0A102 /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
-		83A08C4B1F59D5D200BF12A5 /* Test01TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test01TableViewCell.swift; sourceTree = "<group>"; };
-		83A08C4C1F59D5D200BF12A5 /* Test01TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Test01TableViewCell.xib; sourceTree = "<group>"; };
 		83ADC90E1F40DB4F00D4D9C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		83BBD9CD1F45E940001CEF09 /* ZipArchive.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ZipArchive.framework.dSYM; path = Carthage/Build/iOS/ZipArchive.framework.dSYM; sourceTree = "<group>"; };
@@ -136,8 +132,6 @@
 				837C3DD71F2D34B7005C9A0A /* TalkCell.xib */,
 				831CC5941F48AD0800550BD4 /* HistoryCell.swift */,
 				831CC5951F48AD0800550BD4 /* HistoryCell.xib */,
-				83A08C4B1F59D5D200BF12A5 /* Test01TableViewCell.swift */,
-				83A08C4C1F59D5D200BF12A5 /* Test01TableViewCell.xib */,
 				83DC0D641EF17B390071CAD3 /* Main.storyboard */,
 				83DC0D601EF17B390071CAD3 /* AppDelegate.swift */,
 				8387D63F1EFC07AD0025006B /* AlbumController.swift */,
@@ -232,7 +226,6 @@
 				8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */,
 				837C3DD91F2D34B7005C9A0A /* TalkCell.xib in Resources */,
 				83DC0D661EF17B390071CAD3 /* Main.storyboard in Resources */,
-				83A08C4E1F59D5D200BF12A5 /* Test01TableViewCell.xib in Resources */,
 				831CC5971F48AD0800550BD4 /* HistoryCell.xib in Resources */,
 				83ADC90F1F40DB4F00D4D9C5 /* Assets.xcassets in Resources */,
 			);
@@ -275,7 +268,6 @@
 				83F1A7E21F1FEA3E009B9669 /* UserAlbumEditController.swift in Sources */,
 				83432FC01F0AB373002926AC /* MP3Player.swift in Sources */,
 				834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */,
-				83A08C4D1F59D5D200BF12A5 /* Test01TableViewCell.swift in Sources */,
 				83EF51B01F044415000678B0 /* UserTalksEditController.swift in Sources */,
 				834087C21F4F6AAD008E8F2D /* HelpController.swift in Sources */,
 				83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */,
@@ -410,7 +402,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = AudioDharma/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherminson.audiodharma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -429,7 +421,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = AudioDharma/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherminson.audiodharma;
 				PRODUCT_NAME = "$(TARGET_NAME)";

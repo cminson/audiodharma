@@ -665,22 +665,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AudioDharma/UserAlbumsController.swift"
-            timestampString = "525375137.504556"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
-            landmarkName = "unwindAlbumEditToUserAlbums(sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "AudioDharma/UserTalkController.swift"
             timestampString = "524589105.786734"
             startingColumnNumber = "9223372036854775807"
@@ -746,11 +730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1234"
-            endingLineNumber = "1234"
+            startingLineNumber = "1226"
+            endingLineNumber = "1226"
             landmarkName = "addToTalkHistory(talk:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,11 +746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1330"
-            endingLineNumber = "1330"
+            startingLineNumber = "1322"
+            endingLineNumber = "1322"
             landmarkName = "Model"
             landmarkType = "3">
          </BreakpointContent>
@@ -794,11 +778,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525990340.451023"
+            timestampString = "526083093.479917"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "576"
-            endingLineNumber = "576"
+            startingLineNumber = "572"
+            endingLineNumber = "572"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -842,11 +826,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525990340.451023"
+            timestampString = "526083093.479917"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "579"
-            endingLineNumber = "579"
+            startingLineNumber = "575"
+            endingLineNumber = "575"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -890,11 +874,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "688"
-            endingLineNumber = "688"
+            startingLineNumber = "680"
+            endingLineNumber = "680"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
             <Locations>
@@ -938,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "687"
-            endingLineNumber = "687"
+            startingLineNumber = "679"
+            endingLineNumber = "679"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -954,11 +938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "681"
+            endingLineNumber = "681"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
             <Locations>
@@ -1002,11 +986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1344"
-            endingLineNumber = "1344"
+            startingLineNumber = "1336"
+            endingLineNumber = "1336"
             landmarkName = "shareTalk(sharedTalk:controller:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1080,11 +1064,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083346.051345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1294"
-            endingLineNumber = "1294"
+            startingLineNumber = "1286"
+            endingLineNumber = "1286"
             landmarkName = "Model"
             landmarkType = "3">
          </BreakpointContent>
@@ -1384,11 +1368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/HelpController.swift"
-            timestampString = "525738314.442927"
+            timestampString = "526053076.184158"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "setHelpPage(helpPage:)"
             landmarkType = "7">
             <Locations>
@@ -1432,11 +1416,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/HelpController.swift"
-            timestampString = "525738317.482637"
+            timestampString = "526053076.184158"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "setHelpPage(helpPage:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1448,75 +1432,59 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525990340.451023"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534"
-            landmarkName = "downloadSanghaActivity()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AudioDharma/Model.swift"
-            timestampString = "525990340.451023"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "558"
-            endingLineNumber = "558"
-            landmarkName = "downloadSanghaActivity()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AudioDharma/Model.swift"
-            timestampString = "525990340.451023"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "557"
-            endingLineNumber = "557"
-            landmarkName = "downloadSanghaActivity()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AudioDharma/Model.swift"
-            timestampString = "525990452.73742"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "parseConfiguration(jsonData:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AudioDharma/Model.swift"
-            timestampString = "525990501.732594"
+            timestampString = "526083093.479917"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "529"
             endingLineNumber = "529"
+            landmarkName = "downloadSanghaActivity()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/Model.swift"
+            timestampString = "526083093.479917"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
+            landmarkName = "downloadSanghaActivity()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/Model.swift"
+            timestampString = "526083093.479917"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
+            landmarkName = "downloadSanghaActivity()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/Model.swift"
+            timestampString = "526083093.479917"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
             landmarkName = "parseConfiguration(jsonData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1528,11 +1496,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            timestampString = "526083093.479917"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
+            startingLineNumber = "524"
+            endingLineNumber = "524"
+            landmarkName = "parseConfiguration(jsonData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/Model.swift"
+            timestampString = "526083093.479917"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "602"
+            endingLineNumber = "602"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -1575,12 +1559,28 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AudioDharma/Model.swift"
-            timestampString = "525996205.644988"
+            filePath = "AudioDharma/UserAlbumsController.swift"
+            timestampString = "526057528.587422"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "627"
-            endingLineNumber = "627"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/Model.swift"
+            timestampString = "526083081.852028"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>

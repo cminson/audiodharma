@@ -96,7 +96,26 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         UserAlbum?.Title = userAlbumTitle.text ?? ""
         UserAlbum?.Image = userImageView.image ?? UIImage(named: "flower01")!
         
+        switch(segue.identifier ?? "") {
+        
+        case "DISPLAY_HELP_PAGE":
+            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+        controller.setHelpPage(helpPage: KEY_USEREDIT_ALBUMS)
+        
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+        
+         default:
+            
+            UserAlbum?.Title = userAlbumTitle.text ?? ""
+            UserAlbum?.Image = userImageView.image ?? UIImage(named: "flower01")!
+        
         //print("Modified UserAlbum: ", UserAlbum?.Title, UserAlbum?.Content)
+        }
     }
     
     // MARK: Actions

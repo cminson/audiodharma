@@ -5,7 +5,9 @@
   },
   "data" : [
     {
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "filename" : "KEY_USEREDIT_ALBUMS.json",
+      "universal-type-identifier" : "public.json"
     }
   ]
 }

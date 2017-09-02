@@ -59,23 +59,19 @@ class UserAlbumData: NSObject, NSCoding {
     required convenience init?(coder aDecoder: NSCoder) {
         
         guard let title = aDecoder.decodeObject(forKey: PropertyKey.Title) as? String else {
-            os_log("Unable to decode the title for a UserAlbumData object.", log: OSLog.default, type: .debug)
             return nil
         }
         
         guard let image = aDecoder.decodeObject(forKey: PropertyKey.Image) as? UIImage else {
-            os_log("Unable to decode the image for a UserAlbumData object.", log: OSLog.default, type: .debug)
             return nil
         }
         
         guard let content = aDecoder.decodeObject(forKey: PropertyKey.Content) as? String else {
-            os_log("Unable to decode the content key for a UserAlbumData object.", log: OSLog.default, type: .debug)
             return nil
         }
 
        
         guard let talkFileNames = aDecoder.decodeObject(forKey: PropertyKey.TalkFileNames) as? [String] else {
-            os_log("Unable to decode the talkFileNames for a UserAlbumData object.", log: OSLog.default, type: .debug)
             return nil
         }
         

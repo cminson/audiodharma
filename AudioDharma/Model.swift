@@ -225,7 +225,7 @@ class Model {
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
 
-        //Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
         
     }
     
@@ -399,7 +399,6 @@ class Model {
                 if series.characters.count > 1 {
                 
                     let seriesKey = "SERIES" + series
-                    //print(seriesKey)
                     if self.KeyToTalks[seriesKey] == nil {
                         self.KeyToTalks[seriesKey] = [[TalkData]] ()
                         self.KeyToTalks[seriesKey]?.append([talkData])
@@ -435,7 +434,6 @@ class Model {
                 let talkList = Album["talks"] as? [AnyObject] ?? []
                 let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
             
-                //print(albumData)
                 // store Album in the 2D AlbumSection array (section x Album)
                 if albumSectionPositionDict[section] == nil {
                     // new section seen.  create new array of Albums for this section
@@ -487,7 +485,6 @@ class Model {
                     if series.characters.count > 1 {
                         
                         let seriesKey = "RECOMMENDED" + series
-                        //print(seriesKey)
                         if self.KeyToTalks[seriesKey] == nil {
                             self.KeyToTalks[seriesKey] = [[TalkData]] ()
                             self.KeyToTalks[seriesKey]?.append([talkData])
@@ -504,14 +501,12 @@ class Model {
             
                     // create the key -> talkData[] entry if it doesn't already exist
                     if self.KeyToTalks[content] == nil {
-                        //print("Album talks creating key for: \(content)")
                         self.KeyToTalks[content]  = []
                     }
                 
                     // now add the talk data to this key
                     if talkSectionPositionDict[section] == nil {
                         // new section seen.  create new array of talks for this section
-                        //print("new section seen. creating array for: \(content)")
                         self.KeyToTalks[content]!.append([talkData])
                         talkSectionPositionDict[section] = self.KeyToTalks[content]!.count - 1
                     } else {
@@ -557,8 +552,9 @@ class Model {
             //let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
-            if (statusCode == 200) {
-                //print("Download: success")
+            if (statusCode != 200) {
+                ActivityIsUpdating = false
+                return
             }
             
             // make sure we got data
@@ -619,12 +615,8 @@ class Model {
                         }
                     }
                     else {
-                        print(fileName)
+                        print("ERROR: FILENAME NOT FOUND FOR SANGHA SHARE: ",fileName)
                     }
-                }
-                
-                for talk in self.SangaShareHistoryAlbum {
-                    print(talk.FileName, talk.DatePlayed, talk.TimePlayed)
                 }
                 
                 durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)

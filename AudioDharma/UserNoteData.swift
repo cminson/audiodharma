@@ -40,7 +40,6 @@ class UserNoteData: NSObject, NSCoding {
         
         //print("UserNoteData: Decode")
         guard let notes = aDecoder.decodeObject(forKey: PropertyKey.Notes) as? String else {
-            os_log("Unable to decode the notes for a UserNoteData object.", log: OSLog.default, type: .debug)
             return nil
         }
         
