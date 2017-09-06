@@ -35,7 +35,7 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonShare: UIBarButtonItem!
     
     // MARK: Constants
-    let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
+    
     enum TalkStates {                   // all possible states of the talk player
         case INITIAL
         case LOADING
@@ -51,6 +51,7 @@ class PlayTalkController: UIViewController {
     var CurrentTalkRow : Int = 0
     var OriginalTalkRow : Int = 0
     var PlayEntireAlbum: Bool = false
+    var HaveReportedTalk: Bool = false
     
     var TalkList : [TalkData]!
     var CurrentTalk : TalkData!
@@ -95,10 +96,6 @@ class PlayTalkController: UIViewController {
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
-
-        // start the background report thread (reporting status to web)
-        Timer.scheduledTimer(timeInterval: 400, target: self, selector: #selector(PlayTalkController.updateStatusToCloudTimer), userInfo: nil, repeats: true)
-
 
     }
     
@@ -206,6 +203,7 @@ class PlayTalkController: UIViewController {
         
         if TheDataModel.isInternetAvailable() == true
         {
+            HaveReportedTalk = false
             TalkPlayerStatus = .LOADING
         
             talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
@@ -216,8 +214,6 @@ class PlayTalkController: UIViewController {
         
             updateTitleDisplay()
         
-            TheDataModel.addToTalkHistory(talk: CurrentTalk)
-            TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
         } else {
             let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -255,6 +251,7 @@ class PlayTalkController: UIViewController {
     
     func stopTalks() {
         
+        HaveReportedTalk = false
 
         MP3TalkPlayer.stop()
         stopTalkTimer()
@@ -269,8 +266,9 @@ class PlayTalkController: UIViewController {
         disableActivityIcons()
         disableScanButtons()
         
+        HaveReportedTalk = false
         talkProgressSlider.value = 0.0
-        
+
         talkTitle.text = CurrentTalk.Title
         metaInfo.text = CurrentTalk.Speaker + "   " + CurrentTalk.Date
         
@@ -407,8 +405,10 @@ class PlayTalkController: UIViewController {
     func updateViewsWithTimer(){
         
         // if talk is  underway, then stop the busy notifier and activate the display (buttons, durations etc)
-        if MP3TalkPlayer.getCurrentTimeInSeconds() > 0 {
+        let currentPlayTime = MP3TalkPlayer.getCurrentTimeInSeconds()
+        if currentPlayTime > 0 {
             
+
             TalkPlayerStatus = .PLAYING
             
             disableActivityIcons()
@@ -426,16 +426,16 @@ class PlayTalkController: UIViewController {
             
             updateTitleDisplay()
             
-        }
-    }
-    
-    // called every CLOUD_UPDATE_SECONDS.  records status info to web point
-    func updateStatusToCloudTimer() {
-        
-        if TalkPlayerStatus == TalkStates.PLAYING {
+            // if play time exceeds reporting threshold, record and report that this talk was played
+            if currentPlayTime > REPORT_TALK_THRESHOLD, HaveReportedTalk != true {
+                
+                HaveReportedTalk = true
+                print("Reporting Play")
+                TheDataModel.addToTalkHistory(talk: CurrentTalk)
+                TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
+            }
             
         }
-         
     }
     
     private func enableActivityIcons() {

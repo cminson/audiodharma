@@ -39,12 +39,10 @@ class MP3Player : NSObject {
         Player.allowsExternalPlayback = true
         
         // get notification once talk ends
-#if FORLATER
         NotificationCenter.default.addObserver(self,selector:
                         #selector(self.talkHasCompleted),
                         name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                         object: PlayerItem)
-#endif
         
         Player.play()
     }
@@ -67,12 +65,10 @@ class MP3Player : NSObject {
         Player.pause()
     }
 
-#if FORLATER
     func talkHasCompleted() {
         
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
-#endif
     
     func seekToTime(seconds: Int64) {
         

@@ -29,7 +29,7 @@ var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently u
 
 // paths for services
 let CONFIG_ACCESS_PATH = "/AudioDharmaApp/Config/config.zip"    // where to get the start config
-let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaApp/Access/reportactivity.py"     // where to report user activity (shares, listens)
+let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaApp/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaApp/Access/activity.json"           // where to get sangha activity (shares, listens)
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
@@ -103,10 +103,12 @@ let SECTION_TEXT = UIColor.white
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
+var REPORT_TALK_THRESHOLD = 10      // how many seconds into a talk before reporting that talk that has been officially played
+let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
 
-var MAX_TALKHISTORY_COUNT = 50     // maximum number of played talks showed in user or sangha history
-var MAX_SHAREHISTORY_COUNT = 50     // maximum number of shared talks showed in user of sangha history
-var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
+var MAX_TALKHISTORY_COUNT = 100     // maximum number of played talks showed in user or sangha history
+var MAX_SHAREHISTORY_COUNT = 100     // maximum number of shared talks showed in user of sangha history
+var UPDATE_SANGHA_INTERVAL = 4     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 
 
 class Model {
@@ -170,6 +172,7 @@ class Model {
             URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
             URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
             
+            print(URL_CONFIGURATION, HTTPResultCode)
             downloadConfiguration(jsonLocation: URL_CONFIGURATION)
             
             var waitCount = 0
@@ -182,7 +185,6 @@ class Model {
                 }
             }
             
-            print(URL_CONFIGURATION, HTTPResultCode)
             // if success code, then we're done.  otherwise try another host
             if HTTPResultCode == 200 {
                 break
@@ -615,7 +617,7 @@ class Model {
                         }
                     }
                     else {
-                        print("ERROR: FILENAME NOT FOUND FOR SANGHA SHARE: ",fileName)
+                        continue
                     }
                 }
                 
@@ -641,7 +643,6 @@ class Model {
             return
         }
 
-        print("getSanghaActivity")
         ActivityIsUpdating = true
         
         SangaTalkHistoryAlbum = []
@@ -684,7 +685,7 @@ class Model {
         var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&latitude=\(latitude)&LONGITUDE=\(longitude)"
+        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
 //print(escapedString!)
@@ -1322,7 +1323,6 @@ class Model {
     
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
-        addToShareHistory(talk: sharedTalk)
         
         let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
         let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
@@ -1337,10 +1337,10 @@ class Model {
         activityViewController.completionWithItemsHandler = {
             (activity, completed, items, error) in
             
-            //print("completion handler seen")
+            // if the share goes through, record it locally and also report this activity to our host service
             if completed == true {
+                self.addToShareHistory(talk: sharedTalk)
                 self.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: sharedTalk)
-                
             }
         }
         

@@ -105,7 +105,14 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             }
             
             playTalkController.CurrentTalkRow = SelectedRow
-            //playTalkController.TalkList = FilteredTalkHistory[SelectedRow]
+            
+            var talkList: [TalkData] = []
+            for talkHistory in FilteredTalkHistory {
+                if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+                    talkList.append(talk)
+                }
+            }
+            playTalkController.TalkList = talkList
         case "DISPLAY_NOTE":
             
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? NoteController
