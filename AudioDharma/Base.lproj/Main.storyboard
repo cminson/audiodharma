@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -532,9 +531,10 @@
                                 </connections>
                             </slider>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
-                                <rect key="frame" x="10" y="652" width="394" height="30"/>
+                                <rect key="frame" x="82" y="652" width="250" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="HMl-7B-HZO"/>
                                     <constraint firstAttribute="height" constant="30" id="O2Y-7n-wvg"/>
                                 </constraints>
                             </view>
@@ -542,6 +542,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="q1y-Ws-35k" firstAttribute="leading" secondItem="9v7-dR-FHP" secondAttribute="trailing" constant="50" id="2Pu-Ol-azP"/>
+                            <constraint firstItem="c6Q-Eg-NEA" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="6ez-jg-ajh"/>
                             <constraint firstItem="f1H-n6-dSw" firstAttribute="top" secondItem="Qfz-Mq-WgQ" secondAttribute="bottom" constant="5" id="6j1-LA-SgE"/>
                             <constraint firstItem="9v7-dR-FHP" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="65" id="7za-1U-3w2"/>
                             <constraint firstItem="0wV-Lf-pSV" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="EHQ-1d-pw3"/>
@@ -549,8 +550,6 @@
                             <constraint firstItem="3Bo-q1-iOD" firstAttribute="top" secondItem="9v7-dR-FHP" secondAttribute="bottom" constant="54" id="FRX-f0-dMk"/>
                             <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="10" id="JU7-ud-j2o"/>
                             <constraint firstItem="0wV-Lf-pSV" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="53" id="LWi-ds-eJS"/>
-                            <constraint firstAttribute="trailing" secondItem="c6Q-Eg-NEA" secondAttribute="trailing" constant="10" id="Obc-rX-OIm"/>
-                            <constraint firstItem="c6Q-Eg-NEA" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="10" id="TQM-SN-WI1"/>
                             <constraint firstItem="qSA-PQ-5ij" firstAttribute="top" secondItem="c6Q-Eg-NEA" secondAttribute="bottom" constant="10" id="XMw-ar-lX8"/>
                             <constraint firstItem="241-xZ-KHi" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="65" id="XZt-rW-xUd"/>
                             <constraint firstItem="Gr4-Hw-MTd" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="26" id="Zj4-49-Pxr"/>
@@ -956,12 +955,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TRr-vA-5tZ"/>
-        <segue reference="hEa-61-IsL"/>
-        <segue reference="ZR1-MZ-juM"/>
+        <segue reference="eYb-A4-FTX"/>
         <segue reference="30e-7l-0p1"/>
+        <segue reference="hEa-61-IsL"/>
+        <segue reference="TRr-vA-5tZ"/>
+        <segue reference="ZR1-MZ-juM"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="Oaz-ay-8cs"/>
-        <segue reference="0kn-Jm-H7v"/>
+        <segue reference="7DY-Wt-lPH"/>
     </inferredMetricsTieBreakers>
 </document>

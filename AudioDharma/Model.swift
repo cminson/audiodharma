@@ -28,9 +28,13 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-let CONFIG_ACCESS_PATH = "/AudioDharmaApp/Config/config.zip"    // where to get the start config
-let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaApp/Access/reportactivity.php"     // where to report user activity (shares, listens)
-let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaApp/Access/activity.json"           // where to get sangha activity (shares, listens)
+let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+
+let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
+let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
+let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"           // where to get sangha activity (shares, listens)
+
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
 let DEFAULT_TUTORIAL_PATH = "http://www.cnn.com"        // where to get tutorial (DEV TBD)
@@ -172,8 +176,8 @@ class Model {
             URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
             URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
             
-            print(URL_CONFIGURATION, HTTPResultCode)
-            downloadConfiguration(jsonLocation: URL_CONFIGURATION)
+            print("Attempting to Connect: ", URL_CONFIGURATION, HTTPResultCode)
+            downloadConfiguration(path: URL_CONFIGURATION)
             
             var waitCount = 0
             while HTTPCallCompleted == false {
@@ -187,6 +191,7 @@ class Model {
             
             // if success code, then we're done.  otherwise try another host
             if HTTPResultCode == 200 {
+                print("Connected: ", URL_CONFIGURATION, HTTPResultCode)
                 break
             } else {
                 HTTPCallCompleted = false   // reset and try another Host URL
@@ -197,22 +202,21 @@ class Model {
         // if failure to connect for hosts, flag that fact and use our local configs instead
         if HTTPResultCode != 200 {
             
-            print("using local config")
             let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let configURL = URL(fileURLWithPath: documentPath + "/config/config.json")
+            let configJSONPath = documentPath + "/" + CONFIG_JSON_NAME
+            print("using local config: ", configJSONPath)
             var jsonData: Data!
             do {
-                jsonData = try Data(contentsOf: configURL)
+                jsonData = try Data(contentsOf: URL(fileURLWithPath: configJSONPath))
             }
             catch let error as NSError {
-                print("Failed getting URL: \(configURL), Error: " + error.localizedDescription)
+                print("Failed getting URL: \(configJSONPath), Error: " + error.localizedDescription)
             }
             
             self.parseConfiguration(jsonData: jsonData)
             self.downloadSanghaActivity()
         }
         
-        print("start of compute in load data")
         // compute stats and get all user data from storage
         computeRootAlbumStats()
         computeSpeakerStats()
@@ -233,14 +237,14 @@ class Model {
     
     
     // MARK: Configuration
-    func downloadConfiguration(jsonLocation: String) {
+    func downloadConfiguration(path: String) {
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         config.urlCache = nil
         let session = URLSession.init(configuration: config)
         
-        let requestURL : URL? = URL(string: jsonLocation)
+        let requestURL : URL? = URL(string: path)
         let urlRequest = URLRequest(url : requestURL!)
         
         
@@ -274,28 +278,28 @@ class Model {
                 return
             }
             
-            // store the config data off
             let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let filePath = documentPath + "/" + "config.zip"
-            let fileURL = URL(fileURLWithPath: filePath)
             
+            // store the config zip data off locally, (we use it as backup should not get web connect)
+            let configZipPath = documentPath + "/" + CONFIG_ZIP_NAME
+            let configJSONPath = documentPath + "/" + CONFIG_JSON_NAME
+            
+            //print("Storing Zip To: ", configZipPath)
             do {
-                try responseData.write(to: fileURL)
+                try responseData.write(to: URL(fileURLWithPath: configZipPath))
             }
             catch let error as NSError {
-                print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+                print("Failed writing to URL: \(configZipPath), Error: " + error.localizedDescription)
                 HTTPResultCode = 404
                 self.HTTPCallCompleted = true
                 return
             }
 
             // unzip it back into json
-            let configPath = documentPath + "/" + "config"
-            print("Unzipping: ", filePath)
+            print("Unzipping: ", configZipPath)
             let time1 = Date.timeIntervalSinceReferenceDate
             
-            // unzip the config. report error if any issue
-            if SSZipArchive.unzipFile(atPath: filePath, toDestination: configPath) != true {
+            if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
                 HTTPResultCode = 404
                 self.HTTPCallCompleted = true
                 return
@@ -303,18 +307,17 @@ class Model {
             let time2 = Date.timeIntervalSinceReferenceDate
             print("Zip time: ", time2 - time1)
             
-            let configURL = URL(fileURLWithPath: documentPath + "/config/config.json")
+            // get our json from the local storage and process it
             var jsonData: Data!
             do {
-                jsonData = try Data(contentsOf: configURL)
+                jsonData = try Data(contentsOf: URL(fileURLWithPath: configJSONPath))
             }
             catch let error as NSError {
-                print("Failed getting URL: \(fileURL), Error: " + error.localizedDescription)
+                print("Failed getting URL: \(configJSONPath), Error: " + error.localizedDescription)
                 HTTPResultCode = 404
                 self.HTTPCallCompleted = true
                 return
             }
-
             self.parseConfiguration(jsonData: jsonData)
             
             // load sangha activity after everything else is processed.  necessary since we refer to Talks array
@@ -349,7 +352,7 @@ class Model {
             MAX_TALKHISTORY_COUNT = config?["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
             MAX_SHAREHISTORY_COUNT = config?["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
             UPDATE_SANGHA_INTERVAL = config?["UPDATE_SANGHA_INTERVAL"] as? Int ?? UPDATE_SANGHA_INTERVAL
-            print("Update Interval: ", UPDATE_SANGHA_INTERVAL)
+            //print("Update Interval: ", UPDATE_SANGHA_INTERVAL)
         
             // get all talks
             for talk in json["talks"] as? [AnyObject] ?? [] {
@@ -466,7 +469,7 @@ class Model {
                     var date = ""
                     var durationDisplay = ""
                     
-                    // fill in these fields from talk data.  must do this as these fields are not stored in config.json (to make things 
+                    // fill in these fields from talk data.  must do this as these fields are not stored in config json (to make things
                     // easier for config reading)
                     if let talkData = FileNameToTalk[fileName] {
                         URL = talkData.URL
@@ -546,7 +549,6 @@ class Model {
             var httpResponse: HTTPURLResponse
             if let valid_reponse = response {
                 httpResponse = valid_reponse as! HTTPURLResponse
-                HTTPResultCode = httpResponse.statusCode
             } else {
                 ActivityIsUpdating = false
                 return
@@ -994,7 +996,6 @@ class Model {
     
     func loadTalkHistoryData() -> [TalkHistoryData]  {
         
-        print("Talk History Path: ", TalkHistoryData.ArchiveTalkHistoryURL.path)
         if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveTalkHistoryURL.path)
             as? [TalkHistoryData] {
             
@@ -1008,7 +1009,6 @@ class Model {
     
     func loadShareHistoryData() -> [TalkHistoryData]  {
         
-        print("Talk Share Path: ", TalkHistoryData.ArchiveShareHistoryURL.path)
         if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveShareHistoryURL.path)
             as? [TalkHistoryData] {
             
