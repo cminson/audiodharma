@@ -113,6 +113,7 @@ let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the in
 var MAX_TALKHISTORY_COUNT = 100     // maximum number of played talks showed in user or sangha history
 var MAX_SHAREHISTORY_COUNT = 100     // maximum number of shared talks showed in user of sangha history
 var UPDATE_SANGHA_INTERVAL = 4     // amount of time (in seconds) between each poll of the cloud for updated sangha info
+var USE_NATIVE_MP3PATHS = true    // true = mp3s are in their native paths in audiodharma, false =  mp3s are in one flat directory
 
 
 class Model {
@@ -338,6 +339,7 @@ class Model {
             // optionally update global config information
             let config = json["config"]
             URL_MP3_HOST = config?["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
+            USE_NATIVE_MP3PATHS = config?["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
             
             // flag if MP3s are not hosted on audiodharma.
             if URL_MP3_HOST.lowercased().range(of:"audiodharma") == nil {

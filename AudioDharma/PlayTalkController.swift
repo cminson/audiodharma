@@ -208,7 +208,7 @@ class PlayTalkController: UIViewController {
         
             talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
             enableActivityIcons()
-        
+            
             MP3TalkPlayer.startTalk(talk: CurrentTalk)
             startTalkTimer()
         

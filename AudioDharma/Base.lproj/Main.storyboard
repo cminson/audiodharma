@@ -464,17 +464,6 @@
                                     <constraint firstAttribute="width" constant="30" id="xZf-8c-L5h"/>
                                 </constraints>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
-                                <rect key="frame" x="121" y="359" width="30" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="7Cc-99-ydm"/>
-                                    <constraint firstAttribute="width" constant="30" id="8Yz-0a-AZB"/>
-                                </constraints>
-                                <state key="normal" image="checkboxoff"/>
-                                <connections>
-                                    <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
                                 <rect key="frame" x="157" y="180" width="100" height="100"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -491,11 +480,11 @@
                                     <action selector="playOrPauseTalk:" destination="Bai-ex-z2B" eventType="touchUpInside" id="iJJ-Os-b44"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play Entire Album" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
-                                <rect key="frame" x="158" y="358" width="134" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play Talks Serially" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
+                                <rect key="frame" x="146" y="358" width="158" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="BMv-Kt-uBL"/>
-                                    <constraint firstAttribute="width" constant="134" id="ffK-dG-XwS"/>
+                                    <constraint firstAttribute="width" constant="158" id="ffK-dG-XwS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -538,6 +527,17 @@
                                     <constraint firstAttribute="height" constant="30" id="O2Y-7n-wvg"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
+                                <rect key="frame" x="119" y="359" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="7Cc-99-ydm"/>
+                                    <constraint firstAttribute="width" constant="20" id="8Yz-0a-AZB"/>
+                                </constraints>
+                                <state key="normal" image="checkboxoff"/>
+                                <connections>
+                                    <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -955,12 +955,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eYb-A4-FTX"/>
-        <segue reference="30e-7l-0p1"/>
         <segue reference="hEa-61-IsL"/>
         <segue reference="TRr-vA-5tZ"/>
         <segue reference="ZR1-MZ-juM"/>
+        <segue reference="30e-7l-0p1"/>
         <segue reference="OFE-qN-xVe"/>
+        <segue reference="eYb-A4-FTX"/>
         <segue reference="7DY-Wt-lPH"/>
     </inferredMetricsTieBreakers>
 </document>
