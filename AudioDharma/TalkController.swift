@@ -50,6 +50,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         super.viewWillAppear(animated)
         
         SectionTalks = TheDataModel.getTalks(content: Content)
+        /*
+        print("TalkController Content: ", Content)
+        for section in SectionTalks {
+            print("Sections: ", section)
+        }
+ */
         FilteredSectionTalks = SectionTalks
         
         // restore the search state, if any
@@ -203,6 +209,10 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             if talksInSection.count > 0 {
                 sectionTitle = talksInSection[0].Section
             }
+        }
+        
+        if sectionTitle.characters.count < 2 {
+            sectionTitle = ""
         }
         return sectionTitle
     }

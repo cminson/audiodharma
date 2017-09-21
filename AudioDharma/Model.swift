@@ -28,6 +28,9 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
+//let CONFIG_JSON_NAME = "TEST.JSON"
+//let CONFIG_ZIP_NAME = "TEST.ZIP"
+
 let CONFIG_JSON_NAME = "CONFIG00.JSON"
 let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
 
@@ -334,17 +337,12 @@ class Model {
 
             var talkCount = 0
             var totalSeconds = 0
-            var isAudioDharmaMP3Site = true
             
             // optionally update global config information
             let config = json["config"]
             URL_MP3_HOST = config?["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
             USE_NATIVE_MP3PATHS = config?["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
             
-            // flag if MP3s are not hosted on audiodharma.
-            if URL_MP3_HOST.lowercased().range(of:"audiodharma") == nil {
-                isAudioDharmaMP3Site = false
-            }
             ACTIVITY_UPDATE_INTERVAL = config?["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
             URL_REPORT_ACTIVITY = config?["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
             URL_GET_ACTIVITY = config?["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
@@ -361,7 +359,7 @@ class Model {
             
                 let series = talk["series"] as? String ?? ""
                 let title = talk["title"] as? String ?? ""
-                var URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let speaker = talk["speaker"] as? String ?? ""
                 let date = talk["date"] as? String ?? ""
                 let duration = talk["duration"] as? String ?? ""
@@ -373,12 +371,7 @@ class Model {
             
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
-            
-                // if mp3s not on audiodharma, then they will be accessed via filename rather than URL
-                if isAudioDharmaMP3Site == false {
-                    URL = "/" + fileName
-                }
-            
+                
                 let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: seconds)
                 
                 self.FileNameToTalk[fileName] = talkData
@@ -440,6 +433,7 @@ class Model {
                 let image = Album["image"] as? String ?? ""
                 let talkList = Album["talks"] as? [AnyObject] ?? []
                 let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
+                print("creating album: ", title)
             
                 // store Album in the 2D AlbumSection array (section x Album)
                 if albumSectionPositionDict[section] == nil {
@@ -456,6 +450,7 @@ class Model {
                 // if exists, store off all the talks in keyToTalks keyed by 'content' id
                 // the value for this key is a 2d array (section x talks)
                 var talkSectionPositionDict : [String: Int] = [:]
+                var currentSeries = "_"
                 for talk in talkList {
                 
                     var URL = talk["url"] as? String ?? ""
@@ -464,7 +459,7 @@ class Model {
                     var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
                     fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
                     
-                    var section = talk["section"] as? String ?? ""
+                    let section = talk["section"] as? String ?? "_"
                     var series = talk["series"] as? String ?? ""
                     let titleTitle = talk["title"] as? String ?? ""
                     var speaker = ""
@@ -473,54 +468,63 @@ class Model {
                     
                     // fill in these fields from talk data.  must do this as these fields are not stored in config json (to make things
                     // easier for config reading)
-                    if let talkData = FileNameToTalk[fileName] {
+                    if let talkData = self.FileNameToTalk[fileName] {
                         URL = talkData.URL
                         speaker = talkData.Speaker
                         date = talkData.Date
                         durationDisplay = talkData.DurationDisplay
                     }
-                 
-                    if section.range(of:"_") != nil {
-                        section = ""
-                    }
-                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
+
+                    let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
                     
-                
                     let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
-                    
-                    // if a series is specified, add to a series list
+
+                    // if a series is specified create a series album if not already there.  then add talk to it
+                    // otherwise, just add the talk directly to the parent album
                     if series.characters.count > 1 {
                         
+                        if series != currentSeries {
+                            currentSeries = series
+                            talkSectionPositionDict = [:]
+                        }
                         let seriesKey = "RECOMMENDED" + series
+                        
+                        // create the album if not there already
                         if self.KeyToTalks[seriesKey] == nil {
-                            self.KeyToTalks[seriesKey] = [[TalkData]] ()
-                            self.KeyToTalks[seriesKey]?.append([talkData])
                             
-                            // create a Album for this series and add to array of series Albums
-                            // this array will be referenced by SeriesController
+                            self.KeyToTalks[seriesKey] = [[TalkData]] ()
                             let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
                             self.RecommendedAlbums.append(albumData)
+                            self.SeriesAlbums.append(albumData)
                         }
-                        else {
-                            self.KeyToTalks[seriesKey]?[0].append(talkData)
+                        
+                        // now add talk to this series album
+                        if talkSectionPositionDict[section] == nil {
+                            // new section seen.  create new array of talks for this section
+                            self.KeyToTalks[seriesKey]!.append([talkData])
+                            talkSectionPositionDict[section] = self.KeyToTalks[seriesKey]!.count - 1
+                        } else {
+ 
+                            // section already exists.  add talk to the existing array of talks
+                            let sectionPosition = talkSectionPositionDict[section]!
+                           self.KeyToTalks[seriesKey]![sectionPosition].append(talkData)
+                            
                         }
-                    }
-            
-                    // create the key -> talkData[] entry if it doesn't already exist
-                    if self.KeyToTalks[content] == nil {
-                        self.KeyToTalks[content]  = []
-                    }
-                
-                    // now add the talk data to this key
-                    if talkSectionPositionDict[section] == nil {
-                        // new section seen.  create new array of talks for this section
-                        self.KeyToTalks[content]!.append([talkData])
-                        talkSectionPositionDict[section] = self.KeyToTalks[content]!.count - 1
+                        
                     } else {
-                        // section already exists.  add talk to the existing array of talks
-                        let sectionPosition = talkSectionPositionDict[section]!
-                        self.KeyToTalks[content]![sectionPosition].append(talkData)
+                        //  add the talk data to this album key
+                        if talkSectionPositionDict[section] == nil {
+                            // new section seen.  create new array of talks for this section
+                            self.KeyToTalks[content]!.append([talkData])
+                            talkSectionPositionDict[section] = self.KeyToTalks[content]!.count - 1
+                        } else {
+                            // section already exists.  add talk to the existing array of talks
+                            let sectionPosition = talkSectionPositionDict[section]!
+                            self.KeyToTalks[content]![sectionPosition].append(talkData)
+                            
+                        }
                     }
+                    
                 }
             } // end Album loop
         }  // end do
@@ -873,11 +877,15 @@ class Model {
             let content = album.Content
             var totalSeconds = 0
             var talkCount = 0
-            for talk in (KeyToTalks[content]?[0])! {
-                totalSeconds += talk.DurationInSeconds
-                talkCount += 1
+            if let sectionTalks = KeyToTalks[content] {
+                for sectionIndex in 0..<sectionTalks.count {
+                    for talk in sectionTalks[sectionIndex] {
+                        totalSeconds += talk.DurationInSeconds
+                        talkCount += 1
+                    }
+                }
             }
-            
+        
             talkCountAllLists += talkCount
             totalSecondsAllLists += totalSeconds
             let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
