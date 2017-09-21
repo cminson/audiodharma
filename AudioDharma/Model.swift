@@ -454,10 +454,8 @@ class Model {
                 for talk in talkList {
                 
                     var URL = talk["url"] as? String ?? ""
-
-                    let urlPhrases = URL.components(separatedBy: "/")
-                    var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
-                    fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let terms = URL.components(separatedBy: "/")
+                    let fileName = terms.last ?? ""
                     
                     let section = talk["section"] as? String ?? "_"
                     var series = talk["series"] as? String ?? ""
@@ -477,7 +475,8 @@ class Model {
 
                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
                     
-                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: "TBD", date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
+
+                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: fileName, date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
 
                     // if a series is specified create a series album if not already there.  then add talk to it
                     // otherwise, just add the talk directly to the parent album
