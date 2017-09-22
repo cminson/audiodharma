@@ -436,8 +436,7 @@ class PlayTalkController: UIViewController {
             }
             
         }
-    }
-    
+    } 
     private func enableActivityIcons() {
         
         talkPlayPauseButton.isHidden = true

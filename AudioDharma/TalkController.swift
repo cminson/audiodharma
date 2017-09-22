@@ -50,12 +50,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         super.viewWillAppear(animated)
         
         SectionTalks = TheDataModel.getTalks(content: Content)
-        /*
-        print("TalkController Content: ", Content)
-        for section in SectionTalks {
-            print("Sections: ", section)
-        }
- */
         FilteredSectionTalks = SectionTalks
         
         // restore the search state, if any
@@ -232,7 +226,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         }
         
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = talk.SpeakerPhoto
+        cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
@@ -260,6 +254,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
 
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
@@ -269,10 +264,31 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             self.shareTalk()
         }
         
+        var favoriteTalk : UITableViewRowAction
+        /*
+        favoriteTalk = UITableViewRowAction(style: .normal, title: "Not Favorite") { (action, indexPath) in
+            self.unFavoriteTalk()
+        }
+ */
+
+
+        if TheDataModel.isFavoriteTalk(talk: talk) {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Not Favorite") { (action, indexPath) in
+                self.unFavoriteTalk()
+            }
+            
+        } else {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
+                self.favoriteTalk()
+            }
+        }
+
+        
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
+        favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
 
-        return [shareTalk, noteTalk]
+        return [shareTalk, noteTalk, favoriteTalk]
     }
 
 
@@ -281,6 +297,27 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
+    
+    private func favoriteTalk() {
+        
+        let favoriteTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        TheDataModel.setTalkAsFavorite(talk: favoriteTalk)
+        let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func unFavoriteTalk() {
+        
+        let favoriteTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        TheDataModel.unsetTalkAsFavorite(talk: favoriteTalk)
+        let alert = UIAlertController(title: "Talk Un-Favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
+    }
+
     
     
     private func shareTalk() {

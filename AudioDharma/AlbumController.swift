@@ -209,6 +209,9 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         case KEY_USER_SHAREHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_HISTORY", sender: self)
             
+        case KEY_USER_FAVORITES:
+            self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
+            
         case KEY_SANGHA_TALKHISTORY:
             self.performSegue(withIdentifier: "DISPLAY_HISTORY", sender: self)
             

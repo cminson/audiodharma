@@ -93,6 +93,7 @@ let KEY_RECOMMENDED_TALKS = "KEY_RECOMMENDED_TALKS"
 let KEY_NOTES = "KEY_NOTES"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
 let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
+let KEY_USER_FAVORITES = "KEY_USER_FAVORITES"
 let KEY_SANGHA_TALKHISTORY = "KEY_SANGHA_TALKHISTORY"
 let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
 let KEY_USER_ALBUMS = "KEY_USER_ALBUMS"
@@ -103,6 +104,8 @@ let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
 let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
+let BUTTON_FAVORITE_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
+
 
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
@@ -154,7 +157,7 @@ class Model {
     // MARK: Persistant Data
     var UserAlbums: [UserAlbumData] = []      // all the custom user albums defined by this user.
     var UserNotes: [String: UserNoteData] = [:]      // all the  user notes defined by this user, indexed by fileName
-    
+    var UserFavorites: [String: UserFavoriteData] = [:]      // all the favorites defined by this user, indexed by fileName
     
     // MARK: Init
     func loadData() {
@@ -230,6 +233,9 @@ class Model {
         computeUserAlbumStats()
         UserNotes = TheDataModel.loadUserNoteData()
         computeNotesStats()
+        UserFavorites = TheDataModel.loadUserFavoriteData()
+        computeUserFavoritesStats()
+
         UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
         computeTalkHistoryStats()
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
@@ -588,10 +594,11 @@ class Model {
                     let city = talkJSON["city"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                    
-                    if let _ = self.FileNameToTalk[fileName] {
+                    if let talk = self.FileNameToTalk[fileName] {
                         
                         let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: datePlayed, timePlayed: timePlayed, cityPlayed: city, countryPlayed: country)
                         talkCount += 1
+                        totalSeconds += talk.DurationInSeconds
                         self.SangaTalkHistoryAlbum.append(talkHistory)
                         
                         if talkCount >= MAX_TALKHISTORY_COUNT {
@@ -613,12 +620,14 @@ class Model {
                     let city = talkJSON["city"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                     
-                    if let _ = self.FileNameToTalk[fileName] {
+                    if let talk = self.FileNameToTalk[fileName] {
                         
                         let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: dateShared, timePlayed: timeShared, cityPlayed: city, countryPlayed: country)
                         self.SangaShareHistoryAlbum.append(talkHistory)
                         
                         talkCount += 1
+                        totalSeconds += talk.DurationInSeconds
+
                         if talkCount >= MAX_SHAREHISTORY_COUNT {
                             break
                         }
@@ -953,6 +962,24 @@ class Model {
     
         KeyToAlbumStats[KEY_USER_SHAREHISTORY] = stats
     }
+
+    func computeUserFavoritesStats() {
+        var talkCount = 0
+        var totalSeconds = 0
+        
+        for (fileName, _) in UserFavorites {
+            
+            if let talk = FileNameToTalk[fileName] {
+                totalSeconds += talk.DurationInSeconds
+                talkCount += 1
+            }
+        }
+        let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        
+        KeyToAlbumStats[KEY_USER_FAVORITES] = stats
+    }
+
     
 
     // MARK: Persistant API
@@ -966,18 +993,22 @@ class Model {
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserNotes, toFile: UserNoteData.ArchiveURL.path)
     }
     
+    func saveUserFavoritesData() {
+        
+        NSKeyedArchiver.archiveRootObject(TheDataModel.UserFavorites, toFile: UserFavoriteData.ArchiveURL.path)
+    }
+
+    
     func saveTalkHistoryData() {
         
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserTalkHistoryAlbum, toFile: TalkHistoryData.ArchiveTalkHistoryURL.path)
-        
     }
     
     func saveShareHistoryData() {
         
-        
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserShareHistoryAlbum, toFile: TalkHistoryData.ArchiveShareHistoryURL.path)
-        
     }
+    
     
     
     func loadUserAlbumData() -> [UserAlbumData]  {
@@ -1003,6 +1034,19 @@ class Model {
         }
     }
     
+    func loadUserFavoriteData() -> [String: UserFavoriteData]  {
+        
+        if let userFavorites = NSKeyedUnarchiver.unarchiveObject(withFile: UserFavoriteData.ArchiveURL.path)
+            as? [String: UserFavoriteData] {
+            
+            return userFavorites
+        } else {
+            
+            return [String: UserFavoriteData] ()
+        }
+    }
+
+    
     func loadTalkHistoryData() -> [TalkHistoryData]  {
         
         if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveTalkHistoryURL.path)
@@ -1027,7 +1071,8 @@ class Model {
             return [TalkHistoryData] ()
         }
     }
-
+    
+ 
     
     // MARK: API
     func getTalks(content: String) -> [[TalkData]] {
@@ -1044,6 +1089,17 @@ class Model {
             }
             talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
             talkList =  [talks]
+            
+        case KEY_USER_FAVORITES:
+            var talks = [TalkData] ()
+            for (fileName, _) in UserFavorites {
+                if let talk = FileNameToTalk[fileName] {
+                    talks.append(talk)
+                }
+            }
+            talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
+            talkList =  [talks]
+
             
         case KEY_ALL_SERIES:
             talkList = KeyToTalks[content] ?? [[TalkData]]()
@@ -1292,7 +1348,34 @@ class Model {
         computeShareHistoryStats()
         refreshControllers()
     }
+    
+    func setTalkAsFavorite(talk: TalkData) {
+        
+        UserFavorites[talk.FileName] = UserFavoriteData(fileName: talk.FileName)
+        
+        // save the data, recompute stats, reload root view to display updated stats
+        saveUserFavoritesData()
+        computeUserFavoritesStats()
+        refreshControllers()
 
+    }
+    
+    func unsetTalkAsFavorite(talk: TalkData) {
+        
+        UserFavorites[talk.FileName] = nil
+        
+        // save the data, recompute stats, reload root view to display updated stats
+        saveUserFavoritesData()
+        computeUserFavoritesStats()
+        refreshControllers()
+    }
+    
+    func isFavoriteTalk(talk: TalkData) -> Bool {
+        
+        let isFavorite = UserFavorites[talk.FileName] != nil
+        return isFavorite
+        
+    }
     
     func addNoteToTalk(noteText: String, talkFileName: String) {
         

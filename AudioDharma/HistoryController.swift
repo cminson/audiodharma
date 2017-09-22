@@ -224,7 +224,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
                 cell.noteImage.isHidden = true
             }
             
-            cell.speakerPhoto.image = talk.SpeakerPhoto
+            cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
             cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
             cell.title.text = talk.Title
             cell.date.text = talkHistory.DatePlayed

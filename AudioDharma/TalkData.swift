@@ -17,7 +17,6 @@ class TalkData: NSObject {
     var FileName: String
     var Date: String
     var Speaker: String
-    var SpeakerPhoto: UIImage
     var Section: String
     var DurationDisplay: String
     
@@ -32,10 +31,10 @@ class TalkData: NSObject {
         Date = date
         DurationDisplay = durationDisplay
         Speaker = speaker
-        SpeakerPhoto = UIImage(named: speaker) ?? UIImage(named: "defaultPhoto")!
         Section = section
         DurationInSeconds = durationInSeconds
         
      }
+ 
 
 }

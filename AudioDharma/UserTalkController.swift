@@ -208,7 +208,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         }
 
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = talk.SpeakerPhoto
+        cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
 
