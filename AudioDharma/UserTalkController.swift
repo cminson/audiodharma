@@ -75,8 +75,13 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         
         super.didReceiveMemoryWarning()
     }
-
+    
+    func reloadModel() {
         
+        FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
+    }
+
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -201,14 +206,20 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         let talk = FilteredTalks[indexPath.row]
 
         // display a note icon if a note exists
-        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+        if TheDataModel.isNotatedTalk(talk: talk) == true {
             cell.noteImage.isHidden = false
         } else {
             cell.noteImage.isHidden = true
         }
+        if TheDataModel.isFavoriteTalk(talk: talk) == true {
+            cell.favoriteImage.isHidden = false
+        } else {
+            cell.favoriteImage.isHidden = true
+        }
+
 
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
+        cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
 
@@ -256,6 +267,8 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         SelectedRow = indexPath.row
+        let talk = FilteredTalks[SelectedRow]
+
         
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
@@ -265,14 +278,60 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             self.shareTalk()
         }
         
+        var favoriteTalk : UITableViewRowAction
+        if TheDataModel.isFavoriteTalk(talk: talk) {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
+                self.unFavoriteTalk()
+            }
+            
+        } else {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
+                self.favoriteTalk()
+            }
+        }
+        
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
+        favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         
-        return [shareTalk, noteTalk]
+        return [shareTalk, noteTalk, favoriteTalk]
     }
     
     
-    //MARK: Share
+    //MARK: Menu Functions
+    private func favoriteTalk() {
+        
+        let talk = FilteredTalks[SelectedRow]
+        TheDataModel.setTalkAsFavorite(talk: talk)
+        
+        DispatchQueue.main.async(execute: {
+            self.reloadModel()
+            self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func unFavoriteTalk() {
+        
+        let talk = FilteredTalks[SelectedRow]
+        TheDataModel.unsetTalkAsFavorite(talk: talk)
+        
+        
+        DispatchQueue.main.async(execute: {
+            self.reloadModel()
+            self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
     private func viewEditNote() {
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)

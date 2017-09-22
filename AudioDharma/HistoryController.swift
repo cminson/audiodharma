@@ -218,13 +218,18 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
             
             // display a note icon if a note exists
-            if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+            if TheDataModel.isNotatedTalk(talk: talk) == true {
                 cell.noteImage.isHidden = false
             } else {
                 cell.noteImage.isHidden = true
             }
-            
-            cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
+            if TheDataModel.isFavoriteTalk(talk: talk) == true {
+                cell.favoriteImage.isHidden = false
+            } else {
+                cell.favoriteImage.isHidden = true
+            }
+
+            cell.speakerPhoto.image = talk.SpeakerPhoto
             cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
             cell.title.text = talk.Title
             cell.date.text = talkHistory.DatePlayed
@@ -263,6 +268,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         SelectedRow = indexPath.row
+        let talkHistory = FilteredTalkHistory[SelectedRow]
         
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
@@ -272,10 +278,27 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             self.shareTalk()
         }
         
+        var favoriteTalk : UITableViewRowAction?
+        if let talk = TheDataModel.getTalkForName(name: talkHistory.FileName) {
+
+            if TheDataModel.isFavoriteTalk(talk: talk) {
+                favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
+                    self.unFavoriteTalk(talk: talk)
+                }
+            
+            } else {
+                favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
+                    self.favoriteTalk(talk: talk)
+                }
+            }
+        }
+
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
+        favoriteTalk?.backgroundColor = BUTTON_FAVORITE_COLOR
         
-        return [shareTalk, noteTalk]
+        return [shareTalk, noteTalk, favoriteTalk!]
+        
     }
         
     private func viewEditNote() {
@@ -284,7 +307,17 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     }
     
     
-    //MARK: Share
+    //MARK: Menu Functions
+    private func favoriteTalk(talk: TalkData) {
+        
+        TheDataModel.setTalkAsFavorite(talk: talk)
+    }
+    
+    private func unFavoriteTalk(talk: TalkData) {
+        
+        TheDataModel.unsetTalkAsFavorite(talk: talk)
+    }
+
     private func shareTalk() {
         
         let talkHistory = FilteredTalkHistory[SelectedRow]

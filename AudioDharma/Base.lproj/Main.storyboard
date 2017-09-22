@@ -581,6 +581,7 @@
                         <outlet property="MPVolumeParentView" destination="c6Q-Eg-NEA" id="QOa-qD-HnZ"/>
                         <outlet property="activityIndicatorView" destination="0wV-Lf-pSV" id="cuz-yx-Fhv"/>
                         <outlet property="buttonDonate" destination="JbA-wx-my2" id="l3e-qB-RRu"/>
+                        <outlet property="buttonFavorite" destination="6p2-A9-jZi" id="JSQ-1j-L0c"/>
                         <outlet property="buttonHelp" destination="0dS-lE-bLz" id="Mii-hz-lJ3"/>
                         <outlet property="buttonShare" destination="D7D-Bq-4v3" id="WZG-Zf-PpY"/>
                         <outlet property="metaInfo" destination="f1H-n6-dSw" id="tC2-fZ-bBw"/>
@@ -594,6 +595,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icofavorite" id="6p2-A9-jZi">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="toggleFavorite:" destination="Bai-ex-z2B" id="ThA-j7-td8"/>
+                    </connections>
+                </barButtonItem>
                 <barButtonItem image="icoqm" id="0dS-lE-bLz">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
@@ -828,7 +835,9 @@
         <scene sceneID="QLh-B0-MDR">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Pkn-Ga-I1o" sceneMemberID="viewController">
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="Item" id="JeT-c8-ISZ"/>
+                    </toolbarItems>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pYb-xF-Gta">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -947,6 +956,7 @@
     </scenes>
     <resources>
         <image name="checkboxoff" width="112" height="112"/>
+        <image name="icofavorite" width="25" height="25"/>
         <image name="icoheart" width="25" height="25"/>
         <image name="icoqm" width="25" height="25"/>
         <image name="icoshare" width="25" height="25"/>
@@ -960,7 +970,7 @@
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="30e-7l-0p1"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="eYb-A4-FTX"/>
+        <segue reference="ie0-kf-o7Q"/>
         <segue reference="7DY-Wt-lPH"/>
     </inferredMetricsTieBreakers>
 </document>

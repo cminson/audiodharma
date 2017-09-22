@@ -33,6 +33,7 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
     @IBOutlet var buttonShare: UIBarButtonItem!
+    @IBOutlet var buttonFavorite: UIBarButtonItem!
     
     // MARK: Constants
     
@@ -95,7 +96,7 @@ class PlayTalkController: UIViewController {
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonFavorite, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
 
     }
     
@@ -130,6 +131,12 @@ class PlayTalkController: UIViewController {
 
     
     // MARK: Actions
+    @IBAction func toggleFavorite(_ sender: UIBarButtonItem) {
+        
+        TheDataModel.toggleTalkAsFavorite(talk: CurrentTalk, controller: self)
+
+    }
+    
     @IBAction func talkProgressSliderChanged(_ sender: UISlider) {
         
         let fractionTimeCompleted = talkProgressSlider.value

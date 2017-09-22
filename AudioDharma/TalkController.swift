@@ -79,6 +79,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         super.didReceiveMemoryWarning()
     }
     
+    func reloadModel() {
+        
+        SectionTalks = TheDataModel.getTalks(content: Content)
+        FilteredSectionTalks = SectionTalks
+    }
+
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -219,14 +225,20 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
         // display a note icon if a note exists
-        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+        if TheDataModel.isNotatedTalk(talk: talk) == true {
             cell.noteImage.isHidden = false
         } else {
             cell.noteImage.isHidden = true
         }
+        if TheDataModel.isFavoriteTalk(talk: talk) == true {
+            cell.favoriteImage.isHidden = false
+        } else {
+            cell.favoriteImage.isHidden = true
+        }
+
         
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
+        cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
@@ -265,15 +277,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         }
         
         var favoriteTalk : UITableViewRowAction
-        /*
-        favoriteTalk = UITableViewRowAction(style: .normal, title: "Not Favorite") { (action, indexPath) in
-            self.unFavoriteTalk()
-        }
- */
-
-
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "Not Favorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
                 self.unFavoriteTalk()
             }
             
@@ -283,7 +288,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             }
         }
 
-        
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
@@ -292,7 +296,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
 
 
-    //MARK: Share
+    //MARK: Menu Functions
     private func viewEditNote() {
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
@@ -300,25 +304,36 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     
     private func favoriteTalk() {
         
-        let favoriteTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
-        TheDataModel.setTalkAsFavorite(talk: favoriteTalk)
-        let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        TheDataModel.setTalkAsFavorite(talk: talk)
         
+        DispatchQueue.main.async(execute: {
+                self.reloadModel()
+                self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
     private func unFavoriteTalk() {
         
-        let favoriteTalk = FilteredSectionTalks[SelectedSection][SelectedRow]
-        TheDataModel.unsetTalkAsFavorite(talk: favoriteTalk)
-        let alert = UIAlertController(title: "Talk Un-Favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        TheDataModel.unsetTalkAsFavorite(talk: talk)
         
+        
+        DispatchQueue.main.async(execute: {
+            self.reloadModel()
+            self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
-    
     
     private func shareTalk() {
         

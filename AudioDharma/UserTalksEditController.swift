@@ -183,14 +183,19 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         let talk = FilteredTalks[indexPath.row]
         
         // display a note icon if a note exists
-        if TheDataModel.talkHasNotes(talkFileName: talk.FileName) == true {
+        if TheDataModel.isNotatedTalk(talk: talk) == true {
             cell.noteImage.isHidden = false
         } else {
             cell.noteImage.isHidden = true
         }
+        if TheDataModel.isFavoriteTalk(talk: talk) == true {
+            cell.favoriteImage.isHidden = false
+        } else {
+            cell.favoriteImage.isHidden = true
+        }
 
         cell.title.text = talk.Title
-        cell.speakerPhoto.image = UIImage(named: talk.Speaker) ?? UIImage(named: "defaultPhoto")!
+        cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date

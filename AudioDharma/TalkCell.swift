@@ -15,9 +15,8 @@ class TalkCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var duration: UILabel!
-    @IBOutlet weak var noteImage: UIImageView!
- 
- 
+    @IBOutlet weak var noteImage: UIImageView! 
+    @IBOutlet weak var favoriteImage: UIImageView!
     
     // MARK: Properties
     var isUserSelected: Bool! = false

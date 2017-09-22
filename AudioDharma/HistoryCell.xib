@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,73 +17,54 @@
                 <rect key="frame" x="0.0" y="0.0" width="418" height="47.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGB-lb-we5">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGB-lb-we5">
                         <rect key="frame" x="45" y="2" width="295" height="45"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notebar" highlightedImage="notebar" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-yR-heS">
-                        <rect key="frame" x="410" y="14" width="4" height="20"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="favoritebar" highlightedImage="favoritebar" translatesAutoresizingMaskIntoConstraints="NO" id="ifj-OQ-iUX">
+                        <rect key="frame" x="409" y="24" width="4" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="DIM-8j-cmC">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Earth" highlightedImage="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="DIM-8j-cmC">
                         <rect key="frame" x="3" y="4" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="40" id="zJO-31-n34"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Philadelphia" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISs-gE-yL9">
-                        <rect key="frame" x="340" y="30" width="70" height="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Philadelphia" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISs-gE-yL9">
+                        <rect key="frame" x="347" y="32" width="61" height="11"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="United States" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvc-gm-MX3">
-                        <rect key="frame" x="340" y="17" width="70" height="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="United States" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvc-gm-MX3">
+                        <rect key="frame" x="347" y="17" width="61" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2018.01.31" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zx0-Sj-BEk">
-                        <rect key="frame" x="340" y="4" width="70" height="13"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="13" id="78Q-OS-rs8"/>
-                            <constraint firstAttribute="width" constant="70" id="RhB-eF-GMo"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2018.01.31" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zx0-Sj-BEk">
+                        <rect key="frame" x="347" y="4" width="61" height="13"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="notebar" highlightedImage="notebar" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-yR-heS">
+                        <rect key="frame" x="409" y="4" width="4" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="zx0-Sj-BEk" firstAttribute="trailing" secondItem="bvc-gm-MX3" secondAttribute="trailing" id="1Yr-pm-F3x"/>
-                    <constraint firstItem="ISs-gE-yL9" firstAttribute="top" secondItem="bvc-gm-MX3" secondAttribute="bottom" id="4qc-TH-rhF"/>
-                    <constraint firstItem="DIM-8j-cmC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-5" id="7My-oh-oYw"/>
-                    <constraint firstItem="zx0-Sj-BEk" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="9GI-JU-fG9"/>
-                    <constraint firstItem="DIM-8j-cmC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="HEW-mX-Oxr"/>
-                    <constraint firstItem="bGB-lb-we5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-6" id="If7-cf-sCH"/>
-                    <constraint firstItem="DIM-8j-cmC" firstAttribute="top" secondItem="zx0-Sj-BEk" secondAttribute="top" id="Jvu-pE-s4O"/>
-                    <constraint firstItem="bvc-gm-MX3" firstAttribute="leading" secondItem="ISs-gE-yL9" secondAttribute="leading" id="NU7-Yp-zhc"/>
-                    <constraint firstItem="bGB-lb-we5" firstAttribute="leading" secondItem="DIM-8j-cmC" secondAttribute="trailing" constant="2" id="Qk9-I4-Qjc"/>
-                    <constraint firstItem="zx0-Sj-BEk" firstAttribute="leading" secondItem="bGB-lb-we5" secondAttribute="trailing" id="SOT-Ep-mHU"/>
-                    <constraint firstItem="DIM-8j-cmC" firstAttribute="centerY" secondItem="bGB-lb-we5" secondAttribute="centerY" id="ZM8-HY-uUz"/>
-                    <constraint firstItem="bvc-gm-MX3" firstAttribute="trailing" secondItem="ISs-gE-yL9" secondAttribute="trailing" id="Zcd-sz-J2D"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="OKF-yR-heS" secondAttribute="trailing" constant="-4" id="by6-4H-de0"/>
-                    <constraint firstItem="bGB-lb-we5" firstAttribute="centerY" secondItem="OKF-yR-heS" secondAttribute="centerY" id="cfh-fG-t2U"/>
-                    <constraint firstItem="OKF-yR-heS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="6" id="fEg-Ux-Un4"/>
-                    <constraint firstItem="OKF-yR-heS" firstAttribute="leading" secondItem="bvc-gm-MX3" secondAttribute="trailing" id="lRj-FY-dKj"/>
-                    <constraint firstItem="bvc-gm-MX3" firstAttribute="centerY" secondItem="OKF-yR-heS" secondAttribute="centerY" id="lT0-ys-XFB"/>
-                    <constraint firstItem="DIM-8j-cmC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-4" id="lev-rA-RjL"/>
-                    <constraint firstItem="zx0-Sj-BEk" firstAttribute="leading" secondItem="bvc-gm-MX3" secondAttribute="leading" id="wFH-38-dav"/>
-                    <constraint firstItem="bvc-gm-MX3" firstAttribute="top" secondItem="zx0-Sj-BEk" secondAttribute="bottom" id="yYs-Y6-uwV"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="ISs-gE-yL9" secondAttribute="bottom" constant="-3.5" id="zoM-7E-oTU"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="city" destination="ISs-gE-yL9" id="HSx-HZ-afb"/>
                 <outlet property="country" destination="bvc-gm-MX3" id="h1N-B1-qYu"/>
                 <outlet property="date" destination="zx0-Sj-BEk" id="J1D-CT-Hbg"/>
-                <outlet property="noteImage" destination="OKF-yR-heS" id="Dgj-b1-nCi"/>
+                <outlet property="favoriteImage" destination="ifj-OQ-iUX" id="6mf-DY-u06"/>
+                <outlet property="noteImage" destination="OKF-yR-heS" id="BsJ-68-Eah"/>
                 <outlet property="speakerPhoto" destination="DIM-8j-cmC" id="UwC-bh-Oac"/>
                 <outlet property="title" destination="bGB-lb-we5" id="lQw-gR-p7t"/>
             </connections>
@@ -93,6 +73,7 @@
     </objects>
     <resources>
         <image name="Earth" width="250" height="250"/>
+        <image name="favoritebar" width="2" height="10"/>
         <image name="notebar" width="2" height="10"/>
     </resources>
 </document>

@@ -149,6 +149,7 @@ class Model {
 
     var RootController: UITableViewController?
     var CommunityController: HistoryController?
+    var TalkController: TalkController?
     
     var HTTPCallCompleted: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
@@ -1352,23 +1353,46 @@ class Model {
     func setTalkAsFavorite(talk: TalkData) {
         
         UserFavorites[talk.FileName] = UserFavoriteData(fileName: talk.FileName)
-        
-        // save the data, recompute stats, reload root view to display updated stats
         saveUserFavoritesData()
         computeUserFavoritesStats()
-        refreshControllers()
-
     }
     
     func unsetTalkAsFavorite(talk: TalkData) {
         
         UserFavorites[talk.FileName] = nil
-        
-        // save the data, recompute stats, reload root view to display updated stats
         saveUserFavoritesData()
         computeUserFavoritesStats()
+    }
+
+    func toggleTalkAsFavorite(talk: TalkData, controller: UIViewController) {
+        
+        if isFavoriteTalk(talk: talk) {
+            
+            UserFavorites[talk.FileName] = nil
+            saveUserFavoritesData()
+            computeUserFavoritesStats()
+            
+            let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            controller.present(alert, animated: true, completion: nil)
+            
+        } else {
+            
+            UserFavorites[talk.FileName] = UserFavoriteData(fileName: talk.FileName)
+            saveUserFavoritesData()
+            computeUserFavoritesStats()
+            
+            let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            controller.present(alert, animated: true, completion: nil)
+
+        }
         refreshControllers()
     }
+
+    
     
     func isFavoriteTalk(talk: TalkData) -> Bool {
         
@@ -1405,9 +1429,9 @@ class Model {
         return noteText
     }
     
-    func talkHasNotes(talkFileName: String) -> Bool {
+    func isNotatedTalk(talk: TalkData) -> Bool {
         
-        if let _ = TheDataModel.UserNotes[talkFileName] {
+        if let _ = TheDataModel.UserNotes[talk.FileName] {
             return true
         }
         return false

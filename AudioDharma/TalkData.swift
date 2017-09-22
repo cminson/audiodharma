@@ -21,6 +21,7 @@ class TalkData: NSObject {
     var DurationDisplay: String
     
     var DurationInSeconds: Int
+    var SpeakerPhoto: UIImage
         
     // MARK: Init
     init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String, durationInSeconds: Int) {
@@ -34,7 +35,8 @@ class TalkData: NSObject {
         Section = section
         DurationInSeconds = durationInSeconds
         
-     }
- 
+        SpeakerPhoto = UIImage(named: Speaker) ?? UIImage(named: "defaultPhoto")!
+        
+     } 
 
 }
