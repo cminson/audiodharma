@@ -464,12 +464,17 @@ class Model {
                     let terms = URL.components(separatedBy: "/")
                     let fileName = terms.last ?? ""
                     
-                    let section = talk["section"] as? String ?? "_"
+                    var section = talk["section"] as? String ?? "_"
                     var series = talk["series"] as? String ?? ""
                     let titleTitle = talk["title"] as? String ?? ""
                     var speaker = ""
                     var date = ""
                     var durationDisplay = ""
+                    
+                    // DEV NOTE: remove placeholder.  this code might not be necessary long-term
+                    if section == "_" || section == "__" {
+                        section = ""
+                    }
                     
                     // fill in these fields from talk data.  must do this as these fields are not stored in config json (to make things
                     // easier for config reading)
@@ -1372,7 +1377,7 @@ class Model {
             saveUserFavoritesData()
             computeUserFavoritesStats()
             
-            let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             
             controller.present(alert, animated: true, completion: nil)
@@ -1383,7 +1388,7 @@ class Model {
             saveUserFavoritesData()
             computeUserFavoritesStats()
             
-            let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             
             controller.present(alert, animated: true, completion: nil)

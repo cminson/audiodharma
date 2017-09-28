@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,14 +20,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
-                                <rect key="frame" x="132" y="293" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="3iw-jq-wRl"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="GrJ-Vi-ZaI"/>
-                                    <constraint firstAttribute="height" constant="150" id="jWc-4S-OoY"/>
-                                    <constraint firstAttribute="width" constant="150" id="jz1-u7-yHw"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ripples01" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
+                                <rect key="frame" x="82" y="243" width="250" height="250"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -45,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Earth" width="250" height="250"/>
+        <image name="ripples01" width="250" height="250"/>
     </resources>
 </document>

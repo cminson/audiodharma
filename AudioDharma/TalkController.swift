@@ -124,6 +124,14 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             guard let _ = segue.destination as? UINavigationController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            
+        case "DISPLAY_TALKS":
+            guard let controller = segue.destination as? TalkController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            controller.Content = KEY_ALLTALKS
+            controller.title = "Similar"
+
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -268,7 +276,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         SelectedRow = indexPath.row
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
 
-        let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
+        let noteTalk = UITableViewRowAction(style: .normal, title: "Note") { (action, indexPath) in
             self.viewEditNote()
         }
         
@@ -287,7 +295,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 self.favoriteTalk()
             }
         }
-
+        
+ 
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
@@ -297,6 +306,11 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
 
 
     //MARK: Menu Functions
+    private func shareSimilarTalks() {
+        
+        performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
+    }
+    
     private func viewEditNote() {
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
@@ -313,7 +327,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             return
         })
         
-        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -330,7 +344,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             return
         })
         
-        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }

@@ -714,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1294"
-            endingLineNumber = "1294"
+            startingLineNumber = "1299"
+            endingLineNumber = "1299"
             landmarkName = "addToTalkHistory(talk:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -746,11 +746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "589"
-            endingLineNumber = "589"
+            startingLineNumber = "594"
+            endingLineNumber = "594"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,11 +762,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "592"
-            endingLineNumber = "592"
+            startingLineNumber = "597"
+            endingLineNumber = "597"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -810,11 +810,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "699"
-            endingLineNumber = "699"
+            startingLineNumber = "704"
+            endingLineNumber = "704"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
             <Locations>
@@ -858,11 +858,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "698"
-            endingLineNumber = "698"
+            startingLineNumber = "703"
+            endingLineNumber = "703"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -874,11 +874,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "700"
-            endingLineNumber = "700"
+            startingLineNumber = "705"
+            endingLineNumber = "705"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
             <Locations>
@@ -1336,11 +1336,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "547"
-            endingLineNumber = "547"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1352,11 +1352,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "570"
-            endingLineNumber = "570"
+            startingLineNumber = "575"
+            endingLineNumber = "575"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1368,11 +1368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "569"
-            endingLineNumber = "569"
+            startingLineNumber = "574"
+            endingLineNumber = "574"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1400,11 +1400,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
+            startingLineNumber = "547"
+            endingLineNumber = "547"
             landmarkName = "parseConfiguration(jsonData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1416,11 +1416,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "620"
-            endingLineNumber = "620"
+            startingLineNumber = "625"
+            endingLineNumber = "625"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -1480,11 +1480,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "687"
-            endingLineNumber = "687"
+            startingLineNumber = "692"
+            endingLineNumber = "692"
             landmarkName = "reportTalkActivity(type:talk:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1640,11 +1640,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "556"
-            endingLineNumber = "556"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1656,11 +1656,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "590"
-            endingLineNumber = "590"
+            startingLineNumber = "595"
+            endingLineNumber = "595"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
             <Locations>
@@ -1736,11 +1736,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/TalkController.swift"
-            timestampString = "527795843.137583"
+            timestampString = "528244343.443707"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "tableView(_:editActionsForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1752,11 +1752,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1005"
-            endingLineNumber = "1005"
+            startingLineNumber = "1010"
+            endingLineNumber = "1010"
             landmarkName = "saveTalkHistoryData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1768,11 +1768,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AudioDharma/Model.swift"
-            timestampString = "527780174.369236"
+            timestampString = "527868483.865687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "612"
-            endingLineNumber = "612"
+            startingLineNumber = "617"
+            endingLineNumber = "617"
             landmarkName = "downloadSanghaActivity()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1853,6 +1853,22 @@
                   offsetFromSymbolStart = "252">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioDharma/TalkController.swift"
+            timestampString = "528244473.212864"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

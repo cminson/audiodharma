@@ -364,7 +364,7 @@
             </objects>
             <point key="canvasLocation" x="2620.289855072464" y="1891.304347826087"/>
         </scene>
-        <!--Albums-->
+        <!-- Albums-->
         <scene sceneID="Tyx-hu-Q4G">
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="AlbumController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -377,7 +377,7 @@
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Albums" id="ZPM-Q5-ruw"/>
+                    <navigationItem key="navigationItem" title=" Albums" id="ZPM-Q5-ruw"/>
                     <connections>
                         <outlet property="buttonDonate" destination="YSF-zE-0YA" id="LZp-vc-PAi"/>
                         <outlet property="buttonHelp" destination="AWh-vc-YZs" id="qAZ-1B-a3c"/>
@@ -965,12 +965,12 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="C6A-Dz-FfT"/>
         <segue reference="hEa-61-IsL"/>
         <segue reference="TRr-vA-5tZ"/>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="30e-7l-0p1"/>
-        <segue reference="OFE-qN-xVe"/>
+        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="F80-bT-CWz"/>
         <segue reference="ie0-kf-o7Q"/>
-        <segue reference="7DY-Wt-lPH"/>
     </inferredMetricsTieBreakers>
 </document>
