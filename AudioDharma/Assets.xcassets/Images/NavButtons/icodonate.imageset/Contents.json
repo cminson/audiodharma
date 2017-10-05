@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "giftbox25x25.png",
+      "filename" : "bow25x25.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "giftbox50x50.png",
+      "filename" : "bow50x50.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "giftbox75x75.png",
+      "filename" : "bow75x75.png",
       "scale" : "3x"
     }
   ],

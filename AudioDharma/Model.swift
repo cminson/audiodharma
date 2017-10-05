@@ -40,7 +40,6 @@ let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"    
 
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
-let DEFAULT_TUTORIAL_PATH = "http://www.cnn.com"        // where to get tutorial (DEV TBD)
 
 var HTTPResultCode: Int = 0     // global status of web access
 let MIN_EXPECTED_RESPONSE_SIZE = 1000   // to filter for bogus redirect page responses
@@ -56,7 +55,6 @@ var URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
 var URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
 var URL_MP3_HOST = DEFAULT_MP3_PATH
 var URL_DONATE = DEFAULT_DONATE_PATH
-var URL_TUTORIAL = DEFAULT_TUTORIAL_PATH
 
 struct AlbumStats {         // where stats on each album is kept
     var totalTalks: Int
@@ -113,7 +111,7 @@ let SECTION_TEXT = UIColor.white
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
-var REPORT_TALK_THRESHOLD = 10      // how many seconds into a talk before reporting that talk that has been officially played
+var REPORT_TALK_THRESHOLD = 90      // how many seconds into a talk before reporting that talk that has been officially played
 let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
 
 var MAX_TALKHISTORY_COUNT = 100     // maximum number of played talks showed in user or sangha history
@@ -176,24 +174,20 @@ class Model {
         SangaShareHistoryAlbum = []
         AllTalks = []
         
-        /*
-        if let asset = NSDataAsset(name: "CONFIG00", bundle: Bundle.main) {
-            self.parseConfiguration(jsonData: asset.data)
-        }
- */
 
-        /*
-        do {
-            let jsonData =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-            self.parseConfiguration(jsonData: asset)
-            self.downloadSanghaActivity()
+#if SAVE_FORINC_LOAD
+        if let asset = NSDataAsset(name: "BASELINE_TALKS", bundle: Bundle.main) {
+            do {
+                let jsonData =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
+                self.parseConfiguration(jsonData: asset)
+                self.downloadSanghaActivity()
+                // OR:
+                } catch {
+                print(error)
+                }
+            }
+#endif
 
-        } catch {
-            print(error)
-        }
- */
-
-        
         // connect to a host and install remote config files.  synchronously wait until complete
         for HostAccessPoint in HostAccessPoints {
             
@@ -224,6 +218,7 @@ class Model {
                 continue
             }
         }
+
         
         // if failure to connect for hosts, flag that fact and use our local configs instead
         if HTTPResultCode != 200 {
@@ -267,6 +262,81 @@ class Model {
     
     
     // MARK: Configuration
+    // DEV FORLATER
+    func downloadAndStoreConfiguration(path: String) {
+        
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        let requestURL : URL? = URL(string: path)
+        let urlRequest = URLRequest(url : requestURL!)
+        
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
+            } else {
+                HTTPResultCode = 404
+            }
+            
+            // return if no connection
+            if (HTTPResultCode != 200) {
+                self.HTTPCallCompleted = true
+                return
+            }
+            
+            // return if no or insufficient data
+            guard let responseData = data else {
+                
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
+            guard responseData.count > MIN_EXPECTED_RESPONSE_SIZE else {
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
+            
+            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            
+            // store the config zip data off locally, (we use it as backup should not get web connect)
+            let configZipPath = documentPath + "/" + CONFIG_ZIP_NAME
+            
+            //print("Storing Zip To: ", configZipPath)
+            do {
+                try responseData.write(to: URL(fileURLWithPath: configZipPath))
+            }
+            catch let error as NSError {
+                print("Failed writing to URL: \(configZipPath), Error: " + error.localizedDescription)
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
+            
+            // unzip it back into json
+            print("Unzipping: ", configZipPath)
+            let time1 = Date.timeIntervalSinceReferenceDate
+            
+            if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
+                HTTPResultCode = 404
+                self.HTTPCallCompleted = true
+                return
+            }
+            
+            let time2 = Date.timeIntervalSinceReferenceDate
+            print("Zip time: ", time2 - time1)
+            
+        }
+        task.resume()
+    }
+    
     func downloadConfiguration(path: String) {
         
         let config = URLSessionConfiguration.default
@@ -374,7 +444,6 @@ class Model {
             URL_REPORT_ACTIVITY = config?["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
             URL_GET_ACTIVITY = config?["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
             URL_DONATE = config?["URL_DONATE"] as? String ?? URL_DONATE
-            URL_TUTORIAL = config?["URL_TUTORIAL"] as? String ?? URL_TUTORIAL
             
             MAX_TALKHISTORY_COUNT = config?["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
             MAX_SHAREHISTORY_COUNT = config?["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
@@ -1431,9 +1500,12 @@ class Model {
         //
         // if there is a note text for this talk fileName, then save it in the note dictionary
         // otherwise clear this note dictionary entry
-        if (noteText.characters.count > 0) {
+
+        let charset = CharacterSet.alphanumerics
+
+        if (noteText.characters.count > 0) && noteText.rangeOfCharacter(from: charset) != nil {
             UserNotes[talkFileName] = UserNoteData(notes: noteText)
-            
+            print("yes")
         } else {
             UserNotes[talkFileName] = nil
         }

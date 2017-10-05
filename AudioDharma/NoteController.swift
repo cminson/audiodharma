@@ -28,7 +28,7 @@ class NoteController: UIViewController, UITextViewDelegate {
         noteTextView.delegate = self
         
         //noteTextView.setContentOffset(CGPoint.zero, animated: false)
-        noteTextView.contentInset = UIEdgeInsetsMake(-60, 0,0,0);
+        //noteTextView.contentInset = UIEdgeInsetsMake(-60, 0,0,0);
         
         //let borderColor : UIColor = UIColor(red: 0.10, green: 1.00, blue: 0.10, alpha: 1.0)
         let borderColor : UIColor = UIColor(red: 0.0, green: 0.10, blue: 0.0, alpha: 1.0)

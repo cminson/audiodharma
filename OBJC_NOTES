@@ -1,0 +1,7 @@
+MP3Player.swift:    @objc func talkHasCompleted() {
+Model.swift:    @objc func getSanghaActivity() {
+PlayTalkController.swift:    @objc func playNextTalk() {
+PlayTalkController.swift:    @objc func updateViewsWithTimer(){
+
+Swift Compiler - code generation
+Changed Swift 3 @objc inference from On to Default

@@ -78,6 +78,7 @@ class MP3Player : NSObject {
 
     @objc func talkHasCompleted() {
         
+        print("Talk Completed")
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
     
