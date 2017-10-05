@@ -28,18 +28,6 @@ class HelpController: UIViewController {
         helpContentView.sizeToFit()
 
     }
-
-    @IBAction func launchTutorial(_ sender: UIButton) {
-        
-        if let url = URL(string: URL_TUTORIAL) {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            } else {
-                // Fallback on earlier versions
-            }
-        }
-        
-    }
     
     func setHelpPage(helpPage: String) {
     

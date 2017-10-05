@@ -1,0 +1,6 @@
+0) Cartfile -> github "ZipArchive/ZipArchive"
+1) carthage update --platform iOS
+2) Add Frameworks
+3) Add Run Script
+/usr/local/bin/carthage copy-frameworks
+with this parameter $(SRCROOT)/Carthage/Build/iOS/ZipArchive.framework

@@ -284,7 +284,7 @@ class PlayTalkController: UIViewController {
         updateTitleDisplay()
      }
     
-    func playNextTalk() {
+    @objc func playNextTalk() {
         
         CurrentTalkRow = CurrentTalkRow + 1
         if CurrentTalkRow >= TalkList.count {
@@ -409,7 +409,7 @@ class PlayTalkController: UIViewController {
     }
     
     // called every second to update views
-    func updateViewsWithTimer(){
+    @objc func updateViewsWithTimer(){
         
         // if talk is  underway, then stop the busy notifier and activate the display (buttons, durations etc)
         let currentPlayTime = MP3TalkPlayer.getCurrentTimeInSeconds()

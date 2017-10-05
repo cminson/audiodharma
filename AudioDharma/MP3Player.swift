@@ -76,7 +76,7 @@ class MP3Player : NSObject {
         Player.pause()
     }
 
-    func talkHasCompleted() {
+    @objc func talkHasCompleted() {
         
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }

@@ -16,7 +16,6 @@
 		834C4CCD1F0570CE00512E7C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834C4CCC1F0570CE00512E7C /* Social.framework */; };
 		835B9F7B1EF1B0BC009AF991 /* TalkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B9F7A1EF1B0BC009AF991 /* TalkData.swift */; };
 		835B9F811EF2CA9B009AF991 /* TalkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B9F801EF2CA9B009AF991 /* TalkController.swift */; };
-		835F52391F099A9F00F8A4B9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835F52381F099A9F00F8A4B9 /* AVFoundation.framework */; };
 		8368AA1C1EFC41FF007332B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8368AA1B1EFC41FF007332B2 /* Launch Screen.storyboard */; };
 		837C3DD81F2D34B7005C9A0A /* TalkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C3DD61F2D34B7005C9A0A /* TalkCell.swift */; };
 		837C3DD91F2D34B7005C9A0A /* TalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837C3DD71F2D34B7005C9A0A /* TalkCell.xib */; };
@@ -26,8 +25,8 @@
 		8387D6401EFC07AD0025006B /* AlbumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387D63F1EFC07AD0025006B /* AlbumController.swift */; };
 		839E53861F324CFC00D0A102 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E53841F324CFC00D0A102 /* AlbumCell.swift */; };
 		839E53871F324CFC00D0A102 /* AlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 839E53851F324CFC00D0A102 /* AlbumCell.xib */; };
+		839E86081F86875A0046AA82 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 839E86071F86875A0046AA82 /* ZipArchive.framework */; };
 		83B9BB611F74AAF900FDEEA5 /* UserFavoriteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B9BB601F74AAF900FDEEA5 /* UserFavoriteData.swift */; };
-		83BBD9CB1F45E8DA001CEF09 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */; };
 		83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakerController.swift */; };
 		83C22CB51F184E87002503AE /* DonationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsController.swift */; };
 		83CA123F1F028B8A00798D20 /* UserAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */; };
@@ -63,9 +62,8 @@
 		8387D63F1EFC07AD0025006B /* AlbumController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumController.swift; sourceTree = "<group>"; };
 		839E53841F324CFC00D0A102 /* AlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		839E53851F324CFC00D0A102 /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
+		839E86071F86875A0046AA82 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		83B9BB601F74AAF900FDEEA5 /* UserFavoriteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFavoriteData.swift; sourceTree = "<group>"; };
-		83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
-		83BBD9CD1F45E940001CEF09 /* ZipArchive.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ZipArchive.framework.dSYM; path = Carthage/Build/iOS/ZipArchive.framework.dSYM; sourceTree = "<group>"; };
 		83BF9D071F33B19F006367CF /* SpeakerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakerController.swift; sourceTree = "<group>"; };
 		83C22CB41F184E87002503AE /* DonationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsController.swift; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlbumsController.swift; sourceTree = "<group>"; };
@@ -88,9 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				835F52391F099A9F00F8A4B9 /* AVFoundation.framework in Frameworks */,
+				839E86081F86875A0046AA82 /* ZipArchive.framework in Frameworks */,
 				834C4CCD1F0570CE00512E7C /* Social.framework in Frameworks */,
-				83BBD9CB1F45E8DA001CEF09 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +97,7 @@
 		834C4CCB1F0570CE00512E7C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83BBD9CA1F45E8DA001CEF09 /* ZipArchive.framework */,
+				839E86071F86875A0046AA82 /* ZipArchive.framework */,
 				835F52381F099A9F00F8A4B9 /* AVFoundation.framework */,
 				834C4CCC1F0570CE00512E7C /* Social.framework */,
 			);
@@ -110,7 +107,6 @@
 		83DC0D541EF17B390071CAD3 = {
 			isa = PBXGroup;
 			children = (
-				83BBD9CD1F45E940001CEF09 /* ZipArchive.framework.dSYM */,
 				83DC0D5F1EF17B390071CAD3 /* AudioDharma */,
 				83DC0D5E1EF17B390071CAD3 /* Products */,
 				834C4CCB1F0570CE00512E7C /* Frameworks */,
@@ -175,6 +171,7 @@
 				83DC0D5A1EF17B390071CAD3 /* Frameworks */,
 				83DC0D5B1EF17B390071CAD3 /* Resources */,
 				83BBD9CF1F45E96E001CEF09 /* ShellScript */,
+				839E86091F8687620046AA82 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -192,12 +189,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Christopher Minson";
 				TargetAttributes = {
 					83DC0D5C1EF17B390071CAD3 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = V25Y65GL8V;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -237,7 +235,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		83BBD9CF1F45E96E001CEF09 /* ShellScript */ = {
+		839E86091F8687620046AA82 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,11 +244,23 @@
 				"$(SRCROOT)/Carthage/Build/iOS/ZipArchive.framework",
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZipArchive.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		83BBD9CF1F45E96E001CEF09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -311,7 +321,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -319,7 +331,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -362,7 +378,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -370,7 +388,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -410,8 +432,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherminson.audiodharma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -429,8 +452,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherminson.audiodharma;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

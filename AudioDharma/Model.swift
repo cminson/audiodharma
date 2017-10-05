@@ -176,6 +176,24 @@ class Model {
         SangaShareHistoryAlbum = []
         AllTalks = []
         
+        /*
+        if let asset = NSDataAsset(name: "CONFIG00", bundle: Bundle.main) {
+            self.parseConfiguration(jsonData: asset.data)
+        }
+ */
+
+        /*
+        do {
+            let jsonData =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
+            self.parseConfiguration(jsonData: asset)
+            self.downloadSanghaActivity()
+
+        } catch {
+            print(error)
+        }
+ */
+
+        
         // connect to a host and install remote config files.  synchronously wait until complete
         for HostAccessPoint in HostAccessPoints {
             
@@ -224,6 +242,7 @@ class Model {
             self.parseConfiguration(jsonData: jsonData)
             self.downloadSanghaActivity()
         }
+
         
         // compute stats and get all user data from storage
         computeRootAlbumStats()
@@ -315,6 +334,7 @@ class Model {
                 self.HTTPCallCompleted = true
                 return
             }
+
             let time2 = Date.timeIntervalSinceReferenceDate
             print("Zip time: ", time2 - time1)
             

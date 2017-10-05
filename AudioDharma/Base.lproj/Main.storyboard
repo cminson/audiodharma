@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nVm-cn-ozb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nVm-cn-ozb">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Talks-->
         <scene sceneID="KMb-Vz-El9">
@@ -31,13 +37,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="nad-WU-age">
+                <barButtonItem image="icohelp" id="nad-WU-age">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="F80-bT-CWz"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="bKF-AN-BVr">
+                <barButtonItem image="icodonate" id="bKF-AN-BVr">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="ie0-kf-o7Q"/>
@@ -68,13 +74,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="Q3v-2y-My4" userLabel="Button Help">
+                <barButtonItem image="icohelp" id="Q3v-2y-My4" userLabel="Button Help">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="KBQ-RR-xwo"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="1gk-gX-DJo" userLabel="Button Donate">
+                <barButtonItem image="icodonate" id="1gk-gX-DJo" userLabel="Button Donate">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="GvC-Wn-d9N"/>
@@ -104,13 +110,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="HVo-Tk-Ya2">
+                <barButtonItem image="icohelp" id="HVo-Tk-Ya2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="HMR-Ex-Pps"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="biB-pZ-N7G">
+                <barButtonItem image="icodonate" id="biB-pZ-N7G">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="B6o-GF-pY3"/>
@@ -140,13 +146,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="lMB-mN-zSG">
+                <barButtonItem image="icohelp" id="lMB-mN-zSG">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="dMi-aa-5U7"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="jsq-4Z-1Sp">
+                <barButtonItem image="icodonate" id="jsq-4Z-1Sp">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="eae-sD-01f"/>
@@ -183,13 +189,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="mqo-HD-URT">
+                <barButtonItem image="icohelp" id="mqo-HD-URT">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="59T-E6-dZ1"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="9DH-Pr-5mk">
+                <barButtonItem image="icodonate" id="9DH-Pr-5mk">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="OXf-AC-97C"/>
@@ -226,13 +232,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="aCi-ID-H8Q">
+                <barButtonItem image="icohelp" id="aCi-ID-H8Q">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="nEg-7s-RUw"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="fg5-mf-bdZ">
+                <barButtonItem image="icodonate" id="fg5-mf-bdZ">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </barButtonItem>
             </objects>
@@ -306,13 +312,13 @@
                     </connections>
                 </viewController>
                 <exit id="r5N-9A-7qQ" userLabel="Exit" sceneMemberID="exit"/>
-                <barButtonItem image="icoqm" id="PiA-2x-XRu">
+                <barButtonItem image="icohelp" id="PiA-2x-XRu">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="4Yv-hB-pnn"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="lUB-cJ-sIo">
+                <barButtonItem image="icodonate" id="lUB-cJ-sIo">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="YoT-gA-zDY"/>
@@ -348,13 +354,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoqm" id="alb-ZU-63o" userLabel="Button Help">
+                <barButtonItem image="icohelp" id="alb-ZU-63o" userLabel="Button Help">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="Oaz-ay-8cs"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="X19-oE-a55" userLabel="Button Donate">
+                <barButtonItem image="icodonate" id="X19-oE-a55" userLabel="Button Donate">
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="0kn-Jm-H7v"/>
@@ -390,13 +396,13 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="icoheart" id="YSF-zE-0YA">
+                <barButtonItem image="icodonate" id="YSF-zE-0YA">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="ZGd-hh-xhM"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoqm" id="AWh-vc-YZs">
+                <barButtonItem image="icohelp" id="AWh-vc-YZs">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="eFV-Q2-tuz"/>
@@ -601,13 +607,13 @@
                         <action selector="toggleFavorite:" destination="Bai-ex-z2B" id="ThA-j7-td8"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoqm" id="0dS-lE-bLz">
+                <barButtonItem image="icohelp" id="0dS-lE-bLz">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="7DY-Wt-lPH"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icoheart" id="JbA-wx-my2">
+                <barButtonItem image="icodonate" id="JbA-wx-my2">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="eYb-A4-FTX"/>
@@ -635,7 +641,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="28" y="55" width="374" height="147"/>
+                                <rect key="frame" x="28" y="99" width="374" height="147"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
                                 </constraints>
@@ -745,7 +751,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Kw1-KX-Agt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="npp-jj-ctJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -839,7 +845,7 @@
                         <barButtonItem title="Item" id="JeT-c8-ISZ"/>
                     </toolbarItems>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pYb-xF-Gta">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -861,7 +867,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nVm-cn-ozb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gGm-ag-i3t">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -883,7 +889,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="68D-Il-dgq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mDS-ID-QMY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -901,7 +907,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aLz-WS-sHw" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DDf-ui-5J1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -919,7 +925,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="dvc-bL-tY8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iZz-z4-MJc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -941,7 +947,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9Ds-bU-uVR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bJo-0d-Xmg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -956,21 +962,21 @@
     </scenes>
     <resources>
         <image name="checkboxoff" width="112" height="112"/>
+        <image name="icodonate" width="25" height="25"/>
         <image name="icofavorite" width="25" height="25"/>
-        <image name="icoheart" width="25" height="25"/>
-        <image name="icoqm" width="25" height="25"/>
+        <image name="icohelp" width="25" height="25"/>
         <image name="icoshare" width="25" height="25"/>
         <image name="tri_left_x" width="170" height="85"/>
         <image name="tri_right" width="256" height="256"/>
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="C6A-Dz-FfT"/>
-        <segue reference="hEa-61-IsL"/>
-        <segue reference="TRr-vA-5tZ"/>
+        <segue reference="4Yv-hB-pnn"/>
+        <segue reference="OFE-qN-xVe"/>
+        <segue reference="YoT-gA-zDY"/>
+        <segue reference="30e-7l-0p1"/>
         <segue reference="ZR1-MZ-juM"/>
-        <segue reference="4Sx-D1-YLI"/>
-        <segue reference="F80-bT-CWz"/>
-        <segue reference="ie0-kf-o7Q"/>
+        <segue reference="TRr-vA-5tZ"/>
+        <segue reference="Jkk-Sj-9ca"/>
     </inferredMetricsTieBreakers>
 </document>
