@@ -210,7 +210,7 @@ class Model {
                 sleep(1)
                 waitCount += 1
                 print(waitCount)
-                if waitCount > 20 {
+                if waitCount > 18 {
                     break
                 }
             }
