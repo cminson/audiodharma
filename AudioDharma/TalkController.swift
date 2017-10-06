@@ -26,7 +26,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     // MARK: Init
     override func viewDidLoad() {
         
-        //self.tableView.style = UITableViewStyle.UITableViewStylePlain
+        print("talkcontroller: viewdidload")
         super.viewDidLoad()
         
         SectionTalks = TheDataModel.getTalks(content: Content)
@@ -43,10 +43,13 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+        
+        TheDataModel.TalkController = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        print("talkcontroller: viewWillApper")
+
         super.viewWillAppear(animated)
         
         SectionTalks = TheDataModel.getTalks(content: Content)
@@ -61,7 +64,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        
+        print("talkcontroller: viewWillDisappear")
+
         super.viewWillDisappear(animated)
         
         SearchController.isActive = false

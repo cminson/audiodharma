@@ -70,6 +70,12 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         super.didReceiveMemoryWarning()
     }
     
+    func reloadModel() {
+        
+        // DEV TBD
+    }
+
+    
 
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -176,6 +182,10 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         }
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
+        
+        if Album.Content == KEY_ALLTALKS {
+            print("ALLTALKS STATS: ", AlbumStats)
+        }
 
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal

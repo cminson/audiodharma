@@ -17,7 +17,6 @@ import ZipArchive
 let TheDataModel = Model()
 var TheUserLocation = UserLocation()
 let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
-var ActivityIsUpdating = false              // flags if an activity update is running or not
 let ModelUpdateSemaphore = DispatchSemaphore(value: 1)  // guards underlying dicts and lists
 
 // all possible web config points
@@ -114,7 +113,7 @@ let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the in
 
 var MAX_TALKHISTORY_COUNT = 100     // maximum number of played talks showed in user or sangha history
 var MAX_SHAREHISTORY_COUNT = 100     // maximum number of shared talks showed in user of sangha history
-var UPDATE_SANGHA_INTERVAL = 4     // amount of time (in seconds) between each poll of the cloud for updated sangha info
+var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
 var USE_NATIVE_MP3PATHS = true    // true = mp3s are in their native paths in audiodharma, false =  mp3s are in one flat directory
 
 
@@ -143,10 +142,10 @@ class Model {
     
     var AllTalks: [TalkData] = []
 
-    var RootController: UITableViewController?
+    var RootController: AlbumController?
     var CommunityController: HistoryController?
     var TalkController: TalkController?
-    
+
     var ConfigLoadCompleted: Bool = false
     var HTTPCallCompleted: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
@@ -178,12 +177,23 @@ class Model {
         URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
         URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
         
+        // BEGIN CRITICAL SECTION
         ModelUpdateSemaphore.wait()
-        downloadConfiguration(path: URL_CONFIGURATION)
+        
+        downloadAndLoadTalks(path: URL_CONFIGURATION)
+        
         if let asset = NSDataAsset(name: "TALKS_BASELINE00", bundle: Bundle.main) {
-            self.parseConfiguration(jsonData: asset.data)
+            do {
+                let jsonDict =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]
+                self.loadConfig(jsonDict: jsonDict)
+                self.loadTalks(jsonDict: jsonDict)
+                self.loadAlbums(jsonDict: jsonDict)
+            }
+            catch {
+                print(error)
+                return
+            }
         }
-        ModelUpdateSemaphore.signal()
         
         // compute stats and get all user data from storage
         computeRootAlbumStats()
@@ -201,15 +211,19 @@ class Model {
         computeTalkHistoryStats()
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
-
-        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
         
+        ModelUpdateSemaphore.signal()
+        // END CRITICAL SECTION
+
+
+        // get sangha activity and set up timer for updates
+        downloadSanghaActivity()
+        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
     }
     
     
     // MARK: Configuration
-    
-    func downloadConfiguration(path: String)  {
+    func downloadAndLoadTalks(path: String)  {
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -279,7 +293,7 @@ class Model {
 
             let time2 = Date.timeIntervalSinceReferenceDate
             print("Zip time: ", time2 - time1)
-            
+
             // get our json from the local storage and process it
             var jsonData: Data!
             do {
@@ -292,73 +306,100 @@ class Model {
                 return
             }
             
+            sleep(8)    // DEV TBD
+            
+            // BEGIN CRITICAL SECTION
             ModelUpdateSemaphore.wait()
-            self.parseConfiguration(jsonData: jsonData)
+            
+            do {
+                let jsonDict =  try JSONSerialization.jsonObject(with: jsonData) as! [String: AnyObject]
+                self.loadConfig(jsonDict: jsonDict)
+                self.loadTalks(jsonDict: jsonDict)
+            }
+            catch {
+                print(error)
+            }
+            
+            self.computeRootAlbumStats()
+            self.computeSpeakerStats()
+            self.computeSeriesStats()
+            self.computeRecommendedStats()
+            self.computeUserAlbumStats()
+            self.computeNotesStats()
+            self.computeUserFavoritesStats()
+            self.computeTalkHistoryStats()
+            self.computeShareHistoryStats()
+            
             ModelUpdateSemaphore.signal()
+            // END CRITICAL SECTION
+
+            
+            TheDataModel.refreshAllControllers()
+
         }
         task.resume()
     }
     
-    func parseConfiguration(jsonData: Data) {
+    func loadConfig(jsonDict: [String: AnyObject]) {
         
-        do {
-            let json =  try JSONSerialization.jsonObject(with: jsonData) as! [String: AnyObject]
-
-            var talkCount = 0
-            var totalSeconds = 0
-
-            if let stats = self.KeyToAlbumStats[KEY_ALLTALKS] {
+        if let config = jsonDict["config"] {
+            URL_MP3_HOST = config["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
+            USE_NATIVE_MP3PATHS = config["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
+        
+            ACTIVITY_UPDATE_INTERVAL = config["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
+            URL_REPORT_ACTIVITY = config["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
+            URL_GET_ACTIVITY = config["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
+            URL_DONATE = config["URL_DONATE"] as? String ?? URL_DONATE
+        
+            MAX_TALKHISTORY_COUNT = config["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
+            MAX_SHAREHISTORY_COUNT = config["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
+            UPDATE_SANGHA_INTERVAL = config["UPDATE_SANGHA_INTERVAL"] as? Int ?? UPDATE_SANGHA_INTERVAL
+        }
+    }
+    
+    
+    func loadTalks(jsonDict: [String: AnyObject]) {
+        
+        var talkCount = 0
+        var totalSeconds = 0
+            
+        if let stats = self.KeyToAlbumStats[KEY_ALLTALKS] {
                 talkCount = stats.totalTalks
                 totalSeconds = stats.totalSeconds
-            }
+        }
             
-            // optionally update global config information
-            let config = json["config"]
-            URL_MP3_HOST = config?["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
-            USE_NATIVE_MP3PATHS = config?["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
-            
-            ACTIVITY_UPDATE_INTERVAL = config?["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
-            URL_REPORT_ACTIVITY = config?["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
-            URL_GET_ACTIVITY = config?["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
-            URL_DONATE = config?["URL_DONATE"] as? String ?? URL_DONATE
-            
-            MAX_TALKHISTORY_COUNT = config?["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
-            MAX_SHAREHISTORY_COUNT = config?["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
-            UPDATE_SANGHA_INTERVAL = config?["UPDATE_SANGHA_INTERVAL"] as? Int ?? UPDATE_SANGHA_INTERVAL
-            //print("Update Interval: ", UPDATE_SANGHA_INTERVAL)
-        
-            // get all talks
-            for talk in json["talks"] as? [AnyObject] ?? [] {
-            
+        // get all talks
+        for talk in jsonDict["talks"] as? [AnyObject] ?? [] {
+                
                 let series = talk["series"] as? String ?? ""
                 let title = talk["title"] as? String ?? ""
                 let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let speaker = talk["speaker"] as? String ?? ""
                 let date = talk["date"] as? String ?? ""
                 let duration = talk["duration"] as? String ?? ""
-            
+                
                 let section = ""
-            
+                
                 let terms = URL.components(separatedBy: "/")
                 let fileName = terms.last ?? ""
-            
+                
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
                 let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: seconds)
                 
                 self.FileNameToTalk[fileName] = talkData
-            
+                
                 // add this talk to  list of all talks
                 // Note: there is only one talk section for KEY_ALLTALKS.  all talks are stored in that section
                 self.AllTalks.append(talkData)
-            
+                
                 // add talk to the list of talks for this speaker
                 // Note: there is only one talk section for speaker. talks for this speaker are stored in that section
                 if self.KeyToTalks[speaker] == nil {
                     self.KeyToTalks[speaker] = [[TalkData]] ()
                     self.KeyToTalks[speaker]?.append([talkData])
-                
+                    
                     // create a Album for this speaker and add to array of speaker Albums
                     // this array will be referenced by SpeakersController
                     let albumData =  AlbumData(title: speaker, content: speaker, section: "", image: speaker, date: date)
@@ -367,15 +408,15 @@ class Model {
                 else {
                     self.KeyToTalks[speaker]?[0].append(talkData)
                 }
-            
+                
                 // if a series is specified, add to a series list
                 if series.characters.count > 1 {
-                
+                    
                     let seriesKey = "SERIES" + series
                     if self.KeyToTalks[seriesKey] == nil {
                         self.KeyToTalks[seriesKey] = [[TalkData]] ()
                         self.KeyToTalks[seriesKey]?.append([talkData])
-                    
+                        
                         // create a Album for this series and add to array of series Albums
                         // this array will be referenced by SeriesController
                         let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
@@ -385,21 +426,26 @@ class Model {
                         self.KeyToTalks[seriesKey]?[0].append(talkData)
                     }
                 }
-            
+                
                 talkCount += 1
-            }
+        }
         
-            let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: "")
-            self.KeyToAlbumStats[KEY_ALLTALKS] = stats
-        
-            self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
-            self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
-            self.AllTalks = self.AllTalks.sorted(by: { $0.Date > $1.Date })
+        let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        print(stats)
+        self.KeyToAlbumStats[KEY_ALLTALKS] = stats
             
-            // talks finished.  now get all albums
-            var albumSectionPositionDict : [String: Int] = [:]
-            for Album in json["albums"] as? [AnyObject] ?? [] {
-            
+        self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
+        self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
+        self.AllTalks = self.AllTalks.sorted(by: { $0.Date > $1.Date })
+    }
+    
+    func loadAlbums(jsonDict: [String: AnyObject]) {
+    
+        var albumSectionPositionDict : [String: Int] = [:]
+        for Album in jsonDict["albums"] as? [AnyObject] ?? [] {
+                
                 let section = Album["section"] as? String ?? ""
                 let title = Album["title"] as? String ?? ""
                 let content = Album["content"] as? String ?? ""
@@ -407,7 +453,7 @@ class Model {
                 let talkList = Album["talks"] as? [AnyObject] ?? []
                 let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
                 print("creating album: ", title)
-            
+                
                 // store Album in the 2D AlbumSection array (section x Album)
                 if albumSectionPositionDict[section] == nil {
                     // new section seen.  create new array of Albums for this section
@@ -418,14 +464,14 @@ class Model {
                     let sectionPosition = albumSectionPositionDict[section]!
                     self.AlbumSections[sectionPosition].append(albumData)
                 }
-            
+                
                 // get the optional talk array for this Album
                 // if exists, store off all the talks in keyToTalks keyed by 'content' id
                 // the value for this key is a 2d array (section x talks)
                 var talkSectionPositionDict : [String: Int] = [:]
                 var currentSeries = "_"
                 for talk in talkList {
-                
+                    
                     var URL = talk["url"] as? String ?? ""
                     let terms = URL.components(separatedBy: "/")
                     let fileName = terms.last ?? ""
@@ -450,12 +496,12 @@ class Model {
                         date = talkData.Date
                         durationDisplay = talkData.DurationDisplay
                     }
-
+                    
                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
                     
-
+                    
                     let talkData =  TalkData(title: titleTitle, url: URL, fileName: fileName, date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
-
+                    
                     // if a series is specified create a series album if not already there.  then add talk to it
                     // otherwise, just add the talk directly to the parent album
                     if series.characters.count > 1 {
@@ -481,10 +527,10 @@ class Model {
                             self.KeyToTalks[seriesKey]!.append([talkData])
                             talkSectionPositionDict[section] = self.KeyToTalks[seriesKey]!.count - 1
                         } else {
- 
+                            
                             // section already exists.  add talk to the existing array of talks
                             let sectionPosition = talkSectionPositionDict[section]!
-                           self.KeyToTalks[seriesKey]![sectionPosition].append(talkData)
+                            self.KeyToTalks[seriesKey]![sectionPosition].append(talkData)
                             
                         }
                         
@@ -501,20 +547,12 @@ class Model {
                             
                         }
                     }
-                    
                 }
-            } // end Album loop
-        }  // end do
-        catch {
-            print(error)
-        }
-        
-        self.HTTPCallCompleted = true
+        } // end Album loop
     }
     
+    
     func downloadSanghaActivity() {
-        
-        ActivityIsUpdating = true
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -533,20 +571,17 @@ class Model {
             if let valid_reponse = response {
                 httpResponse = valid_reponse as! HTTPURLResponse
             } else {
-                ActivityIsUpdating = false
                 return
             }
             //let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode != 200) {
-                ActivityIsUpdating = false
                 return
             }
             
             // make sure we got data
             guard let responseData = data else {
-                ActivityIsUpdating = false
                 return
             }
             
@@ -614,11 +649,10 @@ class Model {
                 self.SanghaShareHistoryStats = stats
 
             } catch {
-                ActivityIsUpdating = false
+                print(error)
             }
             
-            ActivityIsUpdating = false
-            self.refreshControllers()
+            self.refreshAllControllers()
 
         }
         task.resume()
@@ -631,14 +665,9 @@ class Model {
             return
         }
 
-        ActivityIsUpdating = true
-        
         SangaTalkHistoryAlbum = []
         SangaShareHistoryAlbum = []
         downloadSanghaActivity()
-        
-        ActivityIsUpdating = false
-        
     }
     
     func reportTalkActivity(type: ACTIVITIES, talk: TalkData) {
@@ -719,21 +748,24 @@ class Model {
         return (isReachable && !needsConnection)
     }
     
-    
-    func refreshControllers() {
+    func refreshAllControllers() {
         
-        DispatchQueue.main.async(execute: {
-
+        DispatchQueue.main.async {
             if let controller = self.RootController {
+                controller.reloadModel()
                 controller.tableView.reloadData()
             }
-            
+        
             if let controller = self.CommunityController {
                 controller.reloadModel()
                 controller.tableView.reloadData()
             }
-            return
-        })
+
+            if let controller = self.TalkController {
+                controller.reloadModel()
+                controller.tableView.reloadData()
+            }
+        }
     }
     
     func computeRootAlbumStats() {
@@ -1183,7 +1215,7 @@ class Model {
         
         saveUserAlbumData()
         computeUserAlbumStats()
-        refreshControllers()
+        refreshAllControllers()
     }
     
     func removeUserAlbum(at: Int) {
@@ -1192,7 +1224,7 @@ class Model {
         
         saveUserAlbumData()
         computeUserAlbumStats()
-        refreshControllers()
+        refreshAllControllers()
     }
     
     func removeUserAlbum(userAlbum: UserAlbumData) {
@@ -1284,7 +1316,7 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveTalkHistoryData()
         computeTalkHistoryStats()
-        refreshControllers()
+        refreshAllControllers()
     }
     
     func addToShareHistory(talk: TalkData) {
@@ -1318,7 +1350,7 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveShareHistoryData()
         computeShareHistoryStats()
-        refreshControllers()
+        refreshAllControllers()
     }
     
     func setTalkAsFavorite(talk: TalkData) {
@@ -1360,7 +1392,7 @@ class Model {
             controller.present(alert, animated: true, completion: nil)
 
         }
-        refreshControllers()
+        refreshAllControllers()
     }
 
     
@@ -1390,7 +1422,7 @@ class Model {
         // save the data, recompute stats, reload root view to display updated stats
         saveUserNoteData()
         computeNotesStats()
-        refreshControllers()
+        refreshAllControllers()
     }
     
     func getNoteForTalk(talkFileName: String) -> String {
