@@ -18,6 +18,7 @@ let TheDataModel = Model()
 var TheUserLocation = UserLocation()
 let DEVICE_ID = UIDevice.current.identifierForVendor!.uuidString
 var ActivityIsUpdating = false              // flags if an activity update is running or not
+let ModelUpdateSemaphore = DispatchSemaphore(value: 1)  // guards underlying dicts and lists
 
 // all possible web config points
 let HostAccessPoints: [String] = [
@@ -28,13 +29,10 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-//let CONFIG_JSON_NAME = "TEST.JSON"
-//let CONFIG_ZIP_NAME = "TEST.ZIP"
+let INCREMENTAL_ZIP_NAME = "TALKS_INCREMENTALG00.ZIP"
+let INCREMENTAL_JSON_NAME = "TALKS_INCREMENTALG00.JSON"
 
-let CONFIG_JSON_NAME = "CONFIG00.JSON"
-let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-
-let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
+let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + INCREMENTAL_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"           // where to get sangha activity (shares, listens)
 
@@ -42,7 +40,7 @@ let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
 
 var HTTPResultCode: Int = 0     // global status of web access
-let MIN_EXPECTED_RESPONSE_SIZE = 1000   // to filter for bogus redirect page responses
+let MIN_EXPECTED_RESPONSE_SIZE = 300   // to filter for bogus redirect page responses
 
 enum INIT_CODES {          // all possible startup results
     case SUCCESS
@@ -149,6 +147,7 @@ class Model {
     var CommunityController: HistoryController?
     var TalkController: TalkController?
     
+    var ConfigLoadCompleted: Bool = false
     var HTTPCallCompleted: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
@@ -174,70 +173,17 @@ class Model {
         SangaShareHistoryAlbum = []
         AllTalks = []
         
-
-#if SAVE_FORINC_LOAD
-        if let asset = NSDataAsset(name: "BASELINE_TALKS", bundle: Bundle.main) {
-            do {
-                let jsonData =  try JSONSerialization.jsonObject(with: asset!.data) as! [String: AnyObject]
-                self.parseConfiguration(jsonData: asset)
-                self.downloadSanghaActivity()
-                // OR:
-                } catch {
-                print(error)
-                }
-            }
-#endif
-
-        // connect to a host and install remote config files.  synchronously wait until complete
-        for HostAccessPoint in HostAccessPoints {
-            
-            HTTPResultCode = 0
-            URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
-            URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
-            URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
-            
-            print("Attempting to Connect: ", URL_CONFIGURATION, HTTPResultCode)
-            downloadConfiguration(path: URL_CONFIGURATION)
-            
-            var waitCount = 0
-            while HTTPCallCompleted == false {
-                sleep(1)
-                waitCount += 1
-                print(waitCount)
-                if waitCount > 18 {
-                    break
-                }
-            }
-            
-            // if success code, then we're done.  otherwise try another host
-            if HTTPResultCode == 200 {
-                print("Connected: ", URL_CONFIGURATION, HTTPResultCode)
-                break
-            } else {
-                HTTPCallCompleted = false   // reset and try another Host URL
-                continue
-            }
-        }
-
+        HTTPResultCode = 0
+        URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
+        URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
+        URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
         
-        // if failure to connect for hosts, flag that fact and use our local configs instead
-        if HTTPResultCode != 200 {
-            
-            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let configJSONPath = documentPath + "/" + CONFIG_JSON_NAME
-            print("using local config: ", configJSONPath)
-            var jsonData: Data!
-            do {
-                jsonData = try Data(contentsOf: URL(fileURLWithPath: configJSONPath))
-            }
-            catch let error as NSError {
-                print("Failed getting URL: \(configJSONPath), Error: " + error.localizedDescription)
-            }
-            
-            self.parseConfiguration(jsonData: jsonData)
-            self.downloadSanghaActivity()
+        ModelUpdateSemaphore.wait()
+        downloadConfiguration(path: URL_CONFIGURATION)
+        if let asset = NSDataAsset(name: "TALKS_BASELINE00", bundle: Bundle.main) {
+            self.parseConfiguration(jsonData: asset.data)
         }
-
+        ModelUpdateSemaphore.signal()
         
         // compute stats and get all user data from storage
         computeRootAlbumStats()
@@ -262,82 +208,8 @@ class Model {
     
     
     // MARK: Configuration
-    // DEV FORLATER
-    func downloadAndStoreConfiguration(path: String) {
-        
-        let config = URLSessionConfiguration.default
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        config.urlCache = nil
-        let session = URLSession.init(configuration: config)
-        
-        let requestURL : URL? = URL(string: path)
-        let urlRequest = URLRequest(url : requestURL!)
-        
-        
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) -> Void in
-            
-            var httpResponse: HTTPURLResponse
-            if let valid_reponse = response {
-                httpResponse = valid_reponse as! HTTPURLResponse
-                HTTPResultCode = httpResponse.statusCode
-            } else {
-                HTTPResultCode = 404
-            }
-            
-            // return if no connection
-            if (HTTPResultCode != 200) {
-                self.HTTPCallCompleted = true
-                return
-            }
-            
-            // return if no or insufficient data
-            guard let responseData = data else {
-                
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
-            }
-            guard responseData.count > MIN_EXPECTED_RESPONSE_SIZE else {
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
-            }
-            
-            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            
-            // store the config zip data off locally, (we use it as backup should not get web connect)
-            let configZipPath = documentPath + "/" + CONFIG_ZIP_NAME
-            
-            //print("Storing Zip To: ", configZipPath)
-            do {
-                try responseData.write(to: URL(fileURLWithPath: configZipPath))
-            }
-            catch let error as NSError {
-                print("Failed writing to URL: \(configZipPath), Error: " + error.localizedDescription)
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
-            }
-            
-            // unzip it back into json
-            print("Unzipping: ", configZipPath)
-            let time1 = Date.timeIntervalSinceReferenceDate
-            
-            if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
-            }
-            
-            let time2 = Date.timeIntervalSinceReferenceDate
-            print("Zip time: ", time2 - time1)
-            
-        }
-        task.resume()
-    }
     
-    func downloadConfiguration(path: String) {
+    func downloadConfiguration(path: String)  {
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -381,8 +253,8 @@ class Model {
             let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
             
             // store the config zip data off locally, (we use it as backup should not get web connect)
-            let configZipPath = documentPath + "/" + CONFIG_ZIP_NAME
-            let configJSONPath = documentPath + "/" + CONFIG_JSON_NAME
+            let configZipPath = documentPath + "/" + INCREMENTAL_ZIP_NAME
+            let configJSONPath = documentPath + "/" + INCREMENTAL_JSON_NAME
             
             //print("Storing Zip To: ", configZipPath)
             do {
@@ -419,10 +291,10 @@ class Model {
                 self.HTTPCallCompleted = true
                 return
             }
-            self.parseConfiguration(jsonData: jsonData)
             
-            // load sangha activity after everything else is processed.  necessary since we refer to Talks array
-            self.downloadSanghaActivity()
+            ModelUpdateSemaphore.wait()
+            self.parseConfiguration(jsonData: jsonData)
+            ModelUpdateSemaphore.signal()
         }
         task.resume()
     }
@@ -434,6 +306,11 @@ class Model {
 
             var talkCount = 0
             var totalSeconds = 0
+
+            if let stats = self.KeyToAlbumStats[KEY_ALLTALKS] {
+                talkCount = stats.totalTalks
+                totalSeconds = stats.totalSeconds
+            }
             
             // optionally update global config information
             let config = json["config"]
@@ -517,7 +394,7 @@ class Model {
         
             self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
             self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
-            
+            self.AllTalks = self.AllTalks.sorted(by: { $0.Date > $1.Date })
             
             // talks finished.  now get all albums
             var albumSectionPositionDict : [String: Int] = [:]
