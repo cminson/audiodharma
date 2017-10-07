@@ -28,10 +28,13 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
+let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+let CONFIG_JSON_NAME = "CONFIG00.JSON"
+
 let INCREMENTAL_ZIP_NAME = "TALKS_INCREMENTALG00.ZIP"
 let INCREMENTAL_JSON_NAME = "TALKS_INCREMENTALG00.JSON"
 
-let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + INCREMENTAL_ZIP_NAME    // remote web path to config
+let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"           // where to get sangha activity (shares, listens)
 
@@ -100,7 +103,7 @@ let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
 let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
 let BUTTON_FAVORITE_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
-
+let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.96, blue:0.00, alpha:1.0)     // yellow
 
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
@@ -178,10 +181,11 @@ class Model {
         URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
         
         // BEGIN CRITICAL SECTION
-        ModelUpdateSemaphore.wait()
+        //ModelUpdateSemaphore.wait()
         
-        downloadAndLoadTalks(path: URL_CONFIGURATION)
+        downloadAndConfigure(path: URL_CONFIGURATION)
         
+        #if DEV
         if let asset = NSDataAsset(name: "TALKS_BASELINE00", bundle: Bundle.main) {
             do {
                 let jsonDict =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]
@@ -211,8 +215,9 @@ class Model {
         computeTalkHistoryStats()
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
+        #endif
         
-        ModelUpdateSemaphore.signal()
+        //ModelUpdateSemaphore.signal()
         // END CRITICAL SECTION
 
 
@@ -223,7 +228,7 @@ class Model {
     
     
     // MARK: Configuration
-    func downloadAndLoadTalks(path: String)  {
+    func downloadAndConfigure(path: String)  {
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -237,6 +242,10 @@ class Model {
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
             
+            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let configZipPath = documentPath + "/" + CONFIG_ZIP_NAME
+            let configJSONPath = documentPath + "/" + CONFIG_JSON_NAME
+
             var httpResponse: HTTPURLResponse
             if let valid_reponse = response {
                 httpResponse = valid_reponse as! HTTPURLResponse
@@ -245,43 +254,32 @@ class Model {
                 HTTPResultCode = 404
             }
 
-            // return if no connection
-            if (HTTPResultCode != 200) {
-                self.HTTPCallCompleted = true
-                return
+            if let responseData = data {
+                if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    HTTPResultCode = 404
+                }
             }
-            
-            // return if no or insufficient data
-            guard let responseData = data else {
-                
+            else {
                 HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
-            }
-            guard responseData.count > MIN_EXPECTED_RESPONSE_SIZE else {
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
             }
             
-            let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            // if got a good response, store off the zip file locally
+            // if we DIDN'T get a good response, we will try to unzip the previously loaded config
+            if HTTPResultCode == 200 {
             
-            // store the config zip data off locally, (we use it as backup should not get web connect)
-            let configZipPath = documentPath + "/" + INCREMENTAL_ZIP_NAME
-            let configJSONPath = documentPath + "/" + INCREMENTAL_JSON_NAME
-            
-            //print("Storing Zip To: ", configZipPath)
-            do {
-                try responseData.write(to: URL(fileURLWithPath: configZipPath))
-            }
-            catch let error as NSError {
-                print("Failed writing to URL: \(configZipPath), Error: " + error.localizedDescription)
-                HTTPResultCode = 404
-                self.HTTPCallCompleted = true
-                return
+                print("Storing Zip To: ", configZipPath)
+                do {
+                    if let responseData = data {
+                        try responseData.write(to: URL(fileURLWithPath: configZipPath))
+                    }
+                }
+                catch let error as NSError {
+                    print("Failed writing to URL: \(configZipPath), Error: " + error.localizedDescription)  // fatal
+                    return
+                }
             }
 
-            // unzip it back into json
+            // unzip zipped config back into json
             print("Unzipping: ", configZipPath)
             let time1 = Date.timeIntervalSinceReferenceDate
             
@@ -294,7 +292,7 @@ class Model {
             let time2 = Date.timeIntervalSinceReferenceDate
             print("Zip time: ", time2 - time1)
 
-            // get our json from the local storage and process it
+            // get our unzipped json from the local storage and process it
             var jsonData: Data!
             do {
                 jsonData = try Data(contentsOf: URL(fileURLWithPath: configJSONPath))
@@ -305,9 +303,7 @@ class Model {
                 self.HTTPCallCompleted = true
                 return
             }
-            
-            sleep(8)    // DEV TBD
-            
+                        
             // BEGIN CRITICAL SECTION
             ModelUpdateSemaphore.wait()
             
@@ -315,6 +311,8 @@ class Model {
                 let jsonDict =  try JSONSerialization.jsonObject(with: jsonData) as! [String: AnyObject]
                 self.loadConfig(jsonDict: jsonDict)
                 self.loadTalks(jsonDict: jsonDict)
+                self.loadAlbums(jsonDict: jsonDict)
+                self.downloadSanghaActivity()
             }
             catch {
                 print(error)
@@ -330,10 +328,23 @@ class Model {
             self.computeTalkHistoryStats()
             self.computeShareHistoryStats()
             
-            ModelUpdateSemaphore.signal()
-            // END CRITICAL SECTION
+            self.UserAlbums = TheDataModel.loadUserAlbumData()
+            self.computeUserAlbumStats()
+            self.UserNotes = TheDataModel.loadUserNoteData()
+            self.computeNotesStats()
+            self.UserFavorites = TheDataModel.loadUserFavoriteData()
+            self.computeUserFavoritesStats()
+            
+            self.UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
+            self.computeTalkHistoryStats()
+            self.UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
+            self.computeShareHistoryStats()
 
             
+            ModelUpdateSemaphore.signal()
+            // END CRITICAL SECTION
+            self.RootController?.reportModelLoaded()
+
             TheDataModel.refreshAllControllers()
 
         }
@@ -362,12 +373,7 @@ class Model {
         
         var talkCount = 0
         var totalSeconds = 0
-            
-        if let stats = self.KeyToAlbumStats[KEY_ALLTALKS] {
-                talkCount = stats.totalTalks
-                totalSeconds = stats.totalSeconds
-        }
-            
+        
         // get all talks
         for talk in jsonDict["talks"] as? [AnyObject] ?? [] {
                 

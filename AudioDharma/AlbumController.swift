@@ -26,12 +26,24 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     var startLocation: CLLocation!
     
     var HelpPageText = ""
+    var BusyIndicator =  UIActivityIndicatorView()
 
     
     // MARK: Init
     override func viewDidLoad() {
         
+        print("viewDidLoad")
         super.viewDidLoad()
+        
+        BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        BusyIndicator.center = self.view.center
+        BusyIndicator.color = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)
+        self.view.addSubview(BusyIndicator)
+        
+        BusyIndicator.isHidden = false
+        BusyIndicator.startAnimating()
+
         self.tableView.delegate = self
         
         TheDataModel.RootController = self
@@ -52,12 +64,15 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
 
+        print("viewWillAppear")
         super.viewWillAppear(animated)
-
+        
+ 
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         
+        print("viewWillDisappear")
         super.viewWillDisappear(animated)
     }
 
@@ -71,8 +86,15 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     }
     
     func reloadModel() {
+
+    }
+    
+    func reportModelLoaded() {
         
-        // DEV TBD
+        DispatchQueue.main.async {
+            self.BusyIndicator.isHidden = true
+            self.BusyIndicator.stopAnimating()
+        }
     }
 
     

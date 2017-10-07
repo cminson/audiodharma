@@ -45,10 +45,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
         
         TheDataModel.TalkController = self
+        
+  
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("talkcontroller: viewWillApper")
+        print("talkcontroller: viewWillAppear")
 
         super.viewWillAppear(animated)
         
@@ -64,7 +66,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("talkcontroller: viewWillDisappear")
+        print("talkcontroller: viewWillDisapear")
 
         super.viewWillDisappear(animated)
         
@@ -299,13 +301,26 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 self.favoriteTalk()
             }
         }
-        
+ 
+        var downloadTalk : UITableViewRowAction
+        if TheDataModel.isFavoriteTalk(talk: talk) {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Un-Download") { (action, indexPath) in
+                self.downloadTalk()
+            }
+            
+        } else {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
+                self.downloadTalk()
+            }
+        }
+
  
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
+        downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
 
-        return [shareTalk, noteTalk, favoriteTalk]
+        return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
     }
 
 
@@ -320,6 +335,18 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
+    private func downloadTalk() {
+        
+        let alert = UIAlertController(title: "Download Talk to Device", message: "Downloading talks can take a long while.\n\nAre you sure you wish to continue?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func deleteTalk() {
+        
+    }
+
     private func favoriteTalk() {
         
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
