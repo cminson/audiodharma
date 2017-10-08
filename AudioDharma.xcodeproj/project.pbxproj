@@ -10,6 +10,7 @@
 		831CC5931F488AA800550BD4 /* HistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC5921F488AA800550BD4 /* HistoryController.swift */; };
 		831CC5961F48AD0800550BD4 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC5941F48AD0800550BD4 /* HistoryCell.swift */; };
 		831CC5971F48AD0800550BD4 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831CC5951F48AD0800550BD4 /* HistoryCell.xib */; };
+		8335090E1F8A73DC001DFBBA /* UserDownloadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335090D1F8A73DC001DFBBA /* UserDownloadData.swift */; };
 		834087C21F4F6AAD008E8F2D /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834087C11F4F6AAD008E8F2D /* HelpController.swift */; };
 		83432FC01F0AB373002926AC /* MP3Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83432FBF1F0AB373002926AC /* MP3Player.swift */; };
 		834BEC651EFC90D400CBC0C2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834BEC641EFC90D400CBC0C2 /* Model.swift */; };
@@ -46,6 +47,7 @@
 		831CC5921F488AA800550BD4 /* HistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryController.swift; sourceTree = "<group>"; };
 		831CC5941F48AD0800550BD4 /* HistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		831CC5951F48AD0800550BD4 /* HistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryCell.xib; sourceTree = "<group>"; };
+		8335090D1F8A73DC001DFBBA /* UserDownloadData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDownloadData.swift; sourceTree = "<group>"; };
 		834087C11F4F6AAD008E8F2D /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
 		83432FBF1F0AB373002926AC /* MP3Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MP3Player.swift; sourceTree = "<group>"; };
 		834BEC641EFC90D400CBC0C2 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				83C22CB41F184E87002503AE /* DonationsController.swift */,
 				834BEC641EFC90D400CBC0C2 /* Model.swift */,
 				837C3DDC1F2E1BD2005C9A0A /* UserNoteData.swift */,
+				8335090D1F8A73DC001DFBBA /* UserDownloadData.swift */,
 				83B9BB601F74AAF900FDEEA5 /* UserFavoriteData.swift */,
 				83FCA9461F02BFF100B9664D /* UserAlbumData.swift */,
 				83D318791F3669FA00200542 /* TalkHistoryData.swift */,
@@ -197,6 +200,11 @@
 						DevelopmentTeam = V25Y65GL8V;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -291,6 +299,7 @@
 				83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */,
 				83B9BB611F74AAF900FDEEA5 /* UserFavoriteData.swift in Sources */,
 				837C3DD81F2D34B7005C9A0A /* TalkCell.swift in Sources */,
+				8335090E1F8A73DC001DFBBA /* UserDownloadData.swift in Sources */,
 				8387D6401EFC07AD0025006B /* AlbumController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkController.swift in Sources */,
 				83FCA9471F02BFF100B9664D /* UserAlbumData.swift in Sources */,

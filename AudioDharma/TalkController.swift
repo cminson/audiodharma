@@ -335,10 +335,18 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
+    func executeDownload(alert: UIAlertAction!) {
+        print("execute download")
+        
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+
+        TheDataModel.downloadMP3(talk: talk)
+    }
+    
     private func downloadTalk() {
         
         let alert = UIAlertController(title: "Download Talk to Device", message: "Downloading talks can take a long while.\n\nAre you sure you wish to continue?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: executeDownload))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }

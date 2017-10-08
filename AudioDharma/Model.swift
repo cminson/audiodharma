@@ -92,6 +92,7 @@ let KEY_NOTES = "KEY_NOTES"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
 let KEY_USER_TALKHISTORY = "KEY_USER_TALKHISTORY"
 let KEY_USER_FAVORITES = "KEY_USER_FAVORITES"
+let KEY_USER_DOWNLOADS = "KEY_USER_DOWNLOADS"
 let KEY_SANGHA_TALKHISTORY = "KEY_SANGHA_TALKHISTORY"
 let KEY_SANGHA_SHAREHISTORY = "KEY_SANGHA_SHAREHISTORY"
 let KEY_USER_ALBUMS = "KEY_USER_ALBUMS"
@@ -158,6 +159,7 @@ class Model {
     var UserAlbums: [UserAlbumData] = []      // all the custom user albums defined by this user.
     var UserNotes: [String: UserNoteData] = [:]      // all the  user notes defined by this user, indexed by fileName
     var UserFavorites: [String: UserFavoriteData] = [:]      // all the favorites defined by this user, indexed by fileName
+	var UserDownloads: [String: UserDownloadData] = [:]      // all the downloads defined by this user, indexed by fileName
     
     // MARK: Init
     func loadData() {
@@ -210,6 +212,9 @@ class Model {
         computeNotesStats()
         UserFavorites = TheDataModel.loadUserFavoriteData()
         computeUserFavoritesStats()
+        UserDownloads = TheDataModel.loadUserDownloadData()
+            computeUserDownloadStats()
+
 
         UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
         computeTalkHistoryStats()
@@ -325,6 +330,7 @@ class Model {
             self.computeUserAlbumStats()
             self.computeNotesStats()
             self.computeUserFavoritesStats()
+            self.computeUserDownloadStats()
             self.computeTalkHistoryStats()
             self.computeShareHistoryStats()
             
@@ -334,6 +340,9 @@ class Model {
             self.computeNotesStats()
             self.UserFavorites = TheDataModel.loadUserFavoriteData()
             self.computeUserFavoritesStats()
+            self.UserDownloads = TheDataModel.loadUserDownloadData()
+            self.computeUserDownloadStats()
+
             
             self.UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
             self.computeTalkHistoryStats()
@@ -664,6 +673,82 @@ class Model {
         task.resume()
     }
     
+    func downloadMP3(talk: TalkData) {
+        
+        var requestURL: URL
+        var fileName: String
+        var localPathMP3: String
+        
+        let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        if let lastTerm = talk.URL.components(separatedBy: "/").last
+        {
+            fileName = lastTerm
+            localPathMP3 = documentPath + "/" + fileName
+        }
+        else {
+            return
+        }
+
+        if USE_NATIVE_MP3PATHS == true {
+            requestURL  = URL(string: URL_MP3_HOST + talk.URL)!
+        } else {
+            requestURL  = URL(string: URL_MP3_HOST + "/" + fileName)!
+        }
+        
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        let urlRequest = URLRequest(url : requestURL)
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+            } else {
+                return
+            }
+            //let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            if (statusCode != 200) {
+                return
+            }
+            
+            // make sure we got data
+            if let responseData = data {
+                if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    HTTPResultCode = 404
+                }
+            }
+            else {
+                HTTPResultCode = 404
+            }
+            
+            // if got a good response, store off  file locally
+            if HTTPResultCode == 200 {
+                
+                print("Storing MP3 To: ", localPathMP3)
+                do {
+                    if let responseData = data {
+                        try responseData.write(to: URL(fileURLWithPath: localPathMP3))
+                    }
+                }
+                catch let error as NSError {
+                    print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
+                    return
+                }
+            }
+            
+        }
+        task.resume()
+    }
+
+    
     // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
@@ -990,7 +1075,23 @@ class Model {
         KeyToAlbumStats[KEY_USER_FAVORITES] = stats
     }
 
-    
+    func computeUserDownloadStats() {
+        var talkCount = 0
+        var totalSeconds = 0
+        
+        for (fileName, _) in UserDownloads {
+            
+            if let talk = FileNameToTalk[fileName] {
+                totalSeconds += talk.DurationInSeconds
+                talkCount += 1
+            }
+        }
+        let durationDisplay = secondsToDurationDisplay(seconds: totalSeconds)
+        let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
+        
+        KeyToAlbumStats[KEY_USER_DOWNLOADS] = stats
+    }
+
 
     // MARK: Persistant API
     func saveUserAlbumData() {
@@ -1006,6 +1107,11 @@ class Model {
     func saveUserFavoritesData() {
         
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserFavorites, toFile: UserFavoriteData.ArchiveURL.path)
+    }
+    
+    func saveUserDownloadData() {
+        
+        NSKeyedArchiver.archiveRootObject(TheDataModel.UserDownloads, toFile: UserDownloadData.ArchiveURL.path)
     }
 
     
@@ -1055,6 +1161,19 @@ class Model {
             return [String: UserFavoriteData] ()
         }
     }
+    
+    func loadUserDownloadData() -> [String: UserDownloadData]  {
+        
+        if let userDownloads = NSKeyedUnarchiver.unarchiveObject(withFile: UserDownloadData.ArchiveURL.path)
+            as? [String: UserDownloadData] {
+            
+            return userDownloads
+        } else {
+            
+            return [String: UserDownloadData] ()
+        }
+    }
+
 
     
     func loadTalkHistoryData() -> [TalkHistoryData]  {
@@ -1103,6 +1222,16 @@ class Model {
         case KEY_USER_FAVORITES:
             var talks = [TalkData] ()
             for (fileName, _) in UserFavorites {
+                if let talk = FileNameToTalk[fileName] {
+                    talks.append(talk)
+                }
+            }
+            talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
+            talkList =  [talks]
+            
+        case KEY_USER_DOWNLOADS:
+            var talks = [TalkData] ()
+            for (fileName, _) in UserDownloads {
                 if let talk = FileNameToTalk[fileName] {
                     talks.append(talk)
                 }
@@ -1377,9 +1506,7 @@ class Model {
         
         if isFavoriteTalk(talk: talk) {
             
-            UserFavorites[talk.FileName] = nil
-            saveUserFavoritesData()
-            computeUserFavoritesStats()
+            unsetTalkAsFavorite(talk: talk)
             
             let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
@@ -1388,9 +1515,7 @@ class Model {
             
         } else {
             
-            UserFavorites[talk.FileName] = UserFavoriteData(fileName: talk.FileName)
-            saveUserFavoritesData()
-            computeUserFavoritesStats()
+            setTalkAsFavorite(talk: talk)
             
             let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
@@ -1407,6 +1532,53 @@ class Model {
         
         let isFavorite = UserFavorites[talk.FileName] != nil
         return isFavorite
+        
+    }
+    
+    func setTalkAsDownload(talk: TalkData) {
+        
+        UserDownloads[talk.FileName] = UserDownloadData(fileName: talk.FileName, downloadCompleted: false)
+        saveUserDownloadData()
+        computeUserDownloadStats()
+    }
+    
+    func unsetTalkAsDownload(talk: TalkData) {
+        
+        UserDownloads[talk.FileName] = nil
+        saveUserDownloadData()
+        computeUserDownloadStats()
+    }
+    
+    func toggleTalkAsDownload(talk: TalkData, controller: UIViewController) {
+        
+        if isDownloadTalk(talk: talk) {
+            
+            unsetTalkAsDownload(talk: talk)
+            
+            let alert = UIAlertController(title: "Remove Talk Download?", message: "Downloaded talk will be removed from local storage and Downloads Album", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            controller.present(alert, animated: true, completion: nil)
+            
+        } else {
+            
+            setTalkAsDownload(talk: talk)
+            
+            let alert = UIAlertController(title: "Download Talk To Your Device", message: "Talk MP3 will will be downloaded to your local device\n\nThis will run in background and take awhile\n\nThe talk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            controller.present(alert, animated: true, completion: nil)
+            
+        }
+        refreshAllControllers()
+    }
+    
+    
+    
+    func isDownloadTalk(talk: TalkData) -> Bool {
+        
+        let isDownload = UserDownloads[talk.FileName] != nil
+        return isDownload
         
     }
     
