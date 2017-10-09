@@ -23,11 +23,11 @@ class UserDownloadData: NSObject, NSCoding {
     
     // MARK: Properties
     var FileName: String = ""
-    var DownloadCompleted: Bool = false
+    var DownloadCompleted: String = ""
     
     
     // MARK: Init
-    init(fileName: String, downloadCompleted: Bool) {
+    init(fileName: String, downloadCompleted: String) {
         
         FileName = fileName
         DownloadCompleted = downloadCompleted
@@ -47,7 +47,7 @@ class UserDownloadData: NSObject, NSCoding {
         guard let fileName = aDecoder.decodeObject(forKey: PropertyKey.FileName) as? String else {
             return nil
         }
-        guard let downloadCompleted = aDecoder.decodeObject(forKey: PropertyKey.DownloadCompleted) as? Bool else {
+        guard let downloadCompleted = aDecoder.decodeObject(forKey: PropertyKey.DownloadCompleted) as? String else {
             return nil
         }
 

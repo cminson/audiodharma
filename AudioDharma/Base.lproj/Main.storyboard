@@ -370,7 +370,7 @@
             </objects>
             <point key="canvasLocation" x="2620.289855072464" y="1891.304347826087"/>
         </scene>
-        <!-- Albums-->
+        <!--Audio Dharma-->
         <scene sceneID="Tyx-hu-Q4G">
             <objects>
                 <tableViewController id="EU2-EN-w2e" customClass="AlbumController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -383,7 +383,7 @@
                             <outlet property="delegate" destination="EU2-EN-w2e" id="cWa-fA-fyp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title=" Albums" id="ZPM-Q5-ruw"/>
+                    <navigationItem key="navigationItem" title="Audio Dharma" id="ZPM-Q5-ruw"/>
                     <connections>
                         <outlet property="buttonDonate" destination="YSF-zE-0YA" id="LZp-vc-PAi"/>
                         <outlet property="buttonHelp" destination="AWh-vc-YZs" id="qAZ-1B-a3c"/>

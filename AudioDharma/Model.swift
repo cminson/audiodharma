@@ -31,8 +31,7 @@ var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently u
 let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
 let CONFIG_JSON_NAME = "CONFIG00.JSON"
 
-let INCREMENTAL_ZIP_NAME = "TALKS_INCREMENTALG00.ZIP"
-let INCREMENTAL_JSON_NAME = "TALKS_INCREMENTALG00.JSON"
+var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up in loadData()
 
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
@@ -229,6 +228,17 @@ class Model {
         // get sangha activity and set up timer for updates
         downloadSanghaActivity()
         Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+        
+        // build the data directories on device, if needed
+        let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        print("DocumentPath: ", documentPath)
+        MP3_DOWNLOADS_PATH = documentPath + "/DOWNLOADS"
+        
+        do {
+            try FileManager.default.createDirectory(atPath: MP3_DOWNLOADS_PATH, withIntermediateDirectories: false, attributes: nil)
+        } catch let error as NSError {
+            print(error.localizedDescription);
+        }
     }
     
     
@@ -289,6 +299,7 @@ class Model {
             let time1 = Date.timeIntervalSinceReferenceDate
             
             if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
+                print("Failed UnZip: \(configZipPath)")
                 HTTPResultCode = 404
                 self.HTTPCallCompleted = true
                 return
@@ -676,24 +687,17 @@ class Model {
     func downloadMP3(talk: TalkData) {
         
         var requestURL: URL
-        var fileName: String
         var localPathMP3: String
         
-        let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        if let lastTerm = talk.URL.components(separatedBy: "/").last
-        {
-            fileName = lastTerm
-            localPathMP3 = documentPath + "/" + fileName
-        }
-        else {
-            return
-        }
-
+        // remote source path for file
         if USE_NATIVE_MP3PATHS == true {
             requestURL  = URL(string: URL_MP3_HOST + talk.URL)!
         } else {
-            requestURL  = URL(string: URL_MP3_HOST + "/" + fileName)!
+            requestURL  = URL(string: URL_MP3_HOST + "/" + talk.FileName)!
         }
+        
+        // local destination path for file
+        localPathMP3 = MP3_DOWNLOADS_PATH + "/" + talk.FileName
         
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -742,8 +746,14 @@ class Model {
                     print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
                     return
                 }
+                
+                //self.UserDownloads[talk.FileName]?.DownloadCompleted = true
+                self.UserDownloads[talk.FileName]?.DownloadCompleted = "YES"
+                self.saveUserDownloadData()
+
             }
             
+            self.refreshAllControllers()
         }
         task.resume()
     }
@@ -1238,7 +1248,6 @@ class Model {
             }
             talks  = talks.sorted(by: { $0.Date < $1.Date }).reversed()
             talkList =  [talks]
-
             
         case KEY_ALL_SERIES:
             talkList = KeyToTalks[content] ?? [[TalkData]]()
@@ -1537,9 +1546,10 @@ class Model {
     
     func setTalkAsDownload(talk: TalkData) {
         
-        UserDownloads[talk.FileName] = UserDownloadData(fileName: talk.FileName, downloadCompleted: false)
+        UserDownloads[talk.FileName] = UserDownloadData(fileName: talk.FileName, downloadCompleted: "NO")
         saveUserDownloadData()
         computeUserDownloadStats()
+        refreshAllControllers()
     }
     
     func unsetTalkAsDownload(talk: TalkData) {
@@ -1547,33 +1557,8 @@ class Model {
         UserDownloads[talk.FileName] = nil
         saveUserDownloadData()
         computeUserDownloadStats()
-    }
-    
-    func toggleTalkAsDownload(talk: TalkData, controller: UIViewController) {
-        
-        if isDownloadTalk(talk: talk) {
-            
-            unsetTalkAsDownload(talk: talk)
-            
-            let alert = UIAlertController(title: "Remove Talk Download?", message: "Downloaded talk will be removed from local storage and Downloads Album", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            
-            controller.present(alert, animated: true, completion: nil)
-            
-        } else {
-            
-            setTalkAsDownload(talk: talk)
-            
-            let alert = UIAlertController(title: "Download Talk To Your Device", message: "Talk MP3 will will be downloaded to your local device\n\nThis will run in background and take awhile\n\nThe talk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            
-            controller.present(alert, animated: true, completion: nil)
-            
-        }
         refreshAllControllers()
     }
-    
-    
     
     func isDownloadTalk(talk: TalkData) -> Bool {
         
@@ -1581,6 +1566,25 @@ class Model {
         return isDownload
         
     }
+    
+    func isCompletedDownloadTalk(talk: TalkData) -> Bool {
+        
+        var downloadCompleted = false
+        if let userDownload = UserDownloads[talk.FileName]  {
+            downloadCompleted = (userDownload.DownloadCompleted == "YES")
+        }
+        return downloadCompleted
+    }
+    
+    func isDownloadInProgress(talk: TalkData) -> Bool {
+        
+        var downloadInProgress = false
+        if let userDownload = UserDownloads[talk.FileName]  {
+            downloadInProgress = (userDownload.DownloadCompleted == "NO")
+        }
+        return downloadInProgress
+    }
+
     
     func addNoteToTalk(noteText: String, talkFileName: String) {
         

@@ -29,23 +29,10 @@ class MP3Player : NSObject {
     
     
     // MARK: Functions
-    func startTalk(talk: TalkData){
+    func startTalk(talkURL: URL){
         
-        //
-        // if we're using the native audiodharma style directory structure, then use the paths in the URL
-        // otherwise we must be using a flat directory, in which case we just use the filename
-        var url: URL
-        url  = URL(string: URL_MP3_HOST + talk.URL)!
-        if USE_NATIVE_MP3PATHS == false {
-            if let fileName = talk.URL.components(separatedBy: "/").last
-            {
-                url  = URL(string: URL_MP3_HOST + "/" + fileName)!
-            }
-        }
-        
-        print(url)
-
-        PlayerItem  = AVPlayerItem(url: url)
+        print(talkURL)
+        PlayerItem  = AVPlayerItem(url: talkURL)
         Player =  AVPlayer(playerItem : PlayerItem)
         Player.allowsExternalPlayback = true
         

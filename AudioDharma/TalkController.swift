@@ -230,8 +230,6 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         }
         return sectionTitle
     }
-    
-    
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -250,8 +248,14 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             cell.favoriteImage.isHidden = true
         }
 
+        var talkTitle: String
+        if TheDataModel.isDownloadInProgress(talk: talk) {
+            talkTitle = "DOWNLOADING: " + talk.Title
+        } else {
+            talkTitle = talk.Title
+        }
         
-        cell.title.text = talk.Title
+        cell.title.text = talkTitle
         cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
@@ -303,14 +307,22 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         }
  
         var downloadTalk : UITableViewRowAction
-        if TheDataModel.isFavoriteTalk(talk: talk) {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "Un-Download") { (action, indexPath) in
-                self.downloadTalk()
+        if TheDataModel.isDownloadTalk(talk: talk) {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
+                
+                let alert = UIAlertController(title: "Delete Downloaded Talk From Device?", message: "Talk will be deleted from local storage\n\n\n\nThe talk will be removed from your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
             
         } else {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
-                self.downloadTalk()
+                
+                let alert = UIAlertController(title: "Download Talk to Device?", message: "Talk will be downloaded to local storage\n\n\n\nThe downloadeded talk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
 
@@ -340,19 +352,17 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
 
+        TheDataModel.setTalkAsDownload(talk: talk)
         TheDataModel.downloadMP3(talk: talk)
-    }
-    
-    private func downloadTalk() {
-        
-        let alert = UIAlertController(title: "Download Talk to Device", message: "Downloading talks can take a long while.\n\nAre you sure you wish to continue?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: executeDownload))
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-        present(alert, animated: true, completion: nil)
     }
     
     private func deleteTalk() {
         
+        let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        
+        TheDataModel.unsetTalkAsDownload(talk: talk)
+        //TheDataModel.removeMP3(talk: talk)
+
     }
 
     private func favoriteTalk() {

@@ -53,6 +53,7 @@ class PlayTalkController: UIViewController {
     var OriginalTalkRow : Int = 0
     var PlayEntireAlbum: Bool = false
     var HaveReportedTalk: Bool = false
+    var PlayingDownloadedTalk: Bool = false
     
     var TalkList : [TalkData]!
     var CurrentTalk : TalkData!
@@ -208,6 +209,29 @@ class PlayTalkController: UIViewController {
     // MARK: Functions
     func startTalk() {
         
+        var talkURL: URL    // where the MP3 lives
+        
+        //
+        // if the talk is locally downloaded, play it off local storage
+        // otherwise:
+        //      if talk is an audiodharma file, play it with full path
+        //      otherwise use a flat path (meaning all the talk live in a flat directory)
+        if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) {
+        
+            PlayingDownloadedTalk = true
+            talkURL  = URL(string: "file:////" + MP3_DOWNLOADS_PATH + "/" + CurrentTalk.FileName)!
+        }
+        else {
+            PlayingDownloadedTalk = false
+            if USE_NATIVE_MP3PATHS == true {
+                talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.URL)!
+
+            } else {
+                talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.FileName)!
+            }
+        }
+        
+        print("PlayTalkController: playing ", talkURL)
         if TheDataModel.isInternetAvailable() == true
         {
             HaveReportedTalk = false
@@ -216,7 +240,7 @@ class PlayTalkController: UIViewController {
             talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
             enableActivityIcons()
             
-            MP3TalkPlayer.startTalk(talk: CurrentTalk)
+            MP3TalkPlayer.startTalk(talkURL: talkURL)
             startTalkTimer()
         
             updateTitleDisplay()
@@ -277,7 +301,14 @@ class PlayTalkController: UIViewController {
         talkProgressSlider.value = 0.0
 
         talkTitle.text = CurrentTalk.Title
-        metaInfo.text = CurrentTalk.Speaker + "   " + CurrentTalk.Date
+        
+        if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
+
+            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "   (PLAYING FROM LOCAL STORAGE)"
+
+        } else {
+            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date
+        }
         
         talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
         
