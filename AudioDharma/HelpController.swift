@@ -33,6 +33,7 @@ class HelpController: UIViewController {
     
         // remove spaces, as some keys are derived from names (Gil Fronsdal) and spaces don't work in asset lookup
         let helpKey = String(helpPage.characters.filter { !" ".characters.contains($0) })
+        print("Help Key: ", helpKey)
         if let asset = NSDataAsset(name: helpKey, bundle: Bundle.main) {
             do {
                 let json =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]

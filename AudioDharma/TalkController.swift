@@ -254,6 +254,9 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         } else {
             talkTitle = talk.Title
         }
+        if TheDataModel.isCompletedDownloadTalk(talk: talk) {
+            cell.title.textColor = BUTTON_DOWNLOAD_COLOR
+        }
         
         cell.title.text = talkTitle
         cell.speakerPhoto.image = talk.SpeakerPhoto
@@ -310,8 +313,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         if TheDataModel.isDownloadTalk(talk: talk) {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
                 
-                let alert = UIAlertController(title: "Delete Downloaded Talk From Device?", message: "Talk will be deleted from local storage\n\n\n\nThe talk will be removed from your Download Album", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -319,7 +322,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         } else {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
                 
-                let alert = UIAlertController(title: "Download Talk to Device?", message: "Talk will be downloaded to local storage\n\n\n\nThe downloadeded talk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -348,21 +351,27 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     }
     
     func executeDownload(alert: UIAlertAction!) {
-        print("execute download")
         
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+        
+        if let freeSpace = TheDataModel.deviceRemainingFreeSpaceInBytes() {
+            print("Freespace: ", freeSpace)
+            if (freeSpace < Int64(500000000)) {
+                let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                return
+            }
+        }
 
         TheDataModel.setTalkAsDownload(talk: talk)
         TheDataModel.downloadMP3(talk: talk)
     }
     
-    private func deleteTalk() {
+    private func deleteTalk(alert: UIAlertAction!) {
         
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
         
         TheDataModel.unsetTalkAsDownload(talk: talk)
-        //TheDataModel.removeMP3(talk: talk)
-
     }
 
     private func favoriteTalk() {

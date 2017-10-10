@@ -304,7 +304,7 @@ class PlayTalkController: UIViewController {
         
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
 
-            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "   (PLAYING FROM LOCAL STORAGE)"
+            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  (DOWNLOADED)"
 
         } else {
             metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date

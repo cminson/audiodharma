@@ -60,8 +60,11 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         startLocation = nil
         
+        // DEV TBD
         if TheDataModel.isInternetAvailable() == false {
             self.title = "Audio Dharma (Offline)"
+        } else {
+            self.title = "Audio Dharma "
         }
         
     }

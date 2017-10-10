@@ -86,6 +86,7 @@ let KEY_GIL_FRONSDAL = "Gil Fronsdal"
 let KEY_ANDREA_FELLA = "Andrea Fella"
 let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
 let KEY_ALL_SERIES = "KEY_ALL_SERIES"
+let KEY_DHARMETTES = "KEY_DHARMETTES"
 let KEY_RECOMMENDED_TALKS = "KEY_RECOMMENDED_TALKS"
 let KEY_NOTES = "KEY_NOTES"
 let KEY_USER_SHAREHISTORY = "KEY_USER_SHAREHISTORY"
@@ -100,10 +101,17 @@ let KEY_USER_TALKS = "KEY_USER_TALKS"
 let KEY_USEREDIT_TALKS = "KEY_USEREDIT_TALKS"
 let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
+/*
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
 let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
 let BUTTON_FAVORITE_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
-let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.96, blue:0.00, alpha:1.0)     // yellow
+let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
+ */
+
+let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
+let BUTTON_SHARE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
+let BUTTON_FAVORITE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)     // dark red
+let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark orange
 
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
@@ -212,7 +220,7 @@ class Model {
         UserFavorites = TheDataModel.loadUserFavoriteData()
         computeUserFavoritesStats()
         UserDownloads = TheDataModel.loadUserDownloadData()
-            computeUserDownloadStats()
+        computeUserDownloadStats()
 
 
         UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
@@ -352,9 +360,9 @@ class Model {
             self.UserFavorites = TheDataModel.loadUserFavoriteData()
             self.computeUserFavoritesStats()
             self.UserDownloads = TheDataModel.loadUserDownloadData()
+            TheDataModel.validateUserDownloadData()
             self.computeUserDownloadStats()
 
-            
             self.UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
             self.computeTalkHistoryStats()
             self.UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
@@ -439,6 +447,7 @@ class Model {
                 if series.characters.count > 1 {
                     
                     let seriesKey = "SERIES" + series
+
                     if self.KeyToTalks[seriesKey] == nil {
                         self.KeyToTalks[seriesKey] = [[TalkData]] ()
                         self.KeyToTalks[seriesKey]?.append([talkData])
@@ -1183,9 +1192,43 @@ class Model {
             return [String: UserDownloadData] ()
         }
     }
-
-
     
+    // ensure that no download records get persisted that are incomplete in any way
+    // I do this because asynchronous downloads might not complete, leaving systen in inconsistent state
+    // this boot-time check ensures data remains stable, hopefully
+    func validateUserDownloadData()  {
+        
+        // Prune:
+        // 1) Any entry that isn't marked complete
+        // 2) Any entry that doesn't have a file associated with it
+        var badDownloads: [UserDownloadData] = []
+        for ( _ , userDownload) in UserDownloads {
+            
+            if userDownload.DownloadCompleted != "YES" {
+                badDownloads.append(userDownload)
+            }
+            
+            let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
+            if FileManager.default.fileExists(atPath: localPathMP3) == false {
+                badDownloads.append(userDownload)
+
+            }
+        }
+        
+        for userDownload in badDownloads {
+            
+            UserDownloads[userDownload.FileName] = nil
+            let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
+            do {
+                try FileManager.default.removeItem(atPath: localPathMP3)
+            }
+            catch let error as NSError {
+                print("File remove error: \(error)")
+            }
+        }
+        saveUserDownloadData()
+    }
+
     func loadTalkHistoryData() -> [TalkHistoryData]  {
         
         if let talkHistory = NSKeyedUnarchiver.unarchiveObject(withFile: TalkHistoryData.ArchiveTalkHistoryURL.path)
@@ -1252,6 +1295,10 @@ class Model {
         case KEY_ALL_SERIES:
             talkList = KeyToTalks[content] ?? [[TalkData]]()
  
+        case KEY_DHARMETTES:    // Dharmettes are just a Series that we've promoted to top level
+            talkList = KeyToTalks["SERIESDharmettes"] ?? [[TalkData]]()
+        
+
         case KEY_ALLTALKS:
             talkList =  [AllTalks]
 
@@ -1555,6 +1602,14 @@ class Model {
     func unsetTalkAsDownload(talk: TalkData) {
         
         UserDownloads[talk.FileName] = nil
+        let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + talk.FileName
+        do {
+            try FileManager.default.removeItem(atPath: localPathMP3)
+        }
+        catch let error as NSError {
+            print("File remove error: \(error)")
+        }
+        
         saveUserDownloadData()
         computeUserDownloadStats()
         refreshAllControllers()
@@ -1699,6 +1754,16 @@ class Model {
         return totalSeconds
     }
     
-    
+    func deviceRemainingFreeSpaceInBytes() -> Int64? {
+        let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
+        guard
+            let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: documentDirectory),
+            let freeSize = systemAttributes[.systemFreeSize] as? NSNumber
+            else {
+                // something failed
+                return nil
+        }
+        return freeSize.int64Value
+    }
     
 }
