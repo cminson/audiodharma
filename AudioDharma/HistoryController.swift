@@ -217,23 +217,35 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         let talkHistory = FilteredTalkHistory[indexPath.row]
         if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
             
-            // display a note icon if a note exists
             if TheDataModel.isNotatedTalk(talk: talk) == true {
-                cell.noteImage.isHidden = false
+                cell.noteImage.image? = (cell.noteImage.image?.withRenderingMode(.alwaysTemplate))!
+                cell.noteImage.tintColor = BUTTON_NOTE_COLOR
+                
             } else {
-                cell.noteImage.isHidden = true
+                cell.noteImage.tintColor = UIColor.white
             }
             if TheDataModel.isFavoriteTalk(talk: talk) == true {
-                cell.favoriteImage.isHidden = false
+                cell.favoriteImage.image? = (cell.favoriteImage.image?.withRenderingMode(.alwaysTemplate))!
+                cell.favoriteImage.tintColor = BUTTON_FAVORITE_COLOR
+                
             } else {
-                cell.favoriteImage.isHidden = true
+                cell.favoriteImage.tintColor = UIColor.white
+            }
+
+            var talkTitle: String
+            if TheDataModel.isDownloadInProgress(talk: talk) {
+                talkTitle = "DOWNLOADING: " + talk.Title
+            } else {
+                talkTitle = talk.Title
+            }
+            if TheDataModel.isCompletedDownloadTalk(talk: talk) {
+                cell.title.textColor = BUTTON_DOWNLOAD_COLOR
             }
 
             cell.speakerPhoto.image = talk.SpeakerPhoto
             cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
-            cell.title.text = talk.Title
+            cell.title.text = talkTitle
             cell.date.text = talkHistory.DatePlayed
-            //cell.time.text = talkHistory.TimePlayed
             
             cell.city.text = talkHistory.CityPlayed
             cell.country.text = talkHistory.CountryPlayed
@@ -270,6 +282,11 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         SelectedRow = indexPath.row
         let talkHistory = FilteredTalkHistory[SelectedRow]
         
+        guard let talk = TheDataModel.getTalkForName(name: talkHistory.FileName)
+        else {
+            return nil
+        }
+        
         let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
             self.viewEditNote()
         }
@@ -278,26 +295,43 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             self.shareTalk()
         }
         
-        var favoriteTalk : UITableViewRowAction?
-        if let talk = TheDataModel.getTalkForName(name: talkHistory.FileName) {
-
-            if TheDataModel.isFavoriteTalk(talk: talk) {
-                favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
-                    self.unFavoriteTalk(talk: talk)
-                }
-            
-            } else {
-                favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
-                    self.favoriteTalk(talk: talk)
-                }
+        var favoriteTalk : UITableViewRowAction
+        if TheDataModel.isFavoriteTalk(talk: talk) {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
+                self.unFavoriteTalk(talk: talk)
             }
         }
-
+        else {
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
+                self.favoriteTalk(talk: talk)
+            }
+        }
+        var downloadTalk : UITableViewRowAction
+        if TheDataModel.isDownloadTalk(talk: talk) {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
+                
+                let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+        } else {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
+                
+                let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
-        favoriteTalk?.backgroundColor = BUTTON_FAVORITE_COLOR
+        favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
+        downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
         
-        return [shareTalk, noteTalk, favoriteTalk!]
+        return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
         
     }
         
@@ -308,14 +342,79 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
     
     
     //MARK: Menu Functions
+    func executeDownload(alert: UIAlertAction!) {
+        
+        if TheDataModel.isInternetAvailable() == false {
+            let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            return
+        }
+
+        
+        let talkHistory = FilteredTalkHistory[SelectedRow]
+
+        if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+        
+            let spaceRequired = talk.DurationInSeconds * MP3_BYTES_PER_SECOND
+        
+            // if (freeSpace < Int64(500000000)) {
+            if let freeSpace = TheDataModel.deviceRemainingFreeSpaceInBytes() {
+                print("Freespace: ", freeSpace, spaceRequired)
+                if (spaceRequired > freeSpace) {
+                    let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    return
+                }
+            }
+            
+            TheDataModel.setTalkAsDownload(talk: talk)
+            TheDataModel.downloadMP3(talk: talk)
+        }
+        
+    }
+    
+    private func deleteTalk(alert: UIAlertAction!) {
+        
+        let talkHistory = FilteredTalkHistory[SelectedRow]
+        
+        guard let talk = TheDataModel.getTalkForName(name: talkHistory.FileName)
+        else {
+            return 
+        }
+
+        TheDataModel.unsetTalkAsDownload(talk: talk)
+    }
+
+    
     private func favoriteTalk(talk: TalkData) {
         
         TheDataModel.setTalkAsFavorite(talk: talk)
+        
+        DispatchQueue.main.async(execute: {
+            self.reloadModel()
+            self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     private func unFavoriteTalk(talk: TalkData) {
         
         TheDataModel.unsetTalkAsFavorite(talk: talk)
+        
+        DispatchQueue.main.async(execute: {
+            self.reloadModel()
+            self.tableView.reloadData()
+            return
+        })
+        
+        let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 
     private func shareTalk() {

@@ -109,12 +109,14 @@ let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0) 
  */
 
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
-let BUTTON_SHARE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
-let BUTTON_FAVORITE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)     // dark red
-let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark orange
+let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
+let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)     // dark green
+let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
 
 let SECTION_BACKGROUND = UIColor.darkGray
 let SECTION_TEXT = UIColor.white
+
+let MP3_BYTES_PER_SECOND = 20000    // rough (high) estimate for how many bytes per second of MP3.  Used to estimate size of download files
 
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
@@ -304,17 +306,22 @@ class Model {
 
             // unzip zipped config back into json
             print("Unzipping: ", configZipPath)
-            let time1 = Date.timeIntervalSinceReferenceDate
+            //let time1 = Date.timeIntervalSinceReferenceDate
             
             if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
                 print("Failed UnZip: \(configZipPath)")
                 HTTPResultCode = 404
                 self.HTTPCallCompleted = true
+                let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.RootController?.present(alert, animated: true, completion: nil)
+                self.RootController?.reportModelLoaded()
+
                 return
             }
 
-            let time2 = Date.timeIntervalSinceReferenceDate
-            print("Zip time: ", time2 - time1)
+            //let time2 = Date.timeIntervalSinceReferenceDate
+            //print("Zip time: ", time2 - time1)
 
             // get our unzipped json from the local storage and process it
             var jsonData: Data!
@@ -371,9 +378,10 @@ class Model {
             
             ModelUpdateSemaphore.signal()
             // END CRITICAL SECTION
+            
             self.RootController?.reportModelLoaded()
-
             TheDataModel.refreshAllControllers()
+            
 
         }
         task.resume()
@@ -487,7 +495,7 @@ class Model {
                 let image = Album["image"] as? String ?? ""
                 let talkList = Album["talks"] as? [AnyObject] ?? []
                 let albumData =  AlbumData(title: title, content: content, section: section, image: image, date: "")
-                print("creating album: ", title)
+                //print("creating album: ", title)
                 
                 // store Album in the 2D AlbumSection array (section x Album)
                 if albumSectionPositionDict[section] == nil {
@@ -714,31 +722,41 @@ class Model {
         let session = URLSession.init(configuration: config)
         
         let urlRequest = URLRequest(url : requestURL)
+        print("Download From: ", urlRequest)
         
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
             
             
+            print("Download: response seen")
+
             var httpResponse: HTTPURLResponse
             if let valid_reponse = response {
                 httpResponse = valid_reponse as! HTTPURLResponse
             } else {
+                print("No HTTP Response")
+                TheDataModel.unsetTalkAsDownload(talk: talk)
                 return
             }
             //let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             if (statusCode != 200) {
+                print("Bad HTTP Response: ", statusCode)
+                TheDataModel.unsetTalkAsDownload(talk: talk)
                 return
             }
             
             // make sure we got data
             if let responseData = data {
                 if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    print("Bad HTTP Response. Low Count", responseData.count)
+                    TheDataModel.unsetTalkAsDownload(talk: talk)
                     HTTPResultCode = 404
                 }
             }
             else {
+                TheDataModel.unsetTalkAsDownload(talk: talk)
                 HTTPResultCode = 404
             }
             
@@ -753,13 +771,13 @@ class Model {
                 }
                 catch let error as NSError {
                     print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
+                    TheDataModel.unsetTalkAsDownload(talk: talk)
                     return
                 }
                 
                 //self.UserDownloads[talk.FileName]?.DownloadCompleted = true
                 self.UserDownloads[talk.FileName]?.DownloadCompleted = "YES"
                 self.saveUserDownloadData()
-
             }
             
             self.refreshAllControllers()

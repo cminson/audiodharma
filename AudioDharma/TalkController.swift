@@ -235,17 +235,20 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
-        
-        // display a note icon if a note exists
+ 
         if TheDataModel.isNotatedTalk(talk: talk) == true {
-            cell.noteImage.isHidden = false
+            cell.noteImage.image? = (cell.noteImage.image?.withRenderingMode(.alwaysTemplate))!
+            cell.noteImage.tintColor = BUTTON_NOTE_COLOR
+            
         } else {
-            cell.noteImage.isHidden = true
+            cell.noteImage.tintColor = UIColor.white
         }
         if TheDataModel.isFavoriteTalk(talk: talk) == true {
-            cell.favoriteImage.isHidden = false
+            cell.favoriteImage.image? = (cell.favoriteImage.image?.withRenderingMode(.alwaysTemplate))!
+            cell.favoriteImage.tintColor = BUTTON_FAVORITE_COLOR
+            
         } else {
-            cell.favoriteImage.isHidden = true
+            cell.favoriteImage.tintColor = UIColor.white
         }
 
         var talkTitle: String
@@ -322,6 +325,13 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         } else {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
                 
+                if TheDataModel.isInternetAvailable() == false {
+                    let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+
                 let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
@@ -354,15 +364,19 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
         
+        let spaceRequired = talk.DurationInSeconds * MP3_BYTES_PER_SECOND
+        
+        // if (freeSpace < Int64(500000000)) {
         if let freeSpace = TheDataModel.deviceRemainingFreeSpaceInBytes() {
-            print("Freespace: ", freeSpace)
-            if (freeSpace < Int64(500000000)) {
+            print("Freespace: ", freeSpace, spaceRequired)
+            if (spaceRequired > freeSpace) {
                 let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
-                return
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                present(alert, animated: true, completion: nil)
+               return
             }
         }
-
+        
         TheDataModel.setTalkAsDownload(talk: talk)
         TheDataModel.downloadMP3(talk: talk)
     }

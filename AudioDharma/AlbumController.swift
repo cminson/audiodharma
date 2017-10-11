@@ -38,7 +38,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         BusyIndicator.center = self.view.center
-        BusyIndicator.color = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)
+        BusyIndicator.color = UIColor(red:0.00, green:0.00, blue:0.00, alpha:1.0)
         self.view.addSubview(BusyIndicator)
         
         BusyIndicator.isHidden = false
@@ -60,12 +60,7 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         startLocation = nil
         
-        // DEV TBD
-        if TheDataModel.isInternetAvailable() == false {
-            self.title = "Audio Dharma (Offline)"
-        } else {
-            self.title = "Audio Dharma "
-        }
+        updateStateForNetwork()
         
     }
     
@@ -103,8 +98,19 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             self.BusyIndicator.stopAnimating()
         }
     }
-
     
+    // update UI to reflect network state
+    func updateStateForNetwork() {
+        
+        DispatchQueue.main.async {
+            if TheDataModel.isInternetAvailable() == false {
+                self.title = "Audio Dharma (Offline)"
+            } else {
+                self.title = "Audio Dharma "
+            }
+        }
+    }
+
 
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

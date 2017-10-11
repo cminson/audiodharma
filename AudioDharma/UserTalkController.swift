@@ -205,24 +205,36 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredTalks[indexPath.row]
 
-        // display a note icon if a note exists
         if TheDataModel.isNotatedTalk(talk: talk) == true {
-            cell.noteImage.isHidden = false
+            cell.noteImage.image? = (cell.noteImage.image?.withRenderingMode(.alwaysTemplate))!
+            cell.noteImage.tintColor = BUTTON_NOTE_COLOR
+            
         } else {
-            cell.noteImage.isHidden = true
+            cell.noteImage.tintColor = UIColor.white
         }
         if TheDataModel.isFavoriteTalk(talk: talk) == true {
-            cell.favoriteImage.isHidden = false
+            cell.favoriteImage.image? = (cell.favoriteImage.image?.withRenderingMode(.alwaysTemplate))!
+            cell.favoriteImage.tintColor = BUTTON_FAVORITE_COLOR
+            
         } else {
-            cell.favoriteImage.isHidden = true
+            cell.favoriteImage.tintColor = UIColor.white
         }
-
-
-        cell.title.text = talk.Title
+        
+        var talkTitle: String
+        if TheDataModel.isDownloadInProgress(talk: talk) {
+            talkTitle = "DOWNLOADING: " + talk.Title
+        } else {
+            talkTitle = talk.Title
+        }
+        if TheDataModel.isCompletedDownloadTalk(talk: talk) {
+            cell.title.textColor = BUTTON_DOWNLOAD_COLOR
+        }
+        
+        cell.title.text = talkTitle
         cell.speakerPhoto.image = talk.SpeakerPhoto
+        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
-
         return cell
     }
     
@@ -269,11 +281,10 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         SelectedRow = indexPath.row
         let talk = FilteredTalks[SelectedRow]
 
-        
-        let noteTalk = UITableViewRowAction(style: .normal, title: "Notes") { (action, indexPath) in
+        let noteTalk = UITableViewRowAction(style: .normal, title: "Note") { (action, indexPath) in
             self.viewEditNote()
         }
-
+        
         let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
             self.shareTalk()
         }
@@ -290,15 +301,72 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             }
         }
         
+        var downloadTalk : UITableViewRowAction
+        if TheDataModel.isDownloadTalk(talk: talk) {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
+                
+                let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+        } else {
+            downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
+                
+                if TheDataModel.isInternetAvailable() == false {
+                    let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                
+                let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
+        downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
         
-        return [shareTalk, noteTalk, favoriteTalk]
+        return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
     }
     
     
     //MARK: Menu Functions
+    func executeDownload(alert: UIAlertAction!) {
+        
+        let talk = FilteredTalks[SelectedRow]
+
+        let spaceRequired = talk.DurationInSeconds * MP3_BYTES_PER_SECOND
+        
+        // if (freeSpace < Int64(500000000)) {
+        if let freeSpace = TheDataModel.deviceRemainingFreeSpaceInBytes() {
+            print("Freespace: ", freeSpace, spaceRequired)
+            if (spaceRequired > freeSpace) {
+                let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                present(alert, animated: true, completion: nil)
+                return
+            }
+        }
+        
+        TheDataModel.setTalkAsDownload(talk: talk)
+        TheDataModel.downloadMP3(talk: talk)
+    }
+    
+    private func deleteTalk(alert: UIAlertAction!) {
+        
+        let talk = FilteredTalks[SelectedRow]
+
+        TheDataModel.unsetTalkAsDownload(talk: talk)
+    }
+
     private func favoriteTalk() {
         
         let talk = FilteredTalks[SelectedRow]
