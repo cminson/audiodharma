@@ -310,6 +310,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         if TheDataModel.isDownloadTalk(talk: talk) {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
                 
+  
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
@@ -318,6 +319,13 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             
         } else {
             downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
+                
+                if TheDataModel.isInternetAvailable() == false {
+                    let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
                 
                 let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))

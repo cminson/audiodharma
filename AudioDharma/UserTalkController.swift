@@ -45,7 +45,8 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
 
 
-        //self.tableView.isEditing = true
+        TheDataModel.UserTalkController = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

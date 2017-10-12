@@ -1,3 +1,3 @@
 {
-	"text":"This is the talk player screen. Select the start button to begin the talk. Select the Play Entire Album checkbox if you wish to play all talks in the album in sequence.\n\nThe slider at the bottom is your volume control. The optional widget next to it is visible when there are other stereo systems on your local network."
+	"text":"This is the talk player screen. Select the start button to begin the talk. Select the Play Talks Serially checkbox if you wish to play all talks in the album in sequence.\n\nThe slider at the bottom is your volume control. The optional widget next to it is visible when there are other stereo systems on your local network."
 }

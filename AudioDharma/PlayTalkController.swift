@@ -19,7 +19,7 @@ class PlayTalkController: UIViewController {
     
     // MARK: Outlets
     @IBOutlet weak var talkTitle: UILabel!
-    @IBOutlet weak var talkDuration: UILabel!
+    //@IBOutlet weak var talkDuration: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
@@ -232,7 +232,7 @@ class PlayTalkController: UIViewController {
         }
         
         print("PlayTalkController: playing ", talkURL)
-        if TheDataModel.isInternetAvailable() == true
+        if TheDataModel.isInternetAvailable() == true || PlayingDownloadedTalk == true
         {
             HaveReportedTalk = false
             TalkPlayerStatus = .LOADING
@@ -302,12 +302,11 @@ class PlayTalkController: UIViewController {
 
         talkTitle.text = CurrentTalk.Title
         
+        let duration = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalk.DurationInSeconds)
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
-
-            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  (DOWNLOADED)"
-
+            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  " + duration + "  [DOWNLOADED]"
         } else {
-            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date
+            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  " + duration
         }
         
         talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
@@ -456,9 +455,7 @@ class PlayTalkController: UIViewController {
             // note these may be different from what is stated in the (often inaccurate) config!
             let currentTime = MP3TalkPlayer.getCurrentTimeInSeconds()
             let duration = MP3TalkPlayer.getDurationInSeconds()
-        
-            talkDuration.text = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: duration)
-        
+            
             let fractionTimeCompleted = Float(currentTime) / Float(duration)
             talkProgressSlider.value = fractionTimeCompleted
             

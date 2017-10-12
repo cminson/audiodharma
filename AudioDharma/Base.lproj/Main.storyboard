@@ -476,37 +476,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play Talks Serially" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
-                                <rect key="frame" x="146" y="328" width="158" height="21"/>
+                                <rect key="frame" x="157.66666666666669" y="328" width="134.66666666666669" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="BMv-Kt-uBL"/>
-                                    <constraint firstAttribute="width" constant="158" id="ffK-dG-XwS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Bo-q1-iOD">
-                                <rect key="frame" x="0.0" y="289" width="60" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="EnH-5B-mGh"/>
-                                    <constraint firstAttribute="width" constant="60" id="uNY-sx-cc8"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPu-63-wa0">
-                                <rect key="frame" x="354" y="288" width="60" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="fsU-Ko-p4S"/>
-                                    <constraint firstAttribute="width" constant="60" id="i2C-XF-VyB"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
-                                <rect key="frame" x="68" y="273" width="278" height="31"/>
+                                <rect key="frame" x="38" y="273" width="338" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="etY-1H-7CP"/>
                                 </constraints>
@@ -523,7 +502,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
-                                <rect key="frame" x="119" y="329" width="20" height="20"/>
+                                <rect key="frame" x="130.66666666666666" y="329" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="7Cc-99-ydm"/>
                                     <constraint firstAttribute="width" constant="20" id="8Yz-0a-AZB"/>
@@ -553,27 +532,23 @@
                             <constraint firstItem="9v7-dR-FHP" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="50" id="7za-1U-3w2"/>
                             <constraint firstItem="0wV-Lf-pSV" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="EHQ-1d-pw3"/>
                             <constraint firstItem="jK6-86-xJw" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" constant="18" id="FE1-Nq-Ua6"/>
-                            <constraint firstItem="3Bo-q1-iOD" firstAttribute="top" secondItem="9v7-dR-FHP" secondAttribute="bottom" constant="54" id="FRX-f0-dMk"/>
                             <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="10" id="JU7-ud-j2o"/>
                             <constraint firstItem="0wV-Lf-pSV" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="53" id="LWi-ds-eJS"/>
+                            <constraint firstItem="yrx-eQ-maI" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leadingMargin" constant="20" id="RXp-vv-5x7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yrx-eQ-maI" secondAttribute="trailing" constant="20" id="Rmw-1a-Myd"/>
                             <constraint firstItem="qSA-PQ-5ij" firstAttribute="top" secondItem="c6Q-Eg-NEA" secondAttribute="bottom" constant="10" id="XMw-ar-lX8"/>
                             <constraint firstItem="241-xZ-KHi" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="50" id="XZt-rW-xUd"/>
                             <constraint firstItem="Gr4-Hw-MTd" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="26" id="Zj4-49-Pxr"/>
                             <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="top" secondItem="a0d-uk-4Ce" secondAttribute="bottom" constant="15" id="bHc-4J-Ue9"/>
                             <constraint firstItem="yrx-eQ-maI" firstAttribute="top" secondItem="q1y-Ws-35k" secondAttribute="bottom" constant="23" id="cJJ-mn-Gb9"/>
                             <constraint firstAttribute="trailing" secondItem="f1H-n6-dSw" secondAttribute="trailing" id="deb-G2-COP"/>
-                            <constraint firstItem="3Bo-q1-iOD" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" id="esL-Df-jGU"/>
-                            <constraint firstAttribute="trailing" secondItem="jPu-63-wa0" secondAttribute="trailing" id="fPu-WB-qJY"/>
                             <constraint firstAttribute="trailing" secondItem="Qfz-Mq-WgQ" secondAttribute="trailing" constant="10" id="hZu-ZP-Ypg"/>
-                            <constraint firstItem="yrx-eQ-maI" firstAttribute="leading" secondItem="3Bo-q1-iOD" secondAttribute="trailing" constant="10" id="iEW-ia-aBd"/>
                             <constraint firstItem="q1y-Ws-35k" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="iXx-UR-fs5"/>
                             <constraint firstItem="q1y-Ws-35k" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="35" id="knP-ed-WtX"/>
                             <constraint firstItem="241-xZ-KHi" firstAttribute="leading" secondItem="q1y-Ws-35k" secondAttribute="trailing" constant="50" id="mLT-aX-7Op"/>
-                            <constraint firstItem="jPu-63-wa0" firstAttribute="top" secondItem="241-xZ-KHi" secondAttribute="bottom" constant="53" id="nZr-P9-Zu5"/>
                             <constraint firstItem="jK6-86-xJw" firstAttribute="leading" secondItem="Gr4-Hw-MTd" secondAttribute="trailing" constant="7" id="ooe-9S-h75"/>
                             <constraint firstItem="jK6-86-xJw" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="25" id="oql-c1-cl2"/>
                             <constraint firstItem="f1H-n6-dSw" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" id="tCf-rm-5ks"/>
-                            <constraint firstItem="jPu-63-wa0" firstAttribute="leading" secondItem="yrx-eQ-maI" secondAttribute="trailing" constant="10" id="v1M-c6-uqN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NAM-11-dk1">
@@ -592,7 +567,6 @@
                         <outlet property="buttonShare" destination="D7D-Bq-4v3" id="WZG-Zf-PpY"/>
                         <outlet property="metaInfo" destination="f1H-n6-dSw" id="tC2-fZ-bBw"/>
                         <outlet property="playTalkSeriesButton" destination="Gr4-Hw-MTd" id="V37-5c-hfQ"/>
-                        <outlet property="talkDuration" destination="jPu-63-wa0" id="2on-0J-6fR"/>
                         <outlet property="talkFastBackward" destination="9v7-dR-FHP" id="nxq-Fh-JEG"/>
                         <outlet property="talkFastForward" destination="241-xZ-KHi" id="lKg-zQ-nVh"/>
                         <outlet property="talkPlayPauseButton" destination="q1y-Ws-35k" id="8Rj-2M-g2J"/>
@@ -698,7 +672,7 @@
             </objects>
             <point key="canvasLocation" x="8214.4927536231899" y="1241.5760869565217"/>
         </scene>
-        <!--Audiodharma Help-->
+        <!--Audio Dharma Help-->
         <scene sceneID="tub-99-E3a">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="w6J-RG-PtL" customClass="HelpController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -728,7 +702,7 @@
                             <constraint firstAttribute="trailing" secondItem="CCM-ef-83Y" secondAttribute="trailing" constant="5" id="zOs-vW-RfJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Audiodharma Help" id="ocm-0n-svo">
+                    <navigationItem key="navigationItem" title="Audio Dharma Help" id="ocm-0n-svo">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="JcY-xK-5Nd">
                             <connections>
                                 <action selector="dismissDialog:" destination="w6J-RG-PtL" id="71I-dv-Tcm"/>
@@ -968,9 +942,9 @@
         <image name="tri_right_x" width="170" height="85"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eFV-Q2-tuz"/>
+        <segue reference="7DY-Wt-lPH"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="ZGd-hh-xhM"/>
+        <segue reference="eYb-A4-FTX"/>
         <segue reference="30e-7l-0p1"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="TRr-vA-5tZ"/>

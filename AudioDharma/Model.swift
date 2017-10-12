@@ -158,6 +158,7 @@ class Model {
     var RootController: AlbumController?
     var CommunityController: HistoryController?
     var TalkController: TalkController?
+    var UserTalkController: UserTalkController?
 
     var ConfigLoadCompleted: Bool = false
     var HTTPCallCompleted: Bool = false
@@ -893,6 +894,12 @@ class Model {
                 controller.reloadModel()
                 controller.tableView.reloadData()
             }
+            
+            if let controller = self.UserTalkController {
+                controller.reloadModel()
+                controller.tableView.reloadData()
+            }
+
         }
     }
     
