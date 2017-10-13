@@ -224,7 +224,7 @@ class PlayTalkController: UIViewController {
         else {
             PlayingDownloadedTalk = false
             if USE_NATIVE_MP3PATHS == true {
-                talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.URL)!
+                talkURL  = URL(string: URL_MP3_HOST +  CurrentTalk.URL)!
 
             } else {
                 talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.FileName)!

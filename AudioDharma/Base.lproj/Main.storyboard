@@ -643,7 +643,7 @@
                                     </attributedString>
                                 </state>
                                 <connections>
-                                    <action selector="launchTutorial:" destination="w6J-RG-PtL" eventType="touchUpInside" id="lbA-Mp-0fe"/>
+                                    <action selector="gotoDonationPage:" destination="2bZ-Wd-tyk" eventType="touchUpInside" id="qvY-sh-Qwa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -753,8 +753,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-Wj-WqW">
-                                <rect key="frame" x="164.33333333333334" y="94" width="85.333333333333314" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-Wj-WqW">
+                                <rect key="frame" x="185.66666666666666" y="94" width="43" height="24"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

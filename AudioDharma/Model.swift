@@ -160,8 +160,6 @@ class Model {
     var TalkController: TalkController?
     var UserTalkController: UserTalkController?
 
-    var ConfigLoadCompleted: Bool = false
-    var HTTPCallCompleted: Bool = false
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
     
@@ -197,7 +195,7 @@ class Model {
         
         downloadAndConfigure(path: URL_CONFIGURATION)
         
-        #if DEV
+#if DEV
         if let asset = NSDataAsset(name: "TALKS_BASELINE00", bundle: Bundle.main) {
             do {
                 let jsonDict =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]
@@ -230,7 +228,7 @@ class Model {
         computeTalkHistoryStats()
         UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
         computeShareHistoryStats()
-        #endif
+#endif
         
         //ModelUpdateSemaphore.signal()
         // END CRITICAL SECTION
@@ -312,7 +310,6 @@ class Model {
             if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
                 print("Failed UnZip: \(configZipPath)")
                 HTTPResultCode = 404
-                self.HTTPCallCompleted = true
                 let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.RootController?.present(alert, animated: true, completion: nil)
@@ -332,7 +329,6 @@ class Model {
             catch let error as NSError {
                 print("Failed getting URL: \(configJSONPath), Error: " + error.localizedDescription)
                 HTTPResultCode = 404
-                self.HTTPCallCompleted = true
                 return
             }
                         
@@ -393,6 +389,7 @@ class Model {
         if let config = jsonDict["config"] {
             URL_MP3_HOST = config["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
             USE_NATIVE_MP3PATHS = config["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
+            print("User Native MP3 Paths: ", USE_NATIVE_MP3PATHS)
         
             ACTIVITY_UPDATE_INTERVAL = config["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
             URL_REPORT_ACTIVITY = config["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
@@ -761,7 +758,7 @@ class Model {
                 HTTPResultCode = 404
             }
             
-            // if got a good response, store off  file locally
+            // if got a good response, store off file locally
             if HTTPResultCode == 200 {
                 
                 print("Storing MP3 To: ", localPathMP3)
@@ -776,7 +773,6 @@ class Model {
                     return
                 }
                 
-                //self.UserDownloads[talk.FileName]?.DownloadCompleted = true
                 self.UserDownloads[talk.FileName]?.DownloadCompleted = "YES"
                 self.saveUserDownloadData()
             }

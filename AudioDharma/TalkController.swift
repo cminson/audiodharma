@@ -302,12 +302,12 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "Un-Favorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "UnFavor") { (action, indexPath) in
                 self.unFavoriteTalk()
             }
             
         } else {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favor") { (action, indexPath) in
                 self.favoriteTalk()
             }
         }
@@ -338,12 +338,14 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 self.present(alert, animated: true, completion: nil)
             }
         }
+        
 
- 
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
+        
+        
 
         return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
     }
