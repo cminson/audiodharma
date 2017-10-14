@@ -62,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("applicationDidBecomeActive")
         TheDataModel.RootController?.updateStateForNetwork()
+        TheDataModel.DownloadInProgress = false
 
 
     }

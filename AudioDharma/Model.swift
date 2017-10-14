@@ -159,6 +159,8 @@ class Model {
     var CommunityController: HistoryController?
     var TalkController: TalkController?
     var UserTalkController: UserTalkController?
+    
+    var DownloadInProgress = false
 
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
@@ -323,7 +325,7 @@ class Model {
 
             // get our unzipped json from the local storage and process it
             var jsonData: Data!
-            do {
+            do {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
                 jsonData = try Data(contentsOf: URL(fileURLWithPath: configJSONPath))
             }
             catch let error as NSError {
@@ -704,6 +706,8 @@ class Model {
         var requestURL: URL
         var localPathMP3: String
         
+        DownloadInProgress = true
+        
         // remote source path for file
         if USE_NATIVE_MP3PATHS == true {
             requestURL  = URL(string: URL_MP3_HOST + talk.URL)!
@@ -734,6 +738,7 @@ class Model {
             } else {
                 print("No HTTP Response")
                 TheDataModel.unsetTalkAsDownload(talk: talk)
+                TheDataModel.DownloadInProgress = false
                 return
             }
             //let httpResponse = response as! HTTPURLResponse
@@ -742,6 +747,7 @@ class Model {
             if (statusCode != 200) {
                 print("Bad HTTP Response: ", statusCode)
                 TheDataModel.unsetTalkAsDownload(talk: talk)
+                TheDataModel.DownloadInProgress = false
                 return
             }
             
@@ -770,14 +776,18 @@ class Model {
                 catch let error as NSError {
                     print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
                     TheDataModel.unsetTalkAsDownload(talk: talk)
+                    TheDataModel.DownloadInProgress = false
                     return
                 }
                 
                 self.UserDownloads[talk.FileName]?.DownloadCompleted = "YES"
                 self.saveUserDownloadData()
+                TheDataModel.DownloadInProgress = false
             }
             
             self.refreshAllControllers()
+            TheDataModel.DownloadInProgress = false
+
         }
         task.resume()
     }
@@ -1246,6 +1256,30 @@ class Model {
             catch let error as NSError {
                 print("File remove error: \(error)")
             }
+        }
+        
+        // remove orphan files
+        do {
+            // Get the directory contents urls (including subfolders urls)
+            let directoryContents = try FileManager.default.contentsOfDirectory(at: URL(string: MP3_DOWNLOADS_PATH)!, includingPropertiesForKeys: nil, options: [])
+            //let mp3FileURLS = directoryContents.filter{ $0.pathExtension == "mp3" }
+            for mp3FileURL in directoryContents {
+                
+                if let fileName = mp3FileURL.path.components(separatedBy: "/").last {
+                    if UserDownloads[fileName] == nil {
+                        do {
+                            try FileManager.default.removeItem(atPath: mp3FileURL.path)
+                        }
+                        catch let error as NSError {
+                            print("File remove error: \(error)")
+                        }
+
+                    }
+                }
+            }
+            
+        } catch {
+            print(error.localizedDescription)
         }
         saveUserDownloadData()
     }

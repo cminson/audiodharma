@@ -292,29 +292,29 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         SelectedRow = indexPath.row
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
 
-        let noteTalk = UITableViewRowAction(style: .normal, title: "Note") { (action, indexPath) in
+        let noteTalk = UITableViewRowAction(style: .normal, title: "note") { (action, indexPath) in
             self.viewEditNote()
         }
         
-        let shareTalk = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+        let shareTalk = UITableViewRowAction(style: .normal, title: "share") { (action, indexPath) in
             self.shareTalk()
         }
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "UnFavor") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nfavorite") { (action, indexPath) in
                 self.unFavoriteTalk()
             }
             
         } else {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "Favor") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "favorite") { (action, indexPath) in
                 self.favoriteTalk()
             }
         }
  
         var downloadTalk : UITableViewRowAction
         if TheDataModel.isDownloadTalk(talk: talk) {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "Remove") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "remove\ndownload") { (action, indexPath) in
                 
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
@@ -323,10 +323,18 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
             }
             
         } else {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "Download") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "download") { (action, indexPath) in
+                
                 
                 if TheDataModel.isInternetAvailable() == false {
                     let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                
+                if TheDataModel.DownloadInProgress {
+                    let alert = UIAlertController(title: "Another Download In Progress", message: "Only one download can run at at time.\n\nPlease wait until previous download is completed.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                     return
