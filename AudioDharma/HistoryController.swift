@@ -221,19 +221,18 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
             
             if TheDataModel.isNotatedTalk(talk: talk) == true {
-                cell.noteImage.image? = (cell.noteImage.image?.withRenderingMode(.alwaysTemplate))!
-                cell.noteImage.tintColor = BUTTON_NOTE_COLOR
-                
-            } else {
-                cell.noteImage.tintColor = UIColor.white
+                cell.noteImage.isHidden = false
+            }
+            else {
+                cell.noteImage.isHidden = true
             }
             if TheDataModel.isFavoriteTalk(talk: talk) == true {
-                cell.favoriteImage.image? = (cell.favoriteImage.image?.withRenderingMode(.alwaysTemplate))!
-                cell.favoriteImage.tintColor = BUTTON_FAVORITE_COLOR
-                
-            } else {
-                cell.favoriteImage.tintColor = UIColor.white
+                cell.favoriteImage.isHidden = false
             }
+            else {
+                cell.favoriteImage.isHidden = true
+            }
+
             
             cell.title.textColor = MAIN_FONT_COLOR
             cell.country.textColor = SECONDARY_FONT_COLOR

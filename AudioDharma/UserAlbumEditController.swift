@@ -55,12 +55,14 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         
         // we're adding a new record (vs editing an existing)
         if AddingNewAlbum == true {
-            
+            /*
             let count : UInt32 = UInt32(UserAlbumImageList.count - 1)
             let randomNum = Int(arc4random_uniform(count))
             let libraryImage = UserAlbumImageList[randomNum]
+             */
+            let libraryImage = UIImage(named: "albumdefault")
             
-            UserAlbum = UserAlbumData(title: "Album Title", image: libraryImage)
+            UserAlbum = UserAlbumData(title: "Album Title", image: libraryImage!)
         }
 
         if let title = UserAlbum?.Title {
@@ -72,7 +74,7 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         if let image = UserAlbum?.Image {
             userImageView.image = image
         } else {
-            userImageView.image = UIImage(named: "flower01")
+            userImageView.image = UIImage(named: "albumdefault")
             
         }
         
@@ -97,7 +99,7 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         super.prepare(for: segue, sender: sender)
          
         UserAlbum?.Title = userAlbumTitle.text ?? ""
-        UserAlbum?.Image = userImageView.image ?? UIImage(named: "flower01")!
+        UserAlbum?.Image = userImageView.image ?? UIImage(named: "albumdefault")!
         
         switch(segue.identifier ?? "") {
         
@@ -115,7 +117,7 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
          default:
             
             UserAlbum?.Title = userAlbumTitle.text ?? ""
-            UserAlbum?.Image = userImageView.image ?? UIImage(named: "flower01")!
+            UserAlbum?.Image = userImageView.image ?? UIImage(named: "albumdefault")!
         
         //print("Modified UserAlbum: ", UserAlbum?.Title, UserAlbum?.Content)
         }

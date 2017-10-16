@@ -423,30 +423,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
-                                <rect key="frame" x="10" y="75" width="394" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
+                                <rect key="frame" x="5" y="76" width="404" height="20"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speaker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gns-4l-MaR" userLabel="Speaker">
-                                <rect key="frame" x="10" y="100" width="394" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speaker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gns-4l-MaR" userLabel="Speaker">
+                                <rect key="frame" x="5" y="101" width="404" height="20"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="metainfo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1H-n6-dSw">
-                                <rect key="frame" x="0.0" y="125" width="414" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="metainfo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1H-n6-dSw">
+                                <rect key="frame" x="5" y="125" width="404" height="14"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="241-xZ-KHi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="241-xZ-KHi">
                                 <rect key="frame" x="292" y="181" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="A7W-dw-S1b"/>
+                                    <constraint firstAttribute="width" constant="40" id="GuH-nh-Wzg"/>
+                                </constraints>
                                 <state key="normal" backgroundImage="tri_right_x"/>
                                 <connections>
                                     <action selector="talkFastForwards:" destination="Bai-ex-z2B" eventType="touchUpInside" id="xcR-HB-h2h"/>
@@ -456,12 +456,15 @@
                                 <rect key="frame" x="192" y="198" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
                                 <rect key="frame" x="172" y="166" width="70" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
                                 </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="1Q2-7M-hdY"/>
+                                    <constraint firstAttribute="width" constant="70" id="iq6-wQ-Tfn"/>
+                                </constraints>
                                 <state key="normal" title=" " backgroundImage="tri_right">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -469,44 +472,46 @@
                                     <action selector="playOrPauseTalk:" destination="Bai-ex-z2B" eventType="touchUpInside" id="iJJ-Os-b44"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Play talks in sequence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play talks in sequence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
                                 <rect key="frame" x="140.66666666666669" y="328" width="168.66666666666669" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
-                                <rect key="frame" x="38" y="263" width="338" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
+                                <rect key="frame" x="23" y="263" width="368" height="31"/>
                                 <connections>
                                     <action selector="talkProgressSliderChanged:" destination="Bai-ex-z2B" eventType="valueChanged" id="Mrr-li-9Qa"/>
                                 </connections>
                             </slider>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
-                                <rect key="frame" x="82" y="652" width="250" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
+                                <rect key="frame" x="25" y="652" width="364" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
                                 <rect key="frame" x="113.66666666666666" y="329" width="19.999999999999972" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="2ar-O3-BdT"/>
+                                    <constraint firstAttribute="height" constant="20" id="5oD-Bk-ohE"/>
+                                </constraints>
                                 <state key="normal" image="checkboxoff"/>
                                 <connections>
                                     <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-dR-FHP">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-dR-FHP">
                                 <rect key="frame" x="82" y="181" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="a84-Vf-jNR"/>
+                                    <constraint firstAttribute="height" constant="40" id="ym8-iC-Lky"/>
+                                </constraints>
                                 <state key="normal" backgroundImage="tri_left_x"/>
                                 <connections>
                                     <action selector="talkFastBackwards:" destination="Bai-ex-z2B" eventType="touchUpInside" id="LSc-am-hC1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc7-4i-Xfm">
-                                <rect key="frame" x="163" y="369" width="88" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc7-4i-Xfm">
+                                <rect key="frame" x="168.66666666666666" y="359" width="77" height="30"/>
                                 <state key="normal" title="Transcripts"/>
                                 <connections>
                                     <action selector="displayTalkTranscript:" destination="Bai-ex-z2B" eventType="touchUpInside" id="pi6-mD-oid"/>
@@ -514,6 +519,40 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nc7-4i-Xfm" firstAttribute="top" secondItem="jK6-86-xJw" secondAttribute="bottom" constant="10" id="3Qq-Sy-esq"/>
+                            <constraint firstItem="9v7-dR-FHP" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="42" id="5FM-xH-u8E"/>
+                            <constraint firstItem="241-xZ-KHi" firstAttribute="leading" secondItem="q1y-Ws-35k" secondAttribute="trailing" constant="50" id="5rc-e2-98D"/>
+                            <constraint firstAttribute="trailing" secondItem="Qfz-Mq-WgQ" secondAttribute="trailing" constant="5" id="APD-Gx-Uq5"/>
+                            <constraint firstItem="gns-4l-MaR" firstAttribute="top" secondItem="Qfz-Mq-WgQ" secondAttribute="bottom" constant="5" id="DWb-HC-rSJ"/>
+                            <constraint firstItem="nc7-4i-Xfm" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="Eem-KK-jil"/>
+                            <constraint firstItem="f1H-n6-dSw" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="5" id="Eny-B9-h5n"/>
+                            <constraint firstItem="q1y-Ws-35k" firstAttribute="leading" secondItem="9v7-dR-FHP" secondAttribute="trailing" constant="50" id="IrO-kb-qMi"/>
+                            <constraint firstItem="qSA-PQ-5ij" firstAttribute="top" secondItem="c6Q-Eg-NEA" secondAttribute="bottom" constant="10" id="J0n-f0-nLP"/>
+                            <constraint firstItem="q1y-Ws-35k" firstAttribute="leading" secondItem="9v7-dR-FHP" secondAttribute="trailing" constant="50" id="JNu-gc-kfL"/>
+                            <constraint firstItem="f1H-n6-dSw" firstAttribute="top" secondItem="gns-4l-MaR" secondAttribute="bottom" constant="4" id="KoF-G1-SSz"/>
+                            <constraint firstItem="q1y-Ws-35k" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="27" id="N53-Wq-oT7"/>
+                            <constraint firstItem="jK6-86-xJw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gr4-Hw-MTd" secondAttribute="trailing" constant="8" symbolic="YES" id="Nze-Se-aRC"/>
+                            <constraint firstItem="yrx-eQ-maI" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leadingMargin" constant="5" id="RHW-Pt-hfp"/>
+                            <constraint firstItem="jK6-86-xJw" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="35" id="RYO-D0-1vP"/>
+                            <constraint firstItem="Gr4-Hw-MTd" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="36" id="SZH-Fm-Jk9"/>
+                            <constraint firstItem="c6Q-Eg-NEA" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leadingMargin" constant="5" id="TvJ-dT-egl"/>
+                            <constraint firstAttribute="trailing" secondItem="jK6-86-xJw" secondAttribute="trailing" constant="104.66666666666663" id="U34-zd-n0T"/>
+                            <constraint firstAttribute="trailing" secondItem="f1H-n6-dSw" secondAttribute="trailing" constant="5" id="YHx-dz-fzM"/>
+                            <constraint firstItem="9v7-dR-FHP" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="42" id="ZCV-ml-nVt"/>
+                            <constraint firstAttribute="trailing" secondItem="gns-4l-MaR" secondAttribute="trailing" constant="5" id="Zp6-C7-HvG"/>
+                            <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="5" id="b5R-3c-H96"/>
+                            <constraint firstItem="241-xZ-KHi" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="42" id="bin-EG-7pl"/>
+                            <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="top" secondItem="a0d-uk-4Ce" secondAttribute="bottom" constant="12" id="g8F-bP-XTn"/>
+                            <constraint firstItem="yrx-eQ-maI" firstAttribute="top" secondItem="q1y-Ws-35k" secondAttribute="bottom" constant="27" id="h6Z-Dg-r4q"/>
+                            <constraint firstItem="gns-4l-MaR" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="5" id="hrp-QP-LBU"/>
+                            <constraint firstItem="yrx-eQ-maI" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="kkz-mW-SCP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yrx-eQ-maI" secondAttribute="trailing" constant="5" id="qsw-tk-xRt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="c6Q-Eg-NEA" secondAttribute="trailing" constant="5" id="rTz-oA-uQf"/>
+                            <constraint firstItem="q1y-Ws-35k" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="t6i-2Q-n1I"/>
+                            <constraint firstItem="c6Q-Eg-NEA" firstAttribute="top" secondItem="nc7-4i-Xfm" secondAttribute="bottom" constant="263" id="trP-iT-q84"/>
+                            <constraint firstItem="q1y-Ws-35k" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="vrD-sa-c4P"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NAM-11-dk1">
                         <barButtonItem key="leftBarButtonItem" title="Done" id="2dw-Je-gHw">
