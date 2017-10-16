@@ -161,7 +161,7 @@
             </objects>
             <point key="canvasLocation" x="1614.4927536231885" y="941.57608695652186"/>
         </scene>
-        <!--Personal Albums-->
+        <!--Custom Albums-->
         <scene sceneID="wMU-4h-6ek">
             <objects>
                 <tableViewController id="1IO-y8-7fd" customClass="UserAlbumsController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -174,7 +174,7 @@
                             <outlet property="delegate" destination="1IO-y8-7fd" id="Gqy-jX-zwe"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Personal Albums" id="y9U-uN-nQd">
+                    <navigationItem key="navigationItem" title="Custom Albums" id="y9U-uN-nQd">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="khZ-eG-tYd">
                             <connections>
                                 <segue destination="Kw1-KX-Agt" kind="presentation" identifier="DISPLAY_ADD_ALBUM" id="ZR1-MZ-juM"/>
@@ -204,7 +204,7 @@
             </objects>
             <point key="canvasLocation" x="317.39130434782612" y="1612.5000000000002"/>
         </scene>
-        <!--Your Talks-->
+        <!--Talks-->
         <scene sceneID="bNN-8u-svm">
             <objects>
                 <tableViewController id="0GJ-yc-Oar" customClass="UserTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -217,7 +217,7 @@
                             <outlet property="delegate" destination="0GJ-yc-Oar" id="acl-yU-Y4x"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Talks" id="2R3-Gd-KTi">
+                    <navigationItem key="navigationItem" title="Talks" id="2R3-Gd-KTi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PcK-Lv-x6m">
                             <connections>
                                 <segue destination="dvc-bL-tY8" kind="show" identifier="DISPLAY_EDITUSERTALKS" id="mfD-nz-QKH"/>
@@ -423,51 +423,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
-                                <rect key="frame" x="10" y="79" width="394" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="hIn-MN-eQ9"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Talk Title With Lots of Text " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfz-Mq-WgQ">
+                                <rect key="frame" x="10" y="75" width="394" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="metainfo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1H-n6-dSw">
-                                <rect key="frame" x="0.0" y="129" width="414" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="O1c-5c-JdY"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speaker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gns-4l-MaR" userLabel="Speaker">
+                                <rect key="frame" x="10" y="100" width="394" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="metainfo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1H-n6-dSw">
+                                <rect key="frame" x="0.0" y="125" width="414" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="241-xZ-KHi">
-                                <rect key="frame" x="292" y="195" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="j95-I6-3Hs"/>
-                                    <constraint firstAttribute="height" constant="40" id="vPd-HL-wHI"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="241-xZ-KHi">
+                                <rect key="frame" x="292" y="181" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="tri_right_x"/>
                                 <connections>
                                     <action selector="talkFastForwards:" destination="Bai-ex-z2B" eventType="touchUpInside" id="xcR-HB-h2h"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0wV-Lf-pSV">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0wV-Lf-pSV">
                                 <rect key="frame" x="192" y="198" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="esa-XS-c7N"/>
-                                    <constraint firstAttribute="width" constant="30" id="xZf-8c-L5h"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
-                                <rect key="frame" x="172" y="180" width="70" height="70"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
+                                <rect key="frame" x="172" y="166" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
                                 </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="lE2-CA-uQk"/>
-                                    <constraint firstAttribute="width" constant="70" id="zop-xn-Ipb"/>
-                                </constraints>
                                 <state key="normal" title=" " backgroundImage="tri_right">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -475,81 +469,51 @@
                                     <action selector="playOrPauseTalk:" destination="Bai-ex-z2B" eventType="touchUpInside" id="iJJ-Os-b44"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play Talks Serially" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
-                                <rect key="frame" x="157.66666666666669" y="328" width="134.66666666666669" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="BMv-Kt-uBL"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Play talks in sequence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jK6-86-xJw">
+                                <rect key="frame" x="140.66666666666669" y="328" width="168.66666666666669" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
-                                <rect key="frame" x="38" y="273" width="338" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="etY-1H-7CP"/>
-                                </constraints>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yrx-eQ-maI">
+                                <rect key="frame" x="38" y="263" width="338" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="talkProgressSliderChanged:" destination="Bai-ex-z2B" eventType="valueChanged" id="Mrr-li-9Qa"/>
                                 </connections>
                             </slider>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6Q-Eg-NEA">
                                 <rect key="frame" x="82" y="652" width="250" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="HMl-7B-HZO"/>
-                                    <constraint firstAttribute="height" constant="30" id="O2Y-7n-wvg"/>
-                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
-                                <rect key="frame" x="130.66666666666666" y="329" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="7Cc-99-ydm"/>
-                                    <constraint firstAttribute="width" constant="20" id="8Yz-0a-AZB"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
+                                <rect key="frame" x="113.66666666666666" y="329" width="19.999999999999972" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="checkboxoff"/>
                                 <connections>
                                     <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-dR-FHP">
-                                <rect key="frame" x="82" y="195" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="2ne-1b-riV"/>
-                                    <constraint firstAttribute="height" constant="40" id="7Se-Tx-Ne7"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-dR-FHP">
+                                <rect key="frame" x="82" y="181" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="tri_left_x"/>
                                 <connections>
                                     <action selector="talkFastBackwards:" destination="Bai-ex-z2B" eventType="touchUpInside" id="LSc-am-hC1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc7-4i-Xfm">
+                                <rect key="frame" x="163" y="369" width="88" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Transcripts"/>
+                                <connections>
+                                    <action selector="displayTalkTranscript:" destination="Bai-ex-z2B" eventType="touchUpInside" id="pi6-mD-oid"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="q1y-Ws-35k" firstAttribute="leading" secondItem="9v7-dR-FHP" secondAttribute="trailing" constant="50" id="2Pu-Ol-azP"/>
-                            <constraint firstItem="c6Q-Eg-NEA" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="6ez-jg-ajh"/>
-                            <constraint firstItem="f1H-n6-dSw" firstAttribute="top" secondItem="Qfz-Mq-WgQ" secondAttribute="bottom" constant="5" id="6j1-LA-SgE"/>
-                            <constraint firstItem="9v7-dR-FHP" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="50" id="7za-1U-3w2"/>
-                            <constraint firstItem="0wV-Lf-pSV" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="EHQ-1d-pw3"/>
-                            <constraint firstItem="jK6-86-xJw" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" constant="18" id="FE1-Nq-Ua6"/>
-                            <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" constant="10" id="JU7-ud-j2o"/>
-                            <constraint firstItem="0wV-Lf-pSV" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="53" id="LWi-ds-eJS"/>
-                            <constraint firstItem="yrx-eQ-maI" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leadingMargin" constant="20" id="RXp-vv-5x7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="yrx-eQ-maI" secondAttribute="trailing" constant="20" id="Rmw-1a-Myd"/>
-                            <constraint firstItem="qSA-PQ-5ij" firstAttribute="top" secondItem="c6Q-Eg-NEA" secondAttribute="bottom" constant="10" id="XMw-ar-lX8"/>
-                            <constraint firstItem="241-xZ-KHi" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="50" id="XZt-rW-xUd"/>
-                            <constraint firstItem="Gr4-Hw-MTd" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="26" id="Zj4-49-Pxr"/>
-                            <constraint firstItem="Qfz-Mq-WgQ" firstAttribute="top" secondItem="a0d-uk-4Ce" secondAttribute="bottom" constant="15" id="bHc-4J-Ue9"/>
-                            <constraint firstItem="yrx-eQ-maI" firstAttribute="top" secondItem="q1y-Ws-35k" secondAttribute="bottom" constant="23" id="cJJ-mn-Gb9"/>
-                            <constraint firstAttribute="trailing" secondItem="f1H-n6-dSw" secondAttribute="trailing" id="deb-G2-COP"/>
-                            <constraint firstAttribute="trailing" secondItem="Qfz-Mq-WgQ" secondAttribute="trailing" constant="10" id="hZu-ZP-Ypg"/>
-                            <constraint firstItem="q1y-Ws-35k" firstAttribute="centerX" secondItem="Yz5-ce-4Qk" secondAttribute="centerX" id="iXx-UR-fs5"/>
-                            <constraint firstItem="q1y-Ws-35k" firstAttribute="top" secondItem="f1H-n6-dSw" secondAttribute="bottom" constant="35" id="knP-ed-WtX"/>
-                            <constraint firstItem="241-xZ-KHi" firstAttribute="leading" secondItem="q1y-Ws-35k" secondAttribute="trailing" constant="50" id="mLT-aX-7Op"/>
-                            <constraint firstItem="jK6-86-xJw" firstAttribute="leading" secondItem="Gr4-Hw-MTd" secondAttribute="trailing" constant="7" id="ooe-9S-h75"/>
-                            <constraint firstItem="jK6-86-xJw" firstAttribute="top" secondItem="yrx-eQ-maI" secondAttribute="bottom" constant="25" id="oql-c1-cl2"/>
-                            <constraint firstItem="f1H-n6-dSw" firstAttribute="leading" secondItem="Yz5-ce-4Qk" secondAttribute="leading" id="tCf-rm-5ks"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NAM-11-dk1">
                         <barButtonItem key="leftBarButtonItem" title="Done" id="2dw-Je-gHw">
@@ -565,13 +529,17 @@
                         <outlet property="buttonFavorite" destination="6p2-A9-jZi" id="JSQ-1j-L0c"/>
                         <outlet property="buttonHelp" destination="0dS-lE-bLz" id="Mii-hz-lJ3"/>
                         <outlet property="buttonShare" destination="D7D-Bq-4v3" id="WZG-Zf-PpY"/>
+                        <outlet property="buttonTranscript" destination="nc7-4i-Xfm" id="mQP-rV-3EO"/>
                         <outlet property="metaInfo" destination="f1H-n6-dSw" id="tC2-fZ-bBw"/>
                         <outlet property="playTalkSeriesButton" destination="Gr4-Hw-MTd" id="V37-5c-hfQ"/>
+                        <outlet property="playTalksSequenceLabel" destination="jK6-86-xJw" id="r1z-d6-8X4"/>
+                        <outlet property="speaker" destination="gns-4l-MaR" id="VLs-f3-pDz"/>
                         <outlet property="talkFastBackward" destination="9v7-dR-FHP" id="nxq-Fh-JEG"/>
                         <outlet property="talkFastForward" destination="241-xZ-KHi" id="lKg-zQ-nVh"/>
                         <outlet property="talkPlayPauseButton" destination="q1y-Ws-35k" id="8Rj-2M-g2J"/>
                         <outlet property="talkProgressSlider" destination="yrx-eQ-maI" id="Lxp-18-pcR"/>
                         <outlet property="talkTitle" destination="Qfz-Mq-WgQ" id="VGm-Px-4yL"/>
+                        <segue destination="vs5-s2-Icf" kind="show" identifier="DISPLAY_TRANSCRIPT" id="TcO-Ag-6M9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TA-z5-aSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -600,7 +568,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="3326.25" y="522.5"/>
+            <point key="canvasLocation" x="3326.0869565217395" y="521.73913043478262"/>
         </scene>
         <!--Dana-->
         <scene sceneID="ONQ-Br-3u5">
@@ -614,17 +582,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
-                                <rect key="frame" x="28" y="99" width="374" height="147"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
-                                </constraints>
-                                <string key="text">AudioDharma is a free service run by the Insight Medication Center of Redwood City, California. IMC does not require payment for any of our programs. IMC has no paid staff, being run solely by volunteers. Our financial support comes from the generosity of people who value what we do. 
-</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Dq-d8-j3R">
                                 <rect key="frame" x="107" y="676" width="200" height="30"/>
                                 <color key="backgroundColor" red="0.10910908129999999" green="0.34232425690000001" blue="0.069242462520000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -646,6 +603,15 @@
                                     <action selector="gotoDonationPage:" destination="2bZ-Wd-tyk" eventType="touchUpInside" id="qvY-sh-Qwa"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="21" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhQ-bs-KAh">
+                                <rect key="frame" x="28" y="99" width="374" height="147"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="147" id="edi-gE-Gez"/>
+                                </constraints>
+                                <string key="text">Audio Dharma is a free service provided by the Insight Meditation Center in Redwood City, California. IMC is run solely by volunteers and does not require payment for any of its programs. Our financial support comes from the generosity of people who value what we do.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -665,6 +631,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancel" destination="j2Y-JE-WS4" id="Q52-QP-ZVZ"/>
+                        <outlet property="donationButton" destination="6Dq-d8-j3R" id="meA-GZ-Ztk"/>
                         <outlet property="donationContentView" destination="xhQ-bs-KAh" id="CCQ-Dh-RIZ"/>
                     </connections>
                 </viewController>
@@ -672,7 +639,7 @@
             </objects>
             <point key="canvasLocation" x="8214.4927536231899" y="1241.5760869565217"/>
         </scene>
-        <!--Audio Dharma Help-->
+        <!--Help-->
         <scene sceneID="tub-99-E3a">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="w6J-RG-PtL" customClass="HelpController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -702,7 +669,7 @@
                             <constraint firstAttribute="trailing" secondItem="CCM-ef-83Y" secondAttribute="trailing" constant="5" id="zOs-vW-RfJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Audio Dharma Help" id="ocm-0n-svo">
+                    <navigationItem key="navigationItem" title="Help" id="ocm-0n-svo">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="JcY-xK-5Nd">
                             <connections>
                                 <action selector="dismissDialog:" destination="w6J-RG-PtL" id="71I-dv-Tcm"/>
@@ -740,6 +707,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgk-vs-lGS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2119" y="2110"/>
+        </scene>
+        <!--Controller-->
+        <scene sceneID="Ufn-8m-XPb">
+            <objects>
+                <viewController id="vs5-s2-Icf" customClass="PDFController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ByE-yh-g7g"/>
+                        <viewControllerLayoutGuide type="bottom" id="JP8-VL-FZJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ja3-Ih-1KP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gDj-E2-nJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4283" y="462"/>
         </scene>
         <!--Note Controller-->
         <scene sceneID="Bay-hx-moG">
@@ -929,6 +914,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tbq-pZ-WER" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2546" y="1352"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="BRL-5S-hgo">
+            <objects>
+                <viewController id="cFD-Fd-92q" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qx5-oH-Eer"/>
+                        <viewControllerLayoutGuide type="bottom" id="CLd-d0-MmF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tf9-MC-nt4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S40-NB-gM9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

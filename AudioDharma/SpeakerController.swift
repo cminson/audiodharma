@@ -26,6 +26,8 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
     override func viewDidLoad() {
         
         self.tableView.delegate = self
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
         
         super.viewDidLoad()
         
@@ -156,6 +158,9 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         cell.statTotalTime.text = albumStats.durationDisplay
         
+        cell.title.textColor = MAIN_FONT_COLOR
+        cell.statTalkCount.textColor = SECONDARY_FONT_COLOR
+        cell.statTotalTime.textColor = SECONDARY_FONT_COLOR
         return cell
     }
     

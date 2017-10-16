@@ -19,6 +19,8 @@ class HelpController: UIViewController {
         super.viewDidLoad()
         
         helpContentView.text = HelpText
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
 
     }
     

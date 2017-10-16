@@ -35,6 +35,9 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         print("viewDidLoad")
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         BusyIndicator.center = self.view.center
@@ -229,6 +232,10 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         
         
         cell.statTotalTime.text = AlbumStats.durationDisplay
+        
+        cell.title.textColor = SECTION_BACKGROUND
+        cell.statTalkCount.textColor = SECONDARY_FONT_COLOR
+        cell.statTotalTime.textColor = SECONDARY_FONT_COLOR
  
         return cell
     }

@@ -28,8 +28,8 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_ZIP_NAME = "CONFIG01.ZIP"
+let CONFIG_JSON_NAME = "CONFIG01.JSON"
 
 var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up in loadData()
 
@@ -107,13 +107,23 @@ let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)    
 let BUTTON_FAVORITE_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
 let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
  */
-
+/*
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
 let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
 let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)     // dark green
 let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
+ */
 
-let SECTION_BACKGROUND = UIColor.darkGray
+let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.34, blue:0.80, alpha:1.0)     //  blue #0057CC
+let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     //  orange #ff8c00
+let BUTTON_SHARE_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
+let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.80, green:0.12, blue:0.00, alpha:1.0)     //  red #CC1F00
+let APP_ICON_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
+
+
+let SECTION_BACKGROUND = UIColor.darkGray  // #555555ff
+let MAIN_FONT_COLOR = UIColor.darkGray      // #555555ff
+let SECONDARY_FONT_COLOR = UIColor.gray
 let SECTION_TEXT = UIColor.white
 
 let MP3_BYTES_PER_SECOND = 20000    // rough (high) estimate for how many bytes per second of MP3.  Used to estimate size of download files
@@ -417,9 +427,10 @@ class Model {
                 let title = talk["title"] as? String ?? ""
                 let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let speaker = talk["speaker"] as? String ?? ""
-                let date = talk["date"] as? String ?? ""
+                var date = talk["date"] as? String ?? ""
+                date = date.replacingOccurrences(of: "-", with: ".")
                 let duration = talk["duration"] as? String ?? ""
-                
+            
                 let section = ""
                 
                 let terms = URL.components(separatedBy: "/")
@@ -1250,6 +1261,8 @@ class Model {
             
             UserDownloads[userDownload.FileName] = nil
             let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
+            print("Removing bad download: ", userDownload.FileName)
+
             do {
                 try FileManager.default.removeItem(atPath: localPathMP3)
             }
@@ -1258,7 +1271,7 @@ class Model {
             }
         }
         
-        // remove orphan files
+        // now remove orphan files. these are mp3s that for whatever reason aren't marked as downloaded
         do {
             // Get the directory contents urls (including subfolders urls)
             let directoryContents = try FileManager.default.contentsOfDirectory(at: URL(string: MP3_DOWNLOADS_PATH)!, includingPropertiesForKeys: nil, options: [])
@@ -1266,7 +1279,9 @@ class Model {
             for mp3FileURL in directoryContents {
                 
                 if let fileName = mp3FileURL.path.components(separatedBy: "/").last {
-                    if UserDownloads[fileName] == nil {
+                    if UserDownloads[fileName] == nil {     // true if the mp3 is an orphan
+                        print("Removing orphan download: ", fileName)
+
                         do {
                             try FileManager.default.removeItem(atPath: mp3FileURL.path)
                         }
@@ -1282,6 +1297,30 @@ class Model {
             print(error.localizedDescription)
         }
         saveUserDownloadData()
+    }
+    
+    func clearIncompleteDownloads()  {
+        
+        var incompleteDownloads: [UserDownloadData] = []
+        for ( _ , userDownload) in UserDownloads {
+            
+            if userDownload.DownloadCompleted != "YES" {
+                incompleteDownloads.append(userDownload)
+            }
+        }
+        
+        for userDownload in incompleteDownloads {
+            
+            print("Removing incomplete download: ", userDownload.FileName)
+            UserDownloads[userDownload.FileName] = nil
+            let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
+            do {
+                try FileManager.default.removeItem(atPath: localPathMP3)
+            }
+            catch let error as NSError {
+                print("File remove error: \(error)")
+            }
+        }
     }
 
     func loadTalkHistoryData() -> [TalkHistoryData]  {
@@ -1656,6 +1695,11 @@ class Model {
     
     func unsetTalkAsDownload(talk: TalkData) {
         
+        if let userDownload = UserDownloads[talk.FileName] {
+            if userDownload.DownloadCompleted == "NO" {
+                DownloadInProgress = false
+            }
+        }
         UserDownloads[talk.FileName] = nil
         let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + talk.FileName
         do {

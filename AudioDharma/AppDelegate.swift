@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         
         print("applicationWillResignActive")
+        TheDataModel.clearIncompleteDownloads()
 
     }
 
@@ -63,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("applicationDidBecomeActive")
         TheDataModel.RootController?.updateStateForNetwork()
         TheDataModel.DownloadInProgress = false
+        TheDataModel.refreshAllControllers()
 
 
     }

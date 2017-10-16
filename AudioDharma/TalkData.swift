@@ -24,7 +24,7 @@ class TalkData: NSObject {
     var SpeakerPhoto: UIImage
         
     // MARK: Init
-    init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String, durationInSeconds: Int) {
+    init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String,  durationInSeconds: Int) {
         
         Title = title
         URL = url

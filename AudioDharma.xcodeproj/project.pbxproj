@@ -31,6 +31,7 @@
 		83BF9D081F33B19F006367CF /* SpeakerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF9D071F33B19F006367CF /* SpeakerController.swift */; };
 		83C22CB51F184E87002503AE /* DonationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C22CB41F184E87002503AE /* DonationsController.swift */; };
 		83CA123F1F028B8A00798D20 /* UserAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */; };
+		83CD46F41F92C0E800BE6226 /* PDFController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD46F31F92C0E800BE6226 /* PDFController.swift */; };
 		83D3187A1F3669FA00200542 /* TalkHistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D318791F3669FA00200542 /* TalkHistoryData.swift */; };
 		83DBC52D1F7D2CA800AB0346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83DBC52C1F7D2CA800AB0346 /* Assets.xcassets */; };
 		83DBF7191F3CDA26005A13F7 /* SeriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DBF7181F3CDA26005A13F7 /* SeriesController.swift */; };
@@ -69,6 +70,7 @@
 		83BF9D071F33B19F006367CF /* SpeakerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakerController.swift; sourceTree = "<group>"; };
 		83C22CB41F184E87002503AE /* DonationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationsController.swift; sourceTree = "<group>"; };
 		83CA123E1F028B8A00798D20 /* UserAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlbumsController.swift; sourceTree = "<group>"; };
+		83CD46F31F92C0E800BE6226 /* PDFController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFController.swift; sourceTree = "<group>"; };
 		83D318791F3669FA00200542 /* TalkHistoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkHistoryData.swift; sourceTree = "<group>"; };
 		83DBC52C1F7D2CA800AB0346 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83DBF7181F3CDA26005A13F7 /* SeriesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				831CC5941F48AD0800550BD4 /* HistoryCell.swift */,
 				831CC5951F48AD0800550BD4 /* HistoryCell.xib */,
 				83DC0D641EF17B390071CAD3 /* Main.storyboard */,
+				83CD46F31F92C0E800BE6226 /* PDFController.swift */,
 				8387D63F1EFC07AD0025006B /* AlbumController.swift */,
 				83DC0D601EF17B390071CAD3 /* AppDelegate.swift */,
 				831CC5921F488AA800550BD4 /* HistoryController.swift */,
@@ -303,6 +306,7 @@
 				8387D6401EFC07AD0025006B /* AlbumController.swift in Sources */,
 				835B9F811EF2CA9B009AF991 /* TalkController.swift in Sources */,
 				83FCA9471F02BFF100B9664D /* UserAlbumData.swift in Sources */,
+				83CD46F41F92C0E800BE6226 /* PDFController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

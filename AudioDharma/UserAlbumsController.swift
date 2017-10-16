@@ -28,6 +28,9 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
 
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
@@ -208,9 +211,12 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let formattedNumber = numberFormatter.string(from: NSNumber(value: albumStats.totalTalks))
         cell.statTalkCount.text = formattedNumber
-        
-        
+     
         cell.statTotalTime.text = albumStats.durationDisplay
+        
+        cell.title.textColor = MAIN_FONT_COLOR
+        cell.statTalkCount.textColor = SECONDARY_FONT_COLOR
+        cell.statTotalTime.textColor = SECONDARY_FONT_COLOR
 
         return cell
     }

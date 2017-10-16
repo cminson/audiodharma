@@ -28,6 +28,8 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
         FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
 
         self.title = UserAlbum.Title
@@ -221,6 +223,9 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             cell.favoriteImage.tintColor = UIColor.white
         }
         
+        cell.title.textColor = MAIN_FONT_COLOR
+
+        
         var talkTitle: String
         if TheDataModel.isDownloadInProgress(talk: talk) {
             talkTitle = "DOWNLOADING: " + talk.Title
@@ -236,6 +241,10 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
+        
+        cell.duration.textColor = SECONDARY_FONT_COLOR
+        cell.date.textColor = SECONDARY_FONT_COLOR
+        
         return cell
     }
     

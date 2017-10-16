@@ -28,6 +28,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         
         print("talkcontroller: viewdidload")
         super.viewDidLoad()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
         
         SectionTalks = TheDataModel.getTalks(content: Content)
         FilteredSectionTalks = SectionTalks
@@ -236,6 +238,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
  
+#if DEV
         if TheDataModel.isNotatedTalk(talk: talk) == true {
             cell.noteImage.image? = (cell.noteImage.image?.withRenderingMode(.alwaysTemplate))!
             cell.noteImage.tintColor = BUTTON_NOTE_COLOR
@@ -246,10 +249,30 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         if TheDataModel.isFavoriteTalk(talk: talk) == true {
             cell.favoriteImage.image? = (cell.favoriteImage.image?.withRenderingMode(.alwaysTemplate))!
             cell.favoriteImage.tintColor = BUTTON_FAVORITE_COLOR
-            
         } else {
             cell.favoriteImage.tintColor = UIColor.white
         }
+#endif
+        
+        if TheDataModel.isNotatedTalk(talk: talk) == true {
+            cell.noteImage.isHidden = false
+        }
+        else {
+            cell.noteImage.isHidden = true
+        }
+        if TheDataModel.isFavoriteTalk(talk: talk) == true {
+            cell.favoriteImage.isHidden = false
+        }
+        else {
+            cell.favoriteImage.isHidden = true
+        }
+
+
+
+        cell.title.textColor = MAIN_FONT_COLOR
+        cell.duration.textColor = SECONDARY_FONT_COLOR
+        cell.date.textColor = SECONDARY_FONT_COLOR
+
 
         var talkTitle: String
         if TheDataModel.isDownloadInProgress(talk: talk) {
@@ -266,6 +289,7 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
+        
         
         return cell
     }

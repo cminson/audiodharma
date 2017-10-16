@@ -36,6 +36,9 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
         userImageView.contentMode = UIViewContentMode.scaleAspectFit
 
         

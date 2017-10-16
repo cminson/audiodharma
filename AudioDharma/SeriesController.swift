@@ -168,6 +168,11 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         
         cell.statTotalTime.text = albumStats.durationDisplay
         
+        cell.title.textColor = MAIN_FONT_COLOR
+        cell.statTalkCount.textColor = SECONDARY_FONT_COLOR
+        cell.statTotalTime.textColor = SECONDARY_FONT_COLOR
+
+        
         return cell
     }
     

@@ -12,10 +12,16 @@ class DonationsController: UIViewController {
     
     @IBOutlet weak var donationContentView: UILabel!
     @IBOutlet weak var cancel: UIBarButtonItem!
-
+    @IBOutlet weak var donationButton: UIButton!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
+        donationButton.backgroundColor = APP_ICON_COLOR
     }
     
     override func viewDidLayoutSubviews() {

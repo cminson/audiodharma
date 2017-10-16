@@ -19,7 +19,7 @@ class PlayTalkController: UIViewController {
     
     // MARK: Outlets
     @IBOutlet weak var talkTitle: UILabel!
-    //@IBOutlet weak var talkDuration: UILabel!
+    @IBOutlet weak var speaker: UILabel!
     @IBOutlet weak var metaInfo: UILabel!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
@@ -34,6 +34,11 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonDonate: UIBarButtonItem!
     @IBOutlet var buttonShare: UIBarButtonItem!
     @IBOutlet var buttonFavorite: UIBarButtonItem!
+   
+    @IBOutlet weak var buttonTranscript: UIButton!
+   
+    @IBOutlet weak var playTalksSequenceLabel: UILabel!
+    
     
     // MARK: Constants
     
@@ -66,10 +71,17 @@ class PlayTalkController: UIViewController {
         
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
         MP3TalkPlayer = MP3Player()
         MP3TalkPlayer.Delegate = self
         OriginalTalkRow = CurrentTalkRow
         CurrentTalk = TalkList[CurrentTalkRow]
+        
+        talkTitle.textColor = MAIN_FONT_COLOR
+        speaker.textColor = MAIN_FONT_COLOR
+        metaInfo.textColor = SECONDARY_FONT_COLOR
+        playTalksSequenceLabel.textColor =  MAIN_FONT_COLOR
 
         resetTalkDisplay()
  
@@ -125,6 +137,11 @@ class PlayTalkController: UIViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
+        case "DISPLAY_TRANSCRIPT":
+            guard let _ = segue.destination as? PDFController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
         }
@@ -301,12 +318,13 @@ class PlayTalkController: UIViewController {
         talkProgressSlider.value = 0.0
 
         talkTitle.text = CurrentTalk.Title
+        speaker.text = CurrentTalk.Speaker
         
         let duration = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalk.DurationInSeconds)
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
-            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  " + duration + "  [DOWNLOADED]"
+            metaInfo.text = CurrentTalk.Date + "  " + duration + "  (Downloaded)"
         } else {
-            metaInfo.text = CurrentTalk.Speaker + "  " + CurrentTalk.Date + "  " + duration
+            metaInfo.text = CurrentTalk.Date + "  " + duration
         }
         
         talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
@@ -498,6 +516,14 @@ class PlayTalkController: UIViewController {
         talkFastForward.isEnabled = false
         talkFastBackward.isEnabled = false
         talkProgressSlider.isEnabled = false
+    }
+    
+    @IBAction func displayTalkTranscript(_ sender: Any) {
+        print("DisplayTalkTranscript")
+        
+        performSegue(withIdentifier: "DISPLAY_TRANSCRIPT", sender: self)
+
+        
     }
     
 }

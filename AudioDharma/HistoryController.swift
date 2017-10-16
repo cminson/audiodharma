@@ -27,6 +27,9 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
         TheDataModel.CommunityController = self
 
         TalkHistory = TheDataModel.getTalkHistory(content: Content)
@@ -231,6 +234,11 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             } else {
                 cell.favoriteImage.tintColor = UIColor.white
             }
+            
+            cell.title.textColor = MAIN_FONT_COLOR
+            cell.country.textColor = SECONDARY_FONT_COLOR
+            cell.city.textColor = SECONDARY_FONT_COLOR
+            cell.date.textColor = SECONDARY_FONT_COLOR
 
             var talkTitle: String
             if TheDataModel.isDownloadInProgress(talk: talk) {
@@ -249,6 +257,8 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             
             cell.city.text = talkHistory.CityPlayed
             cell.country.text = talkHistory.CountryPlayed
+            
+ 
             
         }
         

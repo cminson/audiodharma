@@ -28,6 +28,9 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+
+        
         // 
         // we display talks which are the union of the selectedTalks
         // and ALL talks.  selectedTalks are shown at the top. 
