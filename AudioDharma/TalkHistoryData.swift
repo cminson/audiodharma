@@ -18,6 +18,7 @@ class TalkHistoryData: NSObject, NSCoding {
         static let DatePlayed = "DatePlayed"
         static let TimePlayed = "TimePlayed"
         static let CityPlayed = "CityPlayed"
+        static let StatePlayed = "StatePlayed"
         static let CountryPlayed = "CountryPlayed"
     }
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -30,15 +31,17 @@ class TalkHistoryData: NSObject, NSCoding {
     var DatePlayed: String = ""
     var TimePlayed: String = ""
     var CityPlayed: String = ""
+    var StatePlayed: String = ""
     var CountryPlayed: String = ""
   
     
     // MARK: Init
-    init(fileName: String, datePlayed: String, timePlayed: String, cityPlayed: String, countryPlayed: String) {
+    init(fileName: String, datePlayed: String, timePlayed: String, cityPlayed: String, statePlayed: String, countryPlayed: String) {
         FileName = fileName
         DatePlayed = datePlayed
         TimePlayed = timePlayed
         CityPlayed = cityPlayed
+        StatePlayed = statePlayed
         CountryPlayed = countryPlayed
     }
     
@@ -50,6 +53,7 @@ class TalkHistoryData: NSObject, NSCoding {
         aCoder.encode(DatePlayed, forKey: PropertyKey.DatePlayed)
         aCoder.encode(TimePlayed, forKey: PropertyKey.TimePlayed)
         aCoder.encode(CityPlayed, forKey: PropertyKey.CityPlayed)
+        aCoder.encode(StatePlayed, forKey: PropertyKey.StatePlayed)
         aCoder.encode(CountryPlayed, forKey: PropertyKey.CountryPlayed)
    }
     
@@ -67,6 +71,9 @@ class TalkHistoryData: NSObject, NSCoding {
         guard let cityPlayed = aDecoder.decodeObject(forKey: PropertyKey.CityPlayed) as? String else {
             return nil
         }
+        guard let statePlayed = aDecoder.decodeObject(forKey: PropertyKey.StatePlayed) as? String else {
+            return nil
+        }
         guard let countryPlayed = aDecoder.decodeObject(forKey: PropertyKey.CountryPlayed) as? String else {
             return nil
         }
@@ -76,6 +83,7 @@ class TalkHistoryData: NSObject, NSCoding {
                   datePlayed: datePlayed,
                   timePlayed: timePlayed,
                   cityPlayed: cityPlayed,
+                  statePlayed: statePlayed,
                   countryPlayed: countryPlayed
         )
     }

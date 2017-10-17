@@ -255,7 +255,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             cell.date.text = talkHistory.DatePlayed
             
             cell.city.text = talkHistory.CityPlayed
-            cell.country.text = talkHistory.CountryPlayed
+            cell.country.text = talkHistory.StatePlayed + ", " + talkHistory.CountryPlayed
             
  
             

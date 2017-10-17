@@ -19,9 +19,10 @@ class DonationsController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+        
+        donationContentView.textColor = MAIN_FONT_COLOR
 
         
-        donationButton.backgroundColor = APP_ICON_COLOR
     }
     
     override func viewDidLayoutSubviews() {
@@ -41,7 +42,19 @@ class DonationsController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func gotoDonationPage(_ sender: UIButton) {
+    @IBAction func launchDonationsPage(_ sender: Any) {
+        
+        print("donation button seen")
+        if let url = URL(string: URL_DONATE) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+    }
+    
+    @IBAction func gotoDonationsPage(_ sender: UIButton) {
         
         if let url = URL(string: URL_DONATE) {
             if #available(iOS 10.0, *) {

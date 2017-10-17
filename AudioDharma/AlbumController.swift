@@ -31,12 +31,9 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     // MARK: Init
     override func viewDidLoad() {
-        
-        print("viewDidLoad")
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
-
         
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -69,15 +66,11 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
 
-        print("viewWillAppear")
         super.viewWillAppear(animated)
-        
- 
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("viewWillDisappear")
         super.viewWillDisappear(animated)
     }
 
@@ -311,14 +304,19 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             if let city = placeMark.addressDictionary!["City"] as? String {
                 TheUserLocation.city = city
             }
+            if let state = placeMark.addressDictionary!["State"] as? String {
+                TheUserLocation.state = state
+	        }
+
             // Zip code
             if let zip = placeMark.addressDictionary!["ZIP"] as? String {
                 TheUserLocation.zip = zip
             }
             // Country
-            if let country = placeMark.addressDictionary!["Country"] as? String {
+            if let country = placeMark.isoCountryCode  {
                 TheUserLocation.country = country
             }
+
             }
         })
     }

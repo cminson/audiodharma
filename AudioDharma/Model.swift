@@ -28,8 +28,8 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-let CONFIG_ZIP_NAME = "CONFIG01.ZIP"
-let CONFIG_JSON_NAME = "CONFIG01.JSON"
+let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+let CONFIG_JSON_NAME = "CONFIG00.JSON"
 
 var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up in loadData()
 
@@ -62,6 +62,7 @@ struct AlbumStats {         // where stats on each album is kept
 }
 struct UserLocation {       // where user geo info is kept
     var city: String = "NA"
+	var state: String = "NA"
     var country: String = "NA"
     var zip: String = "NA"
     var altitude: Double = 0
@@ -653,11 +654,17 @@ class Model {
                     let datePlayed = talkJSON["date"] as? String ?? ""
                     let timePlayed = talkJSON["time"] as? String ?? ""
                     let city = talkJSON["city"] as? String ?? ""
+                    let state = talkJSON["state"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                    
                     if let talk = self.FileNameToTalk[fileName] {
                         
-                        let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: datePlayed, timePlayed: timePlayed, cityPlayed: city, countryPlayed: country)
+                        let talkHistory = TalkHistoryData(fileName: fileName,
+                                                          datePlayed: datePlayed,
+                                                          timePlayed: timePlayed,
+                                                          cityPlayed: city,
+                                                          statePlayed: state,
+                                                          countryPlayed: country)
                         talkCount += 1
                         totalSeconds += talk.DurationInSeconds
                         self.SangaTalkHistoryAlbum.append(talkHistory)
@@ -679,11 +686,17 @@ class Model {
                     let dateShared = talkJSON["date"] as? String ?? ""
                     let timeShared = talkJSON["time"] as? String ?? ""
                     let city = talkJSON["city"] as? String ?? ""
+                    let state = talkJSON["state"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                     
                     if let talk = self.FileNameToTalk[fileName] {
                         
-                        let talkHistory = TalkHistoryData(fileName: fileName, datePlayed: dateShared, timePlayed: timeShared, cityPlayed: city, countryPlayed: country)
+                        let talkHistory = TalkHistoryData(fileName: fileName,
+                                                          datePlayed: dateShared,
+                                                          timePlayed: timeShared,
+                                                          cityPlayed: city,
+                                                          statePlayed: state,
+                                                          countryPlayed: country)
                         self.SangaShareHistoryAlbum.append(talkHistory)
                         
                         talkCount += 1
@@ -837,6 +850,7 @@ class Model {
         let timePlayed = formatter.string(from: date)
         
         let city = TheUserLocation.city
+        let state = TheUserLocation.state
         let country = TheUserLocation.country
         let zip = TheUserLocation.zip
         let altitude = TheUserLocation.altitude
@@ -848,7 +862,7 @@ class Model {
         var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
+        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
 //print(escapedString!)
@@ -1581,12 +1595,14 @@ class Model {
         let timePlayed = formatter.string(from: date)
         
         let cityPlayed = TheUserLocation.city
+        let statePlayed = TheUserLocation.state
         let countryPlayed = TheUserLocation.country
 
         let talkHistory = TalkHistoryData(fileName: talk.FileName,
                                           datePlayed: datePlayed,
                                           timePlayed: timePlayed,
                                           cityPlayed: cityPlayed,
+                                          statePlayed: statePlayed,
                                           countryPlayed: countryPlayed )
         
         UserTalkHistoryAlbum.append(talkHistory)
@@ -1615,12 +1631,14 @@ class Model {
         let timePlayed = formatter.string(from: date)
         
         let cityPlayed = TheUserLocation.city
+        let statePlayed = TheUserLocation.state
         let countryPlayed = TheUserLocation.country
         
         let talkHistory = TalkHistoryData(fileName: talk.FileName,
                                           datePlayed: datePlayed,
                                           timePlayed: timePlayed,
                                           cityPlayed: cityPlayed,
+                                          statePlayed: statePlayed,
                                           countryPlayed: countryPlayed )
 
         UserShareHistoryAlbum.append(talkHistory)

@@ -81,7 +81,6 @@ class PlayTalkController: UIViewController {
         talkTitle.textColor = MAIN_FONT_COLOR
         speaker.textColor = MAIN_FONT_COLOR
         metaInfo.textColor = SECONDARY_FONT_COLOR
-        playTalksSequenceLabel.textColor =  MAIN_FONT_COLOR
 
         resetTalkDisplay()
  
@@ -98,6 +97,7 @@ class PlayTalkController: UIViewController {
         volumeView.setRouteButtonImage(iconBlack, for: UIControlState.disabled)
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.highlighted)
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.selected)
+        volumeView.tintColor = MAIN_FONT_COLOR
         
         //volumeView.backgroundColor = UIColor.gray
         //volumeView.sizeToFit()
@@ -176,16 +176,18 @@ class PlayTalkController: UIViewController {
         }
     }
     
+    
     @IBAction func togglePlayTalkSeries(_ sender: UIButton) {
         
+        print("TogglePlaySeries")
         // this toggles whether we play just the current talk vs current talk + all talks in its album
         if PlayEntireAlbum == true {
             PlayEntireAlbum = false
-            playTalkSeriesButton.setImage(UIImage(named: "checkboxoff"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "playersingle"), for: UIControlState.normal)
             
         } else {
             PlayEntireAlbum = true
-            playTalkSeriesButton.setImage(UIImage(named: "blackcheckmark"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "playersequence"), for: UIControlState.normal)
         }
     }
     
@@ -254,7 +256,7 @@ class PlayTalkController: UIViewController {
             HaveReportedTalk = false
             TalkPlayerStatus = .LOADING
         
-            talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
+            talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
             enableActivityIcons()
             
             MP3TalkPlayer.startTalk(talkURL: talkURL)
@@ -275,7 +277,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .LOADING
         
-        talkPlayPauseButton.setImage(UIImage(named: "blacksquare"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
         enableActivityIcons()
         
         MP3TalkPlayer.play()
@@ -288,7 +290,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .PAUSED
         
-        talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
         disableScanButtons()
         
         stopTalkTimer()
@@ -327,7 +329,7 @@ class PlayTalkController: UIViewController {
             metaInfo.text = CurrentTalk.Date + "  " + duration
         }
         
-        talkPlayPauseButton.setImage(UIImage(named: "tri_right"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
         
         updateTitleDisplay()
      }
