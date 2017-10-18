@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_NOTES.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_NOTES.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

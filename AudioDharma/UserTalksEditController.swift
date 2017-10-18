@@ -185,17 +185,8 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
         let talk = FilteredTalks[indexPath.row]
         
-        // display a note icon if a note exists
-        if TheDataModel.isNotatedTalk(talk: talk) == true {
-            cell.noteImage.isHidden = false
-        } else {
-            cell.noteImage.isHidden = true
-        }
-        if TheDataModel.isFavoriteTalk(talk: talk) == true {
-            cell.favoriteImage.isHidden = false
-        } else {
-            cell.favoriteImage.isHidden = true
-        }
+        cell.noteImage.isHidden = true
+        cell.favoriteImage.isHidden = true
 
         cell.title.text = talk.Title
         cell.speakerPhoto.image = talk.SpeakerPhoto

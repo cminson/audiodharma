@@ -356,10 +356,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
-        
-        
 
-        return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
+        return [downloadTalk, shareTalk, noteTalk, favoriteTalk]
     }
 
 

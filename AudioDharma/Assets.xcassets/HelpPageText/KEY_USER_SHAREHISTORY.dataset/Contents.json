@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_USER_SHAREHISTORY.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_HISTORY.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

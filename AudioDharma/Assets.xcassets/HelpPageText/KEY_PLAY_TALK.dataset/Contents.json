@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_PLAY_TALK.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_PLAY_TALK.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_ALL_SERIES.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_ALLSERIES.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_USEREDIT_TALKS.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_USEREDITTALKS.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

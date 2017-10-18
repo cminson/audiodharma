@@ -255,9 +255,10 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             cell.date.text = talkHistory.DatePlayed
             
             cell.city.text = talkHistory.CityPlayed
-            cell.country.text = talkHistory.StatePlayed + ", " + talkHistory.CountryPlayed
             
- 
+            let statePlayed = talkHistory.StatePlayed.trimmingCharacters(in: .whitespacesAndNewlines)
+            cell.country.text = statePlayed + ", " + talkHistory.CountryPlayed
+  
             
         }
         
@@ -355,7 +356,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
         
-        return [shareTalk, noteTalk, favoriteTalk, downloadTalk]
+        return [downloadTalk, shareTalk, noteTalk, favoriteTalk]
         
     }
         

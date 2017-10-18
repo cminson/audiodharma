@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_ALLTALKS.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "webtest.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

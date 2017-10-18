@@ -26,7 +26,6 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var talkProgressSlider: UISlider!
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
-    @IBOutlet weak var playPauseBusyContainer: UIView!
     @IBOutlet weak var talkPlayPauseButton: UIButton!
     @IBOutlet weak var MPVolumeParentView: UIView!
 
@@ -36,8 +35,7 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonFavorite: UIBarButtonItem!
    
     @IBOutlet weak var buttonTranscript: UIButton!
-   
-    @IBOutlet weak var playTalksSequenceLabel: UILabel!
+    @IBOutlet weak var labelSingleOrSequence: UILabel!
     
     
     // MARK: Constants
@@ -111,6 +109,11 @@ class PlayTalkController: UIViewController {
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonFavorite, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
 
+        if TheDataModel.doesTalkHaveTranscript(talk: CurrentTalk) {
+            buttonTranscript.isHidden = false
+        } else {
+            buttonTranscript.isHidden = true
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -138,9 +141,10 @@ class PlayTalkController: UIViewController {
             }
             
         case "DISPLAY_TRANSCRIPT":
-            guard let _ = segue.destination as? PDFController else {
+            guard let controller = segue.destination as? PDFController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            controller.CurrentTalk = CurrentTalk
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
@@ -183,11 +187,13 @@ class PlayTalkController: UIViewController {
         // this toggles whether we play just the current talk vs current talk + all talks in its album
         if PlayEntireAlbum == true {
             PlayEntireAlbum = false
-            playTalkSeriesButton.setImage(UIImage(named: "playersingle"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOff"), for: UIControlState.normal)
+            labelSingleOrSequence.text="Single Talk"
             
         } else {
             PlayEntireAlbum = true
-            playTalkSeriesButton.setImage(UIImage(named: "playersequence"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOn"), for: UIControlState.normal)
+            labelSingleOrSequence.text="Talks In Sequence"
         }
     }
     
@@ -256,7 +262,7 @@ class PlayTalkController: UIViewController {
             HaveReportedTalk = false
             TalkPlayerStatus = .LOADING
         
-            talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
+            talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
             enableActivityIcons()
             
             MP3TalkPlayer.startTalk(talkURL: talkURL)
@@ -277,7 +283,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .LOADING
         
-        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
         enableActivityIcons()
         
         MP3TalkPlayer.play()
@@ -290,7 +296,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .PAUSED
         
-        talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
         disableScanButtons()
         
         stopTalkTimer()

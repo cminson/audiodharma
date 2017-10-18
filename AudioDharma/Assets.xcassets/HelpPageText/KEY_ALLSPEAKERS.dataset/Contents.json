@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_ALLSPEAKERS.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_ALLSPEAKERS.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

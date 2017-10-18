@@ -431,6 +431,8 @@ class Model {
                 var date = talk["date"] as? String ?? ""
                 date = date.replacingOccurrences(of: "-", with: ".")
                 let duration = talk["duration"] as? String ?? ""
+                let pdf = talk["pdf"] as? String ?? ""
+                let keys = talk["keys"] as? String ?? ""
             
                 let section = ""
                 
@@ -440,7 +442,16 @@ class Model {
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
                 
-                let talkData =  TalkData(title: title,  url: URL,  fileName: fileName, date: date, durationDisplay: duration,  speaker: speaker, section: section, durationInSeconds: seconds)
+                let talkData =  TalkData(title: title,
+                                         url: URL,
+                                         fileName: fileName,
+                                         date: date,
+                                         durationDisplay: duration,
+                                         speaker: speaker,
+                                         section: section,
+                                         durationInSeconds: seconds,
+                                         pdf: pdf,
+                                         keys: keys)
                 
                 self.FileNameToTalk[fileName] = talkData
                 
@@ -537,6 +548,8 @@ class Model {
                     var speaker = ""
                     var date = ""
                     var durationDisplay = ""
+                    let keys = ""
+                    let pdf = ""
                     
                     // DEV NOTE: remove placeholder.  this code might not be necessary long-term
                     if section == "_" || section == "__" {
@@ -555,7 +568,16 @@ class Model {
                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
                     
                     
-                    let talkData =  TalkData(title: titleTitle, url: URL, fileName: fileName, date: date, durationDisplay: durationDisplay,  speaker: speaker, section: section, durationInSeconds: totalSeconds)
+                    let talkData =  TalkData(title: titleTitle,
+                                             url: URL,
+                                             fileName: fileName,
+                                             date: date,
+                                             durationDisplay: durationDisplay,
+                                             speaker: speaker,
+                                             section: section,
+                                             durationInSeconds: totalSeconds,
+                                             pdf: pdf,
+                                             keys: keys)
                     
                     // if a series is specified create a series album if not already there.  then add talk to it
                     // otherwise, just add the talk directly to the parent album
@@ -1881,6 +1903,15 @@ class Model {
                 return nil
         }
         return freeSize.int64Value
+    }
+    
+    func doesTalkHaveTranscript(talk: TalkData) -> Bool {
+        
+        if talk.PDF.count > 2 {
+            return true
+        } else {
+            return false
+        }
     }
     
 }

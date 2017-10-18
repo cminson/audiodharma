@@ -19,12 +19,23 @@ class TalkData: NSObject {
     var Speaker: String
     var Section: String
     var DurationDisplay: String
+	var PDF: String
+    var Keys: String
     
     var DurationInSeconds: Int
     var SpeakerPhoto: UIImage
         
     // MARK: Init
-    init(title: String,  url: String, fileName: String, date: String, durationDisplay: String, speaker: String, section: String,  durationInSeconds: Int) {
+    init(title: String,
+         url: String,
+         fileName: String,
+         date: String,
+         durationDisplay: String,
+         speaker: String,
+         section: String,
+         durationInSeconds: Int,
+         pdf: String,
+         keys: String) {
         
         Title = title
         URL = url
@@ -34,6 +45,8 @@ class TalkData: NSObject {
         Speaker = speaker
         Section = section
         DurationInSeconds = durationInSeconds
+        PDF = pdf
+        Keys = keys
         
         SpeakerPhoto = UIImage(named: Speaker) ?? UIImage(named: "defaultPhoto")!
         

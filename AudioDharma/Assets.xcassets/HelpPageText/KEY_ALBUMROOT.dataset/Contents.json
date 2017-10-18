@@ -6,8 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "KEY_ALBUMROOT.json",
-      "universal-type-identifier" : "public.json"
+      "filename" : "KEY_ALBUMROOT.html",
+      "universal-type-identifier" : "public.html"
     }
   ]
 }

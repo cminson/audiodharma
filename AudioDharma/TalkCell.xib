@@ -25,14 +25,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notebar" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-2D-Cve">
-                        <rect key="frame" x="401" y="25" width="14" height="14"/>
+                        <rect key="frame" x="401" y="26" width="14" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="14" id="7vS-1R-38t"/>
                             <constraint firstAttribute="height" constant="14" id="wUK-2W-0xJ"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favoritebar" highlightedImage=" " adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3wY-ci-0Rb">
-                        <rect key="frame" x="401" y="11" width="14" height="14"/>
+                        <rect key="frame" x="401" y="9" width="14" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="lv7-1p-v1J"/>
                             <constraint firstAttribute="width" constant="14" id="wb3-0a-xpG"/>
@@ -76,7 +76,7 @@
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="dZG-DA-B6i" secondAttribute="bottom" constant="2" id="08S-3A-ODp"/>
                     <constraint firstItem="eJ9-2D-Cve" firstAttribute="leading" secondItem="dZG-DA-B6i" secondAttribute="trailing" constant="1" id="2ZO-zb-TGT"/>
-                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="top" secondItem="3wY-ci-0Rb" secondAttribute="bottom" id="3WY-Z5-i55"/>
+                    <constraint firstItem="eJ9-2D-Cve" firstAttribute="top" secondItem="3wY-ci-0Rb" secondAttribute="bottom" constant="3" id="3WY-Z5-i55"/>
                     <constraint firstItem="8pd-06-Ypg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="3dx-GD-KxQ"/>
                     <constraint firstItem="yVe-HT-Bye" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7Aw-9q-dqj"/>
                     <constraint firstItem="3wY-ci-0Rb" firstAttribute="leading" secondItem="8pd-06-Ypg" secondAttribute="trailing" constant="1" id="TsK-82-wI9"/>
@@ -86,7 +86,7 @@
                     <constraint firstAttribute="trailing" secondItem="eJ9-2D-Cve" secondAttribute="trailing" constant="3" id="kMz-eY-kzi"/>
                     <constraint firstItem="8pd-06-Ypg" firstAttribute="leading" secondItem="Xpy-ia-l6x" secondAttribute="trailing" constant="3" id="qvO-GQ-BU0"/>
                     <constraint firstItem="yVe-HT-Bye" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="3" id="uL3-4V-61f"/>
-                    <constraint firstItem="3wY-ci-0Rb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="vdo-VH-ItZ"/>
+                    <constraint firstItem="3wY-ci-0Rb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="vdo-VH-ItZ"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
