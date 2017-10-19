@@ -402,7 +402,7 @@ class Model {
         if let config = jsonDict["config"] {
             URL_MP3_HOST = config["URL_MP3_HOST"] as? String ?? URL_MP3_HOST
             USE_NATIVE_MP3PATHS = config["USE_NATIVE_MP3PATHS"] as? Bool ?? USE_NATIVE_MP3PATHS
-            print("User Native MP3 Paths: ", USE_NATIVE_MP3PATHS)
+            //print("User Native MP3 Paths: ", USE_NATIVE_MP3PATHS)
         
             ACTIVITY_UPDATE_INTERVAL = config["ACTIVITY_UPDATE_INTERVAL"] as? Int ?? ACTIVITY_UPDATE_INTERVAL
             URL_REPORT_ACTIVITY = config["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
@@ -499,7 +499,7 @@ class Model {
         let durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
 
         let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
-        print(stats)
+        //print(stats)
         self.KeyToAlbumStats[KEY_ALLTALKS] = stats
             
         self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
@@ -775,14 +775,13 @@ class Model {
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
             
-            
-            print("Download: response seen")
+            //print("Download: response seen")
 
             var httpResponse: HTTPURLResponse
             if let valid_reponse = response {
                 httpResponse = valid_reponse as! HTTPURLResponse
             } else {
-                print("No HTTP Response")
+                //print("No HTTP Response")
                 TheDataModel.unsetTalkAsDownload(talk: talk)
                 TheDataModel.DownloadInProgress = false
                 return
@@ -791,7 +790,7 @@ class Model {
             let statusCode = httpResponse.statusCode
             
             if (statusCode != 200) {
-                print("Bad HTTP Response: ", statusCode)
+                //print("Bad HTTP Response: ", statusCode)
                 TheDataModel.unsetTalkAsDownload(talk: talk)
                 TheDataModel.DownloadInProgress = false
                 return
@@ -800,7 +799,7 @@ class Model {
             // make sure we got data
             if let responseData = data {
                 if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
-                    print("Bad HTTP Response. Low Count", responseData.count)
+                    //print("Bad HTTP Response. Low Count", responseData.count)
                     TheDataModel.unsetTalkAsDownload(talk: talk)
                     HTTPResultCode = 404
                 }
@@ -1907,11 +1906,16 @@ class Model {
     
     func doesTalkHaveTranscript(talk: TalkData) -> Bool {
         
-        if talk.PDF.count > 2 {
+        if talk.PDF.lowercased().range(of:"http:") != nil {
             return true
         } else {
             return false
         }
+    }
+    
+    func isFullURL(url: String) -> Bool {
+        
+        return url.lowercased().range(of:"http:") == nil ? false : true
     }
     
 }

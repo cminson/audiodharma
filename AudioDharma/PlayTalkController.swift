@@ -20,7 +20,6 @@ class PlayTalkController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var talkTitle: UILabel!
     @IBOutlet weak var speaker: UILabel!
-    @IBOutlet weak var metaInfo: UILabel!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var playTalkSeriesButton: UIButton!
     @IBOutlet weak var talkProgressSlider: UISlider!
@@ -33,7 +32,10 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonDonate: UIBarButtonItem!
     @IBOutlet var buttonShare: UIBarButtonItem!
     @IBOutlet var buttonFavorite: UIBarButtonItem!
-   
+    
+    @IBOutlet weak var currentDuration: UILabel!
+    @IBOutlet weak var targetDuration: UILabel!
+    
     @IBOutlet weak var buttonTranscript: UIButton!
     @IBOutlet weak var labelSingleOrSequence: UILabel!
     
@@ -78,7 +80,8 @@ class PlayTalkController: UIViewController {
         
         talkTitle.textColor = MAIN_FONT_COLOR
         speaker.textColor = MAIN_FONT_COLOR
-        metaInfo.textColor = SECONDARY_FONT_COLOR
+        //metaInfo.textColor = SECONDARY_FONT_COLOR
+        labelSingleOrSequence.textColor = SECONDARY_FONT_COLOR
 
         resetTalkDisplay()
  
@@ -86,8 +89,9 @@ class PlayTalkController: UIViewController {
         //MPVolumeParentView.backgroundColor = UIColor.green
 
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
+      
         volumeView.showsRouteButton = true
-        
+       
         let iconBlack = UIImage(named: "routebuttonblack")
         let iconGreen = UIImage(named: "routebuttongreen")
         
@@ -95,6 +99,7 @@ class PlayTalkController: UIViewController {
         volumeView.setRouteButtonImage(iconBlack, for: UIControlState.disabled)
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.highlighted)
         volumeView.setRouteButtonImage(iconGreen, for: UIControlState.selected)
+
         volumeView.tintColor = MAIN_FONT_COLOR
         
         //volumeView.backgroundColor = UIColor.gray
@@ -188,12 +193,12 @@ class PlayTalkController: UIViewController {
         if PlayEntireAlbum == true {
             PlayEntireAlbum = false
             playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOff"), for: UIControlState.normal)
-            labelSingleOrSequence.text="Single Talk"
+            labelSingleOrSequence.textColor = SECONDARY_FONT_COLOR
             
         } else {
             PlayEntireAlbum = true
             playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOn"), for: UIControlState.normal)
-            labelSingleOrSequence.text="Talks In Sequence"
+            labelSingleOrSequence.textColor = MAIN_FONT_COLOR
         }
     }
     
@@ -239,7 +244,8 @@ class PlayTalkController: UIViewController {
         //
         // if the talk is locally downloaded, play it off local storage
         // otherwise:
-        //      if talk is an audiodharma file, play it with full path
+        //      if the talk has a full url (ex: www.audiodharma.org prefiex) then use it as is
+        //      else if talk is an audiodharma file, play it with full path
         //      otherwise use a flat path (meaning all the talk live in a flat directory)
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) {
         
@@ -248,7 +254,11 @@ class PlayTalkController: UIViewController {
         }
         else {
             PlayingDownloadedTalk = false
-            if USE_NATIVE_MP3PATHS == true {
+            
+            if TheDataModel.isFullURL(url: CurrentTalk.URL) {
+                talkURL  = URL(string: CurrentTalk.URL)!
+            }
+            else if USE_NATIVE_MP3PATHS == true {
                 talkURL  = URL(string: URL_MP3_HOST +  CurrentTalk.URL)!
 
             } else {
@@ -329,12 +339,16 @@ class PlayTalkController: UIViewController {
         speaker.text = CurrentTalk.Speaker
         
         let duration = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalk.DurationInSeconds)
+        /*
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
-            metaInfo.text = CurrentTalk.Date + "  " + duration + "  (Downloaded)"
+            metaInfo.text = CurrentTalk.Date + "  (Downloaded)"
         } else {
-            metaInfo.text = CurrentTalk.Date + "  " + duration
+            metaInfo.text = CurrentTalk.Date
         }
+ */
         
+        targetDuration.text = duration
+        currentDuration.text = "00:00:00"
         talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
         
         updateTitleDisplay()
@@ -413,10 +427,12 @@ class PlayTalkController: UIViewController {
                 let formattedTalkCount = numberFormatter.string(from: NSNumber(value: TalkList.count)) ?? ""
                 
                 self.title = "Playing \(formattedTalkIndex)/\(formattedTalkCount)  \(displayTime)"
+                currentDuration.text = displayTime
             }
             else {
                 
                 self.title = "Playing   \(displayTime)"
+                currentDuration.text = displayTime
             }
         case .PAUSED:
             let currentTime = MP3TalkPlayer.getCurrentTimeInSeconds()

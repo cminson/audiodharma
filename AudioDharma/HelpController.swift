@@ -39,6 +39,7 @@ class HelpController: UIViewController {
         let string = "<style>body{font-family: 'Helvetica'; font-size:16px; color:#555555}</style>" + HelpText
         helpContentView.attributedText = string.html2AttributedString
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+        helpContentView.textColor = MAIN_FONT_COLOR
     }
     
     override func viewDidLayoutSubviews() {

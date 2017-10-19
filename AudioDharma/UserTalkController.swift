@@ -127,6 +127,12 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             controller.setHelpPage(helpPage: KEY_USER_TALKS)
+            
+        case "DISPLAY_DONATIONS":
+            guard let _ = segue.destination as? UINavigationController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
@@ -178,7 +184,13 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             
             FilteredTalks = []
             for talk in TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum) {
-                if talk.Title.lowercased().contains(searchText.lowercased()) {
+                
+                let notes = TheDataModel.getNoteForTalk(talkFileName: talk.FileName).lowercased()
+
+                let searchedData = talk.Title.lowercased() + " " +
+                    talk.Speaker.lowercased() + " " + talk.Date + " " + talk.Keys.lowercased() + " " + notes
+
+                if searchedData.contains(searchText.lowercased()) {
                     FilteredTalks.append(talk)
                 }
             }

@@ -24,15 +24,18 @@ class PDFController: UIViewController, WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        super.viewDidLoad()
         
         if CurrentTalk.PDF.count < 2 {
             return
         }
         
         var pdfURL: URL
-        if USE_NATIVE_MP3PATHS == true {
+
+        if TheDataModel.isFullURL(url: CurrentTalk.PDF) {
+            pdfURL  = URL(string: CurrentTalk.PDF)!
+            print("PDF: ", pdfURL)
+        }
+        else if USE_NATIVE_MP3PATHS == true {
             pdfURL  = URL(string: URL_MP3_HOST +  CurrentTalk.PDF)!
             
         } else {
@@ -41,27 +44,14 @@ class PDFController: UIViewController, WKNavigationDelegate {
             fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
             pdfURL  = URL(string: URL_MP3_HOST + "/" + fileName)!
         }
-        // DEV TEST
-        pdfURL = URL(string: "www.virtualdharma.org/sample.pdf")!
 
+    
         webView?.load(URLRequest(url: pdfURL))
         webView?.allowsBackForwardNavigationGestures = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

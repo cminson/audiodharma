@@ -43,6 +43,7 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+        
  
     }
     
@@ -88,6 +89,10 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
         super.prepare(for: segue, sender: sender)
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "  "
+        navigationItem.backBarButtonItem = backItem
         
         switch(segue.identifier ?? "") {
             

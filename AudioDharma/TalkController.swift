@@ -46,6 +46,8 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
         
+        
+        
         TheDataModel.TalkController = self
         
   
@@ -98,6 +100,11 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "  "
+        navigationItem.backBarButtonItem = backItem
+
         
         switch(segue.identifier ?? "") {
             
@@ -182,8 +189,10 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
                 for talkData in sections {
                     let notes = TheDataModel.getNoteForTalk(talkFileName: talkData.FileName).lowercased()
                     
-                    let searchedData = talkData.Title.lowercased() + talkData.Speaker.lowercased() + talkData.Date + notes
+                    let searchedData = talkData.Title.lowercased() + " " +
+                        talkData.Speaker.lowercased() + " " + talkData.Date + " " + talkData.Keys.lowercased() + " " + notes
                     
+                  
                     if searchedData.contains(searchText.lowercased()) {
                         
                         if sectionsPositionDict[talkData.Section] == nil {

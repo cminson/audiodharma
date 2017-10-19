@@ -113,6 +113,10 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         
         super.prepare(for: segue, sender: sender)
         
+        let backItem = UIBarButtonItem()
+        backItem.title = "  "
+        navigationItem.backBarButtonItem = backItem
+        
         switch segue.identifier ?? "" {
             
         case "DISPLAY_TALKS":
