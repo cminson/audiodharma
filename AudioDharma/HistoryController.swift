@@ -186,8 +186,11 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
             for talkHistory in TalkHistory {
                 
                 if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
-                    let searchedData = talk.Title.lowercased() + talk.Speaker.lowercased() + talk.Date
                     
+                    let notes = TheDataModel.getNoteForTalk(talkFileName: talk.FileName).lowercased()
+                    let searchedData = talk.Title.lowercased() + " " +
+                        talk.Speaker.lowercased() + " " + talk.Date + " " + talk.Keys.lowercased() + " " + notes
+
                     if searchedData.contains(searchText.lowercased()) {
                         
                         FilteredTalkHistory.append(talkHistory)

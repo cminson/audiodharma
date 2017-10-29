@@ -35,7 +35,8 @@ var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up i
 
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
-let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"           // where to get sangha activity (shares, listens)
+//let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/activity.json"           // where to get sangha activity (shares, listens)
+let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/getactivity.php"           // where to get sangha activity (shares, listens)
 
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
@@ -452,7 +453,11 @@ class Model {
                                          durationInSeconds: seconds,
                                          pdf: pdf,
                                          keys: keys)
-                
+            
+                if doesTalkHaveTranscript(talk: talkData) {
+                    talkData.Title = talkData.Title + " [transcript]"
+                }
+            
                 self.FileNameToTalk[fileName] = talkData
                 
                 // add this talk to  list of all talks
@@ -548,8 +553,8 @@ class Model {
                     var speaker = ""
                     var date = ""
                     var durationDisplay = ""
-                    let keys = ""
-                    let pdf = ""
+                    var keys = ""
+                    var pdf = ""
                     
                     // DEV NOTE: remove placeholder.  this code might not be necessary long-term
                     if section == "_" || section == "__" {
@@ -562,6 +567,8 @@ class Model {
                         URL = talkData.URL
                         speaker = talkData.Speaker
                         date = talkData.Date
+                        pdf = talkData.PDF
+                        keys = talkData.Keys
                         durationDisplay = talkData.DurationDisplay
                     }
                     
@@ -578,6 +585,10 @@ class Model {
                                              durationInSeconds: totalSeconds,
                                              pdf: pdf,
                                              keys: keys)
+                    
+                    if doesTalkHaveTranscript(talk: talkData) {
+                        talkData.Title = talkData.Title + " [transcript]"
+                    }
                     
                     // if a series is specified create a series album if not already there.  then add talk to it
                     // otherwise, just add the talk directly to the parent album
@@ -884,9 +895,6 @@ class Model {
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
         let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
-
-        //var escapedString = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-//print(escapedString!)
 
         let url = URL(string: URL_REPORT_ACTIVITY)!
         var request = URLRequest(url: url)
@@ -1789,7 +1797,6 @@ class Model {
 
         if (noteText.characters.count > 0) && noteText.rangeOfCharacter(from: charset) != nil {
             UserNotes[talkFileName] = UserNoteData(notes: noteText)
-            print("yes")
         } else {
             UserNotes[talkFileName] = nil
         }
@@ -1908,6 +1915,9 @@ class Model {
         
         if talk.PDF.lowercased().range(of:"http:") != nil {
             return true
+        }
+        else if talk.PDF.lowercased().range(of:"https:") != nil {
+            return true
         } else {
             return false
         }
@@ -1915,7 +1925,15 @@ class Model {
     
     func isFullURL(url: String) -> Bool {
         
-        return url.lowercased().range(of:"http:") == nil ? false : true
+        if url.lowercased().range(of:"http:") != nil {
+            return true
+        }
+        else if url.lowercased().range(of:"https:") != nil {
+            return true
+        } else {
+            return false
+        }
+        
     }
     
 }

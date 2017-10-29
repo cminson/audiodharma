@@ -268,8 +268,14 @@ class TalkController: UITableViewController, UISearchBarDelegate, UISearchContro
         if TheDataModel.isDownloadInProgress(talk: talk) {
             talkTitle = "DOWNLOADING: " + talk.Title
         } else {
-            talkTitle = talk.Title
+            
+            if self.Content == KEY_ALLTALKS {
+                talkTitle = talk.Title + " - " + talk.Speaker
+            } else {
+                talkTitle = talk.Title
+            }
         }
+        
         if TheDataModel.isCompletedDownloadTalk(talk: talk) {
             cell.title.textColor = BUTTON_DOWNLOAD_COLOR
         }

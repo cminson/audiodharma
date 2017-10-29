@@ -78,7 +78,12 @@ class PlayTalkController: UIViewController {
         OriginalTalkRow = CurrentTalkRow
         CurrentTalk = TalkList[CurrentTalkRow]
         
-        talkTitle.textColor = MAIN_FONT_COLOR
+        if TheDataModel.isDownloadTalk(talk: CurrentTalk) {
+            talkTitle.textColor = BUTTON_DOWNLOAD_COLOR
+        } else {
+            talkTitle.textColor = MAIN_FONT_COLOR
+        }
+        
         speaker.textColor = MAIN_FONT_COLOR
         //metaInfo.textColor = SECONDARY_FONT_COLOR
         labelSingleOrSequence.textColor = SECONDARY_FONT_COLOR
@@ -337,6 +342,12 @@ class PlayTalkController: UIViewController {
 
         talkTitle.text = CurrentTalk.Title
         speaker.text = CurrentTalk.Speaker
+        
+        if TheDataModel.isDownloadTalk(talk: CurrentTalk) {
+            talkTitle.textColor = BUTTON_DOWNLOAD_COLOR
+        } else {
+            talkTitle.textColor = MAIN_FONT_COLOR
+        }
         
         let duration = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalk.DurationInSeconds)
         /*

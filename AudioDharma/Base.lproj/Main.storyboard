@@ -89,7 +89,7 @@
             </objects>
             <point key="canvasLocation" x="-361" y="961"/>
         </scene>
-        <!--Talks by Speakers-->
+        <!--Talks by All Speakers-->
         <scene sceneID="XFU-xf-pVT">
             <objects>
                 <tableViewController id="3TL-of-6t5" customClass="SpeakerController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -102,7 +102,7 @@
                             <outlet property="delegate" destination="3TL-of-6t5" id="OrE-sf-Qfu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Talks by Speakers" id="hKw-C4-xAf"/>
+                    <navigationItem key="navigationItem" title="Talks by All Speakers" id="hKw-C4-xAf"/>
                     <connections>
                         <outlet property="buttonDonate" destination="biB-pZ-N7G" id="HOR-CF-qST"/>
                         <outlet property="buttonHelp" destination="HVo-Tk-Ya2" id="gmJ-og-LxX"/>
@@ -516,6 +516,9 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nc7-4i-Xfm">
                                 <rect key="frame" x="336" y="337" width="53" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="53" id="eSI-HR-KBR"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <state key="normal" title="Transcript">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1000,12 +1003,12 @@
         <image name="tri_right_x" width="221" height="145"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7DY-Wt-lPH"/>
+        <segue reference="HMR-Ex-Pps"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="eYb-A4-FTX"/>
+        <segue reference="B6o-GF-pY3"/>
         <segue reference="30e-7l-0p1"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="hEa-61-IsL"/>
+        <segue reference="Ebq-8j-F1C"/>
     </inferredMetricsTieBreakers>
 </document>
