@@ -13,34 +13,25 @@ class PDFController: UIViewController, WKNavigationDelegate, UIWebViewDelegate {
     
     var webView: WKWebView?
     var CurrentTalk : TalkData!
-    //var activityIndicator: UIActivityIndicatorView!
+    var activityIndicator: UIActivityIndicatorView!
     
     override func loadView() {
+        
         super.loadView()
         
-        webView = WKWebView()
-        webView?.navigationDelegate = self
-        view = webView
-        
-/*
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = false
         activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        webView?.addSubview(activityIndicator)
- */
-    
-    }
-    
-    @IBAction func fontSizeIncrease(_ sender: UIBarButtonItem) {
-    }
-    
 
-    @IBAction func fontSizeDecrease(_ sender: UIBarButtonItem) {
+        self.webView = WKWebView()
+        self.webView?.navigationDelegate = self
+        self.webView?.addSubview(activityIndicator)
+        self.webView?.bringSubview(toFront: activityIndicator)
+
+        self.view = self.webView
+        activityIndicator.startAnimating()
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +40,6 @@ class PDFController: UIViewController, WKNavigationDelegate, UIWebViewDelegate {
             return
         }
         
-
         var pdfURL: URL
 
         if TheDataModel.isFullURL(url: CurrentTalk.PDF) {
@@ -66,35 +56,17 @@ class PDFController: UIViewController, WKNavigationDelegate, UIWebViewDelegate {
             pdfURL  = URL(string: URL_MP3_HOST + "/" + fileName)!
         }
         
-        //activityIndicator.isHidden = false
         webView?.load(URLRequest(url: pdfURL))
         webView?.allowsBackForwardNavigationGestures = true
-        //webView?.contentMode = .scaleAspectFit
-
-
-/*
-        pdfURL = URL(string: "http://www.virtualdharma.org/sample.pdf")!
-        pdfURL = URL(string: "http://www.insightmeditationcenter.org/articles/noting-transcribed.pdf")!
-
-
-        if let test = URL(string: "https://www.insightmeditationcenter.org/articles/noting-transcribed.pdf") {
-        //if let test = URL(string: "http://www.virtualdharma.org/sample02.pdf") {
-            print("Loading URL: ", test)kk
-            webView?.load(URLRequest(url: test))
-            webView?.allowsBackForwardNavigationGestures = true
-        }
- */
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
-        //activityIndicator.isHidden = true
-
+        activityIndicator.isHidden = true
     }
-
+    
 }

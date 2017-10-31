@@ -62,8 +62,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         print("applicationDidBecomeActive")
+        
+#if DEV
+        let BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        BusyIndicator.color = UIColor(red:0.00, green:0.00, blue:0.00, alpha:1.0)
+        
+        BusyIndicator.center = (TheDataModel.RootController?.view.center)!
+        TheDataModel.RootController?.view.addSubview(BusyIndicator)
+        
         TheDataModel.RootController?.updateStateForNetwork()
         TheDataModel.DownloadInProgress = false
+        
+        TheDataModel.resetData()
+        TheDataModel.loadData()
+#endif
+
         TheDataModel.refreshAllControllers()
 
 

@@ -388,6 +388,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Audio Dharma" id="ZPM-Q5-ruw"/>
                     <connections>
+                        <outlet property="buttonBookmark" destination="Qus-sd-azj" id="foZ-Fl-25I"/>
                         <outlet property="buttonDonate" destination="YSF-zE-0YA" id="LZp-vc-PAi"/>
                         <outlet property="buttonHelp" destination="AWh-vc-YZs" id="qAZ-1B-a3c"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="hEa-61-IsL"/>
@@ -409,6 +410,11 @@
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="eFV-Q2-tuz"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icohelp" id="Qus-sd-azj" userLabel="Button Bookmark">
+                    <connections>
+                        <action selector="gotoTalk:" destination="EU2-EN-w2e" id="nk6-bY-63p"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -1003,12 +1009,12 @@
         <image name="tri_right_x" width="221" height="145"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HMR-Ex-Pps"/>
+        <segue reference="eFV-Q2-tuz"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="B6o-GF-pY3"/>
+        <segue reference="ZGd-hh-xhM"/>
         <segue reference="30e-7l-0p1"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="Ebq-8j-F1C"/>
+        <segue reference="hEa-61-IsL"/>
     </inferredMetricsTieBreakers>
 </document>

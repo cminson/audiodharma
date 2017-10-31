@@ -103,25 +103,11 @@ let KEY_USER_TALKS = "KEY_USER_TALKS"
 let KEY_USEREDIT_TALKS = "KEY_USEREDIT_TALKS"
 let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
-/*
-let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)    // dark green
-let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
-let BUTTON_FAVORITE_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
-let BUTTON_DOWNLOAD_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
- */
-/*
-let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.00, blue:0.39, alpha:1.0)     // dark blue
-let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     // dark orange
-let BUTTON_SHARE_COLOR = UIColor(red:0.00, green:0.39, blue:0.00, alpha:1.0)     // dark green
-let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.39, green:0.00, blue:0.00, alpha:1.0)     // dark red
- */
-
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.34, blue:0.80, alpha:1.0)     //  blue #0057CC
 let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     //  orange #ff8c00
 let BUTTON_SHARE_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
 let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.80, green:0.12, blue:0.00, alpha:1.0)     //  red #CC1F00
 let APP_ICON_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
-
 
 let SECTION_BACKGROUND = UIColor.darkGray  // #555555ff
 let MAIN_FONT_COLOR = UIColor.darkGray      // #555555ff
@@ -129,7 +115,6 @@ let SECONDARY_FONT_COLOR = UIColor.gray
 let SECTION_TEXT = UIColor.white
 
 let MP3_BYTES_PER_SECOND = 20000    // rough (high) estimate for how many bytes per second of MP3.  Used to estimate size of download files
-
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
 var ACTIVITY_UPDATE_INTERVAL = 60           // how many seconds until each update of sangha activity
@@ -184,6 +169,36 @@ class Model {
 	var UserDownloads: [String: UserDownloadData] = [:]      // all the downloads defined by this user, indexed by fileName
     
     // MARK: Init
+    func resetData() {
+        
+        AlbumSections = []
+        SpeakerAlbums = []
+        SeriesAlbums = []
+        RecommendedAlbums = []
+        
+        KeyToTalks  = [:]
+        
+        KeyToAlbumStats = [:]
+        FileNameToTalk = [String: TalkData] ()
+        UserTalkHistoryAlbum = []
+        UserShareHistoryAlbum = []
+        
+        SangaTalkHistoryAlbum = []
+        
+        SangaShareHistoryAlbum = []
+        
+        AllTalks = []
+        
+        DownloadInProgress = false
+        
+        UpdatedTalksJSON = [String: AnyObject] ()
+        
+        UserAlbums = []
+        UserNotes = [:]
+        UserFavorites = [:]
+        UserDownloads = [:]
+    }
+    
     func loadData() {
         
         AlbumSections = []
@@ -1828,14 +1843,14 @@ class Model {
     func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
         
         
-        let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
+        let shareText = "\n\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
         let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
         
         let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
         //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
         
         let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = controller.view // so that iPads won't crash
+        activityViewController.popoverPresentationController?.sourceView = controller.view
         
         // if something was actually shared, report that activity to cloud
         activityViewController.completionWithItemsHandler = {

@@ -15,6 +15,8 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
+    @IBOutlet var buttonBookmark: UIBarButtonItem!
+    
     
     //MARK: Properties
     var SelectedSection: Int = 0
@@ -29,10 +31,28 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     var BusyIndicator =  UIActivityIndicatorView()
 
     
+    @IBAction func gotoTalk(_ sender: Any) {
+        
+        if let talkName = UserDefaults.standard.string(forKey: "talkName")
+        {
+            let playTime = UserDefaults.standard.integer(forKey: "playTime")
+            
+            performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
+
+            print("Goto BookMark: ", talkName, playTime)
+            
+        } else {
+            
+        }
+    }
+    
+
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("viewDidLoad")
+
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
         
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -52,8 +72,9 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-        
+        //self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
+        self.setToolbarItems([buttonHelp, flexibleItem, buttonBookmark, flexibleItem, buttonDonate], animated: false)
+
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -66,11 +87,14 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
 
+        print("viewWillAppear")
         super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         
+        print("viewWillDisappear")
+
         super.viewWillDisappear(animated)
     }
 

@@ -523,6 +523,9 @@ class PlayTalkController: UIViewController {
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
             }
             
+            UserDefaults.standard.set(currentPlayTime, forKey: "playTime")
+            UserDefaults.standard.set(CurrentTalk.FileName, forKey: "talkName")
+            
         }
     } 
     private func enableActivityIcons() {

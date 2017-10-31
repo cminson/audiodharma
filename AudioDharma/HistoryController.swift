@@ -327,7 +327,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                self.mypresent(alert)
             }
             
         } else {
@@ -336,21 +336,21 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
                 if TheDataModel.isInternetAvailable() == false {
                     let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.mypresent(alert)
                     return
                 }
                 
                 if TheDataModel.DownloadInProgress {
                     let alert = UIAlertController(title: "Another Download In Progress", message: "Only one download can run at at time.\n\nPlease wait until previous download is completed.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.mypresent(alert)
                     return
                 }
 
                 let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                self.mypresent(alert)
             }
         }
         
@@ -427,7 +427,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        mypresent(alert)
     }
     
     private func unFavoriteTalk(talk: TalkData) {
@@ -442,7 +442,7 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        mypresent(alert)
     }
 
     private func shareTalk() {
@@ -451,16 +451,48 @@ class HistoryController: UITableViewController, UISearchBarDelegate, UISearchCon
         
         // save off search state and then turn off search. otherwise the modal will conflict with it
         SearchText = SearchController.searchBar.text!
+        let searchState = SearchController.isActive
         SearchController.isActive = false
         
         if let sharedTalk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
-            TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
             
-            // restore search state
-            SearchController.isActive = true
-            SearchController.searchBar.text = SearchText
+            let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
+            let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
+            
+            let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
+            //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
+            
+            let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            
+            // if something was actually shared, report that activity to cloud
+            activityViewController.completionWithItemsHandler = {
+                (activity, completed, items, error) in
+                
+                // restore search state
+                self.SearchController.isActive = searchState
+                self.SearchController.searchBar.text = self.SearchText
+                
+                // if the share goes through, record it locally and also report this activity to our host service
+                if completed == true {
+                    TheDataModel.addToShareHistory(talk: sharedTalk)
+                    TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: sharedTalk)
+                }
+            }
+            
+            mypresent(activityViewController)
             
         }
     }
+    
+    private func mypresent(_ viewControllerToPresent: UIViewController) {
+        
+        if self.SearchController.isActive {
+            self.SearchController.present(viewControllerToPresent, animated: true, completion: nil)
+        } else {
+            self.present(viewControllerToPresent, animated: true, completion: nil)
+        }
+    }
+
     
 }
