@@ -8,16 +8,12 @@
 
 import UIKit
 
-class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    @IBOutlet var buttonDonate: UIBarButtonItem!
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    
+class UserTalksEditController: BaseController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+
     //MARK: Properties
     var DisplayTalks: [TalkData] = []
     var FilteredTalks:  [TalkData] = []
     var SelectedRow: Int = 0
-    let SearchController = UISearchController(searchResultsController: nil)
-    
     var Content: String = ""
     var SelectedTalks: [TalkData] = [TalkData] ()
     
@@ -27,9 +23,6 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
-
         
         // 
         // we display talks which are the union of the selectedTalks
@@ -57,22 +50,11 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
         DisplayTalks = SelectedTalks + Array(xorSet).sorted(by: { $0.Date > $1.Date })
         FilteredTalks = DisplayTalks
-        //FilteredTalks = DisplayTalks
         
-        //searchController = UISearchController(searchResultsController: nil)
         SearchController.searchResultsUpdater = self
-        SearchController.hidesNavigationBarDuringPresentation = false
-        SearchController.dimsBackgroundDuringPresentation = false
-        tableView.tableHeaderView = SearchController.searchBar
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
-        
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-        
-        //self.tableView.allowsMultipleSelection = true
+        tableView.tableHeaderView = SearchController.searchBar
     }
     
     deinit {
@@ -97,6 +79,17 @@ class UserTalksEditController: UITableViewController, UISearchBarDelegate, UISea
         
         switch(segue.identifier ?? "") {
             
+        case "DISPLAY_RESUMETALK":
+            
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
+
         case "DISPLAY_HELP_PAGE":
             guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")

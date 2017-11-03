@@ -8,17 +8,14 @@
 
 import UIKit
 
-class SeriesController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class SeriesController: BaseController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
 
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    @IBOutlet var buttonDonate: UIBarButtonItem!
     
     //MARK: Properties
     var SelectedRow: Int = 0
     var FilteredAlbums:  [AlbumData] = []
-    let SearchController = UISearchController(searchResultsController: nil)
-    var SearchText: String = ""
     var SeriesType : ALBUM_SERIES = .ALL
+
     
     // MARK: Init
     override func viewDidLoad() {
@@ -38,16 +35,7 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
-        
-        SearchController.hidesNavigationBarDuringPresentation = false
-        SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
-        
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,7 +48,6 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         // this view tends to hang around in the parent.  this clears it
         SearchController.view.removeFromSuperview()
     }
-    
     
     override func didReceiveMemoryWarning() {
         
@@ -78,6 +65,16 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         navigationItem.backBarButtonItem = backItem
         
         switch segue.identifier ?? "" {
+        case "DISPLAY_RESUMETALK":
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
+
             
         case "DISPLAY_TALKS":
             guard let controller = segue.destination as? TalkController else {
@@ -185,6 +182,8 @@ class SeriesController: UITableViewController, UISearchBarDelegate, UISearchCont
         SelectedRow = indexPath.row
         self.performSegue(withIdentifier: "DISPLAY_TALKS", sender: self)
     }
+    
+    
     
     
 }

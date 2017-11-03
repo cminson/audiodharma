@@ -891,6 +891,7 @@ class Model {
         
         let date = Date()
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier:"GMT")
         formatter.dateFormat = "yyyy.MM.dd"
         let datePlayed = formatter.string(from: date)
         formatter.dateFormat = "HH:mm:ss"
@@ -1626,6 +1627,16 @@ class Model {
     func getTalkForName(name: String) -> TalkData? {
         
         return FileNameToTalk[name]
+    }
+    
+    func isMostRecentTalk(talk: TalkData) -> Bool {
+    
+        if let talkHistory = UserTalkHistoryAlbum.last {
+            if talkHistory.FileName == talk.FileName {
+                return true
+            }
+        }
+        return false
     }
     
     func addToTalkHistory(talk: TalkData) {

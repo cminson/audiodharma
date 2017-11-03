@@ -10,46 +10,27 @@ import UIKit
 import os.log
 
 
-class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating   {
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    @IBOutlet var buttonDonate: UIBarButtonItem!
+class UserAlbumsController: BaseController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating   {
     
     //MARK: Properties
     var SelectedRow: Int = 0
     var FilteredUserAlbums:  [UserAlbumData] = []
-    let SearchController = UISearchController(searchResultsController: nil)
-    var SearchText: String = ""
-
     
     // MARK: Init
     override func viewDidLoad() {
         
-        print("UserAlbumsController: viewDidLoad")
-
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
-
         
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
         
-        SearchController.hidesNavigationBarDuringPresentation = false
-        SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
         
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-        
- 
-    }
+     }
     
     override func viewWillAppear(_ animated: Bool) {
         
-        print("UserAlbumsController viewWillAppear")
         super.viewWillAppear(animated)
         
         FilteredUserAlbums = TheDataModel.UserAlbums
@@ -77,8 +58,7 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         
         // this view tends to hang around in the parent.  this clears it
         SearchController.view.removeFromSuperview()
-    }
-
+    }    
     
     // MARK: Navigation
     //
@@ -95,6 +75,16 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         navigationItem.backBarButtonItem = backItem
         
         switch(segue.identifier ?? "") {
+        case "DISPLAY_RESUMETALK":
+            
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
             
         case "DISPLAY_ADD_ALBUM":     // Add a New User Album
             guard let navController = segue.destination as? UINavigationController else {
@@ -277,9 +267,9 @@ class UserAlbumsController: UITableViewController, UISearchBarDelegate, UISearch
         let movedAlbum = FilteredUserAlbums[sourceIndexPath.row]
         FilteredUserAlbums.remove(at: sourceIndexPath.row)
         FilteredUserAlbums.insert(movedAlbum, at: destinationIndexPath.row)
-        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedAlbum.Title)")
+        //print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedAlbum.Title)")
       
     }
-   
+  
 }
 

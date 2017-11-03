@@ -12,24 +12,17 @@ import UIKit
 //
 // Displays the talks that a user has stored in their User Album
 //
-class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    @IBOutlet var buttonDonate: UIBarButtonItem!
-    
+class UserTalkController: BaseController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+   
     // MARK: Properties
     var UserAlbum: UserAlbumData!   // the userAlbum that we are currently viewing
     var FilteredTalks: [TalkData]  = [TalkData] ()  // the talk list for the selectedUserList
     var SelectedRow: Int = 0
-    let SearchController = UISearchController(searchResultsController: nil)
-    var SearchText = ""
-
     
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
-
         FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
 
         self.title = UserAlbum.Title
@@ -37,18 +30,9 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
-        SearchController.hidesNavigationBarDuringPresentation = false
-        SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
-        
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-
 
         TheDataModel.UserTalkController = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +63,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         super.didReceiveMemoryWarning()
     }
     
-    func reloadModel() {
+    override func reloadModel() {
         
         FilteredTalks = TheDataModel.getUserAlbumTalks(userAlbum: UserAlbum)
     }
@@ -91,6 +75,18 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         super.prepare(for: segue, sender: sender)
         
         switch segue.identifier ?? "" {
+            
+        case "DISPLAY_RESUMETALK":
+            
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
+
             
         case "DISPLAY_EDITUSERTALKS":  // edit the talks within this User List
             
@@ -214,7 +210,6 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         return FilteredTalks.count
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
@@ -263,38 +258,6 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         SelectedRow = indexPath.row
         performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
     }
- 
-    #if WANTEDITING
-    // REMEMBER: if editing method below is active, then left-swipe Share will not work
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        
-        return .none
-    }
-    
-    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        
-        let movedTalk = SelectedTalks[sourceIndexPath.row]
-        SelectedTalks.remove(at: sourceIndexPath.row)
-        SelectedTalks.insert(movedTalk, at: destinationIndexPath.row)
-        print("\(sourceIndexPath.row) => \(destinationIndexPath.row) \(movedTalk.title)")
-        
-        
-        // unpack the  selected talks into talkFileNames (an array of talk filenames strings)
-        var talkFileNames = [String]()
-        for talk in SelectedTalks {
-            talkFileNames.append(talk.fileName)
-        }
-        
-        // save the resulting array into the userlist and then persist into storage
-        TheDataModel.UserLists[SelectedUserListIndex].talkFileNames = talkFileNames
-        TheDataModel.saveUserListData()
-      }
-    #endif
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
@@ -306,18 +269,18 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
         }
         
         let shareTalk = UITableViewRowAction(style: .normal, title: "share") { (action, indexPath) in
-            self.shareTalk()
+            self.shareTalk(talk: talk)
         }
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
             favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nfavorite") { (action, indexPath) in
-                self.unFavoriteTalk()
+                self.unFavoriteTalk(talk: talk)
             }
             
         } else {
             favoriteTalk = UITableViewRowAction(style: .normal, title: "favorite") { (action, indexPath) in
-                self.favoriteTalk()
+                self.favoriteTalk(talk: talk)
             }
         }
         
@@ -326,7 +289,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
             downloadTalk = UITableViewRowAction(style: .normal, title: "remove\ndownload") { (action, indexPath) in
                 
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.deleteTalk))
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerDeleteDownload))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
                 self.mypresent(alert)
             }
@@ -349,7 +312,7 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
                 }
 
                 let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.executeDownload))
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerAddDownload))
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
                 self.mypresent(alert)
             }
@@ -366,120 +329,25 @@ class UserTalkController: UITableViewController, UISearchBarDelegate, UISearchCo
     
     
     //MARK: Menu Functions
-    func executeDownload(alert: UIAlertAction!) {
+    func handlerAddDownload(alert: UIAlertAction!) {
         
         let talk = FilteredTalks[SelectedRow]
-
-        let spaceRequired = talk.DurationInSeconds * MP3_BYTES_PER_SECOND
-        
-        
-        // if (freeSpace < Int64(500000000)) {
-        if let freeSpace = TheDataModel.deviceRemainingFreeSpaceInBytes() {
-            print("Freespace: ", freeSpace, spaceRequired)
-            if (spaceRequired > freeSpace) {
-                let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                mypresent(alert)
-                return
-            }
-        }
-        
-        TheDataModel.setTalkAsDownload(talk: talk)
-        TheDataModel.downloadMP3(talk: talk)
+        self.executeDownload(talk: talk)
     }
     
-    private func deleteTalk(alert: UIAlertAction!) {
+    func handlerDeleteDownload(alert: UIAlertAction!) {
         
         let talk = FilteredTalks[SelectedRow]
-
-        TheDataModel.unsetTalkAsDownload(talk: talk)
-    }
-
-    private func favoriteTalk() {
-        
-        let talk = FilteredTalks[SelectedRow]
-        TheDataModel.setTalkAsFavorite(talk: talk)
-        
-        DispatchQueue.main.async(execute: {
-            self.reloadModel()
-            self.tableView.reloadData()
-            return
-        })
-        
-        let alert = UIAlertController(title: "Talk Favorited", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        mypresent(alert)
+        self.deleteDownloadedTalk(talk: talk)
     }
     
-    private func unFavoriteTalk() {
-        
-        let talk = FilteredTalks[SelectedRow]
-        TheDataModel.unsetTalkAsFavorite(talk: talk)
-        
-        
-        DispatchQueue.main.async(execute: {
-            self.reloadModel()
-            self.tableView.reloadData()
-            return
-        })
-        
-        let alert = UIAlertController(title: "Talk Un-favorited", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        mypresent(alert)
-    }
-
     private func viewEditNote() {
         
         performSegue(withIdentifier: "DISPLAY_NOTE", sender: self)
     }
     
-    private func shareTalk() {
-        
-        let sharedTalk = FilteredTalks[SelectedRow]
-        
-        // save off search state and then turn off search. otherwise the modal will conflict with it
-        SearchText = SearchController.searchBar.text!
-        let searchState = SearchController.isActive
-        SearchController.isActive = false
-        
-        let shareText = "\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
-        let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
-        
-        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
-        //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
-        
-        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view
-        
-        // if something was actually shared, report that activity to cloud
-        activityViewController.completionWithItemsHandler = {
-            (activity, completed, items, error) in
-            
-            // restore search state
-            self.SearchController.isActive = searchState
-            self.SearchController.searchBar.text = self.SearchText
-            
-            // if the share goes through, record it locally and also report this activity to our host service
-            if completed == true {
-                TheDataModel.addToShareHistory(talk: sharedTalk)
-                TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: sharedTalk)
-            }
-        }
-        
-        mypresent(activityViewController)
-        //self.present(activityViewController, animated: true, completion: nil)
-        
-        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
-    }
+   
     
-    private func mypresent(_ viewControllerToPresent: UIViewController) {
-        
-        if self.SearchController.isActive {
-            self.SearchController.present(viewControllerToPresent, animated: true, completion: nil)
-        } else {
-            self.present(viewControllerToPresent, animated: true, completion: nil)
-        }
-    }
-
-
 }
+
+

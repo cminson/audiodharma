@@ -10,6 +10,7 @@
 		831CC5931F488AA800550BD4 /* HistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC5921F488AA800550BD4 /* HistoryController.swift */; };
 		831CC5961F48AD0800550BD4 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC5941F48AD0800550BD4 /* HistoryCell.swift */; };
 		831CC5971F48AD0800550BD4 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831CC5951F48AD0800550BD4 /* HistoryCell.xib */; };
+		8321724C1FAB51F500C4C1B1 /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8321724B1FAB51F500C4C1B1 /* BaseController.swift */; };
 		8335090E1F8A73DC001DFBBA /* UserDownloadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335090D1F8A73DC001DFBBA /* UserDownloadData.swift */; };
 		834087C21F4F6AAD008E8F2D /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834087C11F4F6AAD008E8F2D /* HelpController.swift */; };
 		83432FC01F0AB373002926AC /* MP3Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83432FBF1F0AB373002926AC /* MP3Player.swift */; };
@@ -48,6 +49,7 @@
 		831CC5921F488AA800550BD4 /* HistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryController.swift; sourceTree = "<group>"; };
 		831CC5941F48AD0800550BD4 /* HistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		831CC5951F48AD0800550BD4 /* HistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryCell.xib; sourceTree = "<group>"; };
+		8321724B1FAB51F500C4C1B1 /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
 		8335090D1F8A73DC001DFBBA /* UserDownloadData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDownloadData.swift; sourceTree = "<group>"; };
 		834087C11F4F6AAD008E8F2D /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
 		83432FBF1F0AB373002926AC /* MP3Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MP3Player.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		83DC0D5F1EF17B390071CAD3 /* AudioDharma */ = {
 			isa = PBXGroup;
 			children = (
+				8321724B1FAB51F500C4C1B1 /* BaseController.swift */,
 				839E53841F324CFC00D0A102 /* AlbumCell.swift */,
 				839E53851F324CFC00D0A102 /* AlbumCell.xib */,
 				837C3DD61F2D34B7005C9A0A /* TalkCell.swift */,
@@ -282,6 +285,7 @@
 			files = (
 				8387D63E1EFC05180025006B /* AlbumData.swift in Sources */,
 				83DC0D631EF17B390071CAD3 /* PlayTalkController.swift in Sources */,
+				8321724C1FAB51F500C4C1B1 /* BaseController.swift in Sources */,
 				83C22CB51F184E87002503AE /* DonationsController.swift in Sources */,
 				83CA123F1F028B8A00798D20 /* UserAlbumsController.swift in Sources */,
 				837C3DDD1F2E1BD2005C9A0A /* UserNoteData.swift in Sources */,

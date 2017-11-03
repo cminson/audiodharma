@@ -29,7 +29,7 @@ class MP3Player : NSObject {
     
     
     // MARK: Functions
-    func startTalk(talkURL: URL){
+    func startTalk(talkURL: URL, startAtTime: Int){
         
         print(talkURL)
         PlayerItem  = AVPlayerItem(url: talkURL)
@@ -43,6 +43,7 @@ class MP3Player : NSObject {
                         object: PlayerItem)
         
         Player.play()
+        Player.seek(to: CMTimeMake(Int64(startAtTime), 1))
     }
     
     
@@ -133,8 +134,9 @@ class MP3Player : NSObject {
         var time : Int = 0
         
         if let ct = PlayerItem?.duration {
-            time = Int(CMTimeGetSeconds(ct))
-            
+            if CMTIME_IS_INDEFINITE(ct) == false {
+                time = Int(CMTimeGetSeconds(ct))
+            }
         }
         return time
     }

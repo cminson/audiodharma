@@ -11,11 +11,14 @@ import CoreLocation
 
 
 
-class AlbumController: UITableViewController, CLLocationManagerDelegate {
-    
+//class AlbumController: UITableViewController, CLLocationManagerDelegate {
+class AlbumController: BaseController, CLLocationManagerDelegate {
+
+    /*
     @IBOutlet var buttonHelp: UIBarButtonItem!
     @IBOutlet var buttonDonate: UIBarButtonItem!
     @IBOutlet var buttonBookmark: UIBarButtonItem!
+ */
     
     
     //MARK: Properties
@@ -27,33 +30,20 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
     
+    /*
+    var ResumeTalk : TalkData!
+    var ResumeTalkTime : Int = 0
+ */
+    
     var HelpPageText = ""
     var BusyIndicator =  UIActivityIndicatorView()
 
     
-    @IBAction func gotoTalk(_ sender: Any) {
-        
-        if let talkName = UserDefaults.standard.string(forKey: "talkName")
-        {
-            let playTime = UserDefaults.standard.integer(forKey: "playTime")
-            
-            performSegue(withIdentifier: "DISPLAY_TALKPLAYER", sender: self)
-
-            print("Goto BookMark: ", talkName, playTime)
-            
-        } else {
-            
-        }
-    }
     
 
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print("viewDidLoad")
-
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
         
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -107,9 +97,6 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func reloadModel() {
-
-    }
     
     func reportModelLoaded() {
         
@@ -142,6 +129,17 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
         navigationItem.backBarButtonItem = backItem
         
         switch segue.identifier ?? "" {
+        case "DISPLAY_RESUMETALK":
+            
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
+
             
         case "DISPLAY_TALKS":
             guard let controller = segue.destination as? TalkController else {
@@ -348,5 +346,30 @@ class AlbumController: UITableViewController, CLLocationManagerDelegate {
             }
         })
     }
+    
+    /*
+    @IBAction func gotoTalk(_ sender: Any) {
+        
+        if let talkName = UserDefaults.standard.string(forKey: "TalkName")
+        {
+            let playTime = UserDefaults.standard.integer(forKey: "CurrentTalkTime")
+            
+            
+            if  let currentTalk = TheDataModel.getTalkForName(name: talkName) {
+                ResumeTalk = currentTalk
+                ResumeTalkTime = playTime
+                print("Goto BookMark: ", talkName, playTime)
+                performSegue(withIdentifier: "DISPLAY_RESUMETALK", sender: self)
+            }
+        } else {
+            
+            let alert = UIAlertController(title: "Go To Your Last Talk", message: "\nYou have not listened to a talk yet. \nTherefore no action was taken.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+ */
+
     
 }

@@ -8,26 +8,16 @@
 
 import UIKit
 
-class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-    
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    @IBOutlet var buttonDonate: UIBarButtonItem!
-    
+class SpeakerController: BaseController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     //MARK: Properties
     var SelectedRow: Int = 0
     var FilteredAlbums:  [AlbumData] = []
-    let SearchController = UISearchController(searchResultsController: nil)
-    var SearchText: String = ""
-    var Test: Int = 0
     
-
     // MARK: Init
     override func viewDidLoad() {
         
         self.tableView.delegate = self
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
-
         
         super.viewDidLoad()
         
@@ -40,12 +30,6 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = SearchController.searchBar
-        
-        self.navigationController?.setToolbarHidden(false, animated: false)
-        self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,7 +42,6 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         // this view tends to hang around in the parent.  this clears it
         SearchController.view.removeFromSuperview()
     }
-    
     
     override func didReceiveMemoryWarning() {
         
@@ -76,6 +59,15 @@ class SpeakerController: UITableViewController, UISearchBarDelegate, UISearchCon
         navigationItem.backBarButtonItem = backItem
         
         switch segue.identifier ?? "" {
+        case "DISPLAY_RESUMETALK":
+            guard let navController = segue.destination as? UINavigationController, let playTalkController = navController.viewControllers.last as? PlayTalkController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            playTalkController.ResumingLastTalk = true
+            playTalkController.CurrentTalkTime = ResumeTalkTime
+            playTalkController.CurrentTalk = ResumeTalk
             
         case "DISPLAY_TALKS":
             guard let controller = segue.destination as? TalkController else {

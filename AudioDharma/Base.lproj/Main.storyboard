@@ -30,10 +30,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks" id="VXF-Dh-aL5"/>
                     <connections>
+                        <outlet property="buttonBookmark" destination="csW-rB-anr" id="PlK-Ae-gsN"/>
                         <outlet property="buttonDonate" destination="bKF-AN-BVr" id="eTs-Gs-lg0"/>
                         <outlet property="buttonHelp" destination="nad-WU-age" id="a18-RM-Pv2"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="4Sx-D1-YLI"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="zgt-c8-q8E"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -47,6 +49,12 @@
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="ie0-kf-o7Q"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="csW-rB-anr" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="gZV-DG-fA4" id="LLT-ph-eQH"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -67,10 +75,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talk History" id="se5-ov-J1e"/>
                     <connections>
+                        <outlet property="buttonBookmark" destination="LgD-c3-lrp" id="yme-TN-oij"/>
                         <outlet property="buttonDonate" destination="1gk-gX-DJo" id="ojR-cx-QP3"/>
                         <outlet property="buttonHelp" destination="Q3v-2y-My4" id="aFc-qM-z84"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="tIo-wz-Vjo"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="ftG-BF-g5H"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="FIZ-IE-1u3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -84,6 +94,12 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="GvC-Wn-d9N"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="LgD-c3-lrp" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="A3t-eP-1BJ" id="A5N-u6-rSY"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -104,9 +120,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks by All Speakers" id="hKw-C4-xAf"/>
                     <connections>
+                        <outlet property="buttonBookmark" destination="NkC-GZ-acz" id="U2i-Hh-IIf"/>
                         <outlet property="buttonDonate" destination="biB-pZ-N7G" id="HOR-CF-qST"/>
                         <outlet property="buttonHelp" destination="HVo-Tk-Ya2" id="gmJ-og-LxX"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Ebq-8j-F1C"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="1Vf-CZ-BG7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfR-hc-FXC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -120,6 +138,12 @@
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="B6o-GF-pY3"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="NkC-GZ-acz" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="3TL-of-6t5" id="Ldw-Et-iI0"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -140,9 +164,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Talks by Series" id="Ngy-Ed-83g"/>
                     <connections>
+                        <outlet property="buttonBookmark" destination="TpO-Ra-PUP" id="ECo-Es-Nhw"/>
                         <outlet property="buttonDonate" destination="jsq-4Z-1Sp" id="dRn-XK-4Ma"/>
                         <outlet property="buttonHelp" destination="lMB-mN-zSG" id="4tW-6N-ncQ"/>
                         <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_TALKS" id="Jkk-Sj-9ca"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="0cu-vg-0Br"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Qt-8a-WZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -156,6 +182,12 @@
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="eae-sD-01f"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="TpO-Ra-PUP" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="tIY-Xq-HRV" id="i0U-w4-FPn"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -182,10 +214,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonBookmark" destination="b1C-0p-u0V" id="oIv-O8-5Im"/>
                         <outlet property="buttonDonate" destination="9DH-Pr-5mk" id="vmd-iS-K2R"/>
                         <outlet property="buttonHelp" destination="mqo-HD-URT" id="Ejf-Ui-vHU"/>
                         <segue destination="Kw1-KX-Agt" kind="show" identifier="DISPLAY_EDIT_ALBUM" id="Je7-85-m7J"/>
                         <segue destination="0GJ-yc-Oar" kind="show" identifier="DISPLAY_USER_TALKS" id="bd7-or-SJf"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="Flh-Bd-d2e"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jY8-Fw-fis" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,10 +235,16 @@
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="OXf-AC-97C"/>
                     </connections>
                 </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="b1C-0p-u0V" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="1IO-y8-7fd" id="ktE-1z-COj"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="132" y="1635"/>
         </scene>
-        <!--Talks-->
+        <!--User Talks-->
         <scene sceneID="bNN-8u-svm">
             <objects>
                 <tableViewController id="0GJ-yc-Oar" customClass="UserTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
@@ -217,7 +257,7 @@
                             <outlet property="delegate" destination="0GJ-yc-Oar" id="acl-yU-Y4x"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Talks" id="2R3-Gd-KTi">
+                    <navigationItem key="navigationItem" title="User Talks" id="2R3-Gd-KTi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PcK-Lv-x6m">
                             <connections>
                                 <segue destination="dvc-bL-tY8" kind="show" identifier="DISPLAY_EDITUSERTALKS" id="mfD-nz-QKH"/>
@@ -225,10 +265,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonBookmark" destination="kiP-Dl-YTS" id="DR7-Xv-Rfr"/>
                         <outlet property="buttonDonate" destination="fg5-mf-bdZ" id="oMA-gi-F4L"/>
                         <outlet property="buttonHelp" destination="aCi-ID-H8Q" id="pLm-Ya-hOg"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="30e-7l-0p1"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="OFE-qN-xVe"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="668-gr-WEK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHu-u7-xie" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -242,6 +284,12 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="Srv-98-vDZ"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="kiP-Dl-YTS" userLabel="Button Bookmark">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="0GJ-yc-Oar" id="nSh-Ve-1cA"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -352,8 +400,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonBookmark" destination="RGF-h5-SxJ" id="Nyh-9d-clX"/>
                         <outlet property="buttonDonate" destination="X19-oE-a55" id="yrx-9l-E6u"/>
                         <outlet property="buttonHelp" destination="alb-ZU-63o" id="XFf-G7-nd1"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="NO0-Aj-v2K"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7of-Up-9Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -367,6 +417,12 @@
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="0kn-Jm-H7v"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="RGF-h5-SxJ" userLabel="Button Bookmarlk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="EIX-tq-R4j" id="Gcd-bb-UFV"/>
                     </connections>
                 </barButtonItem>
                 <exit id="lcW-Ai-bFf" userLabel="Exit" sceneMemberID="exit"/>
@@ -397,6 +453,7 @@
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_SERIES_ALBUMS" id="TRr-vA-5tZ"/>
                         <segue destination="tIY-Xq-HRV" kind="show" identifier="DISPLAY_RECOMMENDED_TALKS" id="RPR-ii-jHG"/>
                         <segue destination="A3t-eP-1BJ" kind="show" identifier="DISPLAY_HISTORY" id="k0m-4n-iGr"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="VfE-Lq-gyR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aN-Lr-yfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -412,7 +469,8 @@
                         <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="eFV-Q2-tuz"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem image="icohelp" id="Qus-sd-azj" userLabel="Button Bookmark">
+                <barButtonItem image="icoresumetalk" id="Qus-sd-azj" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <action selector="gotoTalk:" destination="EU2-EN-w2e" id="nk6-bY-63p"/>
                     </connections>
@@ -490,18 +548,6 @@
                                     <action selector="talkFastBackwards:" destination="Bai-ex-z2B" eventType="touchUpInside" id="LSc-am-hC1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
-                                <rect key="frame" x="192" y="337" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="4Gi-rO-jUU"/>
-                                    <constraint firstAttribute="height" constant="30" id="xNG-Zh-VDL"/>
-                                </constraints>
-                                <state key="normal" backgroundImage="mp3SequenceOff"/>
-                                <state key="selected" image="playersequence" backgroundImage="playersequence"/>
-                                <connections>
-                                    <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1y-Ws-35k">
                                 <rect key="frame" x="177" y="167" width="60" height="60"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -568,6 +614,18 @@
                                     <constraint firstAttribute="height" constant="15" id="B98-2W-6ze"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gr4-Hw-MTd">
+                                <rect key="frame" x="192" y="337" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="4Gi-rO-jUU"/>
+                                    <constraint firstAttribute="height" constant="30" id="xNG-Zh-VDL"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="mp3SequenceOff"/>
+                                <state key="selected" image="playersequence" backgroundImage="playersequence"/>
+                                <connections>
+                                    <action selector="togglePlayTalkSeries:" destination="Bai-ex-z2B" eventType="touchUpInside" id="E7u-HM-LUR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1001,6 +1059,7 @@
         <image name="icodonate" width="25" height="25"/>
         <image name="icofavorite" width="25" height="25"/>
         <image name="icohelp" width="25" height="25"/>
+        <image name="icoresumetalk" width="25" height="25"/>
         <image name="icoshare" width="25" height="25"/>
         <image name="mp3SequenceOff" width="100" height="100"/>
         <image name="playersequence" width="100" height="100"/>
@@ -1009,12 +1068,12 @@
         <image name="tri_right_x" width="221" height="145"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eFV-Q2-tuz"/>
+        <segue reference="7DY-Wt-lPH"/>
         <segue reference="OFE-qN-xVe"/>
-        <segue reference="ZGd-hh-xhM"/>
-        <segue reference="30e-7l-0p1"/>
+        <segue reference="eYb-A4-FTX"/>
+        <segue reference="NO0-Aj-v2K"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="hEa-61-IsL"/>
+        <segue reference="Jkk-Sj-9ca"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -21,11 +21,17 @@ class PlayTalkController: UIViewController {
     @IBOutlet weak var talkTitle: UILabel!
     @IBOutlet weak var speaker: UILabel!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var playTalkSeriesButton: UIButton!
-    @IBOutlet weak var talkProgressSlider: UISlider!
     @IBOutlet weak var talkFastBackward: UIButton!
     @IBOutlet weak var talkFastForward: UIButton!
     @IBOutlet weak var talkPlayPauseButton: UIButton!
+    
+    @IBOutlet weak var currentDuration: UILabel!
+    @IBOutlet weak var targetDuration: UILabel!
+    @IBOutlet weak var talkProgressSlider: UISlider!
+    
+    @IBOutlet weak var playTalkSeriesButton: UIButton!
+    @IBOutlet weak var labelSingleOrSequence: UILabel!
+
     @IBOutlet weak var MPVolumeParentView: UIView!
 
     @IBOutlet var buttonHelp: UIBarButtonItem!
@@ -33,11 +39,8 @@ class PlayTalkController: UIViewController {
     @IBOutlet var buttonShare: UIBarButtonItem!
     @IBOutlet var buttonFavorite: UIBarButtonItem!
     
-    @IBOutlet weak var currentDuration: UILabel!
-    @IBOutlet weak var targetDuration: UILabel!
     
     @IBOutlet weak var buttonTranscript: UIButton!
-    @IBOutlet weak var labelSingleOrSequence: UILabel!
     
     
     // MARK: Constants
@@ -57,11 +60,12 @@ class PlayTalkController: UIViewController {
     var CurrentTalkRow : Int = 0
     var OriginalTalkRow : Int = 0
     var PlayEntireAlbum: Bool = false
-    var HaveReportedTalk: Bool = false
     var PlayingDownloadedTalk: Bool = false
+    var ResumingLastTalk: Bool = false
     
     var TalkList : [TalkData]!
     var CurrentTalk : TalkData!
+    var CurrentTalkTime : Int = 0
     var TalkTimer : Timer?
     var MP3TalkPlayer : MP3Player!
 
@@ -76,7 +80,19 @@ class PlayTalkController: UIViewController {
         MP3TalkPlayer = MP3Player()
         MP3TalkPlayer.Delegate = self
         OriginalTalkRow = CurrentTalkRow
-        CurrentTalk = TalkList[CurrentTalkRow]
+        
+        //
+        // if resuming the previous talk, then CurrentTalk was set by the invoker.
+        // in this case we disable series controls and play that talk
+        // otherwise we play the current talk in the invoker view.
+        //
+        if ResumingLastTalk {
+            playTalkSeriesButton.isHidden = true
+            labelSingleOrSequence.isHidden = true
+        } else {
+            CurrentTalk = TalkList[CurrentTalkRow]
+            CurrentTalkTime = 0
+         }
         
         if TheDataModel.isDownloadTalk(talk: CurrentTalk) {
             talkTitle.textColor = BUTTON_DOWNLOAD_COLOR
@@ -85,13 +101,11 @@ class PlayTalkController: UIViewController {
         }
         
         speaker.textColor = MAIN_FONT_COLOR
-        //metaInfo.textColor = SECONDARY_FONT_COLOR
         labelSingleOrSequence.textColor = SECONDARY_FONT_COLOR
 
         resetTalkDisplay()
  
         MPVolumeParentView.backgroundColor = UIColor.clear
-        //MPVolumeParentView.backgroundColor = UIColor.green
 
         let volumeView = MPVolumeView(frame: MPVolumeParentView.bounds)
       
@@ -166,7 +180,6 @@ class PlayTalkController: UIViewController {
     @IBAction func toggleFavorite(_ sender: UIBarButtonItem) {
         
         TheDataModel.toggleTalkAsFavorite(talk: CurrentTalk, controller: self)
-
     }
     
     @IBAction func talkProgressSliderChanged(_ sender: UISlider) {
@@ -190,10 +203,8 @@ class PlayTalkController: UIViewController {
         }
     }
     
-    
     @IBAction func togglePlayTalkSeries(_ sender: UIButton) {
         
-        print("TogglePlaySeries")
         // this toggles whether we play just the current talk vs current talk + all talks in its album
         if PlayEntireAlbum == true {
             PlayEntireAlbum = false
@@ -223,7 +234,6 @@ class PlayTalkController: UIViewController {
 
     }
     
-
     @IBAction func playOrPauseTalk(_ sender: UIButton) {
         
         talkPlayPauseButton.isSelected = false
@@ -245,6 +255,9 @@ class PlayTalkController: UIViewController {
     func startTalk() {
         
         var talkURL: URL    // where the MP3 lives
+        
+        UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
+        UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
         
         //
         // if the talk is locally downloaded, play it off local storage
@@ -274,13 +287,12 @@ class PlayTalkController: UIViewController {
         print("PlayTalkController: playing ", talkURL)
         if TheDataModel.isInternetAvailable() == true || PlayingDownloadedTalk == true
         {
-            HaveReportedTalk = false
             TalkPlayerStatus = .LOADING
         
             talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
             enableActivityIcons()
             
-            MP3TalkPlayer.startTalk(talkURL: talkURL)
+            MP3TalkPlayer.startTalk(talkURL: talkURL, startAtTime: CurrentTalkTime)
             startTalkTimer()
         
             updateTitleDisplay()
@@ -322,8 +334,6 @@ class PlayTalkController: UIViewController {
     
     func stopTalks() {
         
-        HaveReportedTalk = false
-
         MP3TalkPlayer.stop()
         stopTalkTimer()
         
@@ -337,8 +347,15 @@ class PlayTalkController: UIViewController {
         disableActivityIcons()
         disableScanButtons()
         
-        HaveReportedTalk = false
-        talkProgressSlider.value = 0.0
+        talkProgressSlider.value = Float(CurrentTalkTime)
+        
+        if CurrentTalkTime == 0 {
+            talkProgressSlider.value = Float(CurrentTalkTime)
+        } else {
+            let fractionTimeCompleted = Float(CurrentTalkTime) / Float(CurrentTalk.DurationInSeconds)
+            talkProgressSlider.value = fractionTimeCompleted
+        }
+
 
         talkTitle.text = CurrentTalk.Title
         speaker.text = CurrentTalk.Speaker
@@ -350,16 +367,11 @@ class PlayTalkController: UIViewController {
         }
         
         let duration = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalk.DurationInSeconds)
-        /*
-        if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) == true {
-            metaInfo.text = CurrentTalk.Date + "  (Downloaded)"
-        } else {
-            metaInfo.text = CurrentTalk.Date
-        }
- */
-        
         targetDuration.text = duration
-        currentDuration.text = "00:00:00"
+        
+        let displayTime = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalkTime)
+        currentDuration.text = displayTime
+
         talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
         
         updateTitleDisplay()
@@ -372,6 +384,7 @@ class PlayTalkController: UIViewController {
             CurrentTalkRow = 0
         }
         CurrentTalk = TalkList[CurrentTalkRow]
+        CurrentTalkTime = 0
         
         if (CurrentTalkRow == OriginalTalkRow) {
             
@@ -392,6 +405,7 @@ class PlayTalkController: UIViewController {
         TalkPlayerStatus = .FINISHED
         
         MP3TalkPlayer.stop()
+        CurrentTalkTime = 0
         resetTalkDisplay()
 
         // if option is enabled, play the next talk in the current series
@@ -495,10 +509,9 @@ class PlayTalkController: UIViewController {
     @objc func updateViewsWithTimer(){
         
         // if talk is  underway, then stop the busy notifier and activate the display (buttons, durations etc)
-        let currentPlayTime = MP3TalkPlayer.getCurrentTimeInSeconds()
-        if currentPlayTime > 0 {
-            
-
+        CurrentTalkTime = MP3TalkPlayer.getCurrentTimeInSeconds()
+        if CurrentTalkTime > 0 {
+        
             TalkPlayerStatus = .PLAYING
             
             disableActivityIcons()
@@ -514,17 +527,15 @@ class PlayTalkController: UIViewController {
             
             updateTitleDisplay()
             
-            // if play time exceeds reporting threshold, record and report that this talk was played
-            if currentPlayTime > REPORT_TALK_THRESHOLD, HaveReportedTalk != true {
+            // if play time exceeds reporting threshold and not previously reported, report it
+            if CurrentTalkTime > REPORT_TALK_THRESHOLD, TheDataModel.isMostRecentTalk(talk: CurrentTalk) == false {
                 
-                HaveReportedTalk = true
-                print("Reporting Play")
                 TheDataModel.addToTalkHistory(talk: CurrentTalk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
             }
             
-            UserDefaults.standard.set(currentPlayTime, forKey: "playTime")
-            UserDefaults.standard.set(CurrentTalk.FileName, forKey: "talkName")
+            UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
+            UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
             
         }
     } 
@@ -557,7 +568,6 @@ class PlayTalkController: UIViewController {
     }
     
     @IBAction func displayTalkTranscript(_ sender: Any) {
-        print("DisplayTalkTranscript")
         
         performSegue(withIdentifier: "DISPLAY_TRANSCRIPT", sender: self)
 
