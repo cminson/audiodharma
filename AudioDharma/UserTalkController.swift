@@ -40,7 +40,7 @@ class UserTalkController: BaseController, UISearchBarDelegate, UISearchControlle
         super.viewWillAppear(animated)
         
         // restore the search state, if any
-        if SearchText.characters.count > 0 {
+        if SearchText.count > 0 {
             SearchController.searchBar.text! = SearchText
         }
     }

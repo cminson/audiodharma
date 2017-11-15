@@ -41,7 +41,7 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
         FilteredTalkHistory = TalkHistory
         
         // restore the search state, if any
-        if SearchText.characters.count > 0 {
+        if SearchText.count > 0 {
             SearchController.searchBar.text! = SearchText
         }
         

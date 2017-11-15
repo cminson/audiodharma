@@ -138,7 +138,7 @@ class SpeakerController: BaseController, UISearchBarDelegate, UISearchController
         
         cell.title.text = album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
-        if album.Image.characters.count > 0 {
+        if album.Image.count > 0 {
             cell.albumCover.image = UIImage(named: album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {
             cell.albumCover.image = UIImage(named: album.Title) ?? UIImage(named: "defaultPhoto")!

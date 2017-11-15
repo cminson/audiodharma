@@ -36,7 +36,7 @@ class UserAlbumsController: BaseController, UISearchBarDelegate, UISearchControl
         FilteredUserAlbums = TheDataModel.UserAlbums
         TheDataModel.computeUserAlbumStats()
         
-        if SearchText.characters.count > 0 {
+        if SearchText.count > 0 {
             SearchController.searchBar.text! = SearchText
         }
         

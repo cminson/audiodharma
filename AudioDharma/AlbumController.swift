@@ -232,7 +232,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     
         cell.title.text = Album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
-        if Album.Image.characters.count > 0 {
+        if Album.Image.count > 0 {
             cell.albumCover.image = UIImage(named: Album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {
             cell.albumCover.image = UIImage(named: Album.Title) ?? UIImage(named: "defaultPhoto")!

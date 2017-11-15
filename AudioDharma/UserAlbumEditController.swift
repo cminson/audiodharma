@@ -66,7 +66,7 @@ class UserAlbumEditController: UIViewController, UIImagePickerControllerDelegate
         }
 
         if let title = UserAlbum?.Title {
-            if title.characters.count > 0 {
+            if title.count > 0 {
                 userAlbumTitle.text = title
             }
         }

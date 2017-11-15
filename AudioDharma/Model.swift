@@ -28,8 +28,13 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
+
 let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
 let CONFIG_JSON_NAME = "CONFIG00.JSON"
+
+
+//let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
+//let CONFIG_JSON_NAME = "DEVCONFIG00.JSON"
 
 var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up in loadData()
 
@@ -427,7 +432,7 @@ class Model {
         
             MAX_TALKHISTORY_COUNT = config["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
             MAX_SHAREHISTORY_COUNT = config["MAX_SHAREHISTORY_COUNT"] as? Int ?? MAX_SHAREHISTORY_COUNT
-            UPDATE_SANGHA_INTERVAL = config["UPDATE_SANGHA_INTERVAL"] as? Int ?? UPDATE_SANGHA_INTERVAL
+            UPDATE_SANGHA_INTERVAL = config["MAX_SHAREHISTORY_COUNT"] as? Int ?? UPDATE_SANGHA_INTERVAL
         }
     }
     
@@ -495,7 +500,7 @@ class Model {
                 }
                 
                 // if a series is specified, add to a series list
-                if series.characters.count > 1 {
+                if series.count > 1 {
                     
                     let seriesKey = "SERIES" + series
 
@@ -521,10 +526,28 @@ class Model {
         let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
         //print(stats)
         self.KeyToAlbumStats[KEY_ALLTALKS] = stats
-            
+        
+        // sort the albums and ALL_TALKS
         self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
         self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
         self.AllTalks = self.AllTalks.sorted(by: { $0.Date > $1.Date })
+        
+        // also sort all talks in series albums (note: must take possible sections into account)
+        for seriesAlbum in self.SeriesAlbums {
+            //print("Sorting Album", seriesAlbum.Title)
+            // dharmettes are already sorted and need to be presented with most current talks on top
+            // all other series need further sorting, as the most current talks must be at bottom
+            if seriesAlbum.Content == "SERIESDharmettes" {
+                continue
+            }
+            if var sectionTalkList = KeyToTalks[seriesAlbum.Content] {
+                for index in 0 ..< sectionTalkList.count {
+                    let talks = sectionTalkList[index]
+                    let sortedTalks  = talks.sorted(by: { $1.Date > $0.Date })
+                    KeyToTalks[seriesAlbum.Content]?[index] = sortedTalks
+                }
+            }
+        }
     }
     
     func loadAlbums(jsonDict: [String: AnyObject]) {
@@ -563,7 +586,7 @@ class Model {
                     let fileName = terms.last ?? ""
                     
                     var section = talk["section"] as? String ?? "_"
-                    var series = talk["series"] as? String ?? ""
+                    let series = talk["series"] as? String ?? ""
                     let titleTitle = talk["title"] as? String ?? ""
                     var speaker = ""
                     var date = ""
@@ -607,7 +630,7 @@ class Model {
                     
                     // if a series is specified create a series album if not already there.  then add talk to it
                     // otherwise, just add the talk directly to the parent album
-                    if series.characters.count > 1 {
+                    if series.count > 1 {
                         
                         if series != currentSeries {
                             currentSeries = series
@@ -1457,9 +1480,10 @@ class Model {
 
         default:
             talkList =  KeyToTalks[content] ?? [[TalkData]]()
+            
         }
-        
         return talkList
+        
     }
     
     func getTalkHistory(content: String) -> [TalkHistoryData] {
@@ -1821,7 +1845,7 @@ class Model {
 
         let charset = CharacterSet.alphanumerics
 
-        if (noteText.characters.count > 0) && noteText.rangeOfCharacter(from: charset) != nil {
+        if (noteText.count > 0) && noteText.rangeOfCharacter(from: charset) != nil {
             UserNotes[talkFileName] = UserNoteData(notes: noteText)
         } else {
             UserNotes[talkFileName] = nil

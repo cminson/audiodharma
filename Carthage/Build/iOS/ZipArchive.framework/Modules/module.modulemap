@@ -4,8 +4,3 @@ framework module ZipArchive {
   export *
   module * { export * }
 }
-
-module ZipArchive.Swift {
-    header "ZipArchive-Swift.h"
-    requires objc
-}
