@@ -35,7 +35,7 @@ class UserTalksEditController: BaseController, UISearchBarDelegate, UISearchCont
         }
         
         
-        let allTalks = TheDataModel.getTalks(content: KEY_ALLTALKS).joined()
+        let allTalks = TheDataModel.getTalks(content: KEY_ALLTALKS)
         for talk in allTalks {
             SelectedTalksByNameDict[talk.FileName] = false
         }

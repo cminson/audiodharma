@@ -555,7 +555,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <state key="normal" title="Transcript">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="displayTalkTranscript:" destination="Bai-ex-z2B" eventType="touchUpInside" id="pi6-mD-oid"/>
@@ -666,7 +666,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NAM-11-dk1">
-                        <barButtonItem key="leftBarButtonItem" title="Done" id="2dw-Je-gHw">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="2dw-Je-gHw">
                             <connections>
                                 <action selector="stopTalk:" destination="Bai-ex-z2B" id="OKc-K8-ChN"/>
                             </connections>
@@ -1071,9 +1071,9 @@
         <segue reference="7DY-Wt-lPH"/>
         <segue reference="OFE-qN-xVe"/>
         <segue reference="eYb-A4-FTX"/>
-        <segue reference="NO0-Aj-v2K"/>
+        <segue reference="VfE-Lq-gyR"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="Jkk-Sj-9ca"/>
+        <segue reference="hEa-61-IsL"/>
     </inferredMetricsTieBreakers>
 </document>

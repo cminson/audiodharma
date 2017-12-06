@@ -250,7 +250,7 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             cell.city.text = talkHistory.CityPlayed
             
             let statePlayed = talkHistory.StatePlayed.trimmingCharacters(in: .whitespacesAndNewlines)
-            cell.country.text = statePlayed + ", " + talkHistory.CountryPlayed
+            cell.country.text = statePlayed + " " + talkHistory.CountryPlayed
   
             
         }

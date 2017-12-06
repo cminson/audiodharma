@@ -14,31 +14,18 @@ import CoreLocation
 //class AlbumController: UITableViewController, CLLocationManagerDelegate {
 class AlbumController: BaseController, CLLocationManagerDelegate {
 
-    /*
-    @IBOutlet var buttonHelp: UIBarButtonItem!
-    @IBOutlet var buttonDonate: UIBarButtonItem!
-    @IBOutlet var buttonBookmark: UIBarButtonItem!
- */
-    
     
     //MARK: Properties
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
     var AlbumSections: [[AlbumData]] = []
-    //var FilteredAlbumSections:  [[AlbumData]] = []
 
     var locationManager: CLLocationManager = CLLocationManager()
     var startLocation: CLLocation!
     
-    /*
-    var ResumeTalk : TalkData!
-    var ResumeTalkTime : Int = 0
- */
-    
     var HelpPageText = ""
     var BusyIndicator =  UIActivityIndicatorView()
 
-    
     
 
     // MARK: Init
@@ -97,12 +84,25 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         super.didReceiveMemoryWarning()
     }
     
+    func reloadDataFromModel() {
+        
+        AlbumSections = []
+        let albumList =  TheDataModel.RootAlbums
+        for album in albumList {
+            if album.Title == SECTION_HEADER { AlbumSections.append([]) }
+            else {
+                if AlbumSections.count == 0 { AlbumSections.append([]) }
+                AlbumSections[AlbumSections.count - 1].append(album)
+            }
+        }
+    }
     
     func reportModelLoaded() {
         
         DispatchQueue.main.async {
             self.BusyIndicator.isHidden = true
             self.BusyIndicator.stopAnimating()
+            self.reloadDataFromModel()
         }
     }
     
@@ -145,7 +145,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
             guard let controller = segue.destination as? TalkController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let Album = TheDataModel.AlbumSections[SelectedSection][SelectedRow]
+            let Album = AlbumSections[SelectedSection][SelectedRow]
             controller.Content = Album.Content
             controller.title = Album.Title
             
@@ -177,7 +177,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
             guard let controller = segue.destination as? HistoryController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            let Album = TheDataModel.AlbumSections[SelectedSection][SelectedRow]
+            let Album = AlbumSections[SelectedSection][SelectedRow]
             controller.Content = Album.Content
             controller.title = Album.Title
             
@@ -202,17 +202,17 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     // MARK: Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return TheDataModel.AlbumSections.count
+        return AlbumSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return TheDataModel.AlbumSections[section].count
+        return AlbumSections[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return TheDataModel.AlbumSections[section][0].Section
+        return AlbumSections[section][0].Section
     }
     
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -228,7 +228,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
         
-        let Album = TheDataModel.AlbumSections[indexPath.section][indexPath.row]
+        let Album = AlbumSections[indexPath.section][indexPath.row]
     
         cell.title.text = Album.Title
         cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
@@ -240,10 +240,6 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         
         let AlbumStats = TheDataModel.getAlbumStats(content: Album.Content)
         
-        if Album.Content == KEY_ALLTALKS {
-            print("ALLTALKS STATS: ", AlbumStats)
-        }
-
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let formattedNumber = numberFormatter.string(from: NSNumber(value:AlbumStats.totalTalks))
@@ -264,8 +260,8 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         SelectedSection = indexPath.section
         SelectedRow = indexPath.row
         
-        let Album = TheDataModel.AlbumSections[indexPath.section][indexPath.row]
-        
+        let Album = AlbumSections[indexPath.section][indexPath.row]
+
         switch Album.Content {
             
         case KEY_USER_ALBUMS:

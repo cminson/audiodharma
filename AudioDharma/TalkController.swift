@@ -14,6 +14,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     //MARK: Properties
     var SectionTalks: [[TalkData]] = []
     var FilteredSectionTalks:  [[TalkData]] = []
+    
     var Content: String = ""
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
@@ -21,12 +22,10 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     
     // MARK: Init
     override func viewDidLoad() {
-        
         super.viewDidLoad()
     
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
-        
+        reloadDataFromModel()
+
         SearchController.searchResultsUpdater = self
         SearchController.searchBar.delegate = self
         SearchController.delegate = self
@@ -38,9 +37,6 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     override func viewWillAppear(_ animated: Bool) {
 
         super.viewWillAppear(animated)
-        
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
         
         // restore the search state, if any
         if SearchText.count > 0 {
@@ -56,7 +52,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         
         SearchController.isActive = false
     }
-
+    
     deinit {
         
         // this view tends to hang around in the parent.  this clears it
@@ -68,10 +64,25 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         super.didReceiveMemoryWarning()
     }
     
+    func reloadDataFromModel() {
+        
+        SectionTalks = []
+        FilteredSectionTalks = []
+        
+        let talkList = TheDataModel.getTalks(content: Content)
+        for talk in talkList {
+            if talk.Title == SECTION_HEADER { SectionTalks.append([]) }
+            else {
+                if SectionTalks.count == 0 { SectionTalks.append([]) }
+                SectionTalks[SectionTalks.count - 1].append(talk)
+            }
+        }
+        FilteredSectionTalks = SectionTalks
+    }
+    
     override func reloadModel() {
         
-        SectionTalks = TheDataModel.getTalks(content: Content)
-        FilteredSectionTalks = SectionTalks
+        reloadDataFromModel()
     }
 
     
@@ -172,32 +183,16 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
+        var searchResults = [TalkData] ()
+        FilteredSectionTalks = []
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            
-            var sectionsPositionDict : [String: Int] = [:]
-            FilteredSectionTalks = []
-            for sections in SectionTalks {
-                for talkData in sections {
-                    let notes = TheDataModel.getNoteForTalk(talkFileName: talkData.FileName).lowercased()
-                    
-                    let searchedData = talkData.Title.lowercased() + " " +
-                        talkData.Speaker.lowercased() + " " + talkData.Date + " " + talkData.Keys.lowercased() + " " + notes
-                    
-                  
-                    if searchedData.contains(searchText.lowercased()) {
-                        
-                        if sectionsPositionDict[talkData.Section] == nil {
-                            // new section seen.  create new array of talks for this section
-                            FilteredSectionTalks.append([talkData])
-                            sectionsPositionDict[talkData.Section] = FilteredSectionTalks.count - 1
-                        } else {
-                            // section already exists.  add talk to the existing array of talks
-                            let sectionPosition = sectionsPositionDict[talkData.Section]
-                            FilteredSectionTalks[sectionPosition!].append(talkData)
-                        }
-                    }
-                }
+            for talk in SectionTalks.joined() {
+                let notes = TheDataModel.getNoteForTalk(talkFileName: talk.FileName).lowercased()
+                let searchedData = talk.Title.lowercased() + " " +
+                    talk.Speaker.lowercased() + " " + talk.Date + " " + talk.Keys.lowercased() + " " + notes
+                if searchedData.contains(searchText.lowercased()) {searchResults.append(talk)}
             }
+            FilteredSectionTalks.append(searchResults)
         } else {
             FilteredSectionTalks = SectionTalks
         }
@@ -207,7 +202,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     
     // MARK: - Table Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
+
         return FilteredSectionTalks.count
     }
 
@@ -220,16 +215,14 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         
         var sectionTitle = ""
         
-        if FilteredSectionTalks.count >= section {
+        if FilteredSectionTalks.count == 1 {return sectionTitle}
+        
+        if section < FilteredSectionTalks.count  {
             let talksInSection = FilteredSectionTalks[section]
-            if talksInSection.count > 0 {
-                sectionTitle = talksInSection[0].Section
-            }
+            if talksInSection.count > 0 { sectionTitle = talksInSection[0].Section }
         }
         
-        if sectionTitle.count < 2 {
-            sectionTitle = ""
-        }
+        if sectionTitle.count < 2 {sectionTitle = "" }
         return sectionTitle
     }
 
