@@ -200,6 +200,10 @@ class Model {
         UserNotes = [:]
         UserFavorites = [:]
         UserDownloads = [:]
+        
+        for dataContent in DATA_ALBUMS {
+            self.KeyToTalks[dataContent] = [TalkData] ()
+        }
     }
     
     func loadData() {
@@ -223,6 +227,12 @@ class Model {
         URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
         URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
         
+        // MUST be done before calling downloadAndConfigure, as that computes
+        // stats and that in turn relies on KeyToTalks not being nil (which I do check for, but
+        // let's overkill it here just in case
+        for dataContent in DATA_ALBUMS {
+            self.KeyToTalks[dataContent] = [TalkData] ()
+        }
 
         downloadAndConfigure(path: URL_CONFIGURATION)
         
@@ -238,7 +248,6 @@ class Model {
 
         // get sangha activity and set up timer for updates
         downloadSanghaActivity()
-        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
         
         // build the data directories on device, if needed
         let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -250,6 +259,11 @@ class Model {
         } catch let error as NSError {
             print(error.localizedDescription);
         }
+    }
+    
+    func startBackgroundTimers() {
+        
+        Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
     }
     
     
@@ -856,6 +870,7 @@ class Model {
     // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
+        print("AD getSanghaActivity")
         if isInternetAvailable() == false {
             return
         }
@@ -894,12 +909,13 @@ class Model {
         let latitude = TheUserLocation.latitude
         let longitude = TheUserLocation.longitude
         let shareType = "NA"    // TBD
-
+        let deviceType = "iphone"
+        
         let urlPhrases = talk.URL.components(separatedBy: "/")
         var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let parameters = "DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
+        let parameters = "DEVICETYPE=\(deviceType)&DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         let url = URL(string: URL_REPORT_ACTIVITY)!
         var request = URLRequest(url: url)
@@ -1205,6 +1221,8 @@ class Model {
         
         for dataContent in DATA_ALBUMS {
             
+            if KeyToTalks[dataContent] == nil {continue}
+
             for talk in KeyToTalks[dataContent]! {
                 totalSeconds += talk.DurationInSeconds
                 talkCount += 1

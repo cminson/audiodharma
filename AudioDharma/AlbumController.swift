@@ -9,11 +9,10 @@
 import UIKit
 import CoreLocation
 
-
+var TimeToUpdateModel = false
 
 //class AlbumController: UITableViewController, CLLocationManagerDelegate {
 class AlbumController: BaseController, CLLocationManagerDelegate {
-
     
     //MARK: Properties
     var SelectedSection: Int = 0
@@ -26,20 +25,23 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     var HelpPageText = ""
     var BusyIndicator =  UIActivityIndicatorView()
 
-    
+    var MainView: UIView = UIView()
+    var StartBackgroundView: UIView = UIView()
+    var StartIcon: UIImageView = UIImageView()
+
 
     // MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         BusyIndicator.center = self.view.center
         BusyIndicator.color = UIColor(red:0.00, green:0.00, blue:0.00, alpha:1.0)
-        self.view.addSubview(BusyIndicator)
-        
+
         BusyIndicator.isHidden = false
         BusyIndicator.startAnimating()
+        self.view.addSubview(BusyIndicator)
 
         self.tableView.delegate = self
         
@@ -60,18 +62,42 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         
         updateStateForNetwork()
         
+        for _ in 0 ... 4 {
+            if BusyIndicator.isAnimating == false {break}
+            sleep(1)
+        }
+ 
+        Timer.scheduledTimer(timeInterval: TimeInterval(120 * 60), target: self, selector: #selector(updateFromWebTImer), userInfo: nil, repeats: true)
+        //Timer.scheduledTimer(timeInterval: TimeInterval(10), target: self, selector: #selector(updateFromWebTImer), userInfo: nil, repeats: true)
+        TheDataModel.startBackgroundTimers()
     }
+    
+    @objc func updateFromWebTImer() {
+        
+        TimeToUpdateModel = true
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
 
         print("viewWillAppear")
         super.viewWillAppear(animated)
+        
+        if TimeToUpdateModel == true {
+            
+            TimeToUpdateModel = false
+            if TheDataModel.isInternetAvailable() == false { return }
+            
+            self.view.isHidden = true
+            self.title = "Checking For New Talks"
+            TheDataModel.resetData()
+            TheDataModel.loadData()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         
         print("viewWillDisappear")
-
         super.viewWillDisappear(animated)
     }
 
@@ -83,6 +109,8 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         
         super.didReceiveMemoryWarning()
     }
+    
+    
     
     func reloadDataFromModel() {
         
@@ -100,8 +128,12 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     func reportModelLoaded() {
         
         DispatchQueue.main.async {
+            self.view.isHidden = false
+            self.title = "Audio Dharma"
+
             self.BusyIndicator.isHidden = true
             self.BusyIndicator.stopAnimating()
+            
             self.reloadDataFromModel()
         }
     }
