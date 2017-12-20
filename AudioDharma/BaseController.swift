@@ -130,6 +130,10 @@ class BaseController: UITableViewController {
             if completed == true {
                 TheDataModel.addToShareHistory(talk: talk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: talk)
+                
+                let alert = UIAlertController(title: talk.Title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.mypresent(alert)
             }
         }
         mypresent(activityViewController)

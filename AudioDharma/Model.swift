@@ -1872,31 +1872,6 @@ class Model {
         return false
     }
     
-    func shareTalk(sharedTalk: TalkData, controller: UIViewController) {
-        
-        
-        let shareText = "\n\(sharedTalk.Title) by \(sharedTalk.Speaker) \nShared from the iPhone AudioDharma app"
-        let objectsToShare: URL = URL(string: URL_MP3_HOST + sharedTalk.URL)!
-        
-        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
-        //let sharedObjects: [AnyObject] = [objectsToShare as AnyObject, bylineText as AnyObject]
-        
-        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = controller.view
-        
-        // if something was actually shared, report that activity to cloud
-        activityViewController.completionWithItemsHandler = {
-            (activity, completed, items, error) in
-            
-            // if the share goes through, record it locally and also report this activity to our host service
-            if completed == true {
-                self.addToShareHistory(talk: sharedTalk)
-                self.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: sharedTalk)
-            }
-        }
-        
-        controller.present(activityViewController, animated: true, completion: nil)
-    }
     
     func secondsToDurationDisplay(seconds: Int) -> String {
         

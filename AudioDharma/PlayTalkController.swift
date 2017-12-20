@@ -229,9 +229,31 @@ class PlayTalkController: UIViewController {
     
     @IBAction func shareTalk(_ sender: UIBarButtonItem) {
         
-        let sharedTalk = CurrentTalk!
-        TheDataModel.shareTalk(sharedTalk: sharedTalk, controller: self)
-
+        let talk = CurrentTalk!
+        
+        let shareText = "\(talk.Title) by \(talk.Speaker) \nShared from the iPhone AudioDharma app"
+        let objectsToShare: URL = URL(string: URL_MP3_HOST + talk.URL)!
+        
+        let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
+        
+        let activityViewController = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        
+        // if something was actually shared, report that activity to cloud
+        activityViewController.completionWithItemsHandler = {
+            (activity, completed, items, error) in
+            
+            // if the share goes through, record it locally and also report this activity to our host service
+            if completed == true {
+                TheDataModel.addToShareHistory(talk: talk)
+                TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: talk)
+                
+                let alert = UIAlertController(title: talk.Title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     @IBAction func playOrPauseTalk(_ sender: UIButton) {
