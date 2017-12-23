@@ -125,10 +125,10 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Used to show the city and country when talks are played or shared by the sangha.  No other information is disclosed.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Set the user list image</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>City and country information is used to show where talks are shared or listened to.  No other information is gathered.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,18 +22,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Earth" translatesAutoresizingMaskIntoConstraints="NO" id="vun-yI-BgH">
-                                <rect key="frame" x="107" y="268" width="200" height="200"/>
+                                <rect key="frame" x="132" y="293" width="150" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="4Y3-z9-bTt"/>
-                                    <constraint firstAttribute="height" constant="200" id="i33-hW-097"/>
+                                    <constraint firstAttribute="width" constant="150" id="4Y3-z9-bTt"/>
+                                    <constraint firstAttribute="height" constant="150" id="i33-hW-097"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="snB-AC-BRs"/>
-                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xC7-4F-iUP"/>
+                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Wji-f9-foh"/>
+                            <constraint firstItem="vun-yI-BgH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="cQS-FF-ivS"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -43,6 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Earth" width="250" height="250"/>
+        <image name="Earth" width="125" height="125"/>
     </resources>
 </document>

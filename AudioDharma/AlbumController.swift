@@ -9,7 +9,6 @@
 import UIKit
 import CoreLocation
 
-var TimeToUpdateModel = false
 
 //class AlbumController: UITableViewController, CLLocationManagerDelegate {
 class AlbumController: BaseController, CLLocationManagerDelegate {
@@ -62,19 +61,12 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         
         updateStateForNetwork()
         
-        for _ in 0 ... 4 {
+        for _ in 0 ... 5 {
             if BusyIndicator.isAnimating == false {break}
             sleep(1)
         }
  
-        Timer.scheduledTimer(timeInterval: TimeInterval(120 * 60), target: self, selector: #selector(updateFromWebTImer), userInfo: nil, repeats: true)
-        //Timer.scheduledTimer(timeInterval: TimeInterval(10), target: self, selector: #selector(updateFromWebTImer), userInfo: nil, repeats: true)
         TheDataModel.startBackgroundTimers()
-    }
-    
-    @objc func updateFromWebTImer() {
-        
-        TimeToUpdateModel = true
     }
     
     
@@ -83,11 +75,12 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         print("viewWillAppear")
         super.viewWillAppear(animated)
         
-        if TimeToUpdateModel == true {
+        let timeInterval = NSDate().timeIntervalSince1970
+        if (timeInterval > LAST_MODEL_UPDATE + UPDATE_MODEL_INTERVAL) {
             
-            TimeToUpdateModel = false
             if TheDataModel.isInternetAvailable() == false { return }
             
+            LAST_MODEL_UPDATE = timeInterval
             self.view.isHidden = true
             self.title = "Checking For New Talks"
             TheDataModel.resetData()
@@ -330,6 +323,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     
     
     // MARK: Location Services
+    
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation])
     {
         if TheDataModel.isInternetAvailable() == false {
@@ -375,29 +369,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         })
     }
     
-    /*
-    @IBAction func gotoTalk(_ sender: Any) {
-        
-        if let talkName = UserDefaults.standard.string(forKey: "TalkName")
-        {
-            let playTime = UserDefaults.standard.integer(forKey: "CurrentTalkTime")
-            
-            
-            if  let currentTalk = TheDataModel.getTalkForName(name: talkName) {
-                ResumeTalk = currentTalk
-                ResumeTalkTime = playTime
-                print("Goto BookMark: ", talkName, playTime)
-                performSegue(withIdentifier: "DISPLAY_RESUMETALK", sender: self)
-            }
-        } else {
-            
-            let alert = UIAlertController(title: "Go To Your Last Talk", message: "\nYou have not listened to a talk yet. \nTherefore no action was taken.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
- */
+    
 
     
 }

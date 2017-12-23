@@ -127,6 +127,9 @@ var MAX_SHAREHISTORY_COUNT = 1000     // maximum number of shared talks showed i
 var MAX_HISTORY_COUNT = 100         // maximum number of user (not sangha) talk history displayed
 
 var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
+var UPDATE_MODEL_INTERVAL : TimeInterval = 120 * 60    // interval to next update model
+var LAST_MODEL_UPDATE = NSDate().timeIntervalSince1970  // when we last updated model
+
 var USE_NATIVE_MP3PATHS = true    // true = mp3s are in their native paths in audiodharma, false =  mp3s are in one flat directory
 
 let SECTION_HEADER = "SECTION_HEADER"
@@ -870,7 +873,7 @@ class Model {
     // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
-        print("AD getSanghaActivity")
+        //print("AD getSanghaActivity")
         if isInternetAvailable() == false {
             return
         }
@@ -893,13 +896,6 @@ class Model {
             
         }
         
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(identifier:"GMT")
-        formatter.dateFormat = "yyyy.MM.dd"
-        let datePlayed = formatter.string(from: date)
-        formatter.dateFormat = "HH:mm:ss"
-        let timePlayed = formatter.string(from: date)
         
         let city = TheUserLocation.city
         let state = TheUserLocation.state
@@ -915,23 +911,15 @@ class Model {
         var fileName = (urlPhrases[urlPhrases.endIndex - 1]).trimmingCharacters(in: .whitespacesAndNewlines)
         fileName = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let parameters = "DEVICETYPE=\(deviceType)&DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&DATE=\(datePlayed)&TIME=\(timePlayed)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
+        let parameters = "DEVICETYPE=\(deviceType)&DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         let url = URL(string: URL_REPORT_ACTIVITY)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = parameters.data(using: String.Encoding.utf8);
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-/*
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let _ = try? JSONSerialization.jsonObject(with: data, options: [])
- */
-            
-        }
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in }
+        
         task.resume()
     }
 
