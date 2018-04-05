@@ -28,11 +28,11 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-//let CONFIG_ZIP_NAME = "DEV00.ZIP"
+//let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+let CONFIG_ZIP_NAME = "DEV00.ZIP"
 
-let CONFIG_JSON_NAME = "CONFIG00.JSON"
-//let CONFIG_JSON_NAME = "DEV00.JSON"
+//let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_JSON_NAME = "DEV00.JSON"
 
 
 //let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
@@ -42,7 +42,7 @@ var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up i
 
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
-let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/getactivity.php"           // where to get sangha activity (shares, listens)
+let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/XGETACTIVITY.php?"           // where to get sangha activity (shares, listens)
 
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
@@ -243,16 +243,6 @@ class Model {
 
         downloadAndConfigure(path: URL_CONFIGURATION)
         
-#if DEV
-        if let asset = NSDataAsset(name: "TALKS_BASELINE00", bundle: Bundle.main) {
-            do {
-                let jsonDict =  try JSONSerialization.jsonObject(with: asset.data) as! [String: AnyObject]
-            }
-            
-        }
-#endif
-        
-
         // get sangha activity and set up timer for updates
         downloadSanghaActivity()
         
@@ -656,8 +646,9 @@ class Model {
         config.urlCache = nil
         let session = URLSession.init(configuration: config)
         
-        
-        let requestURL : URL? = URL(string: URL_GET_ACTIVITY)
+        let requestURL : URL? = URL(string: URL_GET_ACTIVITY + "DEVICEID=" + DEVICE_ID)
+        //print(DEVICE_ID)
+
         let urlRequest = URLRequest(url : requestURL!)
         
         let task = session.dataTask(with: urlRequest) {
@@ -677,13 +668,17 @@ class Model {
                 return
             }
             
-            // make sure we got data
+            // make sure we got data.  including cases where only partial data returned (MIN_EXPECTED_RESPONSE_SIZE is arbitrary)
             guard let responseData = data else {
                 return
             }
+            if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                return
+            }
             
-            
-            
+            self.SangaTalkHistoryAlbum = []
+            self.SangaShareHistoryAlbum = []
+
             do {
                 // get the community talk history
                 var talkCount = 0
@@ -771,6 +766,7 @@ class Model {
                     }
                 
                     durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
+                    //print(talkCount, dataContent)
                     stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
                     self.KeyToAlbumStats[dataContent] = stats
                 }
@@ -882,8 +878,6 @@ class Model {
             return
         }
 
-        SangaTalkHistoryAlbum = []
-        SangaShareHistoryAlbum = []
         downloadSanghaActivity()
     }
     
