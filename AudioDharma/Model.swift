@@ -28,11 +28,11 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-//let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-let CONFIG_ZIP_NAME = "DEV00.ZIP"
+let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+//let CONFIG_ZIP_NAME = "DEV00.ZIP"
 
-//let CONFIG_JSON_NAME = "CONFIG00.JSON"
-let CONFIG_JSON_NAME = "DEV00.JSON"
+let CONFIG_JSON_NAME = "CONFIG00.JSON"
+//let CONFIG_JSON_NAME = "DEV00.JSON"
 
 
 //let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
@@ -693,6 +693,7 @@ class Model {
                     let state = talkJSON["state"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                    
+                    //print("Getting Talk History State ", talkJSON)
                     if let talk = self.FileNameToTalk[fileName] {
                         
                         let talkHistory = TalkHistoryData(fileName: fileName,
