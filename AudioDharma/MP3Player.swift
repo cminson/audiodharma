@@ -41,12 +41,22 @@ class MP3Player : NSObject {
                         #selector(self.talkHasCompleted),
                         name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                         object: PlayerItem)
-        
+
         Player.play()
         Player.seek(to: CMTimeMake(Int64(startAtTime), 1))
+    
     }
     
+    func verifyURL (urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = URL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url as URL)
+            }
+        }
+        return false
+    }
     
+
     
     func play() {
         

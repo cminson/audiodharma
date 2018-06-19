@@ -31,8 +31,8 @@ var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently u
 let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
 //let CONFIG_ZIP_NAME = "DEV00.ZIP"
 
+//let CONFIG_JSON_NAME = "TEST.JSON"
 let CONFIG_JSON_NAME = "CONFIG00.JSON"
-//let CONFIG_JSON_NAME = "DEV00.JSON"
 
 
 //let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
@@ -138,6 +138,7 @@ var USE_NATIVE_MP3PATHS = true    // true = mp3s are in their native paths in au
 
 let SECTION_HEADER = "SECTION_HEADER"
 let DATA_ALBUMS: [String] = ["DATA00", "DATA01", "DATA02", "DATA03", "DATA04", "DATA05"]    // all possible pluggable data albums we can load
+
 
 class Model {
     
@@ -1945,4 +1946,115 @@ class Model {
         
     }
     
+    func remoteTalkExists(talk: TalkData, completion:@escaping (Bool, TalkData)->()){
+        
+        var talkURL: URL    // where the MP3 lives
+        
+        if isFullURL(url: talk.URL) {
+            talkURL  = URL(string: talk.URL)!
+        }
+        else if USE_NATIVE_MP3PATHS == true {
+            talkURL  = URL(string: URL_MP3_HOST +  talk.URL)!
+            
+        } else {
+            talkURL  = URL(string: URL_MP3_HOST + "/" + talk.FileName)!
+        }
+        
+        var request: URLRequest = URLRequest(url: talkURL as URL)
+        request.httpMethod = "HEAD"
+        
+        var exists: Bool = false
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                
+                if httpResponse.statusCode == 200 {
+                    
+                    exists =  true
+                }else{
+                    exists  = false
+                }
+                
+            }
+            
+            DispatchQueue.main.async {
+                completion(exists, talk)
+            }
+            }.resume()
+        
+    }
+
+
+    func remoteURLExists(url: URL, completion:@escaping (Bool, URL)->()){
+        
+        var request: URLRequest = URLRequest(url: url as URL)
+        request.httpMethod = "HEAD"
+        
+        var exists: Bool = false
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                
+                if httpResponse.statusCode == 200 {
+                    
+                    exists =  true
+                }else{
+                    exists  = false
+                }
+                
+            }
+            
+            DispatchQueue.main.async {
+                completion(exists, url)
+            }
+        }.resume()
+    
+    }
+    
+    
+    func sendRequest (request: URLRequest,completion:@escaping (URLResponse?)->()){
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error != nil{
+                return completion(response)
+            }else{
+                return completion(nil)
+            }
+            }.resume()
+    }
+    
+    
+    // deprecated in IOS 9.0.  Now using remoteFileExists and timing
+    func remoteSyncFileExists(url: URL) -> Bool {
+        
+        var exists: Bool = false
+        let request: NSMutableURLRequest = NSMutableURLRequest(url: url as URL)
+        request.httpMethod = "HEAD"
+        var response: URLResponse?
+        
+        do {
+            try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response )
+        }
+        catch let error as NSError {
+            print("Error" + error.localizedDescription)
+            return false
+        }
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            
+            if httpResponse.statusCode == 200 {
+                
+                exists =  true
+            }else{
+                exists  = false
+            }
+            
+        }
+        return exists
+    }
+    
 }
+    
+

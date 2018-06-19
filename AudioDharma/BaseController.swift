@@ -57,8 +57,24 @@ class BaseController: UITableViewController {
             }
         }
         
-        TheDataModel.setTalkAsDownload(talk: talk)
-        TheDataModel.downloadMP3(talk: talk)
+        TheDataModel.remoteTalkExists(talk: talk, completion: launchDownload)
+        
+    }
+    
+    func launchDownload(exists: Bool, talk: TalkData) {
+        
+        if exists == true {
+            
+            TheDataModel.setTalkAsDownload(talk: talk)
+            TheDataModel.downloadMP3(talk: talk)
+            
+        } else {
+            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     func deleteDownloadedTalk(talk: TalkData) {

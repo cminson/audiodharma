@@ -273,13 +273,15 @@ class PlayTalkController: UIViewController {
         }
     }
     
+    
+ 
+    
     // MARK: Functions
+    
     func startTalk() {
         
         var talkURL: URL    // where the MP3 lives
         
-        UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
-        UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
         
         //
         // if the talk is locally downloaded, play it off local storage
@@ -288,7 +290,7 @@ class PlayTalkController: UIViewController {
         //      else if talk is an audiodharma file, play it with full path
         //      otherwise use a flat path (meaning all the talk live in a flat directory)
         if TheDataModel.isCompletedDownloadTalk(talk: CurrentTalk) {
-        
+            
             PlayingDownloadedTalk = true
             talkURL  = URL(string: "file:////" + MP3_DOWNLOADS_PATH + "/" + CurrentTalk.FileName)!
         }
@@ -300,33 +302,67 @@ class PlayTalkController: UIViewController {
             }
             else if USE_NATIVE_MP3PATHS == true {
                 talkURL  = URL(string: URL_MP3_HOST +  CurrentTalk.URL)!
-
+                
             } else {
                 talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.FileName)!
             }
         }
         
-        print("PlayTalkController: playing ", talkURL)
-        if TheDataModel.isInternetAvailable() == true || PlayingDownloadedTalk == true
-        {
-            TalkPlayerStatus = .LOADING
+        //
+        // if downloaded, just play it
+        // otherwise first check if connection is active, then double-check if talk is accessible, and then play it
+        //
+        if PlayingDownloadedTalk == true {
+
+            launchTalk(exists: true, talkURL: talkURL)
+
+        } else {
+            
+            if TheDataModel.isInternetAvailable() == true {
+                
+                TheDataModel.remoteURLExists(url: talkURL, completion: launchTalk)
+            }
+            else {
+
+                let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    
+                present(alert, animated: true, completion: nil)
+                return
+            }
+        }
+
+        UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
+        UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
         
+       
+    }
+    
+    func launchTalk(exists: Bool, talkURL: URL) {
+        
+        if exists == true {
+            
+            TalkPlayerStatus = .LOADING
+            
             talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
             enableActivityIcons()
             
             MP3TalkPlayer.startTalk(talkURL: talkURL, startAtTime: CurrentTalkTime)
             startTalkTimer()
-        
+            
             updateTitleDisplay()
-        
+
+
         } else {
-            let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
             
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             
             present(alert, animated: true, completion: nil)
         }
     }
+    
     
     func restartTalk() {
         
