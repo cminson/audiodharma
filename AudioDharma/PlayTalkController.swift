@@ -314,35 +314,6 @@ class PlayTalkController: UIViewController {
         //
         if PlayingDownloadedTalk == true {
 
-            launchTalk(exists: true, talkURL: talkURL)
-
-        } else {
-            
-            if TheDataModel.isInternetAvailable() == true {
-                
-                TheDataModel.remoteURLExists(url: talkURL, completion: launchTalk)
-            }
-            else {
-
-                let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
-                    
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                    
-                present(alert, animated: true, completion: nil)
-                return
-            }
-        }
-
-        UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
-        UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
-        
-       
-    }
-    
-    func launchTalk(exists: Bool, talkURL: URL) {
-        
-        if exists == true {
-            
             TalkPlayerStatus = .LOADING
             
             talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
@@ -352,14 +323,53 @@ class PlayTalkController: UIViewController {
             startTalkTimer()
             
             updateTitleDisplay()
-
-
+            
         } else {
+            
+            if TheDataModel.isInternetAvailable() == true {
+                
+                TheDataModel.remoteURLExists(url: talkURL, completion: verifyReachableTalk)
+
+                TalkPlayerStatus = .LOADING
+                
+                talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
+                enableActivityIcons()
+                
+                MP3TalkPlayer.startTalk(talkURL: talkURL, startAtTime: CurrentTalkTime)
+                startTalkTimer()
+                
+                updateTitleDisplay()
+                
+            }
+            else {
+
+                let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    
+                present(alert, animated: true, completion: nil)
+            }
+        }
+
+        UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
+        UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")
+        
+       
+    }
+    
+    func verifyReachableTalk(exists: Bool, talkURL: URL) {
+        
+        if exists == false {
+            
+            
             let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
             
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             
             present(alert, animated: true, completion: nil)
+            
+            resetTalkDisplay()
+
         }
     }
     
@@ -399,6 +409,8 @@ class PlayTalkController: UIViewController {
     }
     
     func resetTalkDisplay () {
+        
+        TalkPlayerStatus = .INITIAL
         
         stopTalkTimer()
         
