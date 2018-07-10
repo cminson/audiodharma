@@ -31,6 +31,7 @@
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="C6A-Dz-FfT"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="4Sx-D1-YLI"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="zgt-c8-q8E"/>
+                        <segue destination="PJT-Ds-ubG" kind="show" identifier="DISPLAY_SIMILAR_TALKS" id="zMR-Fd-bGE"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omF-5r-4Hr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -53,7 +54,53 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-496" y="-104"/>
+            <point key="canvasLocation" x="-643" y="-161"/>
+        </scene>
+        <!--Similar Talks-->
+        <scene sceneID="VMD-EH-bfF">
+            <objects>
+                <tableViewController title="Similar Talks" id="PJT-Ds-ubG" customClass="SimilarTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mq0-5x-5ub">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="PJT-Ds-ubG" id="2zj-KQ-pLC"/>
+                            <outlet property="delegate" destination="PJT-Ds-ubG" id="Flz-Jy-1W0"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="3IJ-W4-aiz"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="buttonBookmark" destination="HNW-sM-xfn" id="RzJ-A7-wVb"/>
+                        <outlet property="buttonDonate" destination="1go-DP-MrP" id="Cx8-93-TXU"/>
+                        <outlet property="buttonHelp" destination="Blu-We-zy6" id="ZHR-4h-wpA"/>
+                        <segue destination="gZV-DG-fA4" kind="show" identifier="DISPLAY_SIMILAR_TALKS" id="MpT-rl-eYV"/>
+                        <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="B0A-X3-yTZ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ar9-Iw-5Hl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="icodonate" id="Blu-We-zy6" userLabel="Button Donate">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <segue destination="68D-Il-dgq" kind="presentation" identifier="DISPLAY_DONATIONS" id="Bkw-Pb-aqO"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icohelp" id="1go-DP-MrP" userLabel="Button Help">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <segue destination="9Ds-bU-uVR" kind="presentation" identifier="DISPLAY_HELP_PAGE" id="CqU-oq-DvO"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="icoresumetalk" id="HNW-sM-xfn" userLabel="Button ResumeTalk">
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="gotoTalk:" destination="PJT-Ds-ubG" id="rF8-Wv-7rc"/>
+                    </connections>
+                </barButtonItem>
+            </objects>
+            <point key="canvasLocation" x="346" y="-161"/>
         </scene>
         <!--Talk History-->
         <scene sceneID="SJp-BG-CqD">
@@ -471,7 +518,7 @@
                     </connections>
                 </barButtonItem>
             </objects>
-            <point key="canvasLocation" x="-1441" y="139"/>
+            <point key="canvasLocation" x="-1438" y="158"/>
         </scene>
         <!--Play Talk Controller-->
         <scene sceneID="eic-Lc-ttk">
@@ -864,7 +911,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gDj-E2-nJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4794" y="219"/>
+            <point key="canvasLocation" x="7513.04347826087" y="218.47826086956525"/>
         </scene>
         <!--Note Controller-->
         <scene sceneID="Bay-hx-moG">
@@ -1063,12 +1110,12 @@
         <image name="tri_right_x" width="221" height="145"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7DY-Wt-lPH"/>
-        <segue reference="OFE-qN-xVe"/>
-        <segue reference="eYb-A4-FTX"/>
-        <segue reference="VfE-Lq-gyR"/>
+        <segue reference="CqU-oq-DvO"/>
+        <segue reference="4Sx-D1-YLI"/>
+        <segue reference="Bkw-Pb-aqO"/>
+        <segue reference="B0A-X3-yTZ"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="hEa-61-IsL"/>
+        <segue reference="MpT-rl-eYV"/>
     </inferredMetricsTieBreakers>
 </document>

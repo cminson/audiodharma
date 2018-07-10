@@ -149,6 +149,15 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             controller.Content = KEY_ALLTALKS
             controller.title = "Similar"
 
+        case "DISPLAY_SIMILAR_TALKS":
+            guard let controller = segue.destination as? TalkController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
+            controller.Content = "SIMILAR." + talk.FileName
+            controller.title = talk.Title + ": Similar Talks"
+
 
         default:
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
@@ -229,6 +238,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TalkCell", owner: self, options: nil)?.first as! TalkCell
+        
         let talk = FilteredSectionTalks[indexPath.section][indexPath.row]
         
         if TheDataModel.isNotatedTalk(talk: talk) == true {
@@ -305,19 +315,24 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nfavorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "un-\nlike") { (action, indexPath) in
                 self.unFavoriteTalk(talk: talk)
             }
             
         } else {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "favorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "like") { (action, indexPath) in
                 self.favoriteTalk(talk: talk)
             }
+        }
+        
+        
+        let similarTalks = UITableViewRowAction(style: .normal, title: "more") { (action, indexPath) in
+            self.performSegue(withIdentifier: "DISPLAY_SIMILAR_TALKS", sender: self)
         }
  
         var downloadTalk : UITableViewRowAction
         if TheDataModel.isDownloadTalk(talk: talk) {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "remove\ndownload") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "remove") { (action, indexPath) in
                 
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerDeleteDownload))
@@ -326,7 +341,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             }
             
         } else {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "download") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "down\nload") { (action, indexPath) in
                 
                 
                 if TheDataModel.isInternetAvailable() == false {
@@ -351,12 +366,13 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             }
         }
         
+        similarTalks.backgroundColor = BUTTON_SIMILAR_COLOR
+        favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
-        favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
 
-        return [downloadTalk, shareTalk, noteTalk, favoriteTalk]
+        return [downloadTalk, shareTalk, noteTalk, favoriteTalk, similarTalks]
     }
 
     //MARK: Menu Function
@@ -371,5 +387,8 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
         self.deleteDownloadedTalk(talk: talk)
     }
+    
+    
+    
     
 }

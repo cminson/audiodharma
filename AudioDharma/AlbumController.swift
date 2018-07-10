@@ -11,16 +11,13 @@ import CoreLocation
 
 
 //class AlbumController: UITableViewController, CLLocationManagerDelegate {
-class AlbumController: BaseController, CLLocationManagerDelegate {
+class AlbumController: BaseController {
     
     //MARK: Properties
     var SelectedSection: Int = 0
     var SelectedRow: Int = 0
     var AlbumSections: [[AlbumData]] = []
 
-    var locationManager: CLLocationManager = CLLocationManager()
-    var startLocation: CLLocation!
-    
     var HelpPageText = ""
     var BusyIndicator =  UIActivityIndicatorView()
 
@@ -53,11 +50,6 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
         //self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonBookmark, flexibleItem, buttonDonate], animated: false)
 
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        startLocation = nil
         
         updateStateForNetwork()
         
@@ -323,7 +315,8 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
     
     
     // MARK: Location Services
-    
+    // DEPRECATED
+    /*
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation])
     {
         if TheDataModel.isInternetAvailable() == false {
@@ -368,6 +361,7 @@ class AlbumController: BaseController, CLLocationManagerDelegate {
             }
         })
     }
+ */
     
     
 

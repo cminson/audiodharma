@@ -186,6 +186,9 @@ class BaseController: UITableViewController {
             self.mypresent(alert)
         }
     }
+    
+    
+ 
 
 
     

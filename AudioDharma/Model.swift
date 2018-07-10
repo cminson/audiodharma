@@ -28,11 +28,11 @@ let HostAccessPoints: [String] = [
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-//let CONFIG_ZIP_NAME = "DEV00.ZIP"
+//let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+let CONFIG_ZIP_NAME = "TEST.ZIP"
 
-//let CONFIG_JSON_NAME = "TEST.JSON"
-let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_JSON_NAME = "TEST.JSON"
+//let CONFIG_JSON_NAME = "CONFIG00.JSON"
 
 
 //let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
@@ -43,6 +43,7 @@ var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up i
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/XGETACTIVITY.php?"           // where to get sangha activity (shares, listens)
+let CONFIG_GET_SIMILAR_TALKS = "/AudioDharmaAppBackend/Access/XGETSIMILARTALKS.php?KEY="           // where to get sangha activity (shares, listens)
 
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
@@ -59,6 +60,8 @@ enum INIT_CODES {          // all possible startup results
 var URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
 var URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
 var URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
+var URL_GET_SIMILAR = HostAccessPoint + CONFIG_GET_SIMILAR_TALKS
+
 var URL_MP3_HOST = DEFAULT_MP3_PATH
 var URL_DONATE = DEFAULT_DONATE_PATH
 
@@ -90,6 +93,7 @@ enum ACTIVITIES {          // all possible activities that are reported back to 
 let KEY_ALBUMROOT = "KEY_ALBUMROOT"
 let KEY_TALKS = "KEY_TALKS"
 let KEY_ALLTALKS = "KEY_ALLTALKS"
+let KEY_SIMILAR_TALKS = "KEY_SIMILARTALKS"
 let KEY_GIL_FRONSDAL = "Gil Fronsdal"
 let KEY_ANDREA_FELLA = "Andrea Fella"
 let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
@@ -109,8 +113,9 @@ let KEY_USER_TALKS = "KEY_USER_TALKS"
 let KEY_USEREDIT_TALKS = "KEY_USEREDIT_TALKS"
 let KEY_PLAY_TALK = "KEY_PLAY_TALK"
 
-let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.34, blue:0.80, alpha:1.0)     //  blue #0057CC
+let BUTTON_SIMILAR_COLOR = UIColor(red:0.80, green:0.12, blue:0.00, alpha:1.0)     //  red #CC1F00
 let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0)     //  orange #ff8c00
+let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.34, blue:0.80, alpha:1.0)     //  blue #0057CC
 let BUTTON_SHARE_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
 let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.80, green:0.12, blue:0.00, alpha:1.0)     //  red #CC1F00
 let APP_ICON_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
@@ -262,6 +267,72 @@ class Model {
     func startBackgroundTimers() {
         
         Timer.scheduledTimer(timeInterval: TimeInterval(UPDATE_SANGHA_INTERVAL), target: self, selector: #selector(getSanghaActivity), userInfo: nil, repeats: true)
+    }
+    
+    
+    func downloadSimilarityData(talkFileName: String) {
+    
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        
+        let similarKeyName = talkFileName.replacingOccurrences(of: ".mp3", with: "")
+        let path = URL_GET_SIMILAR + similarKeyName
+        let requestURL : URL? = URL(string: path)
+        let urlRequest = URLRequest(url : requestURL!)
+        print(path)
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
+            } else {
+                HTTPResultCode = 404
+            }
+            
+            if let responseData = data {
+                if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    HTTPResultCode = 404
+                }
+            }
+            else {
+                HTTPResultCode = 404
+            }
+            
+            if HTTPResultCode == 200 {
+           
+                let content = "SIMILAR." + talkFileName
+                var talks = [TalkData] ()
+
+                do {
+                    let jsonDict =  try JSONSerialization.jsonObject(with: data!) as! [String: AnyObject]
+                    for similarTalk in jsonDict["SIMILAR"] as? [AnyObject] ?? [] {
+                        
+                        let filename = similarTalk["filename"] as? String ?? ""
+                        let score = similarTalk["score"] as? String ?? ""
+                        
+                        if let talk = self.FileNameToTalk[filename] {
+                            talks.append(talk)
+                        }
+                        self.KeyToTalks[content] = talks
+                        
+                    }
+                }
+                catch {
+                    print(error)
+                }
+            }
+        
+            TheDataModel.refreshAllControllers()
+
+        }
+        task.resume()
+
     }
     
     
@@ -432,7 +503,9 @@ class Model {
                 date = date.replacingOccurrences(of: "-", with: ".")
                 let duration = talk["duration"] as? String ?? ""
                 let pdf = talk["pdf"] as? String ?? ""
+
                 let keys = talk["keys"] as? String ?? ""
+
             
                 let section = ""
                 
@@ -506,11 +579,14 @@ class Model {
         let stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
         self.KeyToAlbumStats[KEY_ALLTALKS] = stats
         
-        // sort the albums and ALL_TALKS
+        
+        //
+        // sort the albums
+        //
         self.SpeakerAlbums = self.SpeakerAlbums.sorted(by: { $0.Content < $1.Content })
         self.SeriesAlbums = self.SeriesAlbums.sorted(by: { $0.Date > $1.Date })
         self.AllTalks = self.AllTalks.sorted(by: { $0.Date > $1.Date })
-        
+
         // also sort all talks in series albums (note: must take possible sections into account)
         for seriesAlbum in self.SeriesAlbums {
             // dharmettes are already sorted and need to be presented with most current talks on top
@@ -523,6 +599,8 @@ class Model {
                 KeyToTalks[seriesAlbum.Content]? = sortedTalks
             }
         }
+        
+        
     }
     
     func loadAlbums(jsonDict: [String: AnyObject]) {
@@ -621,7 +699,7 @@ class Model {
                         }
                         
                         if ((talkSection != "") && (talkSection != prevTalkSection)) {
-                            let talk = TalkData(title: SECTION_HEADER, url: "", fileName: "", date: "", durationDisplay: "",  speaker: "", section: talkSection, durationInSeconds: 0, pdf: "", keys: "")
+                            let talk = TalkData(title: SECTION_HEADER, url: "", fileName: "", date: "", durationDisplay: "",  speaker: "", section: talkSection, durationInSeconds: 0, pdf: "",  keys: "")
                             self.KeyToTalks[seriesKey]?.append(talk)
                             prevTalkSection = talkSection
                         }
@@ -1462,10 +1540,23 @@ class Model {
 
         case KEY_ALLTALKS:
             talkList =  AllTalks
+            
+
 
         default:
-            talkList =  KeyToTalks[content] ?? [TalkData]()
             
+            if content.range(of:"SIMILAR.") != nil {
+            
+                talkList =  KeyToTalks[content] ?? [TalkData]()
+                if talkList.count == 0 {
+                    
+                    let contentKey = content.replacingOccurrences(of: "SIMILAR.", with: "")
+                    downloadSimilarityData(talkFileName: contentKey)
+                }
+            }
+            else {
+                talkList =  KeyToTalks[content] ?? [TalkData]()
+            }
         }
         return talkList
         
@@ -1963,17 +2054,17 @@ class Model {
         var request: URLRequest = URLRequest(url: talkURL as URL)
         request.httpMethod = "HEAD"
         
-        var exists: Bool = false
+        var exists: Bool = true
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let httpResponse = response as? HTTPURLResponse {
                 
-                if httpResponse.statusCode == 200 {
+                if httpResponse.statusCode == 404 {
                     
-                    exists =  true
+                    exists =  false
                 }else{
-                    exists  = false
+                    exists  = true
                 }
                 
             }
@@ -1991,17 +2082,16 @@ class Model {
         var request: URLRequest = URLRequest(url: url as URL)
         request.httpMethod = "HEAD"
         
-        var exists: Bool = false
+        var exists: Bool = true
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let httpResponse = response as? HTTPURLResponse {
                 
-                if httpResponse.statusCode == 200 {
-                    
-                    exists =  true
+                if httpResponse.statusCode == 404 {
+                    exists =  false
                 }else{
-                    exists  = false
+                    exists  = true
                 }
                 
             }
