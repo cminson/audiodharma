@@ -34,10 +34,12 @@ class HelpController: UIViewController {
     var HelpText: String = ""
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
-        let string = "<style>body{font-family: 'Helvetica'; font-size:16px; color:#555555}</style>" + HelpText
+        let string = "<style>body{font-family: 'Helvetica'; font-size:16px; color:#555555}</style>" + HELP_PAGE
         helpContentView.attributedText = string.html2AttributedString
+        
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
         helpContentView.textColor = MAIN_FONT_COLOR
     }
@@ -51,6 +53,7 @@ class HelpController: UIViewController {
     func setHelpPage(helpPage: String) {
         
         // remove spaces, as some keys are derived from names (Gil Fronsdal) and spaces don't work in asset lookup
+        print(helpPage)
         //let helpKey = String(helpPage.characters.filter { !" ".characters.contains($0) })
         let helpKey = String(helpPage.filter { !" ".contains($0) })
 

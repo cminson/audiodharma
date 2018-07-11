@@ -30,6 +30,8 @@ class AlbumController: BaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        TheDataModel.downloadHelpPage()
+
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         BusyIndicator.center = self.view.center
@@ -64,7 +66,7 @@ class AlbumController: BaseController {
     
     override func viewWillAppear(_ animated: Bool) {
 
-        print("viewWillAppear")
+        //print("viewWillAppear")
         super.viewWillAppear(animated)
         
         let timeInterval = NSDate().timeIntervalSince1970

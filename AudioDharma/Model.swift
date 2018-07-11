@@ -43,7 +43,9 @@ var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up i
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/XGETACTIVITY.php?"           // where to get sangha activity (shares, listens)
-let CONFIG_GET_SIMILAR_TALKS = "/AudioDharmaAppBackend/Access/XGETSIMILARTALKS.php?KEY="           // where to get sangha activity (shares, listens)
+let CONFIG_GET_SIMILAR_TALKS = "/AudioDharmaAppBackend/Access/XGETSIMILARTALKS.php?KEY="           // where to get similar talks
+let CONFIG_GET_HELP = "/AudioDharmaAppBackend/Access/XGETHELP.php?"           // where to get help page
+
 
 let DEFAULT_MP3_PATH = "http://www.audiodharma.org"     // where to get talks
 let DEFAULT_DONATE_PATH = "http://audiodharma.org/donate/"       // where to donate
@@ -61,6 +63,7 @@ var URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
 var URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
 var URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
 var URL_GET_SIMILAR = HostAccessPoint + CONFIG_GET_SIMILAR_TALKS
+var URL_GET_HELP = HostAccessPoint + CONFIG_GET_HELP
 
 var URL_MP3_HOST = DEFAULT_MP3_PATH
 var URL_DONATE = DEFAULT_DONATE_PATH
@@ -143,6 +146,8 @@ var USE_NATIVE_MP3PATHS = true    // true = mp3s are in their native paths in au
 
 let SECTION_HEADER = "SECTION_HEADER"
 let DATA_ALBUMS: [String] = ["DATA00", "DATA01", "DATA02", "DATA03", "DATA04", "DATA05"]    // all possible pluggable data albums we can load
+
+var HELP_PAGE = "<strong>Help is currently not available. Check your connection or try again later.</strong>"      // where the Help Page data goes
 
 
 class Model {
@@ -277,7 +282,6 @@ class Model {
         config.urlCache = nil
         let session = URLSession.init(configuration: config)
         
-        
         let similarKeyName = talkFileName.replacingOccurrences(of: ".mp3", with: "")
         let path = URL_GET_SIMILAR + similarKeyName
         let requestURL : URL? = URL(string: path)
@@ -306,7 +310,9 @@ class Model {
             
             if HTTPResultCode == 200 {
            
-                let content = "SIMILAR." + talkFileName
+                //print("downloadSimilarityData:  data received")
+                let content = talkFileName
+
                 var talks = [TalkData] ()
 
                 do {
@@ -314,14 +320,14 @@ class Model {
                     for similarTalk in jsonDict["SIMILAR"] as? [AnyObject] ?? [] {
                         
                         let filename = similarTalk["filename"] as? String ?? ""
-                        let score = similarTalk["score"] as? String ?? ""
                         
                         if let talk = self.FileNameToTalk[filename] {
                             talks.append(talk)
                         }
-                        self.KeyToTalks[content] = talks
-                        
                     }
+
+                    self.KeyToTalks[content] = talks
+
                 }
                 catch {
                     print(error)
@@ -329,11 +335,61 @@ class Model {
             }
         
             TheDataModel.refreshAllControllers()
-
         }
         task.resume()
 
     }
+    
+    
+    func downloadHelpPage() {
+    
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        let path = URL_GET_HELP
+        let requestURL : URL? = URL(string: path)
+        let urlRequest = URLRequest(url : requestURL!)
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
+            } else {
+                HTTPResultCode = 404
+            }
+            
+            if let responseData = data {
+                if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    HTTPResultCode = 404
+                }
+            }
+            else {
+                HTTPResultCode = 404
+            }
+            
+            print(HTTPResultCode)
+            
+            if HTTPResultCode == 200 {
+                
+                
+                if let usableData = data {
+                    
+                    let responseData = String(data: usableData, encoding: String.Encoding.utf8)
+                    HELP_PAGE = responseData!
+                }
+            }
+            
+            TheDataModel.refreshAllControllers()
+        }
+        task.resume()
+        
+    }
+    
     
     
     // MARK: Configuration
@@ -514,7 +570,7 @@ class Model {
                 
                 let seconds = self.convertDurationToSeconds(duration: duration)
                 totalSeconds += seconds
-                
+            
                 let talkData =  TalkData(title: title,
                                          url: URL,
                                          fileName: fileName,
@@ -1026,6 +1082,7 @@ class Model {
     
     func refreshAllControllers() {
         
+
         DispatchQueue.main.async {
             if let controller = self.RootController {
                 controller.reloadModel()
@@ -1038,6 +1095,8 @@ class Model {
             }
 
             if let controller = self.TalkController {
+                //print("refreshAllControllers: TalkController")
+
                 controller.reloadModel()
                 controller.tableView.reloadData()
             }
@@ -1541,15 +1600,20 @@ class Model {
         case KEY_ALLTALKS:
             talkList =  AllTalks
             
+        default:
+            talkList =  KeyToTalks[content] ?? [TalkData]()
 
-
+/*
         default:
             
             if content.range(of:"SIMILAR.") != nil {
             
                 talkList =  KeyToTalks[content] ?? [TalkData]()
+                print("getTalks SIMILAR")
                 if talkList.count == 0 {
                     
+                    print("getTalks SIMILAR:  Getting Similarity Data")
+
                     let contentKey = content.replacingOccurrences(of: "SIMILAR.", with: "")
                     downloadSimilarityData(talkFileName: contentKey)
                 }
@@ -1557,6 +1621,8 @@ class Model {
             else {
                 talkList =  KeyToTalks[content] ?? [TalkData]()
             }
+ 
+ */
         }
         return talkList
         
@@ -2116,34 +2182,6 @@ class Model {
     }
     
     
-    // deprecated in IOS 9.0.  Now using remoteFileExists and timing
-    func remoteSyncFileExists(url: URL) -> Bool {
-        
-        var exists: Bool = false
-        let request: NSMutableURLRequest = NSMutableURLRequest(url: url as URL)
-        request.httpMethod = "HEAD"
-        var response: URLResponse?
-        
-        do {
-            try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response )
-        }
-        catch let error as NSError {
-            print("Error" + error.localizedDescription)
-            return false
-        }
-        
-        if let httpResponse = response as? HTTPURLResponse {
-            
-            if httpResponse.statusCode == 200 {
-                
-                exists =  true
-            }else{
-                exists  = false
-            }
-            
-        }
-        return exists
-    }
     
 }
     

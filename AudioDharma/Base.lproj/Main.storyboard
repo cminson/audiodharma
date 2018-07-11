@@ -59,7 +59,7 @@
         <!--Similar Talks-->
         <scene sceneID="VMD-EH-bfF">
             <objects>
-                <tableViewController title="Similar Talks" id="PJT-Ds-ubG" customClass="SimilarTalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Similar Talks" id="PJT-Ds-ubG" customClass="TalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mq0-5x-5ub">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -123,6 +123,7 @@
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_TALKPLAYER" id="tIo-wz-Vjo"/>
                         <segue destination="aLz-WS-sHw" kind="presentation" identifier="DISPLAY_NOTE" id="ftG-BF-g5H"/>
                         <segue destination="Pkn-Ga-I1o" kind="presentation" identifier="DISPLAY_RESUMETALK" id="FIZ-IE-1u3"/>
+                        <segue destination="PJT-Ds-ubG" kind="show" identifier="DISPLAY_SIMILAR_TALKS" id="bIu-eC-2PR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="maE-Io-5rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1110,12 +1111,13 @@
         <image name="tri_right_x" width="221" height="145"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CqU-oq-DvO"/>
+        <segue reference="F80-bT-CWz"/>
         <segue reference="4Sx-D1-YLI"/>
-        <segue reference="Bkw-Pb-aqO"/>
-        <segue reference="B0A-X3-yTZ"/>
+        <segue reference="ie0-kf-o7Q"/>
+        <segue reference="C6A-Dz-FfT"/>
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
-        <segue reference="MpT-rl-eYV"/>
+        <segue reference="zMR-Fd-bGE"/>
+        <segue reference="hEa-61-IsL"/>
     </inferredMetricsTieBreakers>
 </document>

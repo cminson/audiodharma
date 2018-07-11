@@ -136,6 +136,23 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
+        case "DISPLAY_SIMILAR_TALKS":
+            guard let controller = segue.destination as? TalkController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            let talkHistory = FilteredTalkHistory[SelectedRow]
+            if let talk = TheDataModel.FileNameToTalk[talkHistory.FileName] {
+                
+                let contentKey = talk.FileName
+                controller.Content = contentKey
+                controller.title = "Similar Talks: " + talk.Title
+                
+                TheDataModel.downloadSimilarityData(talkFileName: contentKey)
+                
+            }
+            
+            
         default:
             
             fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
@@ -293,12 +310,12 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nfavorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nlike") { (action, indexPath) in
                 self.unFavoriteTalk(talk: talk)
             }
         }
         else {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "favorite") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "like") { (action, indexPath) in
                 self.favoriteTalk(talk: talk)
             }
         }
@@ -314,7 +331,7 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             }
             
         } else {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "download") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "down\nload") { (action, indexPath) in
                 
                 if TheDataModel.isInternetAvailable() == false {
                     let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
@@ -337,12 +354,17 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             }
         }
         
+        let similarTalks = UITableViewRowAction(style: .normal, title: "more") { (action, indexPath) in
+            self.performSegue(withIdentifier: "DISPLAY_SIMILAR_TALKS", sender: self)
+        }
+        
+        similarTalks.backgroundColor = BUTTON_SIMILAR_COLOR
         noteTalk.backgroundColor = BUTTON_NOTE_COLOR
         shareTalk.backgroundColor = BUTTON_SHARE_COLOR
         favoriteTalk.backgroundColor = BUTTON_FAVORITE_COLOR
         downloadTalk.backgroundColor = BUTTON_DOWNLOAD_COLOR
         
-        return [downloadTalk, shareTalk, noteTalk, favoriteTalk]
+        return [downloadTalk, shareTalk, noteTalk, favoriteTalk, similarTalks]
         
     }
     

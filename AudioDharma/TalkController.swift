@@ -22,6 +22,8 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     
     // MARK: Init
     override func viewDidLoad() {
+        
+        //print("TalkController: viewDidLoad")
         super.viewDidLoad()
     
         reloadDataFromModel()
@@ -66,6 +68,8 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
     
     func reloadDataFromModel() {
         
+        //print("TalkController: reloadDataFromModel")
+
         SectionTalks = []
         FilteredSectionTalks = []
         
@@ -155,8 +159,12 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             }
             
             let talk = FilteredSectionTalks[SelectedSection][SelectedRow]
-            controller.Content = "SIMILAR." + talk.FileName
-            controller.title = talk.Title + ": Similar Talks"
+            let contentKey = talk.FileName
+            controller.Content = contentKey
+            controller.title = "Similar Talks: " + talk.Title
+            
+            TheDataModel.downloadSimilarityData(talkFileName: contentKey)
+
 
 
         default:
@@ -315,7 +323,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         
         var favoriteTalk : UITableViewRowAction
         if TheDataModel.isFavoriteTalk(talk: talk) {
-            favoriteTalk = UITableViewRowAction(style: .normal, title: "un-\nlike") { (action, indexPath) in
+            favoriteTalk = UITableViewRowAction(style: .normal, title: "remove\nlike") { (action, indexPath) in
                 self.unFavoriteTalk(talk: talk)
             }
             
@@ -332,7 +340,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
  
         var downloadTalk : UITableViewRowAction
         if TheDataModel.isDownloadTalk(talk: talk) {
-            downloadTalk = UITableViewRowAction(style: .normal, title: "remove") { (action, indexPath) in
+            downloadTalk = UITableViewRowAction(style: .normal, title: "remove\ndownload") { (action, indexPath) in
                 
                 let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerDeleteDownload))
