@@ -118,10 +118,9 @@ class UserAlbumsController: BaseController, UISearchBarDelegate, UISearchControl
             controller.UserAlbum = selectedUserAlbum
             
         case "DISPLAY_HELP_PAGE":
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: KEY_USER_ALBUMS)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {

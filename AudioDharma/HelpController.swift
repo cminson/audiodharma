@@ -31,13 +31,12 @@ class HelpController: UIViewController {
     
     @IBOutlet weak var helpContentView: UILabel!
     
-    var HelpText: String = ""
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         let string = "<style>body{font-family: 'Helvetica'; font-size:16px; color:#555555}</style>" + HELP_PAGE
+
         helpContentView.attributedText = string.html2AttributedString
         
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
@@ -50,20 +49,17 @@ class HelpController: UIViewController {
         helpContentView.sizeToFit()
     }
     
-    func setHelpPage(helpPage: String) {
+    
+    //
+    // Deprecated, BUT keep it around as useful template
+    //
+    func xsetHelpPage(helpKey: String) {
         
-        // remove spaces, as some keys are derived from names (Gil Fronsdal) and spaces don't work in asset lookup
-        print(helpPage)
-        //let helpKey = String(helpPage.characters.filter { !" ".characters.contains($0) })
-        let helpKey = String(helpPage.filter { !" ".contains($0) })
+        //Deprecated: used when keys have spaces in them and must be filtered
+        //let helpKey = String(helpPage.filter { !" ".contains($0) })
 
         if let asset = NSDataAsset(name: helpKey, bundle: Bundle.main) {
-            HelpText = String(data: asset.data, encoding: .utf8)!
-        } else {
-            // catch-all for screens that don't have a valid key
-            if let fallback = NSDataAsset(name: KEY_TALKS, bundle: Bundle.main) {
-                HelpText = String(data: fallback.data, encoding: .utf8)!
-            }
+            HELP_PAGE = String(data: asset.data, encoding: .utf8)!
         }
     }
 

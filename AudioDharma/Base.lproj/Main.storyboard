@@ -60,7 +60,7 @@
         <scene sceneID="VMD-EH-bfF">
             <objects>
                 <tableViewController title="Similar Talks" id="PJT-Ds-ubG" customClass="TalkController" customModule="AudioDharma" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mq0-5x-5ub">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mq0-5x-5ub">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1118,6 +1118,6 @@
         <segue reference="ZR1-MZ-juM"/>
         <segue reference="RPR-ii-jHG"/>
         <segue reference="zMR-Fd-bGE"/>
-        <segue reference="hEa-61-IsL"/>
+        <segue reference="MpT-rl-eYV"/>
     </inferredMetricsTieBreakers>
 </document>

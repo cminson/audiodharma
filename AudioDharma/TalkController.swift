@@ -135,11 +135,10 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             //print("DISPLAYING NOTE DIALOG FOR \(talk.Title) \(talk.FileName)")
             
         case "DISPLAY_HELP_PAGE":
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            controller.setHelpPage(helpPage: Content)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
@@ -168,7 +167,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
 
 
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")            
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")
         }
         
         // dismiss any searching - must do this prior to executing the segue
@@ -274,7 +273,9 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             if self.Content == KEY_ALLTALKS {
                 talkTitle = talk.Title + " - " + talk.Speaker
             } else {
+                //talkTitle = talk.Title + " - " + talk.Speaker
                 talkTitle = talk.Title
+
             }
         }
         
@@ -282,6 +283,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             cell.title.textColor = BUTTON_DOWNLOAD_COLOR
         }
         
+                
         cell.title.text = talkTitle
         cell.speakerPhoto.image = talk.SpeakerPhoto
         cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
@@ -334,7 +336,7 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         }
         
         
-        let similarTalks = UITableViewRowAction(style: .normal, title: "more") { (action, indexPath) in
+        let similarTalks = UITableViewRowAction(style: .normal, title: SIMILAR_MENU_ITEM) { (action, indexPath) in
             self.performSegue(withIdentifier: "DISPLAY_SIMILAR_TALKS", sender: self)
         }
  

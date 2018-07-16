@@ -91,10 +91,9 @@ class UserTalksEditController: BaseController, UISearchBarDelegate, UISearchCont
             playTalkController.CurrentTalk = ResumeTalk
 
         case "DISPLAY_HELP_PAGE":
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: KEY_USEREDIT_TALKS)
             
         default:
             //fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "NONE")")

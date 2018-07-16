@@ -31,7 +31,7 @@ class MP3Player : NSObject {
     // MARK: Functions
     func startTalk(talkURL: URL, startAtTime: Int){
         
-        print(talkURL)
+        //print(talkURL)
         PlayerItem  = AVPlayerItem(url: talkURL)
         Player =  AVPlayer(playerItem : PlayerItem)
         Player.allowsExternalPlayback = true
@@ -76,7 +76,7 @@ class MP3Player : NSObject {
 
     @objc func talkHasCompleted() {
         
-        print("Talk Completed")
+        //print("Talk Completed")
         Delegate.talkHasCompleted()     // inform our owner that a talk is done
     }
     

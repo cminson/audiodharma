@@ -152,12 +152,10 @@ class PlayTalkController: UIViewController {
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_HELP_PAGE":
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            // display different help text depending on the kind of content we're showing.
-            controller.setHelpPage(helpPage: KEY_PLAY_TALK)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {
@@ -231,7 +229,13 @@ class PlayTalkController: UIViewController {
         
         let talk = CurrentTalk!
         
-        let shareText = "\(talk.Title) by \(talk.Speaker) \nShared from the iPhone AudioDharma app"
+        // get rid of ordering information (N) in the title.  these can appear in ranked lists
+        var title = talk.Title
+        let regex = try! NSRegularExpression(pattern: "[(][0-9]+[)]", options: .caseInsensitive)
+        let range = NSMakeRange(0, title.count)
+        title = regex.stringByReplacingMatches(in: title, options: [], range: range, withTemplate: "")
+        
+        let shareText = "\(title) by \(talk.Speaker) \nShared from the iPhone AudioDharma app"
         let objectsToShare: URL = URL(string: URL_MP3_HOST + talk.URL)!
         
         let sharedObjects:[AnyObject] = [objectsToShare as AnyObject, shareText as AnyObject]
@@ -248,7 +252,7 @@ class PlayTalkController: UIViewController {
                 TheDataModel.addToShareHistory(talk: talk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: talk)
                 
-                let alert = UIAlertController(title: talk.Title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -426,8 +430,13 @@ class PlayTalkController: UIViewController {
             talkProgressSlider.value = fractionTimeCompleted
         }
 
+        // get rid of ordering information (N) in the title.  these can appear in ranked lists
+        var title = CurrentTalk.Title
+        let regex = try! NSRegularExpression(pattern: "[(][0-9]+[)]", options: .caseInsensitive)
+        let range = NSMakeRange(0, title.count)
+        title = regex.stringByReplacingMatches(in: title, options: [], range: range, withTemplate: "")
 
-        talkTitle.text = CurrentTalk.Title
+        talkTitle.text = title
         speaker.text = CurrentTalk.Speaker
         
         if TheDataModel.isDownloadTalk(talk: CurrentTalk) {

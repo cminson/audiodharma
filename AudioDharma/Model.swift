@@ -74,10 +74,10 @@ struct AlbumStats {         // where stats on each album is kept
     var durationDisplay: String
 }
 struct UserLocation {       // where user geo info is kept
-    var city: String = "NA"
-	var state: String = "NA"
-    var country: String = "NA"
-    var zip: String = "NA"
+    var city: String = " "
+	var state: String = " "
+    var country: String = " "
+    var zip: String = " "
     var altitude: Double = 0
     var latitude: Double = 0
     var longitude: Double = 0
@@ -93,6 +93,7 @@ enum ACTIVITIES {          // all possible activities that are reported back to 
 
 // App Global Constants
 // talk and album display states.  these are used throughout the app to key on state
+let KEY_HELP = "KEY_HELP"
 let KEY_ALBUMROOT = "KEY_ALBUMROOT"
 let KEY_TALKS = "KEY_TALKS"
 let KEY_ALLTALKS = "KEY_ALLTALKS"
@@ -149,6 +150,20 @@ let DATA_ALBUMS: [String] = ["DATA00", "DATA01", "DATA02", "DATA03", "DATA04", "
 
 var HELP_PAGE = "<strong>Help is currently not available. Check your connection or try again later.</strong>"      // where the Help Page data goes
 
+
+let SCREEN_SIZE = UIScreen.main.bounds.size
+let SCREEN_WIDTH = SCREEN_SIZE.width
+let SCREEN_HEIGHT = SCREEN_SIZE.height
+
+enum SCREEN_TYPES {
+    case SMALL
+    case MEDIUM
+    case LARGE
+
+}
+var SCREEN_TYPE  = SCREEN_TYPES.SMALL
+
+var SIMILAR_MENU_ITEM = "Similar"   // displayed in Talk menus, adjusted at load time based off screen size
 
 class Model {
     
@@ -267,6 +282,18 @@ class Model {
         } catch let error as NSError {
             print(error.localizedDescription);
         }
+        
+        if SCREEN_WIDTH > 400 {
+            SCREEN_TYPE = SCREEN_TYPES.LARGE
+            SIMILAR_MENU_ITEM = "similar"
+        } else if SCREEN_WIDTH > 350 {
+            SCREEN_TYPE = SCREEN_TYPES.MEDIUM
+            SIMILAR_MENU_ITEM = "more"
+        } else {
+            SCREEN_TYPE = SCREEN_TYPES.SMALL
+            SIMILAR_MENU_ITEM = "++"
+
+        }
     }
     
     func startBackgroundTimers() {
@@ -286,7 +313,6 @@ class Model {
         let path = URL_GET_SIMILAR + similarKeyName
         let requestURL : URL? = URL(string: path)
         let urlRequest = URLRequest(url : requestURL!)
-        print(path)
         
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) -> Void in
@@ -310,7 +336,6 @@ class Model {
             
             if HTTPResultCode == 200 {
            
-                //print("downloadSimilarityData:  data received")
                 let content = talkFileName
 
                 var talks = [TalkData] ()
@@ -341,14 +366,21 @@ class Model {
     }
     
     
-    func downloadHelpPage() {
-    
+    func setHelpPage() {
+        
+        // default help page
+        if let asset = NSDataAsset(name: KEY_HELP, bundle: Bundle.main) {
+            HELP_PAGE = String(data: asset.data, encoding: .utf8)!
+        }
+
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         config.urlCache = nil
         let session = URLSession.init(configuration: config)
         
         let path = URL_GET_HELP
+        //let path = "x"
+
         let requestURL : URL? = URL(string: path)
         let urlRequest = URLRequest(url : requestURL!)
         
@@ -371,8 +403,6 @@ class Model {
             else {
                 HTTPResultCode = 404
             }
-            
-            print(HTTPResultCode)
             
             if HTTPResultCode == 200 {
                 
@@ -695,12 +725,13 @@ class Model {
                     
                     var talkSection = talk["section"] as? String ?? "_"
                     let series = talk["series"] as? String ?? ""
-                    let titleTitle = talk["title"] as? String ?? ""
+                    let title = talk["title"] as? String ?? ""
                     var speaker = ""
                     var date = ""
                     var durationDisplay = ""
                     var keys = ""
                     var pdf = ""
+                    
                     
                     // DEV NOTE: remove placeholder.  this code might not be necessary long-term
                     if talkSection == "_" || talkSection == "__" {
@@ -721,7 +752,7 @@ class Model {
                     let totalSeconds = self.convertDurationToSeconds(duration: durationDisplay)
                     
                     
-                    let talkData =  TalkData(title: titleTitle,
+                    let talkData =  TalkData(title: title,
                                              url: URL,
                                              fileName: fileName,
                                              date: date,
@@ -755,7 +786,7 @@ class Model {
                         }
                         
                         if ((talkSection != "") && (talkSection != prevTalkSection)) {
-                            let talk = TalkData(title: SECTION_HEADER, url: "", fileName: "", date: "", durationDisplay: "",  speaker: "", section: talkSection, durationInSeconds: 0, pdf: "",  keys: "")
+                            let talk = TalkData(title: SECTION_HEADER, url: "", fileName: "", date: "", durationDisplay: "",  speaker: "defaultPhoto", section: talkSection, durationInSeconds: 0, pdf: "",  keys: "")
                             self.KeyToTalks[seriesKey]?.append(talk)
                             prevTalkSection = talkSection
                         }
@@ -782,7 +813,6 @@ class Model {
         let session = URLSession.init(configuration: config)
         
         let requestURL : URL? = URL(string: URL_GET_ACTIVITY + "DEVICEID=" + DEVICE_ID)
-        //print(DEVICE_ID)
 
         let urlRequest = URLRequest(url : requestURL!)
         
@@ -828,7 +858,6 @@ class Model {
                     let state = talkJSON["state"] as? String ?? ""
                     let country = talkJSON["country"] as? String ?? ""
                    
-                    //print("Getting Talk History State ", talkJSON)
                     if let talk = self.FileNameToTalk[fileName] {
                         
                         let talkHistory = TalkHistoryData(fileName: fileName,
@@ -902,7 +931,6 @@ class Model {
                     }
                 
                     durationDisplay = self.secondsToDurationDisplay(seconds: totalSeconds)
-                    //print(talkCount, dataContent)
                     stats = AlbumStats(totalTalks: talkCount, totalSeconds: totalSeconds, durationDisplay: durationDisplay)
                     self.KeyToAlbumStats[dataContent] = stats
                 }
@@ -980,14 +1008,14 @@ class Model {
             // if got a good response, store off file locally
             if HTTPResultCode == 200 {
                 
-                print("Storing MP3 To: ", localPathMP3)
+                //print("Storing MP3 To: ", localPathMP3)
                 do {
                     if let responseData = data {
                         try responseData.write(to: URL(fileURLWithPath: localPathMP3))
                     }
                 }
-                catch let error as NSError {
-                    print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
+                catch  {
+                    //print("Failed writing to URL: \(localPathMP3), Error: " + error.localizedDescription)  // fatal
                     TheDataModel.unsetTalkAsDownload(talk: talk)
                     TheDataModel.DownloadInProgress = false
                     return
@@ -1009,7 +1037,6 @@ class Model {
     // TIMER FUNCTION
     @objc func getSanghaActivity() {
     
-        //print("AD getSanghaActivity")
         if isInternetAvailable() == false {
             return
         }
@@ -1095,7 +1122,6 @@ class Model {
             }
 
             if let controller = self.TalkController {
-                //print("refreshAllControllers: TalkController")
 
                 controller.reloadModel()
                 controller.tableView.reloadData()
@@ -1468,7 +1494,7 @@ class Model {
             
             UserDownloads[userDownload.FileName] = nil
             let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
-            print("Removing bad download: ", userDownload.FileName)
+            //print("Removing bad download: ", userDownload.FileName)
 
             do {
                 try FileManager.default.removeItem(atPath: localPathMP3)
@@ -1487,7 +1513,7 @@ class Model {
                 
                 if let fileName = mp3FileURL.path.components(separatedBy: "/").last {
                     if UserDownloads[fileName] == nil {     // true if the mp3 is an orphan
-                        print("Removing orphan download: ", fileName)
+                        //print("Removing orphan download: ", fileName)
 
                         do {
                             try FileManager.default.removeItem(atPath: mp3FileURL.path)
@@ -1518,7 +1544,7 @@ class Model {
         
         for userDownload in incompleteDownloads {
             
-            print("Removing incomplete download: ", userDownload.FileName)
+            //print("Removing incomplete download: ", userDownload.FileName)
             UserDownloads[userDownload.FileName] = nil
             let localPathMP3 = MP3_DOWNLOADS_PATH + "/" + userDownload.FileName
             do {
@@ -1603,26 +1629,6 @@ class Model {
         default:
             talkList =  KeyToTalks[content] ?? [TalkData]()
 
-/*
-        default:
-            
-            if content.range(of:"SIMILAR.") != nil {
-            
-                talkList =  KeyToTalks[content] ?? [TalkData]()
-                print("getTalks SIMILAR")
-                if talkList.count == 0 {
-                    
-                    print("getTalks SIMILAR:  Getting Similarity Data")
-
-                    let contentKey = content.replacingOccurrences(of: "SIMILAR.", with: "")
-                    downloadSimilarityData(talkFileName: contentKey)
-                }
-            }
-            else {
-                talkList =  KeyToTalks[content] ?? [TalkData]()
-            }
- 
- */
         }
         return talkList
         

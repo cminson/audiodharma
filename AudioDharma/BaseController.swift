@@ -104,7 +104,6 @@ class BaseController: UITableViewController {
         
         //SearchText = SearchController.searchBar.text!
         //SearchController.isActive = false
-        print("Unfavorite: ", SearchText)
         
         DispatchQueue.main.async(execute: {
             self.reloadModel()
@@ -175,7 +174,6 @@ class BaseController: UITableViewController {
             if  let currentTalk = TheDataModel.getTalkForName(name: talkName) {
                 ResumeTalk = currentTalk
                 ResumeTalkTime = currentTalkTime
-                print("Goto BookMark: ", talkName, currentTalk)
                 performSegue(withIdentifier: "DISPLAY_RESUMETALK", sender: self)
             }
         } else {

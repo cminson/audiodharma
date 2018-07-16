@@ -30,7 +30,11 @@ class AlbumController: BaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        TheDataModel.downloadHelpPage()
+        print("AD: Screen Height", SCREEN_HEIGHT)
+        print("AD: Screen Width", SCREEN_WIDTH)
+
+        
+        TheDataModel.setHelpPage()
 
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
@@ -84,7 +88,6 @@ class AlbumController: BaseController {
 
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("viewWillDisappear")
         super.viewWillDisappear(animated)
     }
 
@@ -201,10 +204,9 @@ class AlbumController: BaseController {
             controller.title = Album.Title
             
         case "DISPLAY_HELP_PAGE":
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            controller.setHelpPage(helpPage: KEY_ALBUMROOT)
             
         case "DISPLAY_DONATIONS":
             guard let _ = segue.destination as? UINavigationController else {

@@ -123,12 +123,10 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             
         case "DISPLAY_HELP_PAGE":
             
-            guard let navController = segue.destination as? UINavigationController, let controller = navController.viewControllers.last as? HelpController else {
+            guard let navController = segue.destination as? UINavigationController, let _ = navController.viewControllers.last as? HelpController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            // display different help text depending on the kind of content we're showing.
-            controller.setHelpPage(helpPage: Content)
         
         case "DISPLAY_DONATIONS":
             
@@ -258,7 +256,7 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             if TheDataModel.isCompletedDownloadTalk(talk: talk) {
                 cell.title.textColor = BUTTON_DOWNLOAD_COLOR
             }
-
+            
             cell.speakerPhoto.image = talk.SpeakerPhoto
             cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
             cell.title.text = talkTitle
@@ -354,7 +352,7 @@ class HistoryController: BaseController, UISearchBarDelegate, UISearchController
             }
         }
         
-        let similarTalks = UITableViewRowAction(style: .normal, title: "more") { (action, indexPath) in
+        let similarTalks = UITableViewRowAction(style: .normal, title: SIMILAR_MENU_ITEM) { (action, indexPath) in
             self.performSegue(withIdentifier: "DISPLAY_SIMILAR_TALKS", sender: self)
         }
         
