@@ -283,10 +283,16 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
             cell.title.textColor = BUTTON_DOWNLOAD_COLOR
         }
         
+        //CJM DEV
+        if TheDataModel.hasTalkBeenPlayed(talk: talk) {
+            talkTitle = "* " + talkTitle
+        }
+        
+        
                 
         cell.title.text = talkTitle
         cell.speakerPhoto.image = talk.SpeakerPhoto
-        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+        cell.speakerPhoto.contentMode = UIView.ContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
         
@@ -344,9 +350,9 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         if TheDataModel.isDownloadTalk(talk: talk) {
             downloadTalk = UITableViewRowAction(style: .normal, title: "remove\ndownload") { (action, indexPath) in
                 
-                let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerDeleteDownload))
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: "Delete Downloaded Talk?", message: "Delete talk from local storage", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: self.handlerDeleteDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
                 self.mypresent(alert)
             }
             
@@ -355,22 +361,22 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
                 
                 
                 if TheDataModel.isInternetAvailable() == false {
-                    let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                     self.mypresent(alert)
                     return
                 }
                 
                 if TheDataModel.DownloadInProgress {
-                    let alert = UIAlertController(title: "Another Download In Progress", message: "Only one download can run at at time.\n\nPlease wait until previous download is completed.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    let alert = UIAlertController(title: "Another Download In Progress", message: "Only one download can run at at time.\n\nPlease wait until previous download is completed.", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                     self.mypresent(alert)
                     return
                 }
 
-                let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: self.handlerAddDownload))
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: "Download Talk?", message: "Download talk to device storage.\n\nTalk will be listed in your Download Album", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: self.handlerAddDownload))
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
                 
                 self.mypresent(alert)
             }

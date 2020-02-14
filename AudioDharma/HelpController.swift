@@ -39,7 +39,7 @@ class HelpController: UIViewController {
 
         helpContentView.attributedText = string.html2AttributedString
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : MAIN_FONT_COLOR]
         helpContentView.textColor = MAIN_FONT_COLOR
     }
     

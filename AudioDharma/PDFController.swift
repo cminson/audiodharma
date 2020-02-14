@@ -19,7 +19,7 @@ class PDFController: UIViewController, WKNavigationDelegate, UIWebViewDelegate {
         
         super.loadView()
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = false
         activityIndicator.isHidden = false
@@ -27,7 +27,7 @@ class PDFController: UIViewController, WKNavigationDelegate, UIWebViewDelegate {
         self.webView = WKWebView()
         self.webView?.navigationDelegate = self
         self.webView?.addSubview(activityIndicator)
-        self.webView?.bringSubview(toFront: activityIndicator)
+        self.webView?.bringSubviewToFront(activityIndicator)
 
         self.view = self.webView
         activityIndicator.startAnimating()

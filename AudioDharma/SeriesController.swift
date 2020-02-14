@@ -27,9 +27,10 @@ class SeriesController: BaseController, UISearchBarDelegate, UISearchControllerD
         switch SeriesType {
         case .ALL:
             FilteredAlbums = TheDataModel.SeriesAlbums
-            
+
         case .RECOMMENDED:
-            FilteredAlbums = TheDataModel.RecommendedAlbums           
+            FilteredAlbums = TheDataModel.RecommendedAlbums
+
         }
         
         SearchController.searchResultsUpdater = self
@@ -82,7 +83,6 @@ class SeriesController: BaseController, UISearchBarDelegate, UISearchControllerD
             }
             let album = FilteredAlbums[SelectedRow]
             controller.Content = album.Content
-            print(controller.Content)
             controller.title = album.Title
             
         case "DISPLAY_HELP_PAGE":
@@ -110,18 +110,26 @@ class SeriesController: BaseController, UISearchBarDelegate, UISearchControllerD
     // MARK: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         
+        var albumList:  [AlbumData]
+        if SeriesType == .RECOMMENDED {
+            albumList = TheDataModel.RecommendedAlbums
+        }
+        else {
+            albumList = TheDataModel.SeriesAlbums
+        }
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             
             FilteredAlbums = []
-            for albumData in TheDataModel.SeriesAlbums {
+            for albumData in albumList {
                 if albumData.Title.lowercased().contains(searchText.lowercased()) {
                     FilteredAlbums.append(albumData)
                 }
             }
         } else {
             
-            FilteredAlbums = TheDataModel.SeriesAlbums
+            FilteredAlbums = albumList
         }
+
         tableView.reloadData()
     }
     
@@ -141,12 +149,12 @@ class SeriesController: BaseController, UISearchBarDelegate, UISearchControllerD
         
         let cell = Bundle.main.loadNibNamed("AlbumCell", owner: self, options: nil)?.first as! AlbumCell
         
-        
-        //print("section = \(indexPath.section) row = \(indexPath.row)")
+
         let album = FilteredAlbums[indexPath.row]
-        
+        //print("section = \(indexPath.section) row = \(indexPath.row)")
+
         cell.title.text = album.Title
-        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        cell.albumCover.contentMode = UIView.ContentMode.scaleAspectFit
         if album.Image.count > 0 {
             cell.albumCover.image = UIImage(named: album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {

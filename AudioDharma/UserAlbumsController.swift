@@ -196,7 +196,7 @@ class UserAlbumsController: BaseController, UISearchBarDelegate, UISearchControl
         
         let userAlbum = FilteredUserAlbums[indexPath.row]
         cell.title.text = userAlbum.Title
-        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        cell.albumCover.contentMode = UIView.ContentMode.scaleAspectFit
         cell.albumCover.image = userAlbum.Image
         
         let albumStats = TheDataModel.getAlbumStats(content: userAlbum.Content)
@@ -219,7 +219,7 @@ class UserAlbumsController: BaseController, UISearchBarDelegate, UISearchControl
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             
-            let refreshAlert = UIAlertController(title: "Delete Album", message: "Are you sure?", preferredStyle: UIAlertControllerStyle.alert)
+            let refreshAlert = UIAlertController(title: "Delete Album", message: "Are you sure?", preferredStyle: UIAlertController.Style.alert)
  
 
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in

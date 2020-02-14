@@ -27,10 +27,10 @@ class BaseController: UITableViewController {
         SearchController.hidesNavigationBarDuringPresentation = false
         SearchController.dimsBackgroundDuringPresentation = false
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : MAIN_FONT_COLOR]
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonBookmark, flexibleItem, buttonDonate], animated: false)
     }
 
@@ -50,8 +50,8 @@ class BaseController: UITableViewController {
             print("Freespace: ", freeSpace, spaceRequired)
             if (spaceRequired > freeSpace) {
                 
-                let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: "Insufficient Space To Download", message: "You don't have enough space in your device to download this talk", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.mypresent(alert)
                 return
             }
@@ -69,9 +69,9 @@ class BaseController: UITableViewController {
             TheDataModel.downloadMP3(talk: talk)
             
         } else {
-            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertController.Style.alert)
             
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             
             present(alert, animated: true, completion: nil)
         }
@@ -92,8 +92,8 @@ class BaseController: UITableViewController {
             return
         })
         
-        let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         
         self.mypresent(alert)
     }
@@ -111,8 +111,8 @@ class BaseController: UITableViewController {
             return
         })
         
-        let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         
         self.mypresent(alert)
     }
@@ -146,8 +146,8 @@ class BaseController: UITableViewController {
                 TheDataModel.addToShareHistory(talk: talk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: talk)
                 
-                let alert = UIAlertController(title: talk.Title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: talk.Title, message: "\nThis talk has been shared.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.mypresent(alert)
             }
         }
@@ -178,8 +178,8 @@ class BaseController: UITableViewController {
             }
         } else {
             
-            let alert = UIAlertController(title: "Go To Your Last Talk", message: "\nYou have not listened to a talk yet. \nTherefore no action was taken.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: "Go To Your Last Talk", message: "\nYou have not listened to a talk yet. \nTherefore no action was taken.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             
             self.mypresent(alert)
         }

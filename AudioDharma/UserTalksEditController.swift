@@ -182,7 +182,7 @@ class UserTalksEditController: BaseController, UISearchBarDelegate, UISearchCont
 
         cell.title.text = talk.Title
         cell.speakerPhoto.image = talk.SpeakerPhoto
-        cell.speakerPhoto.contentMode = UIViewContentMode.scaleAspectFit
+        cell.speakerPhoto.contentMode = UIView.ContentMode.scaleAspectFit
         cell.duration.text = talk.DurationDisplay
         cell.date.text = talk.Date
 

@@ -22,17 +22,17 @@ let ModelUpdateSemaphore = DispatchSemaphore(value: 1)  // guards underlying dic
 // all possible web config points
 let HostAccessPoints: [String] = [
     "http://www.virtualdharma.org",
-    "http://www.ezimba.com",
     "http://www.audiodharma.org"
 ]
 var HostAccessPoint: String = HostAccessPoints[0]   // the one we're currently using
 
 // paths for services
-//let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
-let CONFIG_ZIP_NAME = "TEST.ZIP"
 
-let CONFIG_JSON_NAME = "TEST.JSON"
-//let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_JSON_NAME = "CONFIG00.JSON"
+let CONFIG_ZIP_NAME = "CONFIG00.ZIP"
+
+//let CONFIG_JSON_NAME = "TEST.JSON"
+//let CONFIG_ZIP_NAME = "TEST.ZIP"
 
 
 //let CONFIG_ZIP_NAME = "DEVCONFIG00.ZIP"
@@ -43,7 +43,11 @@ var MP3_DOWNLOADS_PATH = ""      // where MP3s are downloaded.  this is set up i
 let CONFIG_ACCESS_PATH = "/AudioDharmaAppBackend/Config/" + CONFIG_ZIP_NAME    // remote web path to config
 let CONFIG_REPORT_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/reportactivity.php"     // where to report user activity (shares, listens)
 let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/XGETACTIVITY.php?"           // where to get sangha activity (shares, listens)
+//let CONFIG_GET_ACTIVITY_PATH = "/AudioDharmaAppBackend/Access/XTEST.php?"           // where to get sangha activity (shares, listens)
+
 let CONFIG_GET_SIMILAR_TALKS = "/AudioDharmaAppBackend/Access/XGETSIMILARTALKS.php?KEY="           // where to get similar talks
+let CONFIG_GET_SUGGESTED_TALKS = "/AudioDharmaAppBackend/Access/XGETSUGGESTEDTALKS.php?KEY="           // where to get suggested talks
+
 let CONFIG_GET_HELP = "/AudioDharmaAppBackend/Access/XGETHELP.php?"           // where to get help page
 
 
@@ -63,6 +67,7 @@ var URL_CONFIGURATION = HostAccessPoint + CONFIG_ACCESS_PATH
 var URL_REPORT_ACTIVITY = HostAccessPoint + CONFIG_REPORT_ACTIVITY_PATH
 var URL_GET_ACTIVITY = HostAccessPoint + CONFIG_GET_ACTIVITY_PATH
 var URL_GET_SIMILAR = HostAccessPoint + CONFIG_GET_SIMILAR_TALKS
+var URL_GET_SUGGESTED = HostAccessPoint + CONFIG_GET_SUGGESTED_TALKS
 var URL_GET_HELP = HostAccessPoint + CONFIG_GET_HELP
 
 var URL_MP3_HOST = DEFAULT_MP3_PATH
@@ -98,6 +103,7 @@ let KEY_ALBUMROOT = "KEY_ALBUMROOT"
 let KEY_TALKS = "KEY_TALKS"
 let KEY_ALLTALKS = "KEY_ALLTALKS"
 let KEY_SIMILAR_TALKS = "KEY_SIMILARTALKS"
+let KEY_SUGGESTED_TALKS = "KEY_SUGGESTEDTALKS"
 let KEY_GIL_FRONSDAL = "Gil Fronsdal"
 let KEY_ANDREA_FELLA = "Andrea Fella"
 let KEY_ALLSPEAKERS = "KEY_ALLSPEAKERS"
@@ -122,6 +128,8 @@ let BUTTON_FAVORITE_COLOR = UIColor(red:1.00, green:0.55, blue:0.00, alpha:1.0) 
 let BUTTON_NOTE_COLOR = UIColor(red:0.00, green:0.34, blue:0.80, alpha:1.0)     //  blue #0057CC
 let BUTTON_SHARE_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
 let BUTTON_DOWNLOAD_COLOR = UIColor(red:0.80, green:0.12, blue:0.00, alpha:1.0)     //  red #CC1F00
+let BUTTON_PLAYED_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
+
 let APP_ICON_COLOR = UIColor(red:0.38, green:0.73, blue:0.08, alpha:1.0)     //  green #62b914
 
 let SECTION_BACKGROUND = UIColor.darkGray  // #555555ff
@@ -135,8 +143,8 @@ let MP3_BYTES_PER_SECOND = 20000    // rough (high) estimate for how many bytes 
 var REPORT_TALK_THRESHOLD = 90      // how many seconds into a talk before reporting that talk that has been officially played
 let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
 
-var MAX_TALKHISTORY_COUNT = 1000     // maximum number of played talks showed in sangha history
-var MAX_SHAREHISTORY_COUNT = 1000     // maximum number of shared talks showed in sangha history
+var MAX_TALKHISTORY_COUNT = 2000     // maximum number of played talks showed in sangha history. over-rideable by config
+var MAX_SHAREHISTORY_COUNT = 1000     // maximum number of shared talks showed in sangha history  over-rideable by config
 var MAX_HISTORY_COUNT = 100         // maximum number of user (not sangha) talk history displayed
 
 var UPDATE_SANGHA_INTERVAL = 60     // amount of time (in seconds) between each poll of the cloud for updated sangha info
@@ -176,8 +184,11 @@ class Model {
     var KeyToTalks : [String: [TalkData]] = [:]  // dictionary keyed by content, value is array of talks
     var KeyToAlbumStats: [String: AlbumStats] = [:] // dictionary keyed by content, value is stat struct for Albums
     var FileNameToTalk: [String: TalkData]   = [String: TalkData] ()  // dictionary keyed by talk filename, value is the talk data (used by userList code to lazily bind)
-    
+
     var UserTalkHistoryAlbum: [TalkHistoryData] = []    // history of talks for user
+
+    var FileNameToUserTalkHistory: [String: TalkHistoryData]   = [String: TalkHistoryData] ()  //
+ 
     var UserTalkHistoryStats: AlbumStats!
     var UserShareHistoryAlbum: [TalkHistoryData] = []   // history of shared talks for user
     
@@ -198,12 +209,16 @@ class Model {
 
     var UpdatedTalksJSON: [String: AnyObject] = [String: AnyObject] ()
 
-    
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+
     // MARK: Persistant Data
     var UserAlbums: [UserAlbumData] = []      // all the custom user albums defined by this user.
     var UserNotes: [String: UserNoteData] = [:]      // all the  user notes defined by this user, indexed by fileName
     var UserFavorites: [String: UserFavoriteData] = [:]      // all the favorites defined by this user, indexed by fileName
 	var UserDownloads: [String: UserDownloadData] = [:]      // all the downloads defined by this user, indexed by fileName
+    // CJM
+    var PlayedTalks: [String: Bool]   = [:]  // all the talks that have been played by this user, indexed by fileName
+    let PlayedTalks_ArchiveURL = DocumentsDirectory.appendingPathComponent("PlayedTalks")
     
     // MARK: Init
     func resetData() {
@@ -365,6 +380,67 @@ class Model {
 
     }
     
+    func downloadSuggestedData(talkFileName: String) {
+        
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        let session = URLSession.init(configuration: config)
+        
+        let path = URL_GET_SUGGESTED + DEVICE_ID
+        let requestURL : URL? = URL(string: path)
+        let urlRequest = URLRequest(url : requestURL!)
+        
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) -> Void in
+            
+            var httpResponse: HTTPURLResponse
+            if let valid_reponse = response {
+                httpResponse = valid_reponse as! HTTPURLResponse
+                HTTPResultCode = httpResponse.statusCode
+            } else {
+                HTTPResultCode = 404
+            }
+            
+            if let responseData = data {
+                if responseData.count < MIN_EXPECTED_RESPONSE_SIZE {
+                    HTTPResultCode = 404
+                }
+            }
+            else {
+                HTTPResultCode = 404
+            }
+            
+            if HTTPResultCode == 200 {
+                
+                var talks = [TalkData] ()
+                
+                do {
+                    let jsonDict =  try JSONSerialization.jsonObject(with: data!) as! [String: AnyObject]
+                    for suggestedTalk in jsonDict["DATA02"] as? [AnyObject] ?? [] {
+                        
+                        let filename = suggestedTalk["filename"] as? String ?? ""
+                        
+                        if let talk = self.FileNameToTalk[filename] {
+                            talks.append(talk)
+                        }
+                    }
+                    
+                    self.KeyToTalks[KEY_SUGGESTED_TALKS] = talks
+                    
+                }
+                catch {
+                    print(error)
+                }
+            }
+            
+            TheDataModel.refreshAllControllers()
+        }
+        task.resume()
+        
+    }
+    
+    
     
     func setHelpPage() {
         
@@ -481,8 +557,8 @@ class Model {
             if SSZipArchive.unzipFile(atPath: configZipPath, toDestination: documentPath) != true {
                 print("Failed UnZip: \(configZipPath)")
                 HTTPResultCode = 404
-                let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: "No Internet Connection", message: "Please check your connection.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
                 self.RootController?.present(alert, animated: true, completion: nil)
                 self.RootController?.reportModelLoaded()
 
@@ -531,6 +607,8 @@ class Model {
 
             self.UserAlbums = TheDataModel.loadUserAlbumData()
             self.computeUserAlbumStats()
+            
+             
             self.UserNotes = TheDataModel.loadUserNoteData()
             self.computeNotesStats()
             self.UserFavorites = TheDataModel.loadUserFavoriteData()
@@ -540,7 +618,15 @@ class Model {
             self.computeUserDownloadStats()
 
             self.UserTalkHistoryAlbum = TheDataModel.loadTalkHistoryData()
+            self.PlayedTalks = TheDataModel.loadUPlayedTalksData()
             self.computeTalkHistoryStats()
+            
+            // CJM
+            for talk in self.UserTalkHistoryAlbum {
+                self.PlayedTalks[talk.FileName] = true
+            }
+             
+
             self.UserShareHistoryAlbum = TheDataModel.loadShareHistoryData()
             self.computeShareHistoryStats()
 
@@ -564,6 +650,8 @@ class Model {
         
             URL_REPORT_ACTIVITY = config["URL_REPORT_ACTIVITY"] as? String ?? URL_REPORT_ACTIVITY
             URL_GET_ACTIVITY = config["URL_GET_ACTIVITY"] as? String ?? URL_GET_ACTIVITY
+            print("URL_GET_ACTIVITY: ", URL_GET_ACTIVITY)
+
             URL_DONATE = config["URL_DONATE"] as? String ?? URL_DONATE
         
             MAX_TALKHISTORY_COUNT = config["MAX_TALKHISTORY_COUNT"] as? Int ?? MAX_TALKHISTORY_COUNT
@@ -1075,6 +1163,7 @@ class Model {
         let parameters = "DEVICETYPE=\(deviceType)&DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         let url = URL(string: URL_REPORT_ACTIVITY)!
+        print(URL_REPORT_ACTIVITY)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = parameters.data(using: String.Encoding.utf8);
@@ -1419,7 +1508,24 @@ class Model {
         NSKeyedArchiver.archiveRootObject(TheDataModel.UserShareHistoryAlbum, toFile: TalkHistoryData.ArchiveShareHistoryURL.path)
     }
     
+    // CJM
+    func savePlayedTalksData() {
+         
+         NSKeyedArchiver.archiveRootObject(PlayedTalks, toFile: PlayedTalks_ArchiveURL.path)
+     }
     
+    func loadUPlayedTalksData() -> [String: Bool]  {
+        
+        if let playedTalks = NSKeyedUnarchiver.unarchiveObject(withFile: PlayedTalks_ArchiveURL.path)
+            as? [String: Bool] {
+            
+            return playedTalks
+        } else {
+            
+            return [String: Bool] ()
+        }
+    }
+
     
     func loadUserAlbumData() -> [UserAlbumData]  {
         
@@ -1622,9 +1728,17 @@ class Model {
         case KEY_DHARMETTES:    // Dharmettes are just a Series that we've promoted to top level
             talkList = KeyToTalks["SERIESDharmettes"] ?? [TalkData]()
         
-
         case KEY_ALLTALKS:
             talkList =  AllTalks
+            
+        case KEY_SUGGESTED_TALKS:
+            var talks = [TalkData] ()
+            for (fileName, _) in UserDownloads {
+                if let talk = FileNameToTalk[fileName] {
+                    talks.append(talk)
+                }
+            }
+            talkList = talks
             
         default:
             talkList =  KeyToTalks[content] ?? [TalkData]()
@@ -1825,6 +1939,8 @@ class Model {
         let statePlayed = TheUserLocation.state
         let countryPlayed = TheUserLocation.country
 
+        // CJM
+        self.PlayedTalks[talk.FileName] = true
         let talkHistory = TalkHistoryData(fileName: talk.FileName,
                                           datePlayed: datePlayed,
                                           timePlayed: timePlayed,
@@ -1842,6 +1958,7 @@ class Model {
         }
         
         // save the data, recompute stats, reload root view to display updated stats
+        savePlayedTalksData()   // CJM
         saveTalkHistoryData()
         computeTalkHistoryStats()
         refreshAllControllers()
@@ -1903,8 +2020,8 @@ class Model {
             
             unsetTalkAsFavorite(talk: talk)
             
-            let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: "Favorite Talk - Removed", message: "This talk has been removed from your Favorites Album", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             
             controller.present(alert, animated: true, completion: nil)
             
@@ -1912,8 +2029,8 @@ class Model {
             
             setTalkAsFavorite(talk: talk)
             
-            let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: "Favorite Talk - Added", message: "This talk has been added to your Favorites Album", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             
             controller.present(alert, animated: true, completion: nil)
 
@@ -1983,6 +2100,15 @@ class Model {
         }
         return downloadInProgress
     }
+    
+    // CJM
+    func hasTalkBeenPlayed(talk: TalkData) -> Bool {
+    
+        if let _ = PlayedTalks[talk.FileName]  {
+            return true
+        }
+        return false
+    } 
 
     
     func addNoteToTalk(noteText: String, talkFileName: String) {

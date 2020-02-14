@@ -30,14 +30,10 @@ class AlbumController: BaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("AD: Screen Height", SCREEN_HEIGHT)
-        print("AD: Screen Width", SCREEN_WIDTH)
-
-        
         TheDataModel.setHelpPage()
 
         BusyIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        BusyIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        BusyIndicator.style = UIActivityIndicatorView.Style.whiteLarge
         BusyIndicator.center = self.view.center
         BusyIndicator.color = UIColor(red:0.00, green:0.00, blue:0.00, alpha:1.0)
 
@@ -52,7 +48,7 @@ class AlbumController: BaseController {
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         //self.setToolbarItems([buttonHelp, flexibleItem, buttonDonate], animated: false)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonBookmark, flexibleItem, buttonDonate], animated: false)
 
@@ -70,7 +66,6 @@ class AlbumController: BaseController {
     
     override func viewWillAppear(_ animated: Bool) {
 
-        //print("viewWillAppear")
         super.viewWillAppear(animated)
         
         let timeInterval = NSDate().timeIntervalSince1970
@@ -182,6 +177,7 @@ class AlbumController: BaseController {
             }
             
         case "DISPLAY_SERIES_ALBUMS":
+            
             guard let controller = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -189,6 +185,7 @@ class AlbumController: BaseController {
             controller.title = "Series Talks"
             
         case "DISPLAY_RECOMMENDED_TALKS":
+
             guard let controller = segue.destination as? SeriesController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
@@ -252,7 +249,8 @@ class AlbumController: BaseController {
         let Album = AlbumSections[indexPath.section][indexPath.row]
     
         cell.title.text = Album.Title
-        cell.albumCover.contentMode = UIViewContentMode.scaleAspectFit
+        
+        cell.albumCover.contentMode = UIView.ContentMode.scaleAspectFit
         if Album.Image.count > 0 {
             cell.albumCover.image = UIImage(named: Album.Image) ?? UIImage(named: "defaultPhoto")!
         } else {
@@ -263,7 +261,9 @@ class AlbumController: BaseController {
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        //let formattedNumber = numberFormatter.string(from: NSNumber(value:AlbumStats.totalTalks + 500))
         let formattedNumber = numberFormatter.string(from: NSNumber(value:AlbumStats.totalTalks))
+
         cell.statTalkCount.text = formattedNumber
         
         

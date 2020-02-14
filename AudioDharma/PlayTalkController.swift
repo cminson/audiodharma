@@ -75,7 +75,7 @@ class PlayTalkController: UIViewController {
         
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor : MAIN_FONT_COLOR]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : MAIN_FONT_COLOR]
 
         MP3TalkPlayer = MP3Player()
         MP3TalkPlayer.Delegate = self
@@ -114,10 +114,10 @@ class PlayTalkController: UIViewController {
         let iconBlack = UIImage(named: "routebuttonblack")
         let iconGreen = UIImage(named: "routebuttongreen")
         
-        volumeView.setRouteButtonImage(iconBlack, for: UIControlState.normal)
-        volumeView.setRouteButtonImage(iconBlack, for: UIControlState.disabled)
-        volumeView.setRouteButtonImage(iconGreen, for: UIControlState.highlighted)
-        volumeView.setRouteButtonImage(iconGreen, for: UIControlState.selected)
+        volumeView.setRouteButtonImage(iconBlack, for: UIControl.State.normal)
+        volumeView.setRouteButtonImage(iconBlack, for: UIControl.State.disabled)
+        volumeView.setRouteButtonImage(iconGreen, for: UIControl.State.highlighted)
+        volumeView.setRouteButtonImage(iconGreen, for: UIControl.State.selected)
 
         volumeView.tintColor = MAIN_FONT_COLOR
         
@@ -130,7 +130,7 @@ class PlayTalkController: UIViewController {
         
         self.navigationController?.setToolbarHidden(false, animated: false)
         self.navigationController?.toolbar.barStyle = UIBarStyle.blackOpaque
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([buttonHelp, flexibleItem, buttonFavorite, flexibleItem, buttonShare, flexibleItem, buttonDonate], animated: false)
 
         if TheDataModel.doesTalkHaveTranscript(talk: CurrentTalk) {
@@ -206,12 +206,12 @@ class PlayTalkController: UIViewController {
         // this toggles whether we play just the current talk vs current talk + all talks in its album
         if PlayEntireAlbum == true {
             PlayEntireAlbum = false
-            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOff"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOff"), for: UIControl.State.normal)
             labelSingleOrSequence.textColor = SECONDARY_FONT_COLOR
             
         } else {
             PlayEntireAlbum = true
-            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOn"), for: UIControlState.normal)
+            playTalkSeriesButton.setImage(UIImage(named: "mp3SequenceOn"), for: UIControl.State.normal)
             labelSingleOrSequence.textColor = MAIN_FONT_COLOR
         }
     }
@@ -252,8 +252,8 @@ class PlayTalkController: UIViewController {
                 TheDataModel.addToShareHistory(talk: talk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.SHARE_TALK, talk: talk)
                 
-                let alert = UIAlertController(title: title, message: "\nThis talk has been shared.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: title, message: "\nThis talk has been shared.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -320,7 +320,7 @@ class PlayTalkController: UIViewController {
 
             TalkPlayerStatus = .LOADING
             
-            talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
+            talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControl.State.normal)
             enableActivityIcons()
             
             MP3TalkPlayer.startTalk(talkURL: talkURL, startAtTime: CurrentTalkTime)
@@ -336,7 +336,7 @@ class PlayTalkController: UIViewController {
 
                 TalkPlayerStatus = .LOADING
                 
-                talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
+                talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControl.State.normal)
                 enableActivityIcons()
                 
                 MP3TalkPlayer.startTalk(talkURL: talkURL, startAtTime: CurrentTalkTime)
@@ -347,9 +347,9 @@ class PlayTalkController: UIViewController {
             }
             else {
 
-                let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Can Not Connect to AudioDharma Talks Server", message: "Please check your internet connection or try again in a few minutes", preferredStyle: UIAlertController.Style.alert)
                     
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                     
                 present(alert, animated: true, completion: nil)
             }
@@ -366,9 +366,9 @@ class PlayTalkController: UIViewController {
         if exists == false {
             
             
-            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "All Things Are Transient", message: "This talk is currently unavailable.  It may have been moved or is being updated.  Please try again later.", preferredStyle: UIAlertController.Style.alert)
             
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             
             present(alert, animated: true, completion: nil)
             
@@ -382,7 +382,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .LOADING
         
-        talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkpause"), for: UIControl.State.normal)
         enableActivityIcons()
         
         MP3TalkPlayer.play()
@@ -395,7 +395,7 @@ class PlayTalkController: UIViewController {
         
         TalkPlayerStatus = .PAUSED
         
-        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControl.State.normal)
         disableScanButtons()
         
         stopTalkTimer()
@@ -451,7 +451,7 @@ class PlayTalkController: UIViewController {
         let displayTime = MP3TalkPlayer.convertSecondsToDisplayString(timeInSeconds: CurrentTalkTime)
         currentDuration.text = displayTime
 
-        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControlState.normal)
+        talkPlayPauseButton.setImage(UIImage(named: "buttontalkplay"), for: UIControl.State.normal)
         
         updateTitleDisplay()
      }

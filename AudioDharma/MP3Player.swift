@@ -43,7 +43,7 @@ class MP3Player : NSObject {
                         object: PlayerItem)
 
         Player.play()
-        Player.seek(to: CMTimeMake(Int64(startAtTime), 1))
+        Player.seek(to: CMTimeMake(value: Int64(startAtTime), timescale: 1))
     
     }
     
@@ -66,7 +66,7 @@ class MP3Player : NSObject {
     func stop() {
         
         Player.pause()
-        Player.seek(to: kCMTimeZero)
+        Player.seek(to: CMTime.zero)
     }
     
     func pause() {
@@ -82,7 +82,7 @@ class MP3Player : NSObject {
     
     func seekToTime(seconds: Int64) {
         
-        Player.seek(to: CMTimeMake(seconds, 1))
+        Player.seek(to: CMTimeMake(value: seconds, timescale: 1))
     }
     
     func seekFastForward() {
@@ -92,10 +92,10 @@ class MP3Player : NSObject {
             let durationTimeInSeconds = Int64(CMTimeGetSeconds(dt))
             
             if currentTimeInSeconds + FAST_SEEK < durationTimeInSeconds {
-                Player.seek(to: CMTimeMake(currentTimeInSeconds + FAST_SEEK, 1))
+                Player.seek(to: CMTimeMake(value: currentTimeInSeconds + FAST_SEEK, timescale: 1))
 
             } else {
-                Player.seek(to: CMTimeMake(durationTimeInSeconds, 1))
+                Player.seek(to: CMTimeMake(value: durationTimeInSeconds, timescale: 1))
             }
         }
     }
@@ -106,10 +106,10 @@ class MP3Player : NSObject {
             let currentTimeInSeconds = Int64(CMTimeGetSeconds(ct))
             
             if currentTimeInSeconds - FAST_SEEK > Int64(0) {
-                Player.seek(to: CMTimeMake(currentTimeInSeconds - FAST_SEEK, 1))
+                Player.seek(to: CMTimeMake(value: currentTimeInSeconds - FAST_SEEK, timescale: 1))
                 
             } else {
-                Player.seek(to: CMTimeMake(0, 1))
+                Player.seek(to: CMTimeMake(value: 0, timescale: 1))
             }
         }
     }
