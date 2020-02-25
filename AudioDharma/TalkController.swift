@@ -99,7 +99,6 @@ class TalkController: BaseController, UISearchBarDelegate, UISearchControllerDel
         backItem.title = "  "
         navigationItem.backBarButtonItem = backItem
 
-        
         switch(segue.identifier ?? "") {
             
         case "DISPLAY_RESUMETALK":

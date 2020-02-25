@@ -140,10 +140,11 @@ let SECTION_TEXT = UIColor.white
 let MP3_BYTES_PER_SECOND = 20000    // rough (high) estimate for how many bytes per second of MP3.  Used to estimate size of download files
 
 // MARK: Global Config Variables.  Values are defaults.  All these can be overriden at boot time by the config
-var REPORT_TALK_THRESHOLD = 90      // how many seconds into a talk before reporting that talk that has been officially played
+let REPORT_TALK_THRESHOLD = 90      // how many seconds into a talk before reporting that talk that has been officially played
+
 let SECONDS_TO_NEXT_TALK : Double = 2   // when playing an album, this is the interval between talks
 
-var MAX_TALKHISTORY_COUNT = 2000     // maximum number of played talks showed in sangha history. over-rideable by config
+var MAX_TALKHISTORY_COUNT = 3000     // maximum number of played talks showed in sangha history. over-rideable by config
 var MAX_SHAREHISTORY_COUNT = 1000     // maximum number of shared talks showed in sangha history  over-rideable by config
 var MAX_HISTORY_COUNT = 100         // maximum number of user (not sangha) talk history displayed
 
@@ -672,6 +673,7 @@ class Model {
                 let series = talk["series"] as? String ?? ""
                 let title = talk["title"] as? String ?? ""
                 let URL = (talk["url"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                let VURL = (talk["vurl"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 let speaker = talk["speaker"] as? String ?? ""
                 var date = talk["date"] as? String ?? ""
                 date = date.replacingOccurrences(of: "-", with: ".")
@@ -691,6 +693,7 @@ class Model {
             
                 let talkData =  TalkData(title: title,
                                          url: URL,
+                                         vurl: VURL,
                                          fileName: fileName,
                                          date: date,
                                          durationDisplay: duration,
@@ -808,6 +811,8 @@ class Model {
                 for talk in talkList {
                     
                     var URL = talk["url"] as? String ?? ""
+                    var VURL = talk["url"] as? String ?? ""
+
                     let terms = URL.components(separatedBy: "/")
                     let fileName = terms.last ?? ""
                     
@@ -830,6 +835,7 @@ class Model {
                     // easier for config reading)
                     if let talkData = self.FileNameToTalk[fileName] {
                         URL = talkData.URL
+                        VURL = talkData.VURL
                         speaker = talkData.Speaker
                         date = talkData.Date
                         pdf = talkData.PDF
@@ -842,6 +848,7 @@ class Model {
                     
                     let talkData =  TalkData(title: title,
                                              url: URL,
+                                             vurl: VURL,
                                              fileName: fileName,
                                              date: date,
                                              durationDisplay: durationDisplay,
@@ -868,13 +875,15 @@ class Model {
                         if self.KeyToTalks[seriesKey] == nil {
                             
                             self.KeyToTalks[seriesKey] = [TalkData] ()
-                            let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
+                            let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: "albumdefault", date: date)
+                           //let albumData =  AlbumData(title: series, content: seriesKey, section: "", image: speaker, date: date)
+
                             self.RecommendedAlbums.append(albumData)
-                            self.SeriesAlbums.append(albumData)
+                            self.SeriesAlbums.append(albumData)o
                         }
                         
                         if ((talkSection != "") && (talkSection != prevTalkSection)) {
-                            let talk = TalkData(title: SECTION_HEADER, url: "", fileName: "", date: "", durationDisplay: "",  speaker: "defaultPhoto", section: talkSection, durationInSeconds: 0, pdf: "",  keys: "")
+                            let talk = TalkData(title: SECTION_HEADER, url: "", vurl: "", fileName: "", date: "", durationDisplay: "",  speaker: "defaultPhoto", section: talkSection, durationInSeconds: 0, pdf: "",  keys: "")
                             self.KeyToTalks[seriesKey]?.append(talk)
                             prevTalkSection = talkSection
                         }
@@ -1163,7 +1172,7 @@ class Model {
         let parameters = "DEVICETYPE=\(deviceType)&DEVICEID=\(DEVICE_ID)&OPERATION=\(operation)&SHARETYPE=\(shareType)&FILENAME=\(fileName)&CITY=\(city)&STATE=\(state)&COUNTRY=\(country)&ZIP=\(zip)&ALTITUDE=\(altitude)&LATITUDE=\(latitude)&LONGITUDE=\(longitude)"
 
         let url = URL(string: URL_REPORT_ACTIVITY)!
-        print(URL_REPORT_ACTIVITY)
+        //print("Report Talk Activity", URL_REPORT_ACTIVITY)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = parameters.data(using: String.Encoding.utf8);

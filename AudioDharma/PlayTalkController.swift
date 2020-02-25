@@ -267,6 +267,7 @@ class PlayTalkController: UIViewController {
         switch TalkPlayerStatus {
         case .INITIAL, .STOPPED, .FINISHED, .ALBUMFINISHED:
  
+            //test()
             startTalk()
         case .PAUSED:
             restartTalk()
@@ -278,6 +279,19 @@ class PlayTalkController: UIViewController {
     }
     
     
+    func test() {
+        
+        let text = "Some years ago, I learned that in the rules Buddhist monks follow, they’re allowed to defend themselves if attacked. I was surprised because of the idea that they are supposed to be non-violent, and that means not doing anything. However, what they’re allowed to do is block or push back if someone attacks them. They are not allowed to have weapons, so that limits how much they can do.     But if someone is going to hit them, they can put up their hand to block the hit. They are not allowed to hit back, but they can defend themselves in that way. If someone tries to push them off a cliff, they can push back to prevent being pushed off. It seems pretty basic and instinctual to defend oneself in that way. But there is an additional caveat, which is that they’re allowed to strike or block as long as they do it with loving-kindness. That is a higher level of requirement! How many of us could say we can do that? The training for monastics then is to cultivate and develop their loving-kindness to such a degree that they can be relaxed, open, peaceful, and secure enough that they won’t have hate or anger when involved with the saunga.  We all love our saunga, don't you?"
+        
+        let utterance = AVSpeechUtterance(string: text)
+        //utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        //utterance.rate = 0.5
+        utterance.pitchMultiplier = 0.9
+
+
+        let synthesizer = AVSpeechSynthesizer()
+        synthesizer.speak(utterance)
+    }
  
     
     // MARK: Functions
@@ -285,6 +299,7 @@ class PlayTalkController: UIViewController {
     func startTalk() {
         
         var talkURL: URL    // where the MP3 lives
+        var vtalkURL: URL    // where the virtual MP3 lives
         
         
         //
@@ -310,6 +325,10 @@ class PlayTalkController: UIViewController {
             } else {
                 talkURL  = URL(string: URL_MP3_HOST + "/" + CurrentTalk.FileName)!
             }
+        }
+        
+        if CurrentTalk.VURL != "" {
+            talkURL  = URL(string: CurrentTalk.VURL)!
         }
         
         //
@@ -363,6 +382,7 @@ class PlayTalkController: UIViewController {
     
     func verifyReachableTalk(exists: Bool, talkURL: URL) {
         
+        print(talkURL)
         if exists == false {
             
             
@@ -612,6 +632,7 @@ class PlayTalkController: UIViewController {
                 TheDataModel.addToTalkHistory(talk: CurrentTalk)
                 TheDataModel.reportTalkActivity(type: ACTIVITIES.PLAY_TALK, talk: CurrentTalk)
             }
+            //MARKPLAYED_TALK_THRESHOLD
             
             UserDefaults.standard.set(CurrentTalkTime, forKey: "CurrentTalkTime")
             UserDefaults.standard.set(CurrentTalk.FileName, forKey: "TalkName")

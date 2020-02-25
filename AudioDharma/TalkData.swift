@@ -14,6 +14,7 @@ class TalkData: NSObject {
     // MARK: Properties
     var Title: String
     var URL: String
+    var VURL: String
     var FileName: String
     var Date: String
     var Speaker: String
@@ -28,6 +29,7 @@ class TalkData: NSObject {
     // MARK: Init
     init(title: String,
          url: String,
+         vurl: String,
          fileName: String,
          date: String,
          durationDisplay: String,
@@ -39,6 +41,7 @@ class TalkData: NSObject {
         
         Title = title
         URL = url
+        VURL = vurl
         FileName = fileName
         Date = date
         DurationDisplay = durationDisplay
